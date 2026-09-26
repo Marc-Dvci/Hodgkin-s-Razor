@@ -44,6 +44,7 @@ class Recording:
     div: int
     duration: float
     spikes: dict          # label -> spike times in seconds
+    unreadable: list | None = None   # electrodes whose data failed to decode
 
 
 def _design(path: pathlib.Path) -> str:
@@ -65,17 +66,29 @@ def load(path: pathlib.Path) -> Recording:
         s = rec["TimeStampStream/Stream_0"]
         info = s["InfoTimeStamp"][()]
         spikes = {}
+        unreadable: list[str] = []
         for ent, label, exp in zip(info["TimeStampEntityID"], info["Label"],
                                    info["Exponent"]):
             label = label.decode() if isinstance(label, bytes) else str(label)
-            t = s[f"TimeStampEntity_{ent}"][()].ravel().astype(np.float64)
+            # An electrode that recorded no spike has no entity in some files.
+            key = f"TimeStampEntity_{ent}"
+            if key not in s:
+                spikes[label] = np.zeros(0)
+                continue
+            try:
+                t = s[key][()].ravel().astype(np.float64)
+            except OSError:
+                # A compressed block that fails to decode is counted, not guessed.
+                unreadable.append(label)
+                spikes[label] = np.zeros(0)
+                continue
             spikes[label] = np.sort(t * 10.0 ** int(exp))
     m = re.search(r"chip_(\d+)", path.name)
     d = re.search(r"DIV(\d+)", path.name)
     return Recording(path=path, experiment=path.parent.parent.name,
                      design=_design(path), chip=m.group(1) if m else "?",
                      div=int(d.group(1)) if d else -1, duration=duration,
-                     spikes=spikes)
+                     spikes=spikes, unreadable=unreadable)
 
 
 def recordings() -> list[pathlib.Path]:

@@ -77,7 +77,8 @@ def main() -> None:
                      "chip": f"{r.experiment}/{r.design}/{r.chip}", "div": r.div,
                      "events": prop["events"], "dominant_share": prop["dominant_share"],
                      "chamber_asymmetry": asym["asymmetry"],
-                     "rate_upper": asym["rate_upper"], "rate_lower": asym["rate_lower"]})
+                     "rate_upper": asym["rate_upper"], "rate_lower": asym["rate_lower"],
+                     "unreadable_electrodes": len(r.unreadable or [])})
         print(f"  {r.design:9s} {path.name[:44]:44s} events {prop['events']:6d} "
               f"share {prop['dominant_share']:.3f}  chamber asym {asym['asymmetry']:.3f}",
               flush=True)

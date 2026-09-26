@@ -1,0 +1,666 @@
+{
+ "note": "exploratory, after unblinding; not pre-registered",
+ "doorn": {
+  "routed_top1": 0.5,
+  "routed_hits": 5,
+  "n": 10,
+  "inside": {
+   "paired": [
+    0,
+    3
+   ],
+   "unpaired": [
+    3,
+    3
+   ]
+  },
+  "outside": {
+   "paired": [
+    2,
+    7
+   ],
+   "unpaired": [
+    5,
+    7
+   ]
+  },
+  "rows": [
+   {
+    "well": "FB2_B6",
+    "compound": "Dynasore",
+    "outside_model": true,
+    "paired": "g_ampa",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "FB2_C6",
+    "compound": "Dynasore",
+    "outside_model": true,
+    "paired": "tau_d",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "FB2_D6",
+    "compound": "Dynasore",
+    "outside_model": true,
+    "paired": "g_ahp",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "FB2t_A2",
+    "compound": "Dynasore",
+    "outside_model": true,
+    "paired": "tau_d",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "FB2t_A3",
+    "compound": "Dynasore",
+    "outside_model": false,
+    "paired": "g_ahp",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "FB2t_B1",
+    "compound": "Dynasore",
+    "outside_model": false,
+    "paired": "g_ahp",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "FB2t_C1",
+    "compound": "Dynasore",
+    "outside_model": true,
+    "paired": "g_ahp",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "FB3t_A3",
+    "compound": "Dynasore",
+    "outside_model": true,
+    "paired": "g_ahp",
+    "unpaired": "g_ahp"
+   },
+   {
+    "well": "FB3t_C3",
+    "compound": "Dynasore",
+    "outside_model": false,
+    "paired": "g_ahp",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "FB3t_D1",
+    "compound": "Dynasore",
+    "outside_model": true,
+    "paired": "g_gaba",
+    "unpaired": "g_ahp"
+   }
+  ]
+ },
+ "tampere": {
+  "routed_top1": 0.21212121212121213,
+  "routed_hits": 14,
+  "n": 66,
+  "inside": {
+   "paired": [
+    13,
+    33
+   ],
+   "unpaired": [
+    5,
+    33
+   ]
+  },
+  "outside": {
+   "paired": [
+    3,
+    33
+   ],
+   "unpaired": [
+    1,
+    33
+   ]
+  },
+  "rows": [
+   {
+    "well": "A2",
+    "compound": "Kainic acid",
+    "outside_model": false,
+    "paired": "g_ampa",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "A3",
+    "compound": "Control",
+    "outside_model": false,
+    "paired": "g_gaba",
+    "unpaired": "g_ampa"
+   },
+   {
+    "well": "A4",
+    "compound": "Kainic acid",
+    "outside_model": false,
+    "paired": "g_ampa",
+    "unpaired": "g_ahp"
+   },
+   {
+    "well": "A5",
+    "compound": "GABA",
+    "outside_model": false,
+    "paired": "g_na",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "A6",
+    "compound": "CNQX",
+    "outside_model": false,
+    "paired": "g_ampa",
+    "unpaired": "g_ampa"
+   },
+   {
+    "well": "A7",
+    "compound": "D-AP5",
+    "outside_model": false,
+    "paired": "g_ahp",
+    "unpaired": "g_ahp"
+   },
+   {
+    "well": "A8",
+    "compound": "Gabazine",
+    "outside_model": true,
+    "paired": "g_gaba",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "B2",
+    "compound": "GABA",
+    "outside_model": true,
+    "paired": "g_na",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "B3",
+    "compound": "Control",
+    "outside_model": false,
+    "paired": "g_ampa",
+    "unpaired": "g_gaba"
+   },
+   {
+    "well": "B4",
+    "compound": "Kainic acid",
+    "outside_model": false,
+    "paired": "g_ampa",
+    "unpaired": "g_ampa"
+   },
+   {
+    "well": "B5",
+    "compound": "GABA",
+    "outside_model": false,
+    "paired": "g_na",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "B6",
+    "compound": "CNQX",
+    "outside_model": true,
+    "paired": "g_ampa",
+    "unpaired": "g_kdr"
+   },
+   {
+    "well": "B7",
+    "compound": "D-AP5",
+    "outside_model": true,
+    "paired": "i_drive",
+    "unpaired": "g_ahp"
+   },
+   {
+    "well": "B8",
+    "compound": "Gabazine",
+    "outside_model": false,
+    "paired": "g_ahp",
+    "unpaired": "g_kdr"
+   },
+   {
+    "well": "C2",
+    "compound": "CNQX",
+    "outside_model": false,
+    "paired": "g_gaba",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "C3",
+    "compound": "Control",
+    "outside_model": false,
+    "paired": "i_drive",
+    "unpaired": "g_gaba"
+   },
+   {
+    "well": "C4",
+    "compound": "Kainic acid",
+    "outside_model": false,
+    "paired": "g_ampa",
+    "unpaired": "g_ampa"
+   },
+   {
+    "well": "C5",
+    "compound": "GABA",
+    "outside_model": true,
+    "paired": "g_na",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "C6",
+    "compound": "CNQX",
+    "outside_model": false,
+    "paired": "g_ampa",
+    "unpaired": "g_ampa"
+   },
+   {
+    "well": "C7",
+    "compound": "D-AP5",
+    "outside_model": true,
+    "paired": "g_tonic_inh",
+    "unpaired": "g_ahp"
+   },
+   {
+    "well": "C8",
+    "compound": "Gabazine",
+    "outside_model": false,
+    "paired": "g_ampa",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "D2",
+    "compound": "D-AP5",
+    "outside_model": false,
+    "paired": "g_ahp",
+    "unpaired": "u_rel"
+   },
+   {
+    "well": "D3",
+    "compound": "Control",
+    "outside_model": false,
+    "paired": "i_drive",
+    "unpaired": "g_ahp"
+   },
+   {
+    "well": "D4",
+    "compound": "Kainic acid",
+    "outside_model": false,
+    "paired": "g_gaba",
+    "unpaired": "u_rel"
+   },
+   {
+    "well": "D5",
+    "compound": "GABA",
+    "outside_model": false,
+    "paired": "g_na",
+    "unpaired": "i_drive"
+   },
+   {
+    "well": "D6",
+    "compound": "CNQX",
+    "outside_model": false,
+    "paired": "g_nmda",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "D7",
+    "compound": "D-AP5",
+    "outside_model": true,
+    "paired": "g_nmda",
+    "unpaired": "g_gaba"
+   },
+   {
+    "well": "D8",
+    "compound": "Gabazine",
+    "outside_model": false,
+    "paired": "g_gaba",
+    "unpaired": "g_kdr"
+   },
+   {
+    "well": "E2",
+    "compound": "Gabazine",
+    "outside_model": false,
+    "paired": "i_drive",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "E3",
+    "compound": "Control",
+    "outside_model": false,
+    "paired": "i_drive",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "E4",
+    "compound": "Kainic acid",
+    "outside_model": false,
+    "paired": "g_na",
+    "unpaired": "g_tonic_inh"
+   },
+   {
+    "well": "E5",
+    "compound": "GABA",
+    "outside_model": false,
+    "paired": "i_drive",
+    "unpaired": "i_drive"
+   },
+   {
+    "well": "E6",
+    "compound": "CNQX",
+    "outside_model": false,
+    "paired": "g_ampa",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "E7",
+    "compound": "D-AP5",
+    "outside_model": false,
+    "paired": "g_ahp",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "E8",
+    "compound": "Gabazine",
+    "outside_model": false,
+    "paired": "i_drive",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "F2",
+    "compound": "Control",
+    "outside_model": true,
+    "paired": "g_ahp",
+    "unpaired": "g_ampa"
+   },
+   {
+    "well": "F3",
+    "compound": "Control",
+    "outside_model": false,
+    "paired": "i_drive",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "F4",
+    "compound": "Kainic acid",
+    "outside_model": false,
+    "paired": "g_ampa",
+    "unpaired": "g_na"
+   },
+   {
+    "well": "F5",
+    "compound": "GABA",
+    "outside_model": false,
+    "paired": "g_ampa",
+    "unpaired": "g_kdr"
+   },
+   {
+    "well": "F6",
+    "compound": "CNQX",
+    "outside_model": true,
+    "paired": "g_nmda",
+    "unpaired": "g_ampa"
+   },
+   {
+    "well": "F7",
+    "compound": "D-AP5",
+    "outside_model": true,
+    "paired": "g_kdr",
+    "unpaired": "g_na"
+   },
+   {
+    "well": "F8",
+    "compound": "Gabazine",
+    "outside_model": false,
+    "paired": "g_ahp",
+    "unpaired": "g_ampa"
+   },
+   {
+    "well": "A5",
+    "compound": "Gabazine",
+    "outside_model": true,
+    "paired": "i_drive",
+    "unpaired": "g_ampa"
+   },
+   {
+    "well": "A6",
+    "compound": "Gabazine",
+    "outside_model": true,
+    "paired": "i_drive",
+    "unpaired": "u_rel"
+   },
+   {
+    "well": "A7",
+    "compound": "Gabazine",
+    "outside_model": true,
+    "paired": "g_kdr",
+    "unpaired": "g_tonic_inh"
+   },
+   {
+    "well": "A8",
+    "compound": "Gabazine",
+    "outside_model": true,
+    "paired": "i_drive",
+    "unpaired": "g_ampa"
+   },
+   {
+    "well": "B5",
+    "compound": "Kainic acid",
+    "outside_model": true,
+    "paired": "u_rel",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "B6",
+    "compound": "Kainic acid",
+    "outside_model": true,
+    "paired": "u_rel",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "B7",
+    "compound": "Kainic acid",
+    "outside_model": true,
+    "paired": "u_rel",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "B8",
+    "compound": "Kainic acid",
+    "outside_model": true,
+    "paired": "u_rel",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "C5",
+    "compound": "Control",
+    "outside_model": true,
+    "paired": "g_kdr",
+    "unpaired": "u_rel"
+   },
+   {
+    "well": "C6",
+    "compound": "Control",
+    "outside_model": true,
+    "paired": "i_drive",
+    "unpaired": "u_rel"
+   },
+   {
+    "well": "C7",
+    "compound": "Control",
+    "outside_model": true,
+    "paired": "g_kdr",
+    "unpaired": "i_drive"
+   },
+   {
+    "well": "C8",
+    "compound": "Control",
+    "outside_model": true,
+    "paired": "g_kdr",
+    "unpaired": "g_gaba"
+   },
+   {
+    "well": "D5",
+    "compound": "GABA",
+    "outside_model": true,
+    "paired": "u_rel",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "D6",
+    "compound": "GABA",
+    "outside_model": true,
+    "paired": "tau_d",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "D7",
+    "compound": "GABA",
+    "outside_model": true,
+    "paired": "u_rel",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "D8",
+    "compound": "GABA",
+    "outside_model": true,
+    "paired": "u_rel",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "E5",
+    "compound": "CNQX",
+    "outside_model": true,
+    "paired": "u_rel",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "E6",
+    "compound": "CNQX",
+    "outside_model": true,
+    "paired": "u_rel",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "E7",
+    "compound": "CNQX",
+    "outside_model": true,
+    "paired": "u_rel",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "E8",
+    "compound": "CNQX",
+    "outside_model": true,
+    "paired": "u_rel",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "F5",
+    "compound": "D-AP5",
+    "outside_model": true,
+    "paired": "u_rel",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "F6",
+    "compound": "D-AP5",
+    "outside_model": true,
+    "paired": "g_gaba",
+    "unpaired": "g_ampa"
+   },
+   {
+    "well": "F7",
+    "compound": "D-AP5",
+    "outside_model": false,
+    "paired": "g_gaba",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "F8",
+    "compound": "D-AP5",
+    "outside_model": true,
+    "paired": "u_rel",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "A3",
+    "compound": "TTX",
+    "outside_model": false,
+    "paired": "g_na",
+    "unpaired": "i_drive"
+   },
+   {
+    "well": "B3",
+    "compound": "TTX",
+    "outside_model": false,
+    "paired": "g_na",
+    "unpaired": "g_kdr"
+   },
+   {
+    "well": "C3",
+    "compound": "TTX",
+    "outside_model": false,
+    "paired": "g_na",
+    "unpaired": "g_kdr"
+   },
+   {
+    "well": "D3",
+    "compound": "TTX",
+    "outside_model": false,
+    "paired": "g_na",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "E3",
+    "compound": "TTX",
+    "outside_model": false,
+    "paired": "g_ampa",
+    "unpaired": "g_nmda"
+   },
+   {
+    "well": "F2",
+    "compound": "TTX",
+    "outside_model": true,
+    "paired": "g_ampa",
+    "unpaired": "g_ampa"
+   },
+   {
+    "well": "F3",
+    "compound": "TTX",
+    "outside_model": false,
+    "paired": "u_rel",
+    "unpaired": "g_ampa"
+   },
+   {
+    "well": "C5",
+    "compound": "TTX",
+    "outside_model": true,
+    "paired": "i_drive",
+    "unpaired": "tau_d"
+   },
+   {
+    "well": "C6",
+    "compound": "TTX",
+    "outside_model": true,
+    "paired": "g_kdr",
+    "unpaired": "g_gaba"
+   },
+   {
+    "well": "C7",
+    "compound": "TTX",
+    "outside_model": true,
+    "paired": "i_drive",
+    "unpaired": "g_tonic_inh"
+   },
+   {
+    "well": "C8",
+    "compound": "TTX",
+    "outside_model": true,
+    "paired": "i_drive",
+    "unpaired": "tau_d"
+   }
+  ]
+ }
+}

@@ -1,0 +1,9 @@
+bank: 100 shards, 240000 pairs, 43629 cultures, view grid16
+[grid16] guard thresholds {'ppc': 5.025000000000006, 'ppc_quantile': 0.975, 'typicality': 10.04254117012024, 'typicality_quantile': 0.975}
+bank: 100 shards, 240000 pairs, 43629 cultures, view grid12
+[grid12] guard thresholds {'ppc': 4.025000000000006, 'ppc_quantile': 0.975, 'typicality': 9.540019702911378, 'typicality_quantile': 0.975}
+A done (1128s): 2/10
+C done (1909s)
+D done: {"raw": {"hPSC_to_other": {"n": 42, "accuracy": 0.2619047619047619, "chance": 0.16666666666666666}, "rat_to_other": {"n": 24, "accuracy": 0.25, "chance": 0.16666666666666666}}, "twin": {"hPSC_to_other": {"n": 42, "accuracy": 0.14285714285714285, "chance": 0.16666666666666666}, "rat_to_other": {"n": 24, "accuracy": 0.375, "chance": 0.16666666666666666}}}
+E done (3861s)
+wrote D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\results\v2\results.json
