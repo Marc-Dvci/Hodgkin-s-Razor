@@ -1,0 +1,11 @@
+answer key: {'CNQX': 'g_ampa', 'D-AP5': 'g_nmda', 'GABA': 'g_gaba', 'Gabazine': 'g_gaba', 'Kainic acid': 'g_ampa', 'TTX': 'g_na', 'Control': None}
+bank 100000 pairs, 6000 held out
+calibration and recovery on held-out simulations ...
+  100s
+real pairs: 231 windows, 0 unreadable
+top-1 accuracy: 0.167  controls flagged: 0.0
+unpaired baseline top-1: 0.106
+calibrating the guard on held-out records ...
+  threshold 272.67
+  guard: {'bank_holdout': 0.075, 'variant_kinetics': 0.125, 'shuffled_real': 0.025, 'real_pairs': 0.025}
+wrote results\results.json total 1168s

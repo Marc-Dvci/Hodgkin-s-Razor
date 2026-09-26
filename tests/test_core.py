@@ -330,9 +330,9 @@ def test_discrepancy_sees_a_mismatch_confined_to_a_few_features():
     obs = np.zeros(F.N_FEATURE)
     near = ppc.discrepancy(obs, obs, pred, pred)
     far = obs.copy()
-    far[:4] = 30.0
+    far[:6] = 30.0
     high = ppc.discrepancy(far, obs, pred, pred)
-    assert high > 10 * max(near, 1e-9), (near, high)
+    assert high >= near + 6, (near, high)
 
 
 def test_discrepancy_is_low_for_a_recording_the_model_predicts():
@@ -340,4 +340,20 @@ def test_discrepancy_is_low_for_a_recording_the_model_predicts():
     rng = np.random.default_rng(1)
     pred = rng.normal(0, 1, (48, F.N_FEATURE))
     obs = pred.mean(axis=0)
-    assert ppc.discrepancy(obs, obs, pred, pred) < 3.0
+    assert ppc.discrepancy(obs, obs, pred, pred) < 0.1 * F.N_FEATURE
+
+
+def test_held_out_indices_match_the_bank_they_came_from():
+    """A model trained on a restricted bank must be scored on that same bank.
+
+    The indices saved at training time are positions, so applying them to an
+    unrestricted bank silently scores different records.
+    """
+    import json
+    meta_path = ROOT / "models" / "twin" / "meta.json"
+    idx_path = ROOT / "models" / "twin" / "val_index.npy"
+    if not meta_path.exists() or not idx_path.exists():
+        pytest.skip("no trained twin in the repository")
+    meta = json.loads(meta_path.read_text())
+    idx = np.load(idx_path)
+    assert idx.max() < meta["pairs"], (int(idx.max()), meta["pairs"])

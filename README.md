@@ -34,11 +34,13 @@ change, prefer the fewest.
 The model is trained only on simulations. No recording, and no compound label,
 enters training, feature selection, thresholds or any hyperparameter.
 
-The pre-registration was scored twice. The first run failed, an independent
-check against published pharmacology found three parameterisation defects and
-one missing conductance, and the corrected model was scored again. Both runs
-are in the repository, and
-[section 6b of the report](docs/TECHNICAL_REPORT.md) gives the whole sequence. The
+The recorded set was scored four times: 0.091 as pre-registered, then 0.167,
+then 0.303, and 0.121 for a variant that was tried and dropped. Each correction
+in between was driven by a check that uses no compound label. Simulation
+evidence does not separate the last two models, so **the reported 0.303 carries
+selection on the recorded set and the blind number is 0.091**. The whole
+sequence, and why each change was made, is in
+[section 5.1 and section 6b of the report](docs/TECHNICAL_REPORT.md). The
 answer key, the primary metric, the success threshold and the failure
 conditions were written and hashed in
 [`PREREGISTRATION.md`](PREREGISTRATION.md) before any trained model was scored

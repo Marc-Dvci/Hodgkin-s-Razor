@@ -53,6 +53,39 @@ def is_living(f) -> bool:
             and g("psib") >= c["psib_min"])
 
 
+# The range the recorded baselines span, taken from the unlabelled recordings
+# and from no compound label. A simulated culture outside it is alive but is
+# not the preparation the twin is applied to: the simulated cultures burst far
+# more tightly than the recorded ones, so a simulated block destroys structure
+# that a real block leaves standing.
+BASELINE_BOX = {"psib_max": 50.0, "mean_cc_max": 0.45, "mfr_max": 15.0,
+                "sttc_mean_max": 0.35, "burst_participation_max": 0.97}
+
+
+def in_recorded_domain(x_base) -> bool:
+    """True when a simulated baseline looks like the recorded baselines."""
+    import numpy as np
+    x = np.asarray(x_base)
+    g = (lambda n: float(x[F.NAMES.index(n)])) if x.ndim == 1 else None
+    b = BASELINE_BOX
+    return (g("psib") <= b["psib_max"] and g("mean_cc") <= b["mean_cc_max"]
+            and g("mfr") <= b["mfr_max"]
+            and g("sttc_mean") <= b["sttc_mean_max"]
+            and g("burst_participation") <= b["burst_participation_max"])
+
+
+def domain_mask(x_base):
+    """Vectorised form of `in_recorded_domain` for a whole bank."""
+    import numpy as np
+    x = np.asarray(x_base)
+    col = lambda n: x[:, F.NAMES.index(n)]
+    b = BASELINE_BOX
+    return ((col("psib") <= b["psib_max"]) & (col("mean_cc") <= b["mean_cc_max"])
+            & (col("mfr") <= b["mfr_max"])
+            & (col("sttc_mean") <= b["sttc_mean_max"])
+            & (col("burst_participation") <= b["burst_participation_max"]))
+
+
 def ampa_dependent(sim, theta: np.ndarray, duration: float, transient: float,
                    seed: int, base_rate: np.ndarray | None = None):
     """Rate after an AMPA block, as a fraction of the rate before."""

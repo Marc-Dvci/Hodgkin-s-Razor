@@ -34,7 +34,8 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 warnings.filterwarnings("ignore")
 
 from hodgkins_razor import features as F, params as P, shift as SH, simulator as S
-from fit_regime import CRITERION, ampa_dependent, is_living
+from fit_regime import (BASELINE_BOX, CRITERION, ampa_dependent,
+                        in_recorded_domain, is_living)
 
 N_ELEC = S.NELEC
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -73,8 +74,9 @@ def main() -> None:
     ap.add_argument("--shard", type=int, default=2000)
     ap.add_argument("--batch", type=int, default=192, help="pairs per GPU launch")
     ap.add_argument("--shifts-per-baseline", type=int, default=5)
-    ap.add_argument("--probe-duration", type=float, default=30.0,
-                    help="window for the screening simulation")
+    ap.add_argument("--domain", action="store_true",
+                    help="also require the baseline to sit in the range the "
+                         "recorded baselines span")
     ap.add_argument("--duration", type=float, default=60.0)
     ap.add_argument("--transient", type=float, default=5.0)
     ap.add_argument("--seed", type=int, default=20260926)
@@ -99,7 +101,9 @@ def main() -> None:
             "min_active_fold": float(np.exp(SH.MIN_LOG_FOLD)),
             "shifts_per_baseline": args.shifts_per_baseline,
             "regime_restricted": not args.no_regime,
-            "regime_criterion": CRITERION}
+            "regime_criterion": CRITERION,
+            "domain_matched": bool(args.domain),
+            "baseline_box": BASELINE_BOX if args.domain else None}
     (out / "meta.json").write_text(json.dumps(meta, indent=1))
 
     sim = S.Simulator()
@@ -126,17 +130,24 @@ def main() -> None:
             cand = (proposal.draw(want * 3, rng) if proposal
                     else P.sample_prior(want * 3, rng))
             seed = int(args.seed + 7919 * (s * 10000 + step))
-            probe = sim.run(cand, duration_s=args.probe_duration,
+            # One probe at the analysis window serves every condition: the
+            # recording-side criterion and, when asked, the range the recorded
+            # baselines span. Only the survivors pay for the AMPA-block run.
+            probe = sim.run(cand, duration_s=args.duration,
                             transient_s=args.transient, seed=seed)
-            stats = [F.regime_stats(probe.as_events(k), N_ELEC,
-                                    args.probe_duration)
+            feats = [F.compute(probe.as_events(k), N_ELEC, args.duration)
                      for k in range(cand.shape[0])]
-            ratio = ampa_dependent(sim, cand, args.probe_duration,
-                                   args.transient, seed + 500003,
-                                   np.array([s_["mfr"] for s_ in stats]))
-            live = [k for k in range(cand.shape[0])
-                    if is_living(stats[k])
-                    and ratio[k] < CRITERION["ampa_block_max_ratio"]]
+            first = [k for k in range(cand.shape[0])
+                     if is_living(feats[k])
+                     and (not args.domain or in_recorded_domain(feats[k]))]
+            live = []
+            if first:
+                sel = np.array(first)
+                base_rate = np.array([feats[k][F.NAMES.index("mfr")] for k in sel])
+                ratio = ampa_dependent(sim, cand[sel], args.duration,
+                                       args.transient, seed + 500003, base_rate)
+                live = [int(sel[i]) for i in range(len(sel))
+                        if ratio[i] < CRITERION["ampa_block_max_ratio"]]
             screened += cand.shape[0]
             accepted += len(live)
             if not live:

@@ -45,6 +45,42 @@ def unverified_numbers(text: str, allowed: set[str]) -> list[str]:
     return bad
 
 
+def mp3_duration(path: pathlib.Path) -> float:
+    """Length of an MP3 in seconds, from its frame headers.
+
+    edge-tts does not always emit word boundaries, so the duration is measured
+    from the audio rather than assumed from the marks.
+    """
+    RATES = {1: [0, 32, 40, 48, 56, 64, 80, 96, 112, 128, 160, 192, 224, 256, 320],
+             2: [0, 8, 16, 24, 32, 40, 48, 56, 64, 80, 96, 112, 128, 144, 160]}
+    SR = {0: [44100, 48000, 32000], 1: [22050, 24000, 16000],
+          2: [11025, 12000, 8000]}
+    data = path.read_bytes()
+    i, total = 0, 0.0
+    while i < len(data) - 4:
+        if data[i] != 0xFF or (data[i + 1] & 0xE0) != 0xE0:
+            i += 1
+            continue
+        ver = (data[i + 1] >> 3) & 3          # 3 = MPEG1, 2 = MPEG2, 0 = MPEG2.5
+        layer = (data[i + 1] >> 1) & 3
+        bi = (data[i + 2] >> 4) & 0xF
+        si = (data[i + 2] >> 2) & 3
+        pad = (data[i + 2] >> 1) & 1
+        if layer != 1 or bi in (0, 15) or si == 3:
+            i += 1
+            continue
+        kbps = RATES[1 if ver == 3 else 2][bi]
+        rate = SR[{3: 0, 2: 1, 0: 2}.get(ver, 1)][si]
+        spf = 1152 if ver == 3 else 576
+        size = int((spf // 8) * 1000 * kbps / rate) + pad
+        if size <= 4:
+            i += 1
+            continue
+        total += spf / rate
+        i += size
+    return total
+
+
 async def synth(items: list[dict], out: pathlib.Path, voice: str) -> None:
     import edge_tts
     for i, item in enumerate(items):
@@ -59,10 +95,13 @@ async def synth(items: list[dict], out: pathlib.Path, voice: str) -> None:
                     marks.append({"word": chunk["text"],
                                   "offset_s": chunk["offset"] / 1e7,
                                   "duration_s": chunk["duration"] / 1e7})
-        dur = (marks[-1]["offset_s"] + marks[-1]["duration_s"]) if marks else 0.0
+        dur = ((marks[-1]["offset_s"] + marks[-1]["duration_s"]) if marks
+               else mp3_duration(stem.with_suffix(".mp3")))
         stem.with_suffix(".json").write_text(json.dumps(
             {"section": item["section"], "text": item["text"],
-             "duration_s": dur, "words": marks}, indent=1))
+             "duration_s": round(dur, 3), "words": marks,
+             "timing_from": "word boundaries" if marks else "audio frames"},
+            indent=1))
         print(f"  {i:02d}  {dur:5.1f}s  {item['section'][:46]}")
 
 

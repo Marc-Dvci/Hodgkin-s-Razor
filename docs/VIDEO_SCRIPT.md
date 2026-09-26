@@ -76,14 +76,16 @@ the answer does not get published."
 **Screen.** `results/figures/confusion.png`, then `per_compound.png`.
 
 **Narration.**
-"Across every well on both plates, rat cortical and human stem-cell derived,
-five compounds and vehicle controls, it named the right mechanism in [N] of
-wells. Chance is one in nine.
+"It does not get them all. Across every well on both plates it names the right
+mechanism in thirty percent of them, against a chance rate of ten. On vehicle
+controls it names nothing at all.
 
-On vehicle controls it raised a mechanism in [N] percent of wells.
+Removing the paired design and nothing else drops that to nine percent, so the
+pairing is carrying most of it.
 
-The answer key, the metric and the failure conditions were written and hashed
-before a single recording was scored."
+The answer key and the failure conditions were written and hashed before a
+single recording was scored, and the whole sequence of scored runs is in the
+report, not just the best one."
 
 ---
 

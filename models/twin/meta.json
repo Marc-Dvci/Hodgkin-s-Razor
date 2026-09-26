@@ -4,11 +4,11 @@
  "hidden": 384,
  "depth": 3,
  "bank": "data/bank",
- "pairs": 110000,
- "val_loss": 17.967755883932114,
- "val_nll": 17.614708764212473,
- "val_bce": 0.35304711971964153,
- "epochs_run": 55,
+ "pairs": 27314,
+ "val_loss": 19.004457503557205,
+ "val_nll": 18.642109870910645,
+ "val_bce": 0.36234763264656067,
+ "epochs_run": 80,
  "param_keys": [
   "noise",
   "g_na",
@@ -17,6 +17,7 @@
   "g_ampa",
   "g_nmda",
   "g_gaba",
+  "g_tonic_inh",
   "p_conn",
   "f_inh",
   "tau_d",
@@ -32,11 +33,13 @@
   "g_ampa",
   "g_nmda",
   "g_gaba",
+  "g_tonic_inh",
   "tau_d",
   "u_rel",
   "i_drive"
  ],
- "n_val": 6600,
- "n_cal": 6600,
- "seed": 11
+ "n_val": 1638,
+ "n_cal": 1638,
+ "seed": 11,
+ "match_domain": true
 }

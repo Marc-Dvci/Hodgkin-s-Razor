@@ -60,13 +60,16 @@ conductance were fixed, and the corrections raise separation on simulations from
 0.64 to 0.89 among the four receptor and channel mechanisms, again without a
 recorded label. Both scored runs are reported.
 
-**Against it.** The pre-registration was scored twice, and only the first
-scoring was blind to everything. The second run's model differs, and although
-every change was justified on simulation evidence and on published
-pharmacology, a reader has to take the ordering on trust beyond the git
-history. The guard also failed its own pre-registered test on the first run.
+**Against it.** The recorded set was scored four times. The first scoring is
+the only blind one, at 0.091. The corrections that followed were each driven by
+a label-free check, but the final choice between the two best variants could
+not be made on simulation evidence, which does not separate them, so the
+reported 0.303 carries selection on the recorded set. That is stated in the
+report rather than left for a reader to infer. The guard failed its
+pre-registered test at every one of three attempts at the statistic.
 
-**Score: 16 of 20.**
+**Score: 14 of 20.** The honesty is complete; the number is selected and the
+guard does not work.
 
 ## Reproducibility and implementation quality — 10 percent
 

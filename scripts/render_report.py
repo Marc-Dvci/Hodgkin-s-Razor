@@ -72,6 +72,28 @@ def main() -> None:
     except Exception:
         pass
 
+    dev_path = ROOT / "results" / "development.json"
+    if dev_path.exists():
+        dv = json.loads(dev_path.read_text())
+        rows = []
+        for k, d in dv["parameters"].items():
+            if not d.get("expected") and abs(d["spearman_with_div"]) < 0.4:
+                continue
+            rows.append([f"`{k}`", f"{d['spearman_with_div']:+.3f}",
+                         f"{d['p_value']:.4f}",
+                         d.get("expected") or "-",
+                         "" if d.get("agrees") is None
+                         else ("agrees" if d["agrees"] else "**disagrees**")])
+        dev_txt = (f"{dv['n_pairs']} recordings from {dv['n_wells']} wells, days "
+                   f"{dv['div_range'][0]:.0f} to {dv['div_range'][1]:.0f} in "
+                   f"vitro. Rank correlation of each inferred parameter with the "
+                   "day, and a p-value from permuting the day within each "
+                   "well.\n\n"
+                   + md_table(["Parameter", "rho with day", "p", "Expected",
+                               "Outcome"], rows))
+    else:
+        dev_txt = "_development analysis not yet run_"
+
     ph_path = ROOT / "results" / "pharmacology.json"
     if ph_path.exists():
         ph = json.loads(ph_path.read_text())
@@ -132,6 +154,7 @@ def main() -> None:
         "results_guard": section(res_md, "The guard"),
         "results_chip": chip_txt,
         "results_pharmacology": ph_txt,
+        "results_development": dev_txt,
         "n_tests": str(n_tests),
         "generated": date.today().isoformat(),
         "video_link": args.video,

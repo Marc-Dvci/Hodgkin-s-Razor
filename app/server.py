@@ -101,10 +101,13 @@ def analyse(base: np.ndarray, treat: np.ndarray, duration: float,
         guard = {"inside_model": g["inside_model"],
                  "discrepancy": g["discrepancy"], "threshold": g["threshold"]}
         res = g["result"]
-        twin_raster = {"base": raster_payload(res.as_events(0), duration),
-                       "treat": raster_payload(res.as_events(1), duration),
-                       "rate_base": rate_payload(res.as_events(0), duration),
-                       "rate_treat": rate_payload(res.as_events(1), duration)}
+        k = 2 * g.get("closest_draw", 0)
+        twin_raster = {"base": raster_payload(res.as_events(k), duration),
+                       "treat": raster_payload(res.as_events(k + 1), duration),
+                       "rate_base": rate_payload(res.as_events(k), duration),
+                       "rate_treat": rate_payload(res.as_events(k + 1), duration),
+                       "draw": g.get("closest_draw", 0),
+                       "n_draws": g.get("n_draws", 1)}
 
     body = report.build(post, g if STATE["sim"] is not None else None, xb, xt,
                         meta={"label": label, "duration_s": duration})

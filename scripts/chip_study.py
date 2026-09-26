@@ -27,8 +27,11 @@ import zuko
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 warnings.filterwarnings("ignore")
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+
 from hodgkins_razor import chip as C, features as F, params as P
 from hodgkins_razor import simulator as S
+from fit_regime import is_living
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
@@ -81,29 +84,52 @@ def electrode_view(events: np.ndarray, duration: float) -> np.ndarray:
 
 
 def build_bank(args) -> dict:
+    """Simulate chips that are alive.
+
+    Culture parameters are proposed by the same classifier the main bank uses,
+    so the question being asked is what a readout resolves on a working device
+    rather than on a dead one. A chip with a silent source chamber says nothing
+    about its channels whatever the readout.
+    """
+    import joblib
     sim = S.Simulator()
     rng = np.random.default_rng(args.seed)
+    model = joblib.load(ROOT / "models" / "regime.joblib")
+    thresh = json.loads((ROOT / "models" / "regime.json").read_text())
+    thresh = thresh["quantiles"]["0.90"]["threshold"]
+
     E, CA, TH = [], [], []
-    done = 0
+    done = tried = 0
     t0 = time.time()
-    while done < args.pairs:
-        nb = min(args.batch, args.pairs - done)
-        theta = P.sample_prior(nb, rng)
-        chips = C.sample_chip_prior(nb, rng)
+    while done < args.pairs and time.time() - t0 < args.budget:
+        cand = P.sample_prior(args.batch * 24, rng)
+        score = model.predict_proba(P.to_unit(cand))[:, 1]
+        theta = cand[score >= thresh][:args.batch]
+        if theta.shape[0] < 8:
+            continue
+        chips = C.sample_chip_prior(theta.shape[0], rng)
         res = C.run_chip(sim, theta, chips, duration_s=args.duration,
-                         transient_s=args.transient, seed=int(args.seed + done))
-        for k in range(nb):
+                         transient_s=args.transient, seed=int(args.seed + tried))
+        tried += theta.shape[0]
+        for k in range(theta.shape[0]):
             ev = res.as_events(k)
+            if ev.shape[0] < 60:
+                continue
+            geom = C.GEOMETRY
+            comp = geom.elec_compartment[ev[:, 0].astype(int)]
+            if (comp == 0).sum() < 30:
+                continue
             E.append(electrode_view(ev, args.duration))
             CA.append(C.calcium_features(ev, args.duration,
                                          rng=np.random.default_rng(done + k)))
-        TH.append(chips)
-        done += nb
-        print(f"  {done}/{args.pairs}  {done / max(time.time() - t0, 1e-9):.1f}/s",
+            TH.append(chips[k])
+            done += 1
+        print(f"  {done}/{args.pairs} usable, {tried} simulated "
+              f"({done / max(tried, 1):.2f} kept, {time.time() - t0:.0f}s)",
               flush=True)
     return {"elec": np.array(E, dtype=np.float32),
             "ca": np.array(CA, dtype=np.float32),
-            "chip": np.concatenate(TH).astype(np.float32)}
+            "chip": np.array(TH, dtype=np.float32)}
 
 
 def fit_flow(x: np.ndarray, y: np.ndarray, epochs: int, seed: int = 0) -> dict:
@@ -163,6 +189,8 @@ def main() -> None:
     ap.add_argument("--transient", type=float, default=5.0)
     ap.add_argument("--epochs", type=int, default=40)
     ap.add_argument("--seed", type=int, default=31)
+    ap.add_argument("--budget", type=float, default=2400.0,
+                    help="seconds to spend simulating chips")
     ap.add_argument("--cache", default="data/chip_bank.npz")
     ap.add_argument("--out", default="results/chip_study.json")
     args = ap.parse_args()

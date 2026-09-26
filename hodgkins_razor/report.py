@@ -51,7 +51,8 @@ def build(post: dict, guard: dict | None, x_base: np.ndarray,
     # exact conductance, so it is reported alongside rather than instead.
     agg = np.zeros(len(P.CLASS_NAMES))
     for r in rows:
-        agg[P.class_index(r["key"])] += r["p_active"]
+        c = P.class_index(r["key"])
+        agg[c] = max(agg[c], r["p_active"])
     total = float(agg.sum()) or 1.0
     classes = [{"name": n, "probability": float(v / total)}
                for n, v in zip(P.CLASS_NAMES, agg)]

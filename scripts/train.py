@@ -69,6 +69,14 @@ def main() -> None:
     ap.add_argument("--cal-frac", type=float, default=0.06)
     ap.add_argument("--patience", type=int, default=8)
     ap.add_argument("--seed", type=int, default=11)
+    ap.add_argument("--reweight-domain", action="store_true",
+                    help="weight the loss toward the recorded baseline "
+                         "distribution instead of discarding what falls "
+                         "outside it")
+    ap.add_argument("--weight-cap", type=float, default=20.0)
+    ap.add_argument("--match-domain", action="store_true",
+                    help="keep only simulated baselines inside the range the "
+                         "recorded baselines span")
     ap.add_argument("--unpaired", action="store_true",
                     help="baseline: one flow over parameters from a single "
                          "recording, with no pairing and no shift prior")
@@ -76,8 +84,42 @@ def main() -> None:
 
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     bank = load_bank(pathlib.Path(args.bank))
+    if args.match_domain:
+        sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+        from fit_regime import BASELINE_BOX, domain_mask
+        keep = domain_mask(bank["x_base"])
+        bank = {k: v[keep] for k, v in bank.items()}
+        print(f"domain match: kept {keep.sum()} of {keep.size} pairs "
+              f"({keep.mean():.1%}) inside {BASELINE_BOX}")
     n = bank["theta_c"].shape[0]
     rng = np.random.default_rng(args.seed)
+    weights = np.ones(n)
+    if args.reweight_domain:
+        # A classifier separating recorded baselines from simulated ones gives
+        # the density ratio, and weighting by it targets the recorded regime
+        # while keeping every simulation. Only unlabelled baseline recordings
+        # are used; no compound label enters this.
+        from sklearn.ensemble import HistGradientBoostingClassifier
+        from hodgkins_razor import tampere as T
+        real = []
+        for plate in ("rat", "human"):
+            for pair in T.load_plate(plate, window_s=60.0, n_windows=3):
+                real.append(F.compute(pair.baseline, 16, 60.0))
+        real = nde.phi(np.array(real))
+        sim_x = nde.phi(bank["x_base"])
+        X = np.vstack([sim_x, real])
+        y = np.r_[np.zeros(len(sim_x)), np.ones(len(real))]
+        clf = HistGradientBoostingClassifier(max_iter=250, learning_rate=0.06,
+                                             max_leaf_nodes=15).fit(X, y)
+        pr = np.clip(clf.predict_proba(sim_x)[:, 1], 1e-4, 1 - 1e-4)
+        ratio = pr / (1.0 - pr)
+        weights = np.clip(ratio / np.median(ratio), 1.0 / args.weight_cap,
+                          args.weight_cap)
+        weights *= len(weights) / weights.sum()
+        ess = weights.sum() ** 2 / np.square(weights).sum()
+        print(f"domain reweighting: effective sample {ess:.0f} of {n} "
+              f"({ess / n:.1%}), weight range "
+              f"{weights.min():.3f} to {weights.max():.1f}")
     perm = rng.permutation(n)
     n_val = int(args.val_frac * n)
     n_cal = int(args.cal_frac * n)
@@ -116,12 +158,16 @@ def main() -> None:
                             lr=args.lr, weight_decay=1e-5)
     sched = torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=args.epochs)
     bce = torch.nn.BCEWithLogitsLoss()
+    bce_raw = torch.nn.BCEWithLogitsLoss(reduction="none")
+
+    W = torch.as_tensor(weights, dtype=torch.float32)
 
     def batches(idx, shuffle=True):
         order = rng.permutation(idx) if shuffle else idx
         for a in range(0, len(order), args.batch):
             sel = torch.as_tensor(order[a:a + args.batch])
-            yield (C[sel].to(dev), Z[sel].to(dev), Y[sel].to(dev))
+            yield (C[sel].to(dev), Z[sel].to(dev), Y[sel].to(dev),
+                   W[sel].to(dev))
 
     # The two heads have disjoint parameters and different loss scales, so each
     # keeps the state at its own best validation loss rather than at the best
@@ -132,10 +178,15 @@ def main() -> None:
     for epoch in range(args.epochs):
         flow.train(); presence.train()
         tot = nb = 0.0
-        for c, z, y in batches(idx_tr):
+        for c, z, y, w in batches(idx_tr):
             opt.zero_grad(set_to_none=True)
-            nll = -flow(c).log_prob(z).mean()
-            cls = bce(presence(c), y) if not args.unpaired else torch.zeros((), device=dev)
+            wn = w / w.mean()
+            nll = -(flow(c).log_prob(z) * wn).mean()
+            if args.unpaired:
+                cls = torch.zeros((), device=dev)
+            else:
+                per = bce_raw(presence(c), y).mean(dim=1)
+                cls = (per * wn).mean()
             loss = nll + cls
             loss.backward()
             torch.nn.utils.clip_grad_norm_(
@@ -147,9 +198,11 @@ def main() -> None:
         flow.eval(); presence.eval()
         with torch.no_grad():
             vn = vc = vb = 0.0
-            for c, z, y in batches(idx_val, shuffle=False):
-                vn += float(-flow(c).log_prob(z).mean())
-                vc += float(bce(presence(c), y)) if not args.unpaired else 0.0
+            for c, z, y, w in batches(idx_val, shuffle=False):
+                wn = w / w.mean()
+                vn += float(-(flow(c).log_prob(z) * wn).mean())
+                vc += (float((bce_raw(presence(c), y).mean(dim=1) * wn).mean())
+                       if not args.unpaired else 0.0)
                 vb += 1
         v = (vn + vc) / vb
         print(f"epoch {epoch + 1:3d}  train {tot / nb:8.3f}  val {v:8.3f} "
@@ -199,7 +252,9 @@ def main() -> None:
             "epochs_run": epoch + 1,
             "param_keys": list(P.KEYS),
             "shift_keys": [P.KEYS[i] for i in P.SHIFT_IDX],
-            "n_val": int(n_val), "n_cal": int(n_cal), "seed": args.seed}
+            "n_val": int(n_val), "n_cal": int(n_cal), "seed": args.seed,
+            "match_domain": bool(args.match_domain),
+            "reweight_domain": bool(args.reweight_domain)}
     twin = nde.Twin(flow, presence, scaler, device=dev, calibration=calib, meta=meta)
     twin.save(args.out)
     np.save(pathlib.Path(args.out) / "val_index.npy", idx_val)

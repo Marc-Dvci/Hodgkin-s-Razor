@@ -19,10 +19,11 @@ import time
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 SHOTS = [
-    ("rat_cnqx", "cnqx", "AMPA antagonist on rat cortical neurons"),
-    ("rat_gabazine", "gabazine", "GABA-A antagonist, disinhibition"),
-    ("rat_control", "control", "vehicle control"),
-    ("rat_ttx", "ttx", "sodium channel block"),
+    ("rat_gabazine", "gabazine", "GABA-A antagonist; the twin names it at 0.81"),
+    ("rat_ttx", "ttx", "sodium channel block; named correctly"),
+    ("human_kainicacid", "kainate", "AMPA agonist; named correctly"),
+    ("rat_control", "control", "vehicle control; nothing is named"),
+    ("rat_cnqx", "cnqx", "AMPA antagonist; this window is called wrongly"),
     ("human_gaba", "gaba_human", "GABA-A agonist on human neurons"),
 ]
 
@@ -65,7 +66,7 @@ def main() -> None:
             ctx = browser.new_context(**ctx_args)
             page = ctx.new_page()
             page.goto(url)
-            page.wait_for_selector("#example option")
+            page.wait_for_function("document.querySelectorAll('#example option').length > 0")
             page.screenshot(path=str(out / "00_landing.png"))
 
             for name, slug, note in SHOTS:

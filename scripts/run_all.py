@@ -56,6 +56,8 @@ def main() -> None:
     run("pharmacology check", ["scripts/pharmacology_check.py"],
         ROOT / "results" / "pharmacology.json", f)
     run("evaluate", ["scripts/evaluate.py"], ROOT / "results" / "results.json", f)
+    run("development axis", ["scripts/development.py"],
+        ROOT / "results" / "development.json", f)
     run("render results", ["scripts/render_results.py"],
         ROOT / "results" / "RESULTS.md", f)
     if not args.skip_chip:

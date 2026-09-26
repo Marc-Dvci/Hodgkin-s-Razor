@@ -82,31 +82,32 @@ def sim_n_elec(sim) -> int:
     return S.NELEC
 
 
-WORST_K = 8
+TAIL = 0.02
 
 
 def discrepancy(x_base: np.ndarray, x_treat: np.ndarray,
                 pred_base: np.ndarray, pred_treat: np.ndarray,
-                worst_k: int = WORST_K) -> float:
+                tail: float = TAIL) -> float:
     """How far the measured recording sits from its own predictive spread.
 
-    Features are compared after the same transform the flow sees. The statistic
-    is the mean squared robust z-score over the worst `worst_k` of the eighty
-    numbers, because a recording the model cannot produce usually fails on a
-    few statistics rather than drifting on all of them. Averaging over all
-    eighty, which this did first, hid exactly that: it fired on 12 percent of
-    recordings from a simulator whose receptor kinetics the twin cannot
-    represent, where the pre-registered requirement was 80 percent.
+    The statistic counts how many of the eighty numbers fall outside the
+    central interval of what the fitted twin predicts. Counting is used rather
+    than a distance because some features barely vary across predictive draws,
+    and dividing by that spread produced scores in the hundreds for a feature
+    that was merely constant. Two earlier statistics failed on this: a mean
+    over all eighty buried a mismatch confined to a few, and a mean over the
+    worst few inherited the scale explosion. A count has neither problem and is
+    bounded by the number of features.
     """
     obs = np.concatenate([nde.phi(np.atleast_2d(x_base)),
                           nde.phi(np.atleast_2d(x_treat))], axis=1).ravel()
     pred = np.concatenate([nde.phi(pred_base), nde.phi(pred_treat)], axis=1)
-    med = np.median(pred, axis=0)
-    mad = np.median(np.abs(pred - med), axis=0) * 1.4826
-    scale = np.where(mad > 1e-6, mad, np.maximum(np.std(pred, axis=0), 1e-3))
-    z2 = np.sort(((obs - med) / scale) ** 2)[::-1]
-    k = max(1, min(worst_k, z2.size))
-    return float(np.mean(z2[:k]))
+    lo = np.quantile(pred, tail, axis=0)
+    hi = np.quantile(pred, 1.0 - tail, axis=0)
+    # A feature that never moves across draws would flag on any rounding, so a
+    # band is opened around it in proportion to its own size.
+    pad = 1e-3 + 0.01 * np.abs(np.median(pred, axis=0))
+    return float(np.sum((obs < lo - pad) | (obs > hi + pad)))
 
 
 def calibrate_threshold(twin, sim, bank: dict, index: np.ndarray,
@@ -135,8 +136,18 @@ def check(twin, sim, x_base: np.ndarray, x_treat: np.ndarray, threshold: float,
     post = post if post is not None else twin.posterior(x_base, x_treat)
     pred = predict(sim, post, duration, transient, n_draws=n_draws, seed=seed)
     d = discrepancy(x_base, x_treat, pred["x_base"], pred["x_treat"])
+    # The posterior over a sixty second recording is wide, so a draw taken at
+    # random rarely looks like the measurement even when the fit is sound.
+    # For display, the draw closest in firing rate is named; the verdict is
+    # still computed from the whole predictive spread.
+    obs = np.array([np.log1p(max(np.atleast_1d(x_base)[0], 0.0)),
+                    np.log1p(max(np.atleast_1d(x_treat)[0], 0.0))])
+    got = np.stack([np.log1p(np.clip(pred["x_base"][:, 0], 0, None)),
+                    np.log1p(np.clip(pred["x_treat"][:, 0], 0, None))], axis=1)
+    closest = int(np.argmin(np.abs(got - obs).sum(axis=1)))
     return {"discrepancy": d, "threshold": float(threshold),
             "inside_model": bool(d <= threshold),
             "pred_base": pred["x_base"], "pred_treat": pred["x_treat"],
             "result": pred["result"], "theta_base": pred["theta_base"],
-            "theta_treat": pred["theta_treat"]}
+            "theta_treat": pred["theta_treat"],
+            "closest_draw": closest, "n_draws": int(pred["x_base"].shape[0])}

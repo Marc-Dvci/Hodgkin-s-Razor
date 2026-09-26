@@ -1,0 +1,111 @@
+{
+ "n_pairs": 321,
+ "n_wells": 24,
+ "div_range": [
+  7.0,
+  66.0
+ ],
+ "window_s": 60.0,
+ "parameters": {
+  "noise": {
+   "spearman_with_div": 0.09663428048992861,
+   "p_value": 0.993503248375812,
+   "expected": "",
+   "agrees": null
+  },
+  "g_na": {
+   "spearman_with_div": -0.288463240842863,
+   "p_value": 0.0004997501249375312,
+   "expected": "",
+   "agrees": null
+  },
+  "g_kdr": {
+   "spearman_with_div": -0.17485814419225634,
+   "p_value": 0.0559720139930035,
+   "expected": "",
+   "agrees": null
+  },
+  "g_ahp": {
+   "spearman_with_div": 0.5517635833284961,
+   "p_value": 0.0004997501249375312,
+   "expected": "",
+   "agrees": null
+  },
+  "g_ampa": {
+   "spearman_with_div": -0.2081815609218088,
+   "p_value": 0.9975012493753124,
+   "expected": "up",
+   "agrees": false
+  },
+  "g_nmda": {
+   "spearman_with_div": 0.44697495211005983,
+   "p_value": 0.0004997501249375312,
+   "expected": "up",
+   "agrees": true
+  },
+  "g_gaba": {
+   "spearman_with_div": 0.49267465316073605,
+   "p_value": 0.0004997501249375312,
+   "expected": "up",
+   "agrees": true
+  },
+  "g_tonic_inh": {
+   "spearman_with_div": 0.1201348174377431,
+   "p_value": 0.12343828085957022,
+   "expected": "",
+   "agrees": null
+  },
+  "p_conn": {
+   "spearman_with_div": 0.14347463284379175,
+   "p_value": 0.815592203898051,
+   "expected": "up",
+   "agrees": true
+  },
+  "f_inh": {
+   "spearman_with_div": 0.059336361525512284,
+   "p_value": 1.0,
+   "expected": "",
+   "agrees": null
+  },
+  "tau_d": {
+   "spearman_with_div": -0.4681296075927324,
+   "p_value": 0.0004997501249375312,
+   "expected": "",
+   "agrees": null
+  },
+  "u_rel": {
+   "spearman_with_div": -0.47772065652754403,
+   "p_value": 0.0004997501249375312,
+   "expected": "",
+   "agrees": null
+  },
+  "i_drive": {
+   "spearman_with_div": -0.43909379172229646,
+   "p_value": 0.0004997501249375312,
+   "expected": "",
+   "agrees": null
+  },
+  "p_detect": {
+   "spearman_with_div": -0.393553723805654,
+   "p_value": 0.0004997501249375312,
+   "expected": "",
+   "agrees": null
+  },
+  "elec_het": {
+   "spearman_with_div": -0.10843552272595346,
+   "p_value": 0.5057471264367817,
+   "expected": "",
+   "agrees": null
+  }
+ },
+ "expected_up": [
+  "g_ampa",
+  "g_nmda",
+  "g_gaba",
+  "p_conn"
+ ],
+ "expected_up_recovered": [
+  "g_nmda",
+  "g_gaba"
+ ]
+}

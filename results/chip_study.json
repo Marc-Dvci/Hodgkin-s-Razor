@@ -1,0 +1,97 @@
+{
+ "n_chips": 9085,
+ "duration_s": 60.0,
+ "calcium_frame_hz": 2.0,
+ "readouts": {
+  "electrode_array": {
+   "p_cross": {
+    "pearson_r": 0.15875291695469512,
+    "interval_width": 1.249992847442627,
+    "prior_width": 1.8,
+    "information": 0.30555952919854057,
+    "coverage_90": 0.6284875183553598
+   },
+   "direction_sel": {
+    "pearson_r": 0.007192023918844282,
+    "interval_width": 1.256927490234375,
+    "prior_width": 1.8,
+    "information": 0.30170694986979163,
+    "coverage_90": 0.6160058737151248
+   },
+   "g_cross": {
+    "pearson_r": 0.28130360239783425,
+    "interval_width": 1.2313092947006226,
+    "prior_width": 1.8,
+    "information": 0.3159392807218764,
+    "coverage_90": 0.6629955947136564
+   },
+   "tgt_autonomy": {
+    "pearson_r": 0.3246442131914199,
+    "interval_width": 1.171752691268921,
+    "prior_width": 1.8,
+    "information": 0.3490262826283773,
+    "coverage_90": 0.6556534508076358
+   }
+  },
+  "calcium_2hz": {
+   "p_cross": {
+    "pearson_r": 0.2109874655318854,
+    "interval_width": 1.6987743377685547,
+    "prior_width": 1.8,
+    "information": 0.05623647901746964,
+    "coverage_90": 0.8795888399412628
+   },
+   "direction_sel": {
+    "pearson_r": 0.04210621789115971,
+    "interval_width": 1.790187120437622,
+    "prior_width": 1.8,
+    "information": 0.005451599756876702,
+    "coverage_90": 0.8729809104258444
+   },
+   "g_cross": {
+    "pearson_r": 0.3032023934364736,
+    "interval_width": 1.4805880784988403,
+    "prior_width": 1.8,
+    "information": 0.17745106750064432,
+    "coverage_90": 0.7907488986784141
+   },
+   "tgt_autonomy": {
+    "pearson_r": 0.3748151303941081,
+    "interval_width": 1.4881770610809326,
+    "prior_width": 1.8,
+    "information": 0.17323496606614852,
+    "coverage_90": 0.8318649045521292
+   }
+  },
+  "both": {
+   "p_cross": {
+    "pearson_r": 0.1752405051238638,
+    "interval_width": 1.250069499015808,
+    "prior_width": 1.8,
+    "information": 0.30551694499121773,
+    "coverage_90": 0.6233480176211453
+   },
+   "direction_sel": {
+    "pearson_r": 0.01982501371782319,
+    "interval_width": 1.071199893951416,
+    "prior_width": 1.8,
+    "information": 0.4048889478047689,
+    "coverage_90": 0.5220264317180616
+   },
+   "g_cross": {
+    "pearson_r": 0.26734276607649277,
+    "interval_width": 1.0925778150558472,
+    "prior_width": 1.8,
+    "information": 0.39301232496897376,
+    "coverage_90": 0.6027900146842878
+   },
+   "tgt_autonomy": {
+    "pearson_r": 0.36147721487175033,
+    "interval_width": 0.9080910682678223,
+    "prior_width": 1.8,
+    "information": 0.4955049620734321,
+    "coverage_90": 0.5323054331864905
+   }
+  }
+ }
+}

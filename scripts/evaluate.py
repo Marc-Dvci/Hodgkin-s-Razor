@@ -193,7 +193,8 @@ def simulated_recovery(twin, bank: dict, idx: np.ndarray, n: int = 20000,
                               for i, t in enumerate(truth)]))
         agg = np.zeros((int(mask.sum()), len(P.CLASS_NAMES)))
         for j, k in enumerate(SHIFT_KEYS):
-            agg[:, P.class_index(k)] += prob[:, j]
+            c = P.class_index(k)
+            agg[:, c] = np.maximum(agg[:, c], prob[:, j])
         cls = np.array([P.class_index(SHIFT_KEYS[t]) for t in truth])
         out[name] = {"n": int(mask.sum()), "top1": top1, "top2": top2,
                      "class_top1": float(np.mean(np.argmax(agg, axis=1) == cls))}
@@ -315,7 +316,7 @@ def class_metrics(wells: list[dict], key: dict) -> dict:
         want = P.class_index(key[w["compound"]][0])
         agg = np.zeros(len(P.CLASS_NAMES))
         for j, k in enumerate(SHIFT_KEYS):
-            agg[P.class_index(k)] += w["p_active"][j]
+            agg[P.class_index(k)] = max(agg[P.class_index(k)], w["p_active"][j])
         got = int(np.argmax(agg))
         conf[want, got] += 1
         hits += int(got == want)
@@ -498,6 +499,15 @@ def main() -> None:
         for k in acc:
             acc[k].append(d[k])
     bank = {k: np.concatenate(v) for k, v in acc.items()}
+    # The held-out indices are positions in the bank the twin was trained on,
+    # so the same restriction has to be applied here or they point at other
+    # records entirely.
+    if twin.meta.get("match_domain"):
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from fit_regime import domain_mask
+        keep = domain_mask(bank["x_base"])
+        bank = {k: v[keep] for k, v in bank.items()}
+        print(f"domain-matched bank: {keep.sum()} of {keep.size} pairs")
     idx_val = np.load(pathlib.Path(args.twin) / "val_index.npy")
     print(f"bank {bank['theta_c'].shape[0]} pairs, {len(idx_val)} held out")
 
