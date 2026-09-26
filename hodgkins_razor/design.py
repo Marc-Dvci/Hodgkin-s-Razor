@@ -19,6 +19,7 @@ from . import features as F
 from . import nde
 from . import params as P
 from . import shift as SH
+from . import simulator as S
 
 
 @dataclass
@@ -80,7 +81,8 @@ def _treated_theta(post: dict, idx: np.ndarray, cand: np.ndarray,
 
 def separation(sim, post: dict, a: str, b: str, duration: float,
                transient: float, n_draws: int = 24, seed: int = 0,
-               candidates: tuple[Candidate, ...] = CANDIDATES) -> list[dict]:
+               candidates: tuple[Candidate, ...] = CANDIDATES,
+               view: str = "grid16") -> list[dict]:
     """Rank follow-up experiments by how far apart the two hypotheses predict.
 
     The score is a symmetric standardised distance between the predicted
@@ -98,7 +100,7 @@ def separation(sim, post: dict, a: str, b: str, duration: float,
         stacked = P.from_unit(np.concatenate([th_a, th_b]))
         res = sim.run(stacked, duration_s=duration, transient_s=transient,
                       seed=seed * 131 + k)
-        feats = nde.phi(np.stack([F.compute(res.as_events(i), 16, duration)
+        feats = nde.phi(np.stack([F.compute(*S.view_events(res.raw_events(i), view), duration)
                                   for i in range(stacked.shape[0])]))
         fa, fb = feats[:n_draws], feats[n_draws:]
         pooled = np.sqrt(0.5 * (fa.var(0) + fb.var(0))) + 1e-6

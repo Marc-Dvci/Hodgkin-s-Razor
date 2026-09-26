@@ -84,7 +84,6 @@ def run(live: bool) -> int:
         top = rep["mechanisms"][0]
         called = top["key"] if top["p_active"] >= 0.5 else "-"
         eff = (f"{top['effect']:.2f}x" if top["kind"] == "fold"
-               else f"{top['effect']:+.2f}nS" if top["key"] == "g_tonic_inh"
                else f"{top['effect']:+.1f}pA")
         if not rep.get("inside_model", True):
             called = "outside"

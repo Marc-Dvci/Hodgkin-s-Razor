@@ -73,8 +73,13 @@ PARAMS: tuple[Param, ...] = (
     # A bath-applied agonist opens receptors on every cell, not only where an
     # inhibitory neuron happens to synapse. Without this column, GABA and
     # muscimol have no way to act, which the pharmacology check caught.
-    Param("g_tonic_inh", "Tonic GABA-A conductance", "nS", 0.0, 6.0, False, True,
-          "extrasynaptic GABA-A receptors", blo=0.0, bhi=0.35),
+    # Log-scaled over the range where it acts: a graded scan shows firing at
+    # 0.86 of baseline after +0.01 nS, about half after +0.04 nS and silence
+    # beyond +0.1 nS. Version 1 spanned 0 to 6 nS linearly, so its smallest
+    # active shift already silenced every culture and a partial agonist effect
+    # had no representation.
+    Param("g_tonic_inh", "Tonic GABA-A conductance", "nS", 0.001, 0.5, True, True,
+          "extrasynaptic GABA-A receptors", blo=0.001, bhi=0.15),
     Param("p_conn", "Connection probability", "", 0.10, 0.60, False, False, ""),
     Param("f_inh", "Inhibitory fraction", "", 0.05, 0.40, False, False, ""),
     Param("tau_d", "Vesicle recovery time", "ms", 150.0, 1200.0, True, True,

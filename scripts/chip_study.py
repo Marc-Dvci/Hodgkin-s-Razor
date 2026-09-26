@@ -273,6 +273,8 @@ def main() -> None:
         res["readouts"][name] = fit_readout(x, bank["chip"], seed=10 + i)
     res["prediction_for_recorded_chips"] = prediction_for_recorded_chips(bank)
     res["prediction_all_chips"] = prediction_for_recorded_chips(bank, symmetric=False)
+    res["prediction_condition"] = (f"target autonomy >= {SYMMETRIC_SEEDING} (both chambers "
+                                   "seeded alike, as in Mateus et al.)")
     print("NMDA check against Lassus et al. ...", flush=True)
     res["lassus_nmda"] = lassus_check(args)
     (ROOT / args.out).write_text(json.dumps(res, indent=1))

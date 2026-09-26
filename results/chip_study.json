@@ -1,191 +1,191 @@
 {
- "n_chips": 30057,
+ "n_chips": 30131,
  "duration_s": 60.0,
  "calcium_frame_hz": 2.0,
  "readouts": {
   "compartment": {
-   "epochs": 18,
-   "val_nll": 3.268740177154541,
-   "n_test": 4508,
+   "epochs": 17,
+   "val_nll": 3.27652907371521,
+   "n_test": 4519,
    "p_cross": {
-    "pearson_r": 0.16414754048244817,
-    "interval_width": 1.9269051551818848,
+    "pearson_r": 0.16985140810025792,
+    "interval_width": 1.861754059791565,
     "prior_width": 1.8,
     "information": 0.0,
-    "coverage_90": 0.9465394853593612
+    "coverage_90": 0.9300730250055322
    },
    "direction_sel": {
-    "pearson_r": 0.030081502359599673,
-    "interval_width": 1.9501338005065918,
+    "pearson_r": -0.008780875551754093,
+    "interval_width": 1.9467487335205078,
     "prior_width": 1.8,
     "information": 0.0,
-    "coverage_90": 0.9503105590062112
+    "coverage_90": 0.9475547687541491
    },
    "g_cross": {
-    "pearson_r": 0.2849152106792512,
-    "interval_width": 1.7883350849151611,
+    "pearson_r": 0.2623127965566915,
+    "interval_width": 1.7537256479263306,
     "prior_width": 1.8,
-    "information": 0.006480508380466099,
-    "coverage_90": 0.9203637976929903
+    "information": 0.025707973374260784,
+    "coverage_90": 0.9145828723168843
    },
    "tgt_autonomy": {
-    "pearson_r": 0.42318297304520774,
-    "interval_width": 1.5761363506317139,
+    "pearson_r": 0.389074788759734,
+    "interval_width": 1.6264983415603638,
     "prior_width": 1.8,
-    "information": 0.12436869409349227,
-    "coverage_90": 0.8893078970718722
+    "information": 0.09638981024424242,
+    "coverage_90": 0.9013055985837575
    }
   },
   "calcium_2hz": {
-   "epochs": 57,
-   "val_nll": 3.093820810317993,
-   "n_test": 4508,
+   "epochs": 37,
+   "val_nll": 3.1427299976348877,
+   "n_test": 4519,
    "p_cross": {
-    "pearson_r": 0.14295875333772848,
-    "interval_width": 1.7366913557052612,
+    "pearson_r": 0.15806005130603834,
+    "interval_width": 1.746340274810791,
     "prior_width": 1.8,
-    "information": 0.03517146905263269,
-    "coverage_90": 0.8806566104702751
+    "information": 0.029810958438449497,
+    "coverage_90": 0.886700597477318
    },
    "direction_sel": {
-    "pearson_r": -0.015873703116055425,
-    "interval_width": 1.9051764011383057,
+    "pearson_r": 0.018407888952488054,
+    "interval_width": 1.8758997917175293,
     "prior_width": 1.8,
     "information": 0.0,
-    "coverage_90": 0.8997338065661047
+    "coverage_90": 0.9216640849745519
    },
    "g_cross": {
-    "pearson_r": 0.2315365272714988,
-    "interval_width": 1.721457600593567,
+    "pearson_r": 0.26340482328357856,
+    "interval_width": 1.7468773126602173,
     "prior_width": 1.8,
-    "information": 0.04363466633690727,
-    "coverage_90": 0.8879769299023957
+    "information": 0.0295126040776571,
+    "coverage_90": 0.9015268864793096
    },
    "tgt_autonomy": {
-    "pearson_r": 0.36850479150722226,
-    "interval_width": 1.617890477180481,
+    "pearson_r": 0.32780229805377936,
+    "interval_width": 1.6389491558074951,
     "prior_width": 1.8,
-    "information": 0.10117195712195504,
-    "coverage_90": 0.8895297249334516
+    "information": 0.08947269121805834,
+    "coverage_90": 0.8853728701040053
    }
   },
   "channel": {
-   "epochs": 50,
-   "val_nll": 2.5786638259887695,
-   "n_test": 4508,
+   "epochs": 52,
+   "val_nll": 2.620744466781616,
+   "n_test": 4519,
    "p_cross": {
-    "pearson_r": 0.6004914423650464,
-    "interval_width": 1.4813190698623657,
+    "pearson_r": 0.5872086527109207,
+    "interval_width": 1.4911117553710938,
     "prior_width": 1.8,
-    "information": 0.17704496118757462,
-    "coverage_90": 0.8972937000887311
+    "information": 0.1716045803493924,
+    "coverage_90": 0.8920115069705687
    },
    "direction_sel": {
-    "pearson_r": 0.36993675469033116,
-    "interval_width": 1.6424529552459717,
+    "pearson_r": 0.366313999045916,
+    "interval_width": 1.6308954954147339,
     "prior_width": 1.8,
-    "information": 0.08752613597446024,
-    "coverage_90": 0.8842058562555457
+    "information": 0.0939469469918145,
+    "coverage_90": 0.8818322637751715
    },
    "g_cross": {
-    "pearson_r": 0.04638479099406648,
-    "interval_width": 1.7702655792236328,
+    "pearson_r": 0.032942013190389224,
+    "interval_width": 1.7884600162506104,
     "prior_width": 1.8,
-    "information": 0.016519122653537388,
-    "coverage_90": 0.8791038154392191
+    "information": 0.0064111020829942245,
+    "coverage_90": 0.8909050674928082
    },
    "tgt_autonomy": {
-    "pearson_r": 0.1975891607966805,
-    "interval_width": 1.7647593021392822,
+    "pearson_r": 0.13881394933739896,
+    "interval_width": 1.7573184967041016,
     "prior_width": 1.8,
-    "information": 0.01957816547817659,
-    "coverage_90": 0.8981810115350488
+    "information": 0.023711946275499107,
+    "coverage_90": 0.8917902190750165
    }
   },
   "perfusion": {
-   "epochs": 21,
-   "val_nll": 3.2541213035583496,
-   "n_test": 4508,
+   "epochs": 19,
+   "val_nll": 3.2098920345306396,
+   "n_test": 4519,
    "p_cross": {
-    "pearson_r": 0.24056165436196272,
-    "interval_width": 1.7808916568756104,
+    "pearson_r": 0.2308514309614877,
+    "interval_width": 1.7022643089294434,
     "prior_width": 1.8,
-    "information": 0.010615746180216545,
-    "coverage_90": 0.9074977817213842
+    "information": 0.05429760615030932,
+    "coverage_90": 0.8771852179685771
    },
    "direction_sel": {
-    "pearson_r": 0.04235632074260446,
-    "interval_width": 1.841285228729248,
+    "pearson_r": 0.1057202282540732,
+    "interval_width": 1.9509427547454834,
     "prior_width": 1.8,
     "information": 0.0,
-    "coverage_90": 0.9130434782608695
+    "coverage_90": 0.9557424208895774
    },
    "g_cross": {
-    "pearson_r": 0.34560795249333043,
-    "interval_width": 1.714343547821045,
+    "pearson_r": 0.34844425544777813,
+    "interval_width": 1.6889082193374634,
     "prior_width": 1.8,
-    "information": 0.047586917877197266,
-    "coverage_90": 0.9001774622892635
+    "information": 0.06171765592363143,
+    "coverage_90": 0.9044036291214871
    },
    "tgt_autonomy": {
-    "pearson_r": 0.4634250462472829,
-    "interval_width": 1.5996572971343994,
+    "pearson_r": 0.3991172740258287,
+    "interval_width": 1.6550828218460083,
     "prior_width": 1.8,
-    "information": 0.11130150159200036,
-    "coverage_90": 0.906832298136646
+    "information": 0.08050954341888428,
+    "coverage_90": 0.9072803717636645
    }
   },
   "compartment+channel": {
-   "epochs": 17,
-   "val_nll": 2.7339165210723877,
-   "n_test": 4508,
+   "epochs": 19,
+   "val_nll": 2.7311370372772217,
+   "n_test": 4519,
    "p_cross": {
-    "pearson_r": 0.7447924131691438,
-    "interval_width": 1.1580066680908203,
+    "pearson_r": 0.7257539749201966,
+    "interval_width": 1.2420803308486938,
     "prior_width": 1.8,
-    "information": 0.3566629621717665,
-    "coverage_90": 0.8826530612244898
+    "information": 0.30995537175072563,
+    "coverage_90": 0.9035184775392786
    },
    "direction_sel": {
-    "pearson_r": 0.41600500762267956,
-    "interval_width": 1.6948789358139038,
+    "pearson_r": 0.4456886352516416,
+    "interval_width": 1.67343008518219,
     "prior_width": 1.8,
-    "information": 0.05840059121449792,
-    "coverage_90": 0.9150399290150842
+    "information": 0.07031661934322786,
+    "coverage_90": 0.9110422659880505
    },
    "g_cross": {
-    "pearson_r": 0.2741416106885028,
-    "interval_width": 1.7853657007217407,
+    "pearson_r": 0.28403002277702855,
+    "interval_width": 1.8052825927734375,
     "prior_width": 1.8,
-    "information": 0.008130166265699623,
-    "coverage_90": 0.9163708961845608
+    "information": 0.0,
+    "coverage_90": 0.9252046913033857
    },
    "tgt_autonomy": {
-    "pearson_r": 0.45202493663394105,
-    "interval_width": 1.6323025226593018,
+    "pearson_r": 0.4056724667630275,
+    "interval_width": 1.7048834562301636,
     "prior_width": 1.8,
-    "information": 0.09316526518927681,
-    "coverage_90": 0.9039485359361136
+    "information": 0.05284252431657577,
+    "coverage_90": 0.9247621155122815
    }
   }
  },
  "prediction_for_recorded_chips": {
-  "n_strong": 1061,
-  "n_symmetric": 731,
-  "channel_dominant_share_auroc": 0.7697343058390311,
-  "compartment_asymmetry_auroc": 0.507126823287016
- },
- "lassus_nmda": {
-  "chips": 190,
-  "target_frequency_lower": 0.3894736842105263,
-  "target_synchrony_lower": 0.34210526315789475,
-  "published_direction": "both lower (Lassus et al. 2018, ifenprodil)"
+  "n_strong": 1060,
+  "n_symmetric": 729,
+  "channel_dominant_share_auroc": 0.7753733467919351,
+  "compartment_asymmetry_auroc": 0.5220009317493595
  },
  "prediction_all_chips": {
-  "n_strong": 8953,
-  "n_symmetric": 6155,
-  "channel_dominant_share_auroc": 0.7196398050547026,
-  "compartment_asymmetry_auroc": 0.5054252902806905
+  "n_strong": 8943,
+  "n_symmetric": 6170,
+  "channel_dominant_share_auroc": 0.7208601350784394,
+  "compartment_asymmetry_auroc": 0.49836582526721096
  },
- "prediction_condition": "target autonomy >= 0.7 (both chambers seeded alike, as in Mateus et al.)"
+ "prediction_condition": "target autonomy >= 0.7 (both chambers seeded alike, as in Mateus et al.)",
+ "lassus_nmda": {
+  "chips": 191,
+  "target_frequency_lower": 0.3036649214659686,
+  "target_synchrony_lower": 0.32460732984293195,
+  "published_direction": "both lower (Lassus et al. 2018, ifenprodil)"
+ }
 }

@@ -8,7 +8,7 @@ nothing is scored until both exist. `hodgkins_razor/doorn.py` refuses to return 
 treated Dynasore window, and `scripts/evaluate_v2.py` and `scripts/mateus_check.py`
 refuse to run, unless this file matches its recorded hash.
 
-Author: Marc Donovici. Date: {DATE}.
+Author: Marc Donovici. Date: 26 September 2026.
 
 ## 1. Why there is a second pre-registration
 
@@ -171,5 +171,163 @@ version 1.
 ## 9. Machine-readable specification
 
 ```json
-{SPEC}
+{
+ "twins": {
+  "grid16": "models/twin_v2_grid16",
+  "grid12": "models/twin_v2_grid12"
+ },
+ "unpaired": {
+  "grid16": "models/twin_v2_unpaired_grid16",
+  "grid12": "models/twin_v2_unpaired_grid12"
+ },
+ "bank": "data/bank_v2",
+ "frozen_models": {
+  "models/twin_v2_grid16": "eea1f85c03610932441f29d68d98b8d83af60dce7f3f75564eec910f134a39fd",
+  "models/twin_v2_grid12": "2e4d1ac1de753bfa85d3b7011565bc5783fcabb5c3035863ec0c1d48e66411f7",
+  "models/twin_v2_unpaired_grid16": "b136f0c44e2aced718c93b0d9a5c78ab78540305fde5a74a4531908f0e14caee",
+  "models/twin_v2_unpaired_grid12": "c2082ac01dd087d591f33965cdb3a644cd7273ca0aa7232937f552ff67d7090e"
+ },
+ "domain_sha256": "1b39e32bd60caec143d663bc82cc912fb88eaa13fcc0b10fb4311b37613126cf",
+ "operating_points": {
+  "posterior_samples": 4000,
+  "predictive_draws": 48,
+  "window_s": 60.0,
+  "presence_call": 0.5,
+  "credible": 0.9,
+  "ppc_quantile": 0.975,
+  "ppc_calibration_records": 200,
+  "min_events": 50,
+  "min_electrodes": 3
+ },
+ "answer_keys": {
+  "doorn": {
+   "Dynasore": {
+    "accept": [
+     "u_rel",
+     "tau_d"
+    ],
+    "direction": "up"
+   }
+  },
+  "tampere_v1": {
+   "CNQX": {
+    "accept": [
+     "g_ampa"
+    ],
+    "direction": "down"
+   },
+   "D-AP5": {
+    "accept": [
+     "g_nmda"
+    ],
+    "direction": "down"
+   },
+   "GABA": {
+    "accept": [
+     "g_gaba"
+    ],
+    "direction": "up"
+   },
+   "Gabazine": {
+    "accept": [
+     "g_gaba"
+    ],
+    "direction": "down"
+   },
+   "Kainic acid": {
+    "accept": [
+     "g_ampa"
+    ],
+    "direction": "any"
+   },
+   "TTX": {
+    "accept": [
+     "g_na"
+    ],
+    "direction": "down"
+   },
+   "Control": {
+    "control": true
+   }
+  },
+  "tampere_v2": {
+   "CNQX": {
+    "accept": [
+     "g_ampa"
+    ],
+    "direction": "down"
+   },
+   "D-AP5": {
+    "accept": [
+     "g_nmda"
+    ],
+    "direction": "down"
+   },
+   "GABA": {
+    "accept": [
+     "g_gaba",
+     "g_tonic_inh"
+    ],
+    "direction": "up"
+   },
+   "Gabazine": {
+    "accept": [
+     "g_gaba"
+    ],
+    "direction": "down"
+   },
+   "Kainic acid": {
+    "accept": [
+     "g_ampa"
+    ],
+    "direction": "any"
+   },
+   "TTX": {
+    "accept": [
+     "g_na"
+    ],
+    "direction": "down"
+   },
+   "Control": {
+    "control": true
+   }
+  }
+ },
+ "doorn_success": {
+  "min_hits": 5,
+  "of": 10,
+  "chance": 0.2
+ },
+ "chips": {
+  "diode_designs": [
+   "rams",
+   "arrows"
+  ],
+  "straight_designs": [
+   "control"
+  ],
+  "reported_only": [
+   "tesla",
+   "tesla_v2"
+  ],
+  "min_propagation_events": 20,
+  "simulated_auroc": {
+   "dominant_share": 0.7753733467919351,
+   "chamber_asymmetry": 0.5220009317493595
+  },
+  "predictions": {
+   "dominant_share": "separates",
+   "chamber_asymmetry": "does not separate"
+  },
+  "simulated_condition": "target autonomy >= 0.7 (both chambers seeded alike, as in Mateus et al.)",
+  "thresholds": {
+   "dominant_share": 0.75,
+   "chamber_asymmetry": 0.7
+  }
+ },
+ "guard": {
+  "must_pass_max": 0.1,
+  "must_fire_min": 0.8
+ }
+}
 ```

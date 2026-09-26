@@ -47,7 +47,7 @@ EXPECTATIONS = (
     {"drug": "gabazine or picrotoxin", "key": "g_gaba", "set": 0.005,
      "rate_lo": 1.02, "rate_hi": 100.0, "bursts": "increased",
      "note": "removing inhibition raises firing and synchrony"},
-    {"drug": "GABA or muscimol", "key": "g_tonic_inh", "set": 3.0,
+    {"drug": "GABA or muscimol", "key": "g_tonic_inh", "set": 0.25,
      "rate_lo": 0.0, "rate_hi": 0.60, "bursts": "reduced",
      "note": "a bath agonist opens extrasynaptic receptors on every cell"},
     {"drug": "4-aminopyridine", "key": "g_kdr", "fold": 0.25,
@@ -75,7 +75,7 @@ def bank_cultures(bank: pathlib.Path, view: str, n: int,
     return P.from_unit(t[pick].astype(np.float64))
 
 
-GRADED_GABA = (0.25, 0.75, 1.5, 3.0)
+GRADED_GABA = (0.005, 0.01, 0.02, 0.04, 0.08)
 
 
 def _feats(args):

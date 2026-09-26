@@ -1,0 +1,251 @@
+{
+ "duration_s": 60.0,
+ "views": {
+  "grid16": {
+   "cultures": 120,
+   "checks": [
+    {
+     "drug": "TTX",
+     "key": "g_na",
+     "rate_ratio_p25": 0.0,
+     "rate_ratio_median": 0.0013874817039329715,
+     "rate_ratio_p75": 0.005062828887093819,
+     "burst_ratio_median": 0.0,
+     "intervention": "set to 0.09",
+     "expected_rate_lo": 0.0,
+     "expected_rate_hi": 0.1,
+     "expected_bursts": "abolished",
+     "passes": true,
+     "note": "a sodium channel block silences the culture"
+    },
+    {
+     "drug": "CNQX or NBQX",
+     "key": "g_ampa",
+     "rate_ratio_p25": 0.07598143595043277,
+     "rate_ratio_median": 0.16168849275027886,
+     "rate_ratio_p75": 0.26955916521642537,
+     "burst_ratio_median": 0.0,
+     "intervention": "set to 0.005",
+     "expected_rate_lo": 0.0,
+     "expected_rate_hi": 0.35,
+     "expected_bursts": "abolished",
+     "passes": true,
+     "note": "AMPA carries fast excitatory transmission; blocking it abolishes network bursts in cortical culture"
+    },
+    {
+     "drug": "D-AP5",
+     "key": "g_nmda",
+     "rate_ratio_p25": 0.383192166756773,
+     "rate_ratio_median": 0.6111879923355332,
+     "rate_ratio_p75": 0.7993563040732852,
+     "burst_ratio_median": 0.725,
+     "intervention": "set to 0.0005",
+     "expected_rate_lo": 0.15,
+     "expected_rate_hi": 0.9,
+     "expected_bursts": "reduced",
+     "passes": true,
+     "note": "an NMDA block shortens bursts and reduces but does not abolish activity"
+    },
+    {
+     "drug": "gabazine or picrotoxin",
+     "key": "g_gaba",
+     "rate_ratio_p25": 1.7371249436005416,
+     "rate_ratio_median": 3.928977660227786,
+     "rate_ratio_p75": 7.851706325921671,
+     "burst_ratio_median": 1.0,
+     "intervention": "set to 0.005",
+     "expected_rate_lo": 1.02,
+     "expected_rate_hi": 100.0,
+     "expected_bursts": "increased",
+     "passes": true,
+     "note": "removing inhibition raises firing and synchrony"
+    },
+    {
+     "drug": "GABA or muscimol",
+     "key": "g_tonic_inh",
+     "rate_ratio_p25": 0.0,
+     "rate_ratio_median": 0.0,
+     "rate_ratio_p75": 0.0,
+     "burst_ratio_median": 0.0,
+     "intervention": "set to 3.0",
+     "expected_rate_lo": 0.0,
+     "expected_rate_hi": 0.6,
+     "expected_bursts": "reduced",
+     "passes": true,
+     "note": "a bath agonist opens extrasynaptic receptors on every cell"
+    },
+    {
+     "drug": "4-aminopyridine",
+     "key": "g_kdr",
+     "rate_ratio_p25": 0.9959452936239153,
+     "rate_ratio_median": 1.0252213695016845,
+     "rate_ratio_p75": 1.0708080926682981,
+     "burst_ratio_median": 0.8888888888888888,
+     "intervention": "x0.25",
+     "expected_rate_lo": 1.0,
+     "expected_rate_hi": 100.0,
+     "expected_bursts": "increased",
+     "passes": true,
+     "note": "a potassium channel block raises excitability"
+    },
+    {
+     "drug": "bath GABA, tonic +0.25",
+     "key": "g_tonic_inh",
+     "rate_ratio_p25": 0.0,
+     "rate_ratio_median": 0.0,
+     "rate_ratio_p75": 0.000365615206008207,
+     "burst_ratio_median": 0.0
+    },
+    {
+     "drug": "bath GABA, tonic +0.75",
+     "key": "g_tonic_inh",
+     "rate_ratio_p25": 0.0,
+     "rate_ratio_median": 0.0,
+     "rate_ratio_p75": 0.0,
+     "burst_ratio_median": 0.0
+    },
+    {
+     "drug": "bath GABA, tonic +1.5",
+     "key": "g_tonic_inh",
+     "rate_ratio_p25": 0.0,
+     "rate_ratio_median": 0.0,
+     "rate_ratio_p75": 0.0,
+     "burst_ratio_median": 0.0
+    },
+    {
+     "drug": "bath GABA, tonic +3.0",
+     "key": "g_tonic_inh",
+     "rate_ratio_p25": 0.0,
+     "rate_ratio_median": 0.0,
+     "rate_ratio_p75": 0.0,
+     "burst_ratio_median": 0.0
+    }
+   ],
+   "n_failed": 0,
+   "graded_gaba_monotone": true
+  },
+  "grid12": {
+   "cultures": 120,
+   "checks": [
+    {
+     "drug": "TTX",
+     "key": "g_na",
+     "rate_ratio_p25": 0.0007648605959197902,
+     "rate_ratio_median": 0.0033062412670811655,
+     "rate_ratio_p75": 0.00840926331477985,
+     "burst_ratio_median": 0.0,
+     "intervention": "set to 0.09",
+     "expected_rate_lo": 0.0,
+     "expected_rate_hi": 0.1,
+     "expected_bursts": "abolished",
+     "passes": true,
+     "note": "a sodium channel block silences the culture"
+    },
+    {
+     "drug": "CNQX or NBQX",
+     "key": "g_ampa",
+     "rate_ratio_p25": 0.06045911544611941,
+     "rate_ratio_median": 0.10062695216626488,
+     "rate_ratio_p75": 0.18703803348194614,
+     "burst_ratio_median": 0.3333333333333333,
+     "intervention": "set to 0.005",
+     "expected_rate_lo": 0.0,
+     "expected_rate_hi": 0.35,
+     "expected_bursts": "abolished",
+     "passes": true,
+     "note": "AMPA carries fast excitatory transmission; blocking it abolishes network bursts in cortical culture"
+    },
+    {
+     "drug": "D-AP5",
+     "key": "g_nmda",
+     "rate_ratio_p25": 0.17698441632639123,
+     "rate_ratio_median": 0.37046517647684624,
+     "rate_ratio_p75": 0.6445757600294365,
+     "burst_ratio_median": 1.45,
+     "intervention": "set to 0.0005",
+     "expected_rate_lo": 0.15,
+     "expected_rate_hi": 0.9,
+     "expected_bursts": "reduced",
+     "passes": true,
+     "note": "an NMDA block shortens bursts and reduces but does not abolish activity"
+    },
+    {
+     "drug": "gabazine or picrotoxin",
+     "key": "g_gaba",
+     "rate_ratio_p25": 1.0722139740022387,
+     "rate_ratio_median": 1.1245678963323744,
+     "rate_ratio_p75": 1.255037508154602,
+     "burst_ratio_median": 1.0,
+     "intervention": "set to 0.005",
+     "expected_rate_lo": 1.02,
+     "expected_rate_hi": 100.0,
+     "expected_bursts": "increased",
+     "passes": true,
+     "note": "removing inhibition raises firing and synchrony"
+    },
+    {
+     "drug": "GABA or muscimol",
+     "key": "g_tonic_inh",
+     "rate_ratio_p25": 0.0,
+     "rate_ratio_median": 0.0,
+     "rate_ratio_p75": 0.0,
+     "burst_ratio_median": 0.0,
+     "intervention": "set to 3.0",
+     "expected_rate_lo": 0.0,
+     "expected_rate_hi": 0.6,
+     "expected_bursts": "reduced",
+     "passes": true,
+     "note": "a bath agonist opens extrasynaptic receptors on every cell"
+    },
+    {
+     "drug": "4-aminopyridine",
+     "key": "g_kdr",
+     "rate_ratio_p25": 0.9865554611345329,
+     "rate_ratio_median": 1.006552859881896,
+     "rate_ratio_p75": 1.0428133911054294,
+     "burst_ratio_median": 1.0,
+     "intervention": "x0.25",
+     "expected_rate_lo": 1.0,
+     "expected_rate_hi": 100.0,
+     "expected_bursts": "increased",
+     "passes": true,
+     "note": "a potassium channel block raises excitability"
+    },
+    {
+     "drug": "bath GABA, tonic +0.25",
+     "key": "g_tonic_inh",
+     "rate_ratio_p25": 2.5232108386617737e-05,
+     "rate_ratio_median": 0.000133233116056707,
+     "rate_ratio_p75": 0.00045381478645426833,
+     "burst_ratio_median": 0.0
+    },
+    {
+     "drug": "bath GABA, tonic +0.75",
+     "key": "g_tonic_inh",
+     "rate_ratio_p25": 0.0,
+     "rate_ratio_median": 0.0,
+     "rate_ratio_p75": 0.0,
+     "burst_ratio_median": 0.0
+    },
+    {
+     "drug": "bath GABA, tonic +1.5",
+     "key": "g_tonic_inh",
+     "rate_ratio_p25": 0.0,
+     "rate_ratio_median": 0.0,
+     "rate_ratio_p75": 0.0,
+     "burst_ratio_median": 0.0
+    },
+    {
+     "drug": "bath GABA, tonic +3.0",
+     "key": "g_tonic_inh",
+     "rate_ratio_p25": 0.0,
+     "rate_ratio_median": 0.0,
+     "rate_ratio_p75": 0.0,
+     "burst_ratio_median": 0.0
+    }
+   ],
+   "n_failed": 0,
+   "graded_gaba_monotone": true
+  }
+ }
+}

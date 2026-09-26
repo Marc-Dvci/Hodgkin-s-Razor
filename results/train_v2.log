@@ -1,0 +1,19 @@
+== twin grid12 Sat Sep 26 21:18:45 RDT 2026
+epoch  76  train   -5.360  val   -0.451 (nll  -0.700  bce 0.2484)    876s
+epoch  77  train   -5.409  val   -0.232 (nll  -0.482  bce 0.2499)    887s
+early stop
+saved models/twin_v2_grid12 {"pairs": 116048, "val_loss": -0.5749323793819973, "epochs_run": 77}
+== unpaired grid12 Sat Sep 26 21:33:41 RDT 2026
+epoch  94  train  -14.414  val  -11.140 (nll -11.140  bce 0.0000)    318s
+early stop
+saved models/twin_v2_unpaired_grid12 {"pairs": 116048, "val_loss": -11.259925024850029, "epochs_run": 94}
+== twin grid16 Sat Sep 26 21:39:04 RDT 2026
+epoch  76  train    0.577  val    6.854 (nll   6.527  bce 0.3272)    142s
+epoch  77  train    0.524  val    6.966 (nll   6.637  bce 0.3287)    143s
+early stop
+saved models/twin_v2_grid16 {"pairs": 123952, "val_loss": 6.518759608268738, "epochs_run": 77}
+== unpaired grid16 Sat Sep 26 21:41:32 RDT 2026
+epoch  78  train   -9.137  val   -5.135 (nll  -5.135  bce 0.0000)    177s
+early stop
+saved models/twin_v2_unpaired_grid16 {"pairs": 123952, "val_loss": -5.258883406718572, "epochs_run": 78}
+== done Sat Sep 26 21:44:32 RDT 2026

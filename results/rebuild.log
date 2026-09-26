@@ -1,0 +1,149 @@
+== domains Sat Sep 26 17:24:12 RDT 2026
+grid16: box from 198 baseline windows, 0.80 of them inside
+  grid16 round 0: inside 0.052, median violation 0.76
+  grid16 round 1: inside 0.114, median violation 0.09
+  grid16 round 2: inside 0.176, median violation 0.09
+  grid16 round 3: inside 0.192, median violation 0.08
+  grid16 round 4: inside 0.201, median violation 0.08
+  grid16 round 5: inside 0.214, median violation 0.08
+  grid16 round 6: inside 0.219, median violation 0.08
+  grid16 round 7: inside 0.233, median violation 0.08
+  grid16: {'screened': 12288, 'admissible': 851, 'centres': 324, 'admissible_rate': 0.06925455729166667}
+  grid16: 2150 simulated cultures inside (422s)
+grid12: box from 50 baseline windows, 0.98 of them inside
+  grid12 round 0: inside 0.006, median violation 12.00
+  grid12 round 1: inside 0.019, median violation 6.26
+  grid12 round 2: inside 0.083, median violation 1.10
+  grid12 round 3: inside 0.280, median violation 0.09
+  grid12 round 4: inside 0.377, median violation 0.04
+  grid12 round 5: inside 0.421, median violation 0.02
+  grid12 round 6: inside 0.426, median violation 0.02
+  grid12 round 7: inside 0.477, median violation 0.00
+  grid12: {'screened': 12288, 'admissible': 994, 'centres': 215, 'admissible_rate': 0.08089192708333333}
+  grid12: 3207 simulated cultures inside (867s)
+wrote models/domain.json
+== bank Sat Sep 26 17:38:41 RDT 2026
+shard 1/100  pairs 2400  17.0 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.552}  eta 233 min
+shard 2/100  pairs 4800  16.1 pairs/s  acceptance {'grid16': 0.349, 'grid12': 0.555}  eta 243 min
+shard 3/100  pairs 7200  15.6 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.557}  eta 249 min
+shard 4/100  pairs 9600  15.5 pairs/s  acceptance {'grid16': 0.336, 'grid12': 0.556}  eta 248 min
+shard 5/100  pairs 12000  15.4 pairs/s  acceptance {'grid16': 0.339, 'grid12': 0.558}  eta 246 min
+shard 6/100  pairs 14400  15.4 pairs/s  acceptance {'grid16': 0.34, 'grid12': 0.559}  eta 244 min
+shard 7/100  pairs 16800  15.4 pairs/s  acceptance {'grid16': 0.344, 'grid12': 0.56}  eta 242 min
+shard 8/100  pairs 19200  15.4 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.558}  eta 239 min
+shard 9/100  pairs 21600  8.9 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.557}  eta 407 min
+shard 10/100  pairs 24000  9.5 pairs/s  acceptance {'grid16': 0.339, 'grid12': 0.556}  eta 378 min
+shard 11/100  pairs 26400  10.1 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.559}  eta 353 min
+shard 12/100  pairs 28800  10.6 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.56}  eta 332 min
+shard 13/100  pairs 31200  11.1 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.561}  eta 314 min
+shard 14/100  pairs 33600  11.5 pairs/s  acceptance {'grid16': 0.345, 'grid12': 0.56}  eta 298 min
+shard 15/100  pairs 36000  11.9 pairs/s  acceptance {'grid16': 0.345, 'grid12': 0.558}  eta 285 min
+shard 16/100  pairs 38400  12.3 pairs/s  acceptance {'grid16': 0.345, 'grid12': 0.558}  eta 272 min
+shard 17/100  pairs 40800  12.7 pairs/s  acceptance {'grid16': 0.345, 'grid12': 0.557}  eta 262 min
+shard 18/100  pairs 43200  13.0 pairs/s  acceptance {'grid16': 0.345, 'grid12': 0.556}  eta 252 min
+shard 19/100  pairs 45600  13.4 pairs/s  acceptance {'grid16': 0.345, 'grid12': 0.557}  eta 242 min
+shard 20/100  pairs 48000  13.7 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.556}  eta 234 min
+shard 21/100  pairs 50400  13.9 pairs/s  acceptance {'grid16': 0.341, 'grid12': 0.557}  eta 227 min
+shard 22/100  pairs 52800  14.2 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.557}  eta 220 min
+shard 23/100  pairs 55200  14.5 pairs/s  acceptance {'grid16': 0.34, 'grid12': 0.557}  eta 213 min
+shard 24/100  pairs 57600  14.7 pairs/s  acceptance {'grid16': 0.339, 'grid12': 0.556}  eta 207 min
+shard 25/100  pairs 60000  14.9 pairs/s  acceptance {'grid16': 0.341, 'grid12': 0.555}  eta 201 min
+shard 26/100  pairs 62400  15.2 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.556}  eta 195 min
+shard 27/100  pairs 64800  15.4 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.556}  eta 190 min
+shard 28/100  pairs 67200  15.5 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.557}  eta 185 min
+shard 29/100  pairs 69600  15.7 pairs/s  acceptance {'grid16': 0.344, 'grid12': 0.557}  eta 181 min
+shard 30/100  pairs 72000  15.9 pairs/s  acceptance {'grid16': 0.344, 'grid12': 0.558}  eta 176 min
+shard 31/100  pairs 74400  16.1 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.558}  eta 172 min
+shard 32/100  pairs 76800  16.3 pairs/s  acceptance {'grid16': 0.344, 'grid12': 0.559}  eta 167 min
+shard 33/100  pairs 79200  16.4 pairs/s  acceptance {'grid16': 0.344, 'grid12': 0.559}  eta 163 min
+shard 34/100  pairs 81600  16.6 pairs/s  acceptance {'grid16': 0.344, 'grid12': 0.559}  eta 159 min
+shard 35/100  pairs 84000  16.7 pairs/s  acceptance {'grid16': 0.344, 'grid12': 0.559}  eta 156 min
+shard 36/100  pairs 86400  16.9 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.559}  eta 152 min
+shard 37/100  pairs 88800  17.0 pairs/s  acceptance {'grid16': 0.344, 'grid12': 0.559}  eta 148 min
+shard 38/100  pairs 91200  17.1 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.56}  eta 145 min
+shard 39/100  pairs 93600  17.3 pairs/s  acceptance {'grid16': 0.344, 'grid12': 0.56}  eta 141 min
+shard 40/100  pairs 96000  17.4 pairs/s  acceptance {'grid16': 0.344, 'grid12': 0.56}  eta 138 min
+shard 41/100  pairs 98400  17.5 pairs/s  acceptance {'grid16': 0.344, 'grid12': 0.56}  eta 135 min
+shard 42/100  pairs 100800  17.6 pairs/s  acceptance {'grid16': 0.344, 'grid12': 0.56}  eta 132 min
+shard 43/100  pairs 103200  17.7 pairs/s  acceptance {'grid16': 0.344, 'grid12': 0.559}  eta 129 min
+shard 44/100  pairs 105600  17.8 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.558}  eta 126 min
+shard 45/100  pairs 108000  17.9 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.558}  eta 123 min
+shard 46/100  pairs 110400  18.0 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.559}  eta 120 min
+shard 47/100  pairs 112800  18.1 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.56}  eta 117 min
+shard 48/100  pairs 115200  18.2 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.56}  eta 114 min
+shard 49/100  pairs 117600  18.3 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.561}  eta 112 min
+shard 50/100  pairs 120000  18.4 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.56}  eta 109 min
+shard 51/100  pairs 122400  18.4 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.561}  eta 106 min
+shard 52/100  pairs 124800  18.5 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.56}  eta 104 min
+shard 53/100  pairs 127200  18.6 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.56}  eta 101 min
+shard 54/100  pairs 129600  18.7 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.561}  eta 99 min
+shard 55/100  pairs 132000  18.7 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.561}  eta 96 min
+shard 56/100  pairs 134400  18.7 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.561}  eta 94 min
+shard 57/100  pairs 136800  18.8 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.561}  eta 92 min
+shard 58/100  pairs 139200  18.7 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.561}  eta 90 min
+shard 59/100  pairs 141600  18.7 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.561}  eta 88 min
+shard 60/100  pairs 144000  18.6 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.561}  eta 86 min
+shard 61/100  pairs 146400  18.6 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.561}  eta 84 min
+shard 62/100  pairs 148800  18.5 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.561}  eta 82 min
+shard 63/100  pairs 151200  18.5 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.561}  eta 80 min
+shard 64/100  pairs 153600  18.5 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.562}  eta 78 min
+shard 65/100  pairs 156000  18.5 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.562}  eta 76 min
+shard 66/100  pairs 158400  18.4 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.563}  eta 74 min
+shard 67/100  pairs 160800  18.3 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.563}  eta 72 min
+shard 68/100  pairs 163200  18.3 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.563}  eta 70 min
+shard 69/100  pairs 165600  18.3 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.563}  eta 68 min
+shard 70/100  pairs 168000  18.3 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.564}  eta 66 min
+shard 71/100  pairs 170400  18.2 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.564}  eta 64 min
+shard 72/100  pairs 172800  18.2 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.564}  eta 62 min
+shard 73/100  pairs 175200  18.2 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.564}  eta 59 min
+shard 74/100  pairs 177600  18.1 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.565}  eta 57 min
+shard 75/100  pairs 180000  18.1 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.565}  eta 55 min
+shard 76/100  pairs 182400  18.1 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.565}  eta 53 min
+shard 77/100  pairs 184800  18.1 pairs/s  acceptance {'grid16': 0.343, 'grid12': 0.565}  eta 51 min
+shard 78/100  pairs 187200  18.1 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.565}  eta 49 min
+shard 79/100  pairs 189600  18.0 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.565}  eta 47 min
+shard 80/100  pairs 192000  18.0 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.565}  eta 44 min
+shard 81/100  pairs 194400  18.0 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.565}  eta 42 min
+shard 82/100  pairs 196800  18.0 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.565}  eta 40 min
+shard 83/100  pairs 199200  18.0 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.565}  eta 38 min
+shard 84/100  pairs 201600  18.0 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.565}  eta 36 min
+shard 85/100  pairs 204000  17.9 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.564}  eta 33 min
+shard 86/100  pairs 206400  17.9 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.565}  eta 31 min
+shard 87/100  pairs 208800  17.9 pairs/s  acceptance {'grid16': 0.341, 'grid12': 0.565}  eta 29 min
+shard 88/100  pairs 211200  17.9 pairs/s  acceptance {'grid16': 0.341, 'grid12': 0.565}  eta 27 min
+shard 89/100  pairs 213600  17.9 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.565}  eta 25 min
+shard 90/100  pairs 216000  17.9 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.565}  eta 22 min
+shard 91/100  pairs 218400  17.9 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.565}  eta 20 min
+shard 92/100  pairs 220800  18.0 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.565}  eta 18 min
+shard 93/100  pairs 223200  18.0 pairs/s  acceptance {'grid16': 0.342, 'grid12': 0.565}  eta 16 min
+shard 94/100  pairs 225600  18.1 pairs/s  acceptance {'grid16': 0.341, 'grid12': 0.565}  eta 13 min
+shard 95/100  pairs 228000  18.1 pairs/s  acceptance {'grid16': 0.341, 'grid12': 0.565}  eta 11 min
+shard 96/100  pairs 230400  18.1 pairs/s  acceptance {'grid16': 0.341, 'grid12': 0.565}  eta 9 min
+shard 97/100  pairs 232800  18.2 pairs/s  acceptance {'grid16': 0.341, 'grid12': 0.565}  eta 7 min
+shard 98/100  pairs 235200  18.2 pairs/s  acceptance {'grid16': 0.341, 'grid12': 0.565}  eta 4 min
+shard 99/100  pairs 237600  18.2 pairs/s  acceptance {'grid16': 0.341, 'grid12': 0.565}  eta 2 min
+shard 100/100  pairs 240000  18.2 pairs/s  acceptance {'grid16': 0.341, 'grid12': 0.565}  eta 0 min
+bank complete data\bank_v2
+== chip study Sat Sep 26 21:18:30 RDT 2026
+loaded 30131 chips from D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\data\chip_bank_v2.npz
+fitting compartment (84 statistics) ...
+fitting calcium_2hz (12 statistics) ...
+fitting channel (4 statistics) ...
+fitting perfusion (88 statistics) ...
+fitting compartment+channel (88 statistics) ...
+NMDA check against Lassus et al. ...
+
+recovery r                 compartment           calcium_2hz               channel             perfusion   compartment+channel
+p_cross                          0.170                 0.158                 0.587                 0.231                 0.726
+direction_sel                   -0.009                 0.018                 0.366                 0.106                 0.446
+g_cross                          0.262                 0.263                 0.033                 0.348                 0.284
+tgt_autonomy                     0.389                 0.328                 0.139                 0.399                 0.406
+coverage 90     
+p_cross                           0.93                  0.89                  0.89                  0.88                  0.90
+direction_sel                     0.95                  0.92                  0.88                  0.96                  0.91
+g_cross                           0.91                  0.90                  0.89                  0.90                  0.93
+tgt_autonomy                      0.90                  0.89                  0.89                  0.91                  0.92
+{"n_strong": 1060, "n_symmetric": 729, "channel_dominant_share_auroc": 0.7753733467919351, "compartment_asymmetry_auroc": 0.5220009317493595}
+{"chips": 191, "target_frequency_lower": 0.3036649214659686, "target_synchrony_lower": 0.32460732984293195, "published_direction": "both lower (Lassus et al. 2018, ifenprodil)"}
+wrote results/chip_study.json
+== done Sat Sep 26 21:37:22 RDT 2026

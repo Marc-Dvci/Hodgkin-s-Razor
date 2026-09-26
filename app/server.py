@@ -22,7 +22,7 @@ from fastapi.staticfiles import StaticFiles
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
-from hodgkins_razor import features as F, nde, ppc, report
+from hodgkins_razor import design, features as F, nde, ppc, report
 from hodgkins_razor import simulator as S
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -131,6 +131,14 @@ def analyse(base: np.ndarray, treat: np.ndarray, duration: float,
     body = report.build(post, guard if len(guard) > 1 else None, xb, xt,
                         meta={"label": label, "duration_s": duration,
                               "recording_system": view})
+    # When the top two mechanisms are not separated and the recording is
+    # inside the model, rank the follow-up tool compounds by how far apart the
+    # two hypotheses predict their recordings. This is the twin's prediction,
+    # computed by simulation; it has not been tested on recordings.
+    if STATE["sim"] is not None and body["verdict"] != "outside_model":
+        body["next_experiment"] = design.recommend(
+            STATE["sim"], post, body["mechanisms"], duration, STATE["transient"],
+            view=view, n_draws=16)
     return {"report": body, "guard": guard,
             "features": {"names": list(F.NAMES),
                          "base": xb.tolist(), "treat": xt.tolist()},
