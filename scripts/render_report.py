@@ -128,6 +128,7 @@ def main() -> None:
         "results_baselines": section(res_md, "Against the baselines"),
         "results_calibration": section(res_md, "Calibration on held-out simulations"),
         "results_class": section(res_md, "By mechanism class"),
+        "results_simulated": section(res_md, "The same metric on simulations"),
         "results_guard": section(res_md, "The guard"),
         "results_chip": chip_txt,
         "results_pharmacology": ph_txt,

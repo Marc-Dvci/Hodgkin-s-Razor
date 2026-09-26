@@ -324,7 +324,15 @@ recordings and the shift is the difference of posterior medians. The supervised
 classifier is given the compound labels the twin never sees, under
 leave-one-well-out cross-validation.
 
-### 5.4 By mechanism class
+### 5.4 The same metric on simulations
+
+{{results_simulated}}
+
+The gap between this and the recorded result is the part of the problem the
+simulator does not capture. Reporting both separates that from the difficulty
+of the question itself.
+
+### 5.5 By mechanism class
 
 {{results_class}}
 
@@ -334,11 +342,11 @@ resolved, and it is the level at which the measured identifiability is high.
 This analysis is secondary and was not pre-registered; it is reported alongside
 the primary metric, not in place of it.
 
-### 5.5 Calibration and recovery
+### 5.6 Calibration and recovery
 
 {{results_calibration}}
 
-### 5.6 The guard
+### 5.7 The guard
 
 {{results_guard}}
 

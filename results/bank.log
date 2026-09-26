@@ -1,1 +1,15 @@
 shard 1/40  pairs 2500  10.4 pairs/s  acceptance 0.15  eta 156 min
+shard 2/40  pairs 5000  10.1 pairs/s  acceptance 0.14  eta 157 min
+shard 3/40  pairs 7500  10.1 pairs/s  acceptance 0.14  eta 153 min
+shard 4/40  pairs 10000  10.5 pairs/s  acceptance 0.14  eta 143 min
+shard 5/40  pairs 12500  10.8 pairs/s  acceptance 0.14  eta 136 min
+shard 6/40  pairs 15000  11.0 pairs/s  acceptance 0.14  eta 129 min
+shard 7/40  pairs 17500  11.1 pairs/s  acceptance 0.14  eta 124 min
+shard 8/40  pairs 20000  11.1 pairs/s  acceptance 0.14  eta 120 min
+shard 9/40  pairs 22500  11.2 pairs/s  acceptance 0.14  eta 116 min
+shard 10/40  pairs 25000  11.2 pairs/s  acceptance 0.14  eta 112 min
+shard 11/40  pairs 27500  11.3 pairs/s  acceptance 0.14  eta 107 min
+shard 12/40  pairs 30000  11.4 pairs/s  acceptance 0.14  eta 103 min
+shard 13/40  pairs 32500  11.4 pairs/s  acceptance 0.14  eta 99 min
+shard 14/40  pairs 35000  11.4 pairs/s  acceptance 0.14  eta 95 min
+shard 15/40  pairs 37500  11.5 pairs/s  acceptance 0.14  eta 91 min

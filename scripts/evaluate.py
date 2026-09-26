@@ -152,6 +152,56 @@ def presence_reliability(twin, bank: dict, idx: np.ndarray, n: int = 20000,
     return out
 
 
+def simulated_recovery(twin, bank: dict, idx: np.ndarray, n: int = 20000,
+                       seed: int = 2) -> dict:
+    """Top-1 on held-out simulations, and on the regime the compounds occupy.
+
+    A recorded compound is applied at a saturating concentration and produces a
+    large change in the recording. Reporting the same metric on simulations
+    restricted that way says how much of any gap to the recorded result is the
+    simulator and how much is the question.
+    """
+    import torch
+    rng = np.random.default_rng(seed)
+    pick = rng.choice(idx, size=min(n, len(idx)), replace=False)
+    c = twin.scaler(nde.context(bank["x_base"][pick], bank["x_treat"][pick]))
+    with torch.no_grad():
+        logits = twin.presence(torch.as_tensor(c, dtype=torch.float32,
+                                               device=twin.device)).cpu().numpy()
+    p = twin.calibrate(1.0 / (1.0 + np.exp(-logits)))
+    y = bank["active"][pick]
+    delta = bank["delta"][pick][:, P.SHIFT_IDX]
+    mb = bank["x_base"][pick][:, F.NAMES.index("mfr")]
+    mt = bank["x_treat"][pick][:, F.NAMES.index("mfr")]
+    observable = np.abs(np.log1p(mt) - np.log1p(mb))
+    single = y.sum(axis=1) == 1
+
+    out = {}
+    cases = {
+        "all_single_mechanism": single,
+        "saturating": single & (np.abs(delta).max(axis=1) > np.log(5.0))
+                      & (observable > np.log(2.0)),
+    }
+    for name, mask in cases.items():
+        if mask.sum() < 40:
+            out[name] = {"n": int(mask.sum())}
+            continue
+        truth = np.argmax(y[mask], axis=1)
+        prob = p[mask]
+        top1 = float(np.mean(np.argmax(prob, axis=1) == truth))
+        top2 = float(np.mean([t in np.argsort(-prob[i])[:2]
+                              for i, t in enumerate(truth)]))
+        agg = np.zeros((int(mask.sum()), len(P.CLASS_NAMES)))
+        for j, k in enumerate(SHIFT_KEYS):
+            agg[:, P.class_index(k)] += prob[:, j]
+        cls = np.array([P.class_index(SHIFT_KEYS[t]) for t in truth])
+        out[name] = {"n": int(mask.sum()), "top1": top1, "top2": top2,
+                     "class_top1": float(np.mean(np.argmax(agg, axis=1) == cls))}
+    out["chance"] = 1.0 / len(SHIFT_KEYS)
+    out["class_chance"] = 1.0 / len(P.CLASS_NAMES)
+    return out
+
+
 def _auc(score: np.ndarray, label: np.ndarray) -> float:
     label = label.astype(bool)
     if label.all() or not label.any():
@@ -460,6 +510,7 @@ def main() -> None:
     results["calibration"] = calibration_tests(twin, bank, idx_val,
                                                n=args.n_calibration)
     results["presence"] = presence_reliability(twin, bank, idx_val)
+    results["simulated_recovery"] = simulated_recovery(twin, bank, idx_val)
     print(f"  {time.time() - t0:.0f}s", flush=True)
 
     pairs = T.load_all(window_s=args.duration, n_windows=3)

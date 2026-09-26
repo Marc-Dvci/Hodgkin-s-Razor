@@ -153,6 +153,23 @@ def main() -> None:
                   f"{d['fire_rate']:.2f} | {d['median_discrepancy']:.1f} | {out} |"]
         L += [""]
 
+    sr = r.get("simulated_recovery")
+    if sr:
+        L += ["## The same metric on simulations", "",
+              "Held-out simulated experiments, where the answer is known. The "
+              "second row is the regime a saturating concentration produces, "
+              "which is where the recorded compounds sit.", "",
+              "| Case | n | Top-1 | Top-2 | Class |", "|---|---|---|---|---|"]
+        names = {"all_single_mechanism": "every single-mechanism pair",
+                 "saturating": "strong effect and a large observable change"}
+        for key, label in names.items():
+            d = sr.get(key, {})
+            if "top1" not in d:
+                continue
+            L += [f"| {label} | {d['n']} | {d['top1']:.3f} | {d['top2']:.3f} | "
+                  f"{d['class_top1']:.3f} |"]
+        L += [f"| chance | | {sr['chance']:.3f} | | {sr['class_chance']:.3f} |", ""]
+
     cm = r.get("mechanism_class")
     if cm and cm.get("n"):
         L += ["## By mechanism class", "",
