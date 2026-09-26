@@ -3,14 +3,25 @@
 This is the geometry CellShells works in: two neuron populations in separate
 chambers joined by asymmetric microchannels that let axons grow one way.
 Peyrin et al. (Lab Chip 2011) report about 97 percent directional selectivity
-for that design, and Lassus et al. (Sci Rep 2018) read such chips with calcium
-imaging at 2 Hz rather than with electrodes.
+for that design, Lassus et al. (Sci Rep 2018) read such chips with calcium
+imaging at 2 Hz, and Mateus et al. (2024) record them on a 256-electrode MEA
+with five electrodes inside each microchannel.
 
 The network kernel is unchanged. A chip is a wiring matrix, a delay table and
-an electrode map, so the same simulator runs it. What the chip adds is three
-parameters the single-chamber model has no place for, and a calcium
-observation model, so the same twin can be asked what a 2 Hz imaging readout
-can and cannot resolve.
+an electrode map, so the same simulator runs it. What the chip adds is four
+parameters the single-chamber model has no place for, and four ways of reading
+it, so the twin can be asked which readout resolves which property before an
+experiment is run:
+
+* compartment electrodes: seven per chamber, the population a standard MEA
+  under each chamber sees;
+* a population calcium movie at 2 Hz per chamber;
+* channel electrodes: the axons that run through the microchannels, recorded
+  separately by the direction they carry, which is what electrodes inside the
+  channels report after a propagation-sequence analysis;
+* compartment electrodes across three perfusions: untreated, the source
+  chamber silenced, the target chamber silenced. Fluidic isolation between the
+  chambers is what these devices are built for.
 """
 from __future__ import annotations
 
@@ -18,6 +29,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from . import features as F
 from . import params as P
 from . import simulator as S
 
@@ -35,20 +47,29 @@ AXON_SPEED = 0.15           # m/s, so 500 um takes about 3.3 ms
 CHIP_KEYS = ("p_cross", "direction_sel", "g_cross", "tgt_autonomy")
 CHIP_LO = np.array([0.02, 0.50, 0.05, 0.05])
 CHIP_HI = np.array([0.50, 1.00, 1.50, 1.00])
+# p_cross is the fraction of a chamber's neurons with an axon in the channels.
 CHIP_LOG = np.array([True, False, True, True])
 N_CHIP = len(CHIP_KEYS)
+
+N_COMP_ELEC = 7             # electrodes per chamber
+ELEC_FWD = 2 * N_COMP_ELEC  # channel electrode, axons running source -> target
+ELEC_BWD = ELEC_FWD + 1     # channel electrode, axons running target -> source
+SILENCE_PA = -60.0          # bias that holds a chamber below threshold
+
+# Readout names used by the study and the report.
+READOUTS = ("compartment", "calcium_2hz", "channel", "perfusion")
 
 
 @dataclass
 class ChipGeometry:
-    delay: np.ndarray       # (NN, NN) uint8 delay slots
-    elec: np.ndarray        # (NN,) electrode index
-    compartment: np.ndarray  # (NN,) 0 source, 1 target
-    elec_compartment: np.ndarray  # (NELEC,) compartment of each electrode
+    delay: np.ndarray            # (NN, NN) uint8 delay slots
+    elec: np.ndarray             # (NN,) compartment electrode index, -1 if unseen
+    compartment: np.ndarray      # (NN,) 0 source, 1 target
+    elec_compartment: np.ndarray  # (NELEC,) 0 source, 1 target, 2 channel
 
 
 def geometry() -> ChipGeometry:
-    """Two chambers, eight electrodes each, joined by a microchannel array."""
+    """Two chambers, seven electrodes each, joined by a microchannel array."""
     ix, iy = np.meshgrid(np.arange(GRID_X), np.arange(GRID_Y), indexing="ij")
     x0 = ix.ravel() * SPACING
     y0 = iy.ravel() * SPACING
@@ -62,20 +83,19 @@ def geometry() -> ChipGeometry:
     slot = np.clip(np.round(delay_ms / (S.RB_STEP * S.DEFAULT_DT)),
                    0, S.RB_BINS - 1).astype(np.uint8)
 
-    # Four electrodes per chamber row, eight per chamber.
     elec = np.full(NN, -1, dtype=np.int32)
-    ecomp = np.zeros(S.NELEC, dtype=int)
+    ecomp = np.full(S.NELEC, 2, dtype=int)
     for c in (0, 1):
         sel = np.flatnonzero(comp == c)
-        ex = np.linspace(x[sel].min() + SPACING, x[sel].max() - SPACING, 4)
-        ey = np.linspace(y[sel].min() + SPACING * 0.5, y[sel].max() - SPACING * 0.5, 2)
-        gx, gy = np.meshgrid(ex, ey, indexing="ij")
-        gx, gy = gx.ravel(), gy.ravel()
-        dist = np.hypot(x[sel][:, None] - gx[None, :], y[sel][:, None] - gy[None, :])
+        ex = np.linspace(x[sel].min() + SPACING, x[sel].max() - SPACING, N_COMP_ELEC)
+        ey = np.full(N_COMP_ELEC, y[sel].mean())
+        ey[1::2] += SPACING * 1.5
+        ey[0::2] -= SPACING * 1.5
+        dist = np.hypot(x[sel][:, None] - ex[None, :], y[sel][:, None] - ey[None, :])
         near = dist.argmin(axis=1)
         within = dist.min(axis=1) <= 1.6 * SPACING
-        elec[sel] = np.where(within, near + c * 8, -1)
-        ecomp[c * 8:(c + 1) * 8] = c
+        elec[sel] = np.where(within, near + c * N_COMP_ELEC, -1)
+        ecomp[c * N_COMP_ELEC:(c + 1) * N_COMP_ELEC] = c
     return ChipGeometry(delay=slot, elec=elec, compartment=comp,
                         elec_compartment=ecomp)
 
@@ -84,13 +104,21 @@ GEOMETRY = geometry()
 
 
 def wiring(theta: np.ndarray, chip: np.ndarray, rng: np.random.Generator,
-           pair: bool = False) -> dict:
-    """Wiring for a batch of chips.
+           pair: bool = False, silence: np.ndarray | None = None) -> dict:
+    """Wiring, drive and electrode maps for a batch of chips.
 
-    Within a chamber the network is wired as usual. Across the channel only a
-    fraction of connections exist, and `direction_sel` sets how many of them run
-    the intended way: 1.0 is a perfect diode, 0.5 is a channel with no
-    selectivity at all.
+    Within a chamber the network is wired as usual. `p_cross` is the fraction
+    of a chamber's neurons whose axons grow through the microchannels, and
+    `direction_sel` how many of those run the intended way: 1.0 is a perfect
+    diode, 0.5 a channel with no selectivity. A projecting neuron connects to
+    the other chamber with the culture's own connection probability, at a
+    strength scaled by `g_cross`.
+
+    Projecting neurons are drawn among the somata no compartment electrode
+    picks up, and they are recorded by the channel electrode for their
+    direction, so that readout follows each chip's own wiring. `silence`
+    (one of -1, 0, 1 per row) holds the source (0) or the target (1) chamber
+    below threshold, which is what perfusing that chamber with TTX does.
     """
     theta = np.atleast_2d(theta)
     chip = np.atleast_2d(chip)
@@ -105,37 +133,52 @@ def wiring(theta: np.ndarray, chip: np.ndarray, rng: np.random.Generator,
 
     comp = GEOMETRY.compartment
     same = comp[:, None] == comp[None, :]
-    forward = (comp[:, None] == 0) & (comp[None, :] == 1)   # source j -> target i
-    backward = (comp[:, None] == 1) & (comp[None, :] == 0)
+    tgt_tgt = (comp[:, None] == 1) & (comp[None, :] == 1)
+    unseen = [np.flatnonzero((comp == c) & (GEOMETRY.elec < 0)) for c in (0, 1)]
 
     w = np.zeros((n_struct, NN, NN), dtype=np.float32)
     isinh = np.zeros((n_struct, NN), dtype=np.uint8)
+    elec = np.zeros((n_struct, NN), dtype=np.int32)
     for b in range(n_struct):
         weight = np.clip(1.0 + 0.7 * rng.standard_normal((NN, NN)), 0.0, 2.0)
-        m = np.zeros((NN, NN), dtype=bool)
         u = rng.random((NN, NN))
-        m |= same & (u < p_conn[b])
-        m |= forward & (u < p_cross[b] * dsel[b])
-        m |= backward & (u < p_cross[b] * (1.0 - dsel[b]))
-        tgt_tgt = (comp[:, None] == 1) & (comp[None, :] == 1)
+        m = same & (u < p_conn[b])
+        n_fwd = min(int(round(p_cross[b] * dsel[b] * HALF)), unseen[0].size)
+        n_bwd = min(int(round(p_cross[b] * (1.0 - dsel[b]) * HALF)), unseen[1].size)
+        fwd = rng.choice(unseen[0], size=n_fwd, replace=False)
+        bwd = rng.choice(unseen[1], size=n_bwd, replace=False)
+        proj = np.zeros(NN, dtype=bool)
+        proj[fwd] = True
+        proj[bwd] = True
+        # W[j][i] is the synapse from j to i.
+        m |= proj[:, None] & ~same & (u < p_conn[b])
         scale = np.where(same, 1.0, g_cross[b])
         scale = np.where(tgt_tgt, autonomy[b], scale)
         w[b] = (weight * m * scale * (S.REF_N / NN)).astype(np.float32)
         np.fill_diagonal(w[b], 0.0)
         isinh[b] = (rng.random(NN) < f_inh[b]).astype(np.uint8)
-    # Heterogeneous drive, scaled down in the target chamber.
+        e = GEOMETRY.elec.copy()
+        e[fwd] = ELEC_FWD
+        e[bwd] = ELEC_BWD
+        elec[b] = e
     shape = rng.random((n_struct, NN)) - 0.5
     if pair:
         w = np.repeat(w, 2, axis=0)
         isinh = np.repeat(isinh, 2, axis=0)
+        elec = np.repeat(elec, 2, axis=0)
         shape = np.repeat(shape, 2, axis=0)
         ratio = np.repeat(autonomy, 2)
     else:
         ratio = autonomy
     scale = np.where(comp[None, :] == 1, ratio[:, None], 1.0)
     ibias = (shape * i_drive_full[:, None] * scale).astype(np.float32)
+    if silence is not None:
+        silence = np.asarray(silence)
+        for c in (0, 1):
+            rows = silence == c
+            ibias[np.ix_(rows, comp == c)] = SILENCE_PA
     return {"w": w, "isinh": isinh, "delay": GEOMETRY.delay,
-            "elec": GEOMETRY.elec, "ibias": ibias}
+            "elec": elec, "ibias": ibias}
 
 
 def sample_chip_prior(n: int, rng: np.random.Generator) -> np.ndarray:
@@ -147,11 +190,94 @@ def sample_chip_prior(n: int, rng: np.random.Generator) -> np.ndarray:
 
 def run_chip(sim: S.Simulator, theta: np.ndarray, chip: np.ndarray,
              duration_s: float = 60.0, transient_s: float = 5.0,
-             seed: int = 0, pair: bool = False) -> S.SimResult:
+             seed: int = 0, pair: bool = False,
+             silence: np.ndarray | None = None) -> S.SimResult:
+    """Simulate chips. The wiring depends only on `seed`, so the same seed
+    with a different `silence` is the same device under another perfusion."""
     rng = np.random.default_rng(seed * 104729 + 7)
-    struct = wiring(theta, chip, rng, pair=pair)
+    struct = wiring(theta, chip, rng, pair=pair, silence=silence)
     return sim.run(theta, duration_s=duration_s, transient_s=transient_s,
                    seed=seed, pair=pair, structure=struct)
+
+
+# ---------------------------------------------------------------- readouts
+def chamber_events(events: np.ndarray, compartment: int) -> np.ndarray:
+    """Events of one chamber's electrodes, renumbered from 0."""
+    if events.size == 0:
+        return np.zeros((0, 2))
+    ec = GEOMETRY.elec_compartment[events[:, 0].astype(int)]
+    ev = events[ec == compartment].copy()
+    ev[:, 0] -= compartment * N_COMP_ELEC
+    return ev
+
+
+def cross_stats(events: np.ndarray, duration: float) -> np.ndarray:
+    """Cross-chamber coupling a compartment array shows without channel access.
+
+    Peak and lag of the cross-correlation of the two chambers' population
+    rates at 5 ms resolution, its asymmetry (how much of the correlation mass
+    sits at positive lags, source leading), and the rate ratio.
+    """
+    out = np.zeros(4)
+    a = chamber_events(events, 0)[:, 1]
+    b = chamber_events(events, 1)[:, 1]
+    if a.size > 5 and b.size > 5:
+        bins = np.arange(0, duration + 0.005, 0.005)
+        ha, _ = np.histogram(a, bins)
+        hb, _ = np.histogram(b, bins)
+        ha = ha - ha.mean()
+        hb = hb - hb.mean()
+        n = 60   # +/- 300 ms
+        cc = np.array([np.dot(ha[max(0, -l):len(ha) - max(0, l)],
+                              hb[max(0, l):len(hb) - max(0, -l)])
+                       for l in range(-n, n + 1)], dtype=float)
+        cc /= np.sqrt(np.dot(ha, ha) * np.dot(hb, hb)) + 1e-9
+        out[0] = float(cc.max())
+        out[1] = float((np.argmax(cc) - n) * 0.005)
+        pos, neg = np.clip(cc[n + 1:], 0, None).sum(), np.clip(cc[:n], 0, None).sum()
+        out[2] = float((pos - neg) / (pos + neg + 1e-9))
+    out[3] = float(np.log1p(b.size) - np.log1p(a.size))
+    return out
+
+
+def compartment_view(events: np.ndarray, duration: float) -> np.ndarray:
+    """Seven electrodes per chamber, and the cross-chamber statistics."""
+    return np.concatenate([F.compute(chamber_events(events, 0), N_COMP_ELEC, duration),
+                           F.compute(chamber_events(events, 1), N_COMP_ELEC, duration),
+                           cross_stats(events, duration)])
+
+
+def channel_view(events: np.ndarray, duration: float) -> np.ndarray:
+    """What electrodes inside the channels report.
+
+    The forward fraction of propagating events, the two directions' event
+    rates, and how many axons of each direction were active at all.
+    """
+    if events.size == 0:
+        return np.zeros(4)
+    e = events[:, 0].astype(int)
+    fwd, bwd = float((e == ELEC_FWD).sum()), float((e == ELEC_BWD).sum())
+    tot = fwd + bwd
+    return np.array([fwd / tot if tot > 0 else 0.5,
+                     np.log1p(fwd / duration), np.log1p(bwd / duration),
+                     np.log1p(tot / duration)])
+
+
+def perfusion_view(ev_base: np.ndarray, ev_src_off: np.ndarray,
+                   ev_tgt_off: np.ndarray, duration: float) -> np.ndarray:
+    """Each chamber's rate with the other chamber silenced, against untreated.
+
+    Silencing the source removes whatever drive runs forward; silencing the
+    target removes whatever runs back. The two drops are the directional
+    coupling, read through compartment electrodes only.
+    """
+    def rate(ev, c):
+        return chamber_events(ev, c).shape[0] / duration / N_COMP_ELEC
+    tb, sb = rate(ev_base, 1), rate(ev_base, 0)
+    t_src_off, s_tgt_off = rate(ev_src_off, 1), rate(ev_tgt_off, 0)
+    return np.array([np.log1p(t_src_off) - np.log1p(tb),
+                     np.log1p(s_tgt_off) - np.log1p(sb),
+                     np.log1p(tb), np.log1p(sb)])
 
 
 # --------------------------------------------------------------- calcium view

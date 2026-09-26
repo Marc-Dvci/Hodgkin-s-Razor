@@ -11,4 +11,6 @@ python-multipart>=0.0.9
 matplotlib>=3.8
 pytest>=8.0
 tqdm>=4.66
+numba>=0.59
+h5py>=3.10
 openpyxl>=3.1

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hodgkin's Razor</title>
+<style>
+:root{
+  --bg:#0e1116; --panel:#161b23; --line:#232b36; --ink:#e6edf6; --dim:#8b98a8;
+  --accent:#5eb0ff; --up:#f0883e; --down:#4fb286; --warn:#e5534b; --ok:#3fb950;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+header{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;
+  align-items:baseline;gap:16px;flex-wrap:wrap}
+h1{font-size:19px;margin:0;letter-spacing:-.2px}
+.sub{color:var(--dim);font-size:13px}
+main{max-width:1180px;margin:0 auto;padding:22px 24px 60px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:18px;margin-bottom:18px}
+.panel h2{font-size:13px;text-transform:uppercase;letter-spacing:.09em;
+  color:var(--dim);margin:0 0 14px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button,select,input[type=file]{background:#1d2530;color:var(--ink);
+  border:1px solid var(--line);border-radius:7px;padding:8px 13px;font-size:14px;
+  font-family:inherit;cursor:pointer}
+button.primary{background:var(--accent);color:#04121f;border-color:var(--accent);
+  font-weight:600}
+button:disabled{opacity:.5;cursor:default}
+.verdict{font-size:17px;line-height:1.5;margin:0}
+.badge{display:inline-block;padding:3px 9px;border-radius:999px;font-size:12px;
+  font-weight:600;margin-right:9px;vertical-align:2px}
+.badge.ok{background:rgba(63,185,80,.16);color:var(--ok)}
+.badge.warn{background:rgba(229,83,75,.16);color:var(--warn)}
+.badge.none{background:rgba(139,152,168,.16);color:var(--dim)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line)}
+th{color:var(--dim);font-weight:600;font-size:12px;text-transform:uppercase;
+  letter-spacing:.05em}
+td.num,th.num{text-align:right;font-family:var(--mono);font-size:13px}
+.bar{height:7px;border-radius:4px;background:#222b37;overflow:hidden;min-width:90px}
+.bar>i{display:block;height:100%;background:var(--accent)}
+tr.called td{background:rgba(94,176,255,.07)}
+tr.called td:first-child{box-shadow:inset 3px 0 0 var(--accent)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+canvas{width:100%;height:150px;display:block;background:#0b0e13;
+  border:1px solid var(--line);border-radius:7px}
+.cap{font-size:12px;color:var(--dim);margin:6px 0 2px}
+.err{color:var(--warn)}
+.foot{color:var(--dim);font-size:12px;margin-top:10px}
+details summary{cursor:pointer;color:var(--dim);font-size:13px}
+pre{background:#0b0e13;border:1px solid var(--line);border-radius:7px;padding:12px;
+  overflow:auto;font-family:var(--mono);font-size:12px;color:var(--dim)}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Hodgkin's Razor</h1>
+  <span class="sub">Name the mechanism a compound moved, from two recordings of one well</span>
+</header>
+<main>
+  <section class="panel">
+    <h2>Recording pair</h2>
+    <div class="row">
+      <select id="example"></select>
+      <button class="primary" id="run">Analyse</button>
+      <span class="sub" id="mode"></span><span class="sub">analyses computed ahead of time; the repository runs the twin live</span>
+    </div>
+    <p id="status" class="sub" style="margin:12px 0 0"></p>
+  </section>
+
+  <section class="panel" id="out" hidden>
+    <h2>Verdict</h2>
+    <p class="verdict" id="verdict"></p>
+    <p class="foot" id="guardline"></p>
+  </section>
+
+  <section class="panel" id="mechpanel" hidden>
+    <h2>Mechanisms</h2>
+    <table id="mech"><thead><tr>
+      <th>Mechanism</th><th>Target</th><th class="num">Probability</th>
+      <th style="width:110px"></th><th class="num">Effect</th><th class="num">90% interval</th>
+    </tr></thead><tbody></tbody></table>
+  </section>
+
+  <section class="panel" id="classpanel" hidden>
+    <h2>Mechanism class</h2>
+    <table id="klass"><thead><tr><th>Class</th><th class="num">Probability</th>
+      <th style="width:150px"></th></tr></thead><tbody></tbody></table>
+    <p class="foot">The class is resolved better than the exact conductance, so
+      it is reported alongside rather than instead.</p>
+  </section>
+
+  <section class="panel" id="rasterpanel" hidden>
+    <h2>Measured against the twin</h2>
+    <div class="grid2">
+      <div>
+        <p class="cap">Measured, baseline</p><canvas id="c_ob"></canvas>
+        <p class="cap">Measured, treated</p><canvas id="c_ot"></canvas>
+      </div>
+      <div>
+        <p class="cap">Twin at the fitted parameters, baseline</p><canvas id="c_tb"></canvas>
+        <p class="cap">Twin at the fitted parameters, treated</p><canvas id="c_tt"></canvas>
+      </div>
+    </div>
+    <p class="foot" id="rasterfoot">Each dot is a detected event on one electrode.
+      The twin panels are a fresh simulation at parameters drawn from the
+      posterior, not a fit to the picture.</p>
+  </section>
+
+  <section class="panel" id="culturepanel" hidden>
+    <h2>Culture parameters</h2>
+    <table id="culture"><thead><tr>
+      <th>Parameter</th><th class="num">Median</th><th class="num">90% interval</th><th>Unit</th>
+    </tr></thead><tbody></tbody></table>
+  </section>
+
+  <section class="panel" id="featpanel" hidden>
+    <h2>Features</h2>
+    <details><summary>Show every summary statistic</summary>
+      <table id="feat"><thead><tr><th>Feature</th><th class="num">Baseline</th>
+        <th class="num">Treated</th><th class="num">Change</th></tr></thead><tbody></tbody></table>
+    </details>
+    <details style="margin-top:10px"><summary>Report as markdown</summary>
+      <pre id="md"></pre></details>
+  </section>
+</main>
+<script type="module" src="app.js"></script>
+</body>
+</html>

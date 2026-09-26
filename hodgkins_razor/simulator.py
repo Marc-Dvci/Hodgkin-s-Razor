@@ -24,7 +24,7 @@ NN = 256          # neurons, 16 x 16 grid
 NELEC = 16        # electrodes, 4 x 4 grid
 RB_BINS = 16
 RB_STEP = 8
-PER_ELEC = 8192   # event capacity per electrode, must match kernel.cu
+PER_ELEC = 16384  # event capacity per electrode, must match kernel.cu
 GRID = 16
 SPACING = 45.0    # um between neurons
 MAX_DELAY = 12.8  # ms across the longest connection
@@ -49,10 +49,14 @@ class SimResult:
     duration_s: float
     dt_ms: float
 
-    def as_events(self, b: int) -> np.ndarray:
-        """(n, 2) array of [electrode, time_in_seconds] for network b."""
+    def raw_events(self, b: int) -> np.ndarray:
+        """(n, 2) [electrode, time_in_seconds] at the kernel's resolution."""
         t = self.times[b] * (self.dt_ms / 1000.0)
         return np.stack([self.elecs[b].astype(np.float64), t], axis=1)
+
+    def as_events(self, b: int, view: str = "grid16") -> np.ndarray:
+        """Events for network b as one recording system would report them."""
+        return view_events(self.raw_events(b), view)[0]
 
 
 def _geometry() -> tuple[np.ndarray, np.ndarray]:
@@ -176,8 +180,13 @@ class Simulator:
         out_e = cp.zeros((B, NELEC, PER_ELEC), dtype=cp.uint8)
         out_c = cp.zeros((B, NELEC), dtype=cp.int32)
 
+        # A per-network electrode map lets a readout follow wiring that
+        # differs between networks, such as the neurons whose axons run
+        # through a chip's microchannels.
+        stride = np.int32(NN if elec.ndim == 2 else 0)
+        elec = elec.ravel() if elec.ndim == 2 else elec
         self.kern((B,), (NN,),
-                  (th, w, db, isinh, ibias, elec,
+                  (th, w, db, isinh, ibias, elec, stride,
                    np.int32(n_steps), np.int32(n_trans), np.float32(self.dt),
                    out_t, out_e, out_c, np.int32(PER_ELEC),
                    np.uint32((seed * 2654435761 + 12345) & 0xFFFFFFFF)),
@@ -223,3 +232,64 @@ def available() -> bool:
         return cp.cuda.runtime.getDeviceCount() > 0
     except Exception:
         return False
+
+
+# Recording systems the twin reads. The simulated array is a 4 x 4 grid whose
+# electrodes report multi-unit events at the kernel's 0.2 ms resolution. A real
+# system adds its own detection dead time and may record fewer electrodes:
+#
+# grid16  Axion Maestro 48-well plate, 16 electrodes per well (Tampere dataset),
+#         one event per electrode per 2 ms.
+# grid12  Multi Channel Systems 24-well plate, a 4 x 4 grid whose four corner
+#         positions are reference electrodes, so 12 record (Doorn et al.).
+#         Their peak trains carry intervals down to 0.2 ms, so 0.3 ms.
+VIEWS: dict[str, dict] = {
+    "grid16": {"electrodes": tuple(range(NELEC)), "dead_ms": 2.0},
+    "grid12": {"electrodes": tuple(e for e in range(NELEC) if e not in (0, 3, 12, 15)),
+               "dead_ms": 0.3},
+}
+
+
+def n_electrodes(view: str) -> int:
+    return len(VIEWS[view]["electrodes"])
+
+
+try:
+    from numba import njit
+except ImportError:          # pragma: no cover - numba is in requirements
+    def njit(f=None, **kw):
+        return f if f is not None else (lambda g: g)
+
+
+@njit(cache=True)
+def _dead_time(elec, t, n_elec, dead_s):
+    keep = np.zeros(t.size, dtype=np.bool_)
+    last = np.full(n_elec, -1e9)
+    for k in range(t.size):
+        e = int(elec[k])
+        if t[k] - last[e] >= dead_s:
+            keep[k] = True
+            last[e] = t[k]
+    return keep
+
+
+def view_events(events: np.ndarray, view: str) -> tuple[np.ndarray, int]:
+    """Read simulated events through one recording system.
+
+    Keeps the system's electrodes, renumbers them from 0, and applies its
+    detection dead time. Returns the events and the electrode count.
+    """
+    spec = VIEWS[view]
+    keep = spec["electrodes"]
+    remap = np.full(NELEC, -1)
+    remap[list(keep)] = np.arange(len(keep))
+    if events.size == 0:
+        return np.zeros((0, 2)), len(keep)
+    e = remap[events[:, 0].astype(np.int64)]
+    sel = e >= 0
+    e, t = e[sel], events[sel, 1]
+    order = np.argsort(t, kind="stable")
+    e, t = e[order], t[order]
+    ok = _dead_time(e.astype(np.int64), t.astype(np.float64), len(keep),
+                    spec["dead_ms"] / 1000.0)
+    return np.stack([e[ok].astype(float), t[ok]], axis=1), len(keep)

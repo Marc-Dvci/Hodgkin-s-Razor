@@ -268,25 +268,28 @@ def _sttc(elec: np.ndarray, t: np.ndarray, n_elec: int, duration: float,
         return 0.0, 0.0
 
     def tiled(x: np.ndarray) -> float:
+        # Fraction of the recording within dt of a spike of this train. The
+        # windows are sorted and of equal width, so their union is the sum of
+        # each window cut at the start of the next one.
         lo = np.clip(x - dt, 0, duration)
         hi = np.clip(x + dt, 0, duration)
-        order = np.argsort(lo)
-        lo, hi = lo[order], hi[order]
-        total, end = 0.0, -np.inf
-        for a, b in zip(lo, hi):
-            a = max(a, end)
-            if b > a:
-                total += b - a
-                end = b
-        return total / duration
+        return float((np.minimum(hi[:-1], lo[1:]) - lo[:-1]).clip(0).sum()
+                     + (hi[-1] - lo[-1])) / duration
 
+    def near(a: np.ndarray, b: np.ndarray) -> float:
+        # Fraction of spikes in a with a spike of b within dt on either side.
+        k = np.searchsorted(b, a)
+        after = np.abs(b[k.clip(0, b.size - 1)] - a)
+        before = np.abs(a - b[(k - 1).clip(0, b.size - 1)])
+        return float(np.mean(np.minimum(after, before) <= dt))
+
+    tiles = [tiled(x) for x in live]
     vals = []
     for i in range(len(live)):
         for j in range(i + 1, len(live)):
             a, b = live[i], live[j]
-            ta, tb = tiled(a), tiled(b)
-            pa = np.mean(np.abs(b[np.searchsorted(b, a).clip(0, b.size - 1)] - a) <= dt)
-            pb = np.mean(np.abs(a[np.searchsorted(a, b).clip(0, a.size - 1)] - b) <= dt)
+            ta, tb = tiles[i], tiles[j]
+            pa, pb = near(a, b), near(b, a)
             da = (pa - tb) / max(1 - pa * tb, 1e-9)
             db = (pb - ta) / max(1 - pb * ta, 1e-9)
             vals.append(0.5 * (da + db))

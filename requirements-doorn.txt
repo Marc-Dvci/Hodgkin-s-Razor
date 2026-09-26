@@ -1,0 +1,11 @@
+# Environment for scripts/prior_art_doorn.py only: the published estimator of
+# Doorn et al. (2025) is a pickled sbi 0.21 object and needs this stack.
+#   uv venv --python 3.9 .venv-doorn
+#   uv pip install --python .venv-doorn -r requirements-doorn.txt --extra-index-url https://download.pytorch.org/whl/cpu
+sbi==0.21.0
+torch==1.13.1
+numpy==1.23.1
+scipy==1.10.0
+brian2==2.5.4
+matplotlib<3.8
+pandas

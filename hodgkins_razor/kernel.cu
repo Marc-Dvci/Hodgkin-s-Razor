@@ -13,7 +13,7 @@
 #define RB_BINS 16      // ring-buffer slots
 #define RB_STEP 8       // simulation steps per slot
 #define NWARP (NN / 32)
-#define PER_ELEC 8192   // event capacity per electrode
+#define PER_ELEC 16384  // event capacity per electrode
 
 // Fixed membrane constants, following Traub-Miles as used by Doorn et al. 2025.
 #define CM 3.0f         // pF
@@ -30,7 +30,7 @@
 #define TAU_CA 6000.0f  // ms
 #define ALPHA_CA 0.00035f
 #define REFRAC 2.0f     // ms
-#define DEADTIME 2.0f   // ms, per electrode
+#define DEADTIME 0.2f   // ms, per electrode; each recording system adds its own, see simulator.VIEWS
 #define GNA_SCALE 150.0f
 #define GKDR_SCALE 15.0f
 
@@ -54,7 +54,8 @@ extern "C" __global__ void simulate(
     const unsigned char* __restrict__ DB, // [NN*NN] delay slot, shared across networks
     const unsigned char* __restrict__ ISINH,  // [B, NN]
     const float* __restrict__ IBIAS,      // [B, NN]
-    const int* __restrict__ ELEC,         // [NN] electrode of each neuron, -1 if unseen
+    const int* __restrict__ ELEC,         // [NN] or [B, NN] electrode of each neuron, -1 if unseen
+    const int elec_stride,                // 0: one map shared by the batch; NN: one map per network
     const int n_steps,
     const int n_transient,
     const float dt,
@@ -117,7 +118,7 @@ extern "C" __global__ void simulate(
     __syncthreads();
 
     const float ibias = IBIAS[b * NN + i];
-    const int myelec = ELEC[i];
+    const int myelec = ELEC[(size_t)b * elec_stride + i];
     const float noise_amp = noise_sd * sqrtf(2.0f * GL / CM) * sqrtf(dt);
     const float dxd = dt / tau_d;
     const float da = __expf(-dt / TAU_AMPA);

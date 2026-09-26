@@ -109,8 +109,37 @@ class Presence(nn.Module):
         return self.net(c)
 
 
+class PresenceEnsemble(nn.Module):
+    """Several presence heads trained side by side; their logits are averaged.
+
+    Each head sees a different ordering of the same batches and starts from a
+    different initialisation, so the spread across heads is a measure of how
+    much a call depends on the fit rather than on the recording.
+    """
+
+    def __init__(self, k: int = 5, n_context: int = N_CONTEXT, hidden: int = 256,
+                 n_out: int = P.N_SHIFT):
+        super().__init__()
+        self.heads = nn.ModuleList(Presence(n_context, hidden, n_out) for _ in range(k))
+
+    def forward(self, c: torch.Tensor) -> torch.Tensor:
+        return torch.stack([h(c) for h in self.heads]).mean(0)
+
+    def each(self, c: torch.Tensor) -> torch.Tensor:
+        return torch.stack([h(c) for h in self.heads])
+
+
 class Twin:
-    """Trained inference model: flow, presence head and the feature scaling."""
+    """Trained inference model: flow, presence head and the feature scaling.
+
+    In the conditional form (`meta["conditional"]`), the flow is conditioned on
+    the set of mechanisms the compound acted on as well as on the recording.
+    Presence and size are then factorised the way the prior generates them: the
+    presence head says which mechanisms moved, and the flow says by how much
+    given that they did. A size read off an unconditional flow is dominated by
+    the narrow prior component whenever presence is uncertain, which pulls
+    every effect toward no change.
+    """
 
     def __init__(self, flow, presence: Presence, scaler: Standardiser,
                  device: str = "cpu", calibration: dict | None = None,
@@ -125,27 +154,27 @@ class Twin:
     # ---- construction -------------------------------------------------
     @staticmethod
     def build(device: str = "cuda", transforms: int = 6,
-              hidden: int = 384, depth: int = 3) -> tuple:
-        flow = zuko.flows.MAF(features=N_LATENT, context=N_CONTEXT,
+              hidden: int = 384, depth: int = 3, conditional: bool = False,
+              ensemble: int = 1, n_feature: int = F.N_FEATURE) -> tuple:
+        n_ctx = 3 * n_feature
+        flow = zuko.flows.MAF(features=N_LATENT,
+                              context=n_ctx + (P.N_SHIFT if conditional else 0),
                               transforms=transforms,
                               hidden_features=[hidden] * depth).to(device)
-        presence = Presence().to(device)
+        presence = (PresenceEnsemble(ensemble, n_context=n_ctx) if ensemble > 1
+                    else Presence(n_context=n_ctx)).to(device)
         return flow, presence
+
+    @property
+    def conditional(self) -> bool:
+        return bool(self.meta.get("conditional", False))
 
     # ---- inference ----------------------------------------------------
     def _ctx(self, x_base: np.ndarray, x_treat: np.ndarray) -> torch.Tensor:
         c = self.scaler(context(np.atleast_2d(x_base), np.atleast_2d(x_treat)))
         return torch.as_tensor(c, dtype=torch.float32, device=self.device)
 
-    @torch.no_grad()
-    def posterior(self, x_base: np.ndarray, x_treat: np.ndarray,
-                  n_samples: int = 4000) -> dict:
-        """Posterior samples for one paired recording."""
-        self.flow.eval()
-        self.presence.eval()
-        c = self._ctx(x_base, x_treat)
-        dist = self.flow(c.expand(1, -1))
-        z = dist.sample((n_samples,)).reshape(n_samples, N_LATENT).cpu().numpy()
+    def _finish(self, z: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         theta = z_to_theta(z[:, :P.N_PARAM])
         inside = np.all((theta >= P.TLO - 1e-9) & (theta <= P.THI + 1e-9), axis=1)
         if inside.sum() >= 50:
@@ -160,10 +189,59 @@ class Twin:
         full = np.zeros((theta.shape[0], P.N_PARAM))
         full[:, P.SHIFT_IDX] = delta
         delta = (np.clip(theta + full, P.TLO, P.THI) - theta)[:, P.SHIFT_IDX]
+        return theta, delta
+
+    @torch.no_grad()
+    def presence_probs(self, x_base: np.ndarray, x_treat: np.ndarray) -> tuple:
+        """Calibrated and raw presence probabilities for one paired recording."""
+        self.presence.eval()
+        c = self._ctx(x_base, x_treat)
         logits = self.presence(c).cpu().numpy().ravel()
         p_raw = 1.0 / (1.0 + np.exp(-logits))
-        return {"theta_c": theta, "delta": delta,
-                "p_active": self.calibrate(p_raw), "p_active_raw": p_raw}
+        return self.calibrate(p_raw), p_raw
+
+    @torch.no_grad()
+    def _sample(self, c: torch.Tensor, masks: np.ndarray | None,
+                n_samples: int) -> np.ndarray:
+        self.flow.eval()
+        if masks is None:
+            dist = self.flow(c.expand(1, -1))
+            return dist.sample((n_samples,)).reshape(n_samples, N_LATENT).cpu().numpy()
+        m = torch.as_tensor(masks, dtype=torch.float32, device=self.device)
+        cc = torch.cat([c.expand(m.shape[0], -1), m], dim=1)
+        return self.flow(cc).sample().reshape(m.shape[0], N_LATENT).cpu().numpy()
+
+    @torch.no_grad()
+    def posterior(self, x_base: np.ndarray, x_treat: np.ndarray,
+                  n_samples: int = 4000, seed: int = 0) -> dict:
+        """Posterior samples for one paired recording.
+
+        In the conditional form the active set of each draw is sampled from the
+        calibrated presence probabilities, so the joint samples mix the
+        hypotheses in proportion to how probable each one is, and
+        `effect_given_active` holds, per mechanism, the size of the shift if
+        that mechanism is the one that moved.
+        """
+        c = self._ctx(x_base, x_treat)
+        p_active, p_raw = self.presence_probs(x_base, x_treat)
+        if not self.conditional:
+            theta, delta = self._finish(self._sample(c, None, n_samples))
+            return {"theta_c": theta, "delta": delta,
+                    "p_active": p_active, "p_active_raw": p_raw}
+        rng = np.random.default_rng(seed)
+        masks = (rng.random((n_samples, P.N_SHIFT)) < p_active[None, :]).astype(np.float32)
+        theta, delta = self._finish(self._sample(c, masks, n_samples))
+        n_each = max(n_samples // 4, 400)
+        given = []
+        for j in range(P.N_SHIFT):
+            m = np.zeros((n_each, P.N_SHIFT), dtype=np.float32)
+            m[:, j] = 1.0
+            _, d = self._finish(self._sample(c, m, n_each))
+            given.append(d[:, j])
+        n_min = min(len(g) for g in given)
+        return {"theta_c": theta, "delta": delta, "p_active": p_active,
+                "p_active_raw": p_raw,
+                "effect_given_active": np.stack([g[:n_min] for g in given], axis=1)}
 
     def calibrate(self, p: np.ndarray) -> np.ndarray:
         """Map raw probabilities through the stored per-mechanism calibration."""
@@ -194,11 +272,14 @@ class Twin:
         flow, presence = cls.build(device=device,
                                    transforms=meta.get("transforms", 6),
                                    hidden=meta.get("hidden", 384),
-                                   depth=meta.get("depth", 3))
+                                   depth=meta.get("depth", 3),
+                                   conditional=meta.get("conditional", False),
+                                   ensemble=meta.get("ensemble", 1))
         flow.load_state_dict(torch.load(path / "flow.pt", map_location=device))
         presence.load_state_dict(torch.load(path / "presence.pt", map_location=device))
         scaler = Standardiser.load(json.loads((path / "scaler.json").read_text()))
         cal = json.loads((path / "calibration.json").read_text())
+        meta["path"] = str(path)
         return cls(flow, presence, scaler, device=device, calibration=cal, meta=meta)
 
 
@@ -255,7 +336,9 @@ class UnpairedTwin:
 
 def summarise(post: dict, credible: float = 0.90) -> list[dict]:
     """Per-mechanism effect size, interval and presence probability."""
-    delta = post["delta"]
+    # The size a mechanism would have if it is the one that moved; the joint
+    # samples mix in the draws where it did not, which drags it toward zero.
+    delta = post.get("effect_given_active", post["delta"])
     lo_q, hi_q = (1 - credible) / 2, 1 - (1 - credible) / 2
     rows = []
     for j, col in enumerate(P.SHIFT_IDX):

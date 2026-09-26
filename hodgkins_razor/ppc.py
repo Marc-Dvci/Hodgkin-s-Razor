@@ -27,8 +27,10 @@ _POOL: cf.ProcessPoolExecutor | None = None
 
 
 def _feature_job(args):
-    events, n_elec, duration = args
-    return F.compute(events, n_elec, duration)
+    events, view, duration = args
+    from . import simulator as S
+    ev, n = S.view_events(events, view)
+    return F.compute(ev, n, duration)
 
 
 def _pool() -> cf.ProcessPoolExecutor | None:
@@ -59,15 +61,15 @@ def theta_pair_from_posterior(post: dict, n_draws: int,
 
 
 def predict(sim, post: dict, duration: float, transient: float,
-            n_draws: int = DEFAULT_DRAWS, seed: int = 0) -> dict:
-    """Simulate the twin at posterior draws and return predicted features."""
+            n_draws: int = DEFAULT_DRAWS, seed: int = 0,
+            view: str = "grid16") -> dict:
+    """Simulate the twin at posterior draws and read them like the recording."""
     rng = np.random.default_rng(seed)
     nat_c, nat_t = theta_pair_from_posterior(post, n_draws, rng)
     stacked = SH.interleave(nat_c, nat_t)
     res = sim.run(stacked, duration_s=duration, transient_s=transient,
                   seed=seed, pair=True)
-    n_elec = sim_n_elec(sim)
-    jobs = [(res.as_events(i), n_elec, duration) for i in range(stacked.shape[0])]
+    jobs = [(res.raw_events(i), view, duration) for i in range(stacked.shape[0])]
     pool = _pool()
     if pool is not None:
         feats = np.stack(list(pool.map(_feature_job, jobs, chunksize=8)))
@@ -75,11 +77,6 @@ def predict(sim, post: dict, duration: float, transient: float,
         feats = np.stack([_feature_job(j) for j in jobs])
     return {"x_base": feats[0::2], "x_treat": feats[1::2], "result": res,
             "theta_base": nat_c, "theta_treat": nat_t}
-
-
-def sim_n_elec(sim) -> int:
-    from . import simulator as S
-    return S.NELEC
 
 
 TAIL = 0.02
@@ -113,14 +110,16 @@ def discrepancy(x_base: np.ndarray, x_treat: np.ndarray,
 def calibrate_threshold(twin, sim, bank: dict, index: np.ndarray,
                         duration: float, transient: float,
                         n_records: int = 120, n_draws: int = DEFAULT_DRAWS,
-                        quantile: float = 0.95, seed: int = 0) -> dict:
+                        quantile: float = 0.95, seed: int = 0,
+                        view: str = "grid16") -> dict:
     """Null distribution of the discrepancy on held-out, well-specified records."""
     rng = np.random.default_rng(seed)
     pick = rng.choice(index, size=min(n_records, len(index)), replace=False)
     vals = []
     for k, i in enumerate(pick):
         post = twin.posterior(bank["x_base"][i], bank["x_treat"][i], n_samples=1500)
-        pred = predict(sim, post, duration, transient, n_draws=n_draws, seed=1000 + k)
+        pred = predict(sim, post, duration, transient, n_draws=n_draws,
+                       seed=1000 + k, view=view)
         vals.append(discrepancy(bank["x_base"][i], bank["x_treat"][i],
                                 pred["x_base"], pred["x_treat"]))
     vals = np.array(vals)
@@ -134,7 +133,9 @@ def check(twin, sim, x_base: np.ndarray, x_treat: np.ndarray, threshold: float,
           seed: int = 0, post: dict | None = None) -> dict:
     """Run the check for one paired recording and return the verdict."""
     post = post if post is not None else twin.posterior(x_base, x_treat)
-    pred = predict(sim, post, duration, transient, n_draws=n_draws, seed=seed)
+    view = twin.meta.get("view", "grid16")
+    pred = predict(sim, post, duration, transient, n_draws=n_draws, seed=seed,
+                   view=view)
     d = discrepancy(x_base, x_treat, pred["x_base"], pred["x_treat"])
     # The posterior over a sixty second recording is wide, so a draw taken at
     # random rarely looks like the measurement even when the fit is sound.
@@ -151,3 +152,46 @@ def check(twin, sim, x_base: np.ndarray, x_treat: np.ndarray, threshold: float,
             "result": pred["result"], "theta_base": pred["theta_base"],
             "theta_treat": pred["theta_treat"],
             "closest_draw": closest, "n_draws": int(pred["x_base"].shape[0])}
+
+
+# ---------------------------------------------------------------- typicality
+class Typicality:
+    """How far a paired recording sits from every simulation the twin learned.
+
+    The mean distance, in the twin's own standardised conditioning space, to
+    the ten nearest of a fixed sample of training records. A recording no
+    simulation resembles cannot be explained by the fitted parameters whatever
+    the posterior says, and this needs no simulation to find out, so it runs
+    where the predictive check cannot, on a CPU.
+    """
+
+    K = 10
+
+    def __init__(self, reference: np.ndarray, threshold: float | None = None):
+        self.ref = np.asarray(reference, dtype=np.float32)
+        self.threshold = threshold
+
+    def score(self, ctx: np.ndarray) -> np.ndarray:
+        c = np.atleast_2d(np.asarray(ctx, dtype=np.float32))
+        out = np.empty(c.shape[0])
+        for a in range(0, c.shape[0], 256):
+            blk = c[a:a + 256]
+            d = (np.square(blk).sum(1)[:, None] + np.square(self.ref).sum(1)[None, :]
+                 - 2.0 * blk @ self.ref.T)
+            d = np.sqrt(np.clip(d, 0, None))
+            out[a:a + 256] = np.sort(d, axis=1)[:, :self.K].mean(1)
+        return out
+
+    @classmethod
+    def for_twin(cls, twin) -> "Typicality | None":
+        import pathlib
+        path = pathlib.Path(twin.meta.get("path", ""))
+        ref = path / "reference_context.npy"
+        if not ref.exists():
+            return None
+        thr = twin.meta.get("typicality_threshold")
+        return cls(np.load(ref).astype(np.float32), thr)
+
+    def of_pair(self, twin, x_base: np.ndarray, x_treat: np.ndarray) -> float:
+        c = twin.scaler(nde.context(np.atleast_2d(x_base), np.atleast_2d(x_treat)))
+        return float(self.score(c)[0])

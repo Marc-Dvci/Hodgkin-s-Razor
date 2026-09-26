@@ -1,15 +1,18 @@
 .venv/
+.venv-doorn/
 __pycache__/
 *.pyc
 .pytest_cache/
 notebooks/.ipynb_checkpoints/
 
-# Downloaded recordings and the simulation bank are rebuilt by one command.
+# Downloaded recordings and the simulation banks are rebuilt by one command
+# (scripts/fetch_tampere.py, scripts/fetch_external.py, scripts/run_all.py).
 data/raw/
 data/bank/
 data/bank_*/
-data/chip_bank.npz
+data/chip_bank*.npz
+data/screen_domain.npz
 
 # Generated locally for the film, not part of the deliverable.
 results/capture/
-site/
+results/film/

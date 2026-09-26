@@ -357,3 +357,140 @@ def test_held_out_indices_match_the_bank_they_came_from():
     meta = json.loads(meta_path.read_text())
     idx = np.load(idx_path)
     assert idx.max() < meta["pairs"], (int(idx.max()), meta["pairs"])
+
+
+# ------------------------------------------------------------------ version 2
+def test_shift_direction_is_drawn_where_the_baseline_leaves_room():
+    """A mechanism already at its floor can only be shifted up.
+
+    Version 1 drew the direction blindly and clipped, so 28 percent of active
+    tonic-inhibition labels described shifts the simulation never ran.
+    """
+    rng = np.random.default_rng(4)
+    theta_c = P.sample_prior(2000, rng)
+    j = P.index("g_tonic_inh")
+    theta_c[:, j] = P.LO[j]
+    delta, active = SH.sample_shift(2000, rng, theta_c=theta_c)
+    _, realised, active2 = SH.apply_shift(theta_c, delta, active)
+    k = list(P.SHIFT_IDX).index(j)
+    assert (realised[active2[:, k], j] > 0).all()
+    floor = SH.min_effect()
+    got = np.abs(realised[:, P.SHIFT_IDX])
+    assert (got[active2] >= 0.5 * np.broadcast_to(floor, got.shape)[active2]).all()
+
+
+def test_a_shift_the_clipping_removed_is_labelled_inactive():
+    theta_c = P.sample_prior(1, np.random.default_rng(0))
+    j = P.index("g_ampa")
+    theta_c[0, j] = P.HI[j]
+    delta = np.zeros((1, P.N_PARAM))
+    delta[0, j] = np.log(5.0)
+    active = np.zeros((1, P.N_SHIFT), dtype=bool)
+    active[0, list(P.SHIFT_IDX).index(j)] = True
+    _, realised, act = SH.apply_shift(theta_c, delta, active)
+    assert abs(realised[0, j]) < 1e-9
+    assert not act.any()
+
+
+def test_views_apply_the_recording_system_electrodes_and_dead_time():
+    ev = np.array([[0, 0.0], [0, 0.0005], [0, 0.003], [3, 0.001],
+                   [5, 0.0011], [5, 0.0012]])
+    g16, n16 = S.view_events(ev, "grid16")
+    g12, n12 = S.view_events(ev, "grid12")
+    assert n16 == 16 and n12 == 12
+    # 2 ms dead time removes the second spike on electrode 0.
+    assert g16.shape[0] == 4
+    # Corners 0 and 3 are reference positions on the 12-electrode plate;
+    # electrode 5 keeps one spike under a 0.3 ms dead time.
+    assert g12.shape[0] == 1 and g12[0, 0] == 3
+
+
+def test_sttc_matches_a_brute_force_reference():
+    rng = np.random.default_rng(0)
+    a = np.sort(rng.uniform(0, 10, 50))
+    b = np.sort(rng.uniform(0, 10, 60))
+    dt = 0.02
+    grid = np.linspace(0, 10, 200001)
+    ta = np.mean(np.any(np.abs(grid[:, None] - a[None, :]) <= dt, axis=1))
+    tb = np.mean(np.any(np.abs(grid[:, None] - b[None, :]) <= dt, axis=1))
+    pa = np.mean([np.min(np.abs(b - x)) <= dt for x in a])
+    pb = np.mean([np.min(np.abs(a - x)) <= dt for x in b])
+    want = 0.5 * ((pa - tb) / (1 - pa * tb) + (pb - ta) / (1 - pb * ta))
+    got, _ = F._sttc(np.r_[np.zeros(50), np.ones(60)], np.r_[a, b], 2, 10.0, dt)
+    assert abs(got - want) < 1e-3
+
+
+def test_culture_split_never_shares_a_culture():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from train import split_groups
+    group = np.repeat(np.arange(300), 6)
+    va, ca, tr = split_groups(group, 0.1, 0.1, np.random.default_rng(0))
+    sets = [set(group[i]) for i in (va, ca, tr)]
+    assert not (sets[0] & sets[1]) and not (sets[0] & sets[2]) and not (sets[1] & sets[2])
+    assert len(va) + len(ca) + len(tr) == group.size
+
+
+def test_conditional_twin_reports_an_effect_per_mechanism():
+    flow, presence = nde.Twin.build(device="cpu", transforms=2, hidden=32, depth=1,
+                                    conditional=True, ensemble=2)
+    n_ctx = 3 * F.N_FEATURE
+    scaler = nde.Standardiser(np.zeros(n_ctx), np.ones(n_ctx))
+    twin = nde.Twin(flow, presence, scaler, device="cpu",
+                    meta={"conditional": True, "ensemble": 2})
+    post = twin.posterior(np.ones(F.N_FEATURE), np.ones(F.N_FEATURE), n_samples=400)
+    assert post["effect_given_active"].shape[1] == P.N_SHIFT
+    rows = nde.summarise(post)
+    assert len(rows) == P.N_SHIFT
+
+
+def test_typicality_is_larger_far_from_the_reference():
+    from hodgkins_razor.ppc import Typicality
+    rng = np.random.default_rng(0)
+    ref = rng.normal(0, 1, (2000, 12))
+    t = Typicality(ref)
+    near, far = t.score(rng.normal(0, 1, (50, 12))), t.score(rng.normal(6, 1, (50, 12)))
+    assert near.max() < far.min()
+
+
+def test_doorn_treated_windows_are_locked_without_the_second_preregistration(tmp_path, monkeypatch):
+    from hodgkins_razor import doorn as D
+    monkeypatch.setattr(D, "ROOT", tmp_path)
+    assert not D._unblinded()
+    (tmp_path / "PREREGISTRATION_v2.md").write_text("x")
+    (tmp_path / "PREREGISTRATION_v2.sha256").write_text("0" * 64)
+    assert not D._unblinded()
+    (tmp_path / "PREREGISTRATION_v2.sha256").write_text(
+        hashlib.sha256(b"x").hexdigest())
+    assert D._unblinded()
+
+
+def test_chip_channel_electrodes_record_exactly_the_projecting_neurons():
+    from hodgkins_razor import chip as C
+    rng = np.random.default_rng(0)
+    theta = P.sample_prior(3, rng)
+    chips = np.array([[0.3, 1.0, 1.0, 0.5], [0.3, 0.5, 1.0, 0.5], [0.02, 0.9, 1.0, 0.5]])
+    st = C.wiring(theta, chips, np.random.default_rng(1))
+    comp = C.GEOMETRY.compartment
+    for b in range(3):
+        w, e = st["w"][b], st["elec"][b]
+        same = comp[:, None] == comp[None, :]
+        crosses = ((w > 0) & ~same).any(axis=1)
+        # Every neuron with an axon across the channel is on a channel electrode.
+        assert set(np.flatnonzero(crosses)) <= set(np.flatnonzero(e >= C.ELEC_FWD))
+        assert (comp[e == C.ELEC_FWD] == 0).all() and (comp[e == C.ELEC_BWD] == 1).all()
+    # A perfect diode has no backward axons.
+    assert (st["elec"][0] == C.ELEC_BWD).sum() == 0
+
+
+def test_mateus_propagation_counts_planted_sequences():
+    from hodgkins_razor import mateus as M
+    spikes = {}
+    t0 = np.arange(1.0, 50.0, 1.0)
+    for k, row in enumerate(M.CHANNEL_ROWS):
+        spikes[f"A{row}"] = t0 + 0.0004 * k            # 30 forward events
+    for k, row in enumerate(reversed(M.CHANNEL_ROWS)):
+        spikes[f"B{row}"] = t0[:10] + 0.3 + 0.0004 * k  # 10 backward events
+    rec = M.Recording(path=ROOT, experiment="x", design="rams", chip="1", div=12,
+                      duration=60.0, spikes=spikes)
+    out = M.propagation(rec)
+    assert out["down"] == len(t0) and out["up"] == 10
