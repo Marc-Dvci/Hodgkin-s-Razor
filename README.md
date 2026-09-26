@@ -27,12 +27,18 @@ change, prefer the fewest.
 | | |
 |---|---|
 | Top-1 mechanism accuracy | see `results/RESULTS.md` |
-| Chance | 0.111, over nine mechanisms |
+| Chance | 0.100, over ten mechanisms |
 | Wells scored | rat cortical DIV 22 and human iPSC DIV 29 |
 | Compound labels seen in training | **none** |
 
 The model is trained only on simulations. No recording, and no compound label,
-enters training, feature selection, thresholds or any hyperparameter. The
+enters training, feature selection, thresholds or any hyperparameter.
+
+The pre-registration was scored twice. The first run failed, an independent
+check against published pharmacology found three parameterisation defects and
+one missing conductance, and the corrected model was scored again. Both runs
+are in the repository, and
+[section 6b of the report](docs/TECHNICAL_REPORT.md) gives the whole sequence. The
 answer key, the primary metric, the success threshold and the failure
 conditions were written and hashed in
 [`PREREGISTRATION.md`](PREREGISTRATION.md) before any trained model was scored

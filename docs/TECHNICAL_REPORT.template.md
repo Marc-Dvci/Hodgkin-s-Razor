@@ -300,6 +300,16 @@ The unit is the well, not the window: windows from one well are replicates.
 
 {{results_primary}}
 
+This is the second scored run. The first is in `results/run1/`, and section 6b
+gives the defects it exposed, the independent check that found them and the
+corrections made. Both runs are reported in full.
+
+The answer key, the primary metric, the unit of analysis and the success
+threshold are the ones hashed in the pre-registration and are unchanged. One
+number in it moved for a stated reason: adding a tonic inhibitory conductance
+gives the model ten shiftable mechanisms rather than nine, so the chance rate
+for the primary metric is 0.100 rather than the 0.111 written there.
+
 ### 5.2 Per compound
 
 {{results_per_compound}}
@@ -370,6 +380,61 @@ literature and from no dataset scored here, so the check is independent of the
 evaluation.
 
 {{results_pharmacology}}
+
+### What the check found, and what it changed
+
+The first scored run of this project failed, at a top-1 of 0.091 against a
+chance rate of 0.111, and the confusion matrix said why: of 22 wells treated
+with an AMPA-acting compound, 10 were attributed to sodium channels and none to
+AMPA. The pharmacology check, run afterwards on the same model, found the cause
+without reference to any recording. Blocking AMPA in that simulator left 90
+percent of the firing, and raising inhibition left 85 percent. A twin in which
+those two compounds do almost nothing cannot attribute a recording to them, and
+its accuracy on a scored set was never going to reveal which of the fifteen
+parameters was at fault.
+
+Three defects, all of the same kind:
+
+1. **NMDA substituted for AMPA.** At this model family's resting potential of
+   -39.2 mV the magnesium block leaves about a quarter of the NMDA conductance
+   open, and NMDA decays fifty times more slowly than AMPA, so equal
+   conductances give NMDA twelve times the synaptic charge. With both priors
+   spanning the same range, NMDA carried fast transmission and an AMPA block
+   was compensated. The NMDA range was scaled down accordingly.
+2. **A bath-applied agonist had no way to act.** The model had only synaptic
+   GABA-A, released by inhibitory neurons. GABA and muscimol open
+   extrasynaptic receptors on every cell, so a tonic inhibitory conductance was
+   added as a parameter in its own right.
+3. **The receptor ranges did not reach the blocked extreme.** The same defect
+   already caught for sodium, where the original prior could not fall below a
+   firing rate of 13.5 events per second per electrode. Every receptor range
+   now reaches the value a saturating antagonist produces. Because that leaves
+   most of the range dead, the prior a baseline is drawn from was separated
+   from the support a compound can reach: a healthy culture is never at the
+   blocked extreme, but a drug must be able to take it there.
+
+A fourth followed from the same reasoning. A cortical culture is defined
+pharmacologically by its activity depending on fast excitatory transmission, so
+the criterion for admitting a simulated culture to the bank now requires that
+blocking AMPA collapses it. A network that keeps firing through an AMPA block
+is not the preparation these compounds were applied to.
+
+Measured on simulations, with the answer handed to a supervised classifier, the
+corrections move separation among the four receptor and channel mechanisms from
+0.64 to 0.89, the four mechanism classes from 0.62 to 0.76, and the full
+mechanism question from 0.39 to 0.63. None of those numbers uses a recorded
+label.
+
+### The guard also failed, and why
+
+The first run's guard fired on 12 percent of recordings from a simulator whose
+receptor kinetics the twin has no parameter for, where the pre-registered
+requirement was 80 percent. The statistic averaged a robust z-score over all
+eighty numbers, and a recording the model cannot produce usually fails on a few
+statistics rather than drifting on all of them, so the average buried it. It
+now takes the worst eight. The safety net that should have caught the
+misspecification was itself too blunt to see it, which is the more useful half
+of that finding.
 
 ## 7. Reliability and limitations
 

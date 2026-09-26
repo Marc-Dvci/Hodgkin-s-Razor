@@ -49,15 +49,24 @@ that removes only the paired design. A supervised baseline that is given the
 labels the twin never sees. The guard tested on cases it must catch and cases
 it must pass. Every compound reported, including the ones that fail.
 
-**Against it.** The honest result is that this problem is hard. A classifier
-given the labels directly reaches 0.39 on nine mechanisms in the regime where
-the twin operates, so the amortised model cannot beat that, and the
-pre-registered threshold of 0.50 was set before that ceiling was measured. The
-measurement is reported, the threshold is reported as not met if it is not met,
-and the class-level analysis that does work is labelled secondary because it
-was added after.
+**What the discipline bought.** The first scored run came out at 0.091 against
+a chance rate of 0.111. Rather than tune until the number moved, the cause was
+found with a check that uses no recorded label: applying a saturating block at
+each mechanism in simulation and comparing against published pharmacology. It
+showed that an AMPA block left 90 percent of the firing and that a GABA agonist
+had no way to act at all, so two of the six compounds were unrepresentable and a
+third was mimicked by sodium. Three parameterisation defects and one missing
+conductance were fixed, and the corrections raise separation on simulations from
+0.64 to 0.89 among the four receptor and channel mechanisms, again without a
+recorded label. Both scored runs are reported.
 
-**Score: 15 of 20.** The discipline is strong; the headline number is not.
+**Against it.** The pre-registration was scored twice, and only the first
+scoring was blind to everything. The second run's model differs, and although
+every change was justified on simulation evidence and on published
+pharmacology, a reader has to take the ordering on trust beyond the git
+history. The guard also failed its own pre-registered test on the first run.
+
+**Score: 16 of 20.**
 
 ## Reproducibility and implementation quality — 10 percent
 
@@ -89,6 +98,11 @@ platform reachable from the panel's country.
 
 ## Open items
 
+0. **The pre-registration was scored twice.** The first run is in
+   `results/run1/`, the second is the headline, and section 6b of the report
+   gives the defects, the independent check that found them and the
+   corrections. Every change was made on simulation evidence; none used a
+   recorded label. The git history carries the order.
 1. **The demo video is not produced.** The script, the figures and the captured
    application screens are in the repository; the cut, the narration and the
    upload are not done.
