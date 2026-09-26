@@ -15,8 +15,8 @@ left, treated on the right. The treated side is visibly emptier.
 
 **Narration.**
 "This is a neural organ-on-chip before and after a compound. Firing fell by
-seventy-one percent. Every analysis pipeline in use today will tell you that.
-None of them will tell you why."
+ninety percent and the bursts nearly stopped. Every analysis pipeline in use
+today will tell you that. None of them will tell you why."
 
 **Cut.** Three candidate answers appear over the treated raster: *blocked AMPA
 receptors? opened chloride channels? shut down sodium channels?*
@@ -153,3 +153,6 @@ That is the step from describing an experiment to predicting one."
   China and the video must be viewable without login.
 * Numbers in brackets are filled from `results/RESULTS.md` at edit time. Do not
   narrate a number that is not in that file.
+* The opening figures are measured on `data/examples/rat_cnqx.json`: firing
+  rate 4.40 to 0.45 events per second per electrode, network bursts 14 per
+  minute to 3.
