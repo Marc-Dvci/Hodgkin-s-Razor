@@ -416,8 +416,11 @@ Three defects, all of the same kind:
 A fourth followed from the same reasoning. A cortical culture is defined
 pharmacologically by its activity depending on fast excitatory transmission, so
 the criterion for admitting a simulated culture to the bank now requires that
-blocking AMPA collapses it. A network that keeps firing through an AMPA block
-is not the preparation these compounds were applied to.
+blocking AMPA collapses it below 35 percent of baseline. A network that keeps
+firing through an AMPA block is not the preparation these compounds were
+applied to. The recorded CNQX wells are the check on that threshold rather than
+its source: they fall to 0.10 of baseline on the rat plate and 0.14 on the
+human one, comfortably inside it.
 
 Measured on simulations, with the answer handed to a supervised classifier, the
 corrections move separation among the four receptor and channel mechanisms from
