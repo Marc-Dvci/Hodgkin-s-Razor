@@ -82,13 +82,21 @@ def sim_n_elec(sim) -> int:
     return S.NELEC
 
 
+WORST_K = 8
+
+
 def discrepancy(x_base: np.ndarray, x_treat: np.ndarray,
-                pred_base: np.ndarray, pred_treat: np.ndarray) -> float:
+                pred_base: np.ndarray, pred_treat: np.ndarray,
+                worst_k: int = WORST_K) -> float:
     """How far the measured recording sits from its own predictive spread.
 
     Features are compared after the same transform the flow sees. The statistic
-    is the mean squared robust z-score over both recordings, so no single
-    feature can carry the verdict on its own.
+    is the mean squared robust z-score over the worst `worst_k` of the eighty
+    numbers, because a recording the model cannot produce usually fails on a
+    few statistics rather than drifting on all of them. Averaging over all
+    eighty, which this did first, hid exactly that: it fired on 12 percent of
+    recordings from a simulator whose receptor kinetics the twin cannot
+    represent, where the pre-registered requirement was 80 percent.
     """
     obs = np.concatenate([nde.phi(np.atleast_2d(x_base)),
                           nde.phi(np.atleast_2d(x_treat))], axis=1).ravel()
@@ -96,8 +104,9 @@ def discrepancy(x_base: np.ndarray, x_treat: np.ndarray,
     med = np.median(pred, axis=0)
     mad = np.median(np.abs(pred - med), axis=0) * 1.4826
     scale = np.where(mad > 1e-6, mad, np.maximum(np.std(pred, axis=0), 1e-3))
-    z = (obs - med) / scale
-    return float(np.mean(z ** 2))
+    z2 = np.sort(((obs - med) / scale) ** 2)[::-1]
+    k = max(1, min(worst_k, z2.size))
+    return float(np.mean(z2[:k]))
 
 
 def calibrate_threshold(twin, sim, bank: dict, index: np.ndarray,

@@ -1,34 +1,35 @@
 {
  "screened": 9600,
- "living_rate": 0.09875,
+ "usable_rate": 0.0209375,
  "criterion": {
   "mfr_min": 0.3,
   "mfr_max": 40.0,
   "active_frac_min": 0.6,
   "nbr_min": 1.0,
-  "psib_min": 5.0
+  "psib_min": 5.0,
+  "ampa_block_max_ratio": 0.35
  },
  "duration_s": 30.0,
  "quantiles": {
   "0.50": {
-   "threshold": 0.0010211099658229135,
-   "acceptance": 0.1975
+   "threshold": 6.192078695291409e-09,
+   "acceptance": 0.041875
   },
   "0.70": {
-   "threshold": 0.006841402923162526,
-   "acceptance": 0.32916666666666666
+   "threshold": 1.1862449731310908e-07,
+   "acceptance": 0.06979166666666667
   },
   "0.80": {
-   "threshold": 0.01813792065930317,
-   "acceptance": 0.49375
+   "threshold": 8.334193863780477e-07,
+   "acceptance": 0.1046875
   },
   "0.85": {
-   "threshold": 0.03313097970399287,
-   "acceptance": 0.6583333333333333
+   "threshold": 2.6780027863763107e-06,
+   "acceptance": 0.13958333333333334
   },
   "0.90": {
-   "threshold": 0.15077592798365771,
-   "acceptance": 0.9875
+   "threshold": 9.583291690534968e-06,
+   "acceptance": 0.209375
   }
  }
 }

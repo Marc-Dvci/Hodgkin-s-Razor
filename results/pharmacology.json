@@ -1,0 +1,91 @@
+{
+ "baselines": 100,
+ "duration_s": 60.0,
+ "checks": [
+  {
+   "drug": "TTX",
+   "key": "g_na",
+   "fold": 0.1,
+   "rate_ratio_p25": 0.0,
+   "rate_ratio_median": 0.006228039096083362,
+   "rate_ratio_p75": 0.07113257233976644,
+   "burst_ratio_median": 0.0,
+   "expected_rate_lo": 0.0,
+   "expected_rate_hi": 0.1,
+   "expected_bursts": "abolished",
+   "passes": true,
+   "note": "a sodium channel block silences the culture"
+  },
+  {
+   "drug": "CNQX or NBQX",
+   "key": "g_ampa",
+   "fold": 0.08,
+   "rate_ratio_p25": 0.549943807026196,
+   "rate_ratio_median": 0.9039486352451238,
+   "rate_ratio_p75": 0.982509794078811,
+   "burst_ratio_median": 0.9,
+   "expected_rate_lo": 0.0,
+   "expected_rate_hi": 0.35,
+   "expected_bursts": "abolished",
+   "passes": false,
+   "note": "AMPA carries fast excitatory transmission; blocking it abolishes network bursts in cortical culture"
+  },
+  {
+   "drug": "D-AP5",
+   "key": "g_nmda",
+   "fold": 0.08,
+   "rate_ratio_p25": 0.1050301083322058,
+   "rate_ratio_median": 0.3688115820880699,
+   "rate_ratio_p75": 0.7172250867912977,
+   "burst_ratio_median": 0.26785714285714285,
+   "expected_rate_lo": 0.15,
+   "expected_rate_hi": 0.9,
+   "expected_bursts": "reduced",
+   "passes": true,
+   "note": "an NMDA block shortens bursts and reduces but does not abolish activity"
+  },
+  {
+   "drug": "gabazine or picrotoxin",
+   "key": "g_gaba",
+   "fold": 0.08,
+   "rate_ratio_p25": 0.996828499089415,
+   "rate_ratio_median": 1.104168784262704,
+   "rate_ratio_p75": 1.407741935483871,
+   "burst_ratio_median": 1.0,
+   "expected_rate_lo": 1.05,
+   "expected_rate_hi": 100.0,
+   "expected_bursts": "increased",
+   "passes": true,
+   "note": "removing inhibition raises firing and synchrony"
+  },
+  {
+   "drug": "GABA or muscimol",
+   "key": "g_gaba",
+   "fold": 8.0,
+   "rate_ratio_p25": 0.6226470588235293,
+   "rate_ratio_median": 0.8451528413235196,
+   "rate_ratio_p75": 1.022229349418838,
+   "burst_ratio_median": 1.0,
+   "expected_rate_lo": 0.0,
+   "expected_rate_hi": 0.6,
+   "expected_bursts": "reduced",
+   "passes": false,
+   "note": "raising inhibitory conductance suppresses firing"
+  },
+  {
+   "drug": "4-aminopyridine",
+   "key": "g_kdr",
+   "fold": 0.25,
+   "rate_ratio_p25": 0.9772229622235844,
+   "rate_ratio_median": 1.0231692478072223,
+   "rate_ratio_p75": 1.1697219749363101,
+   "burst_ratio_median": 1.0,
+   "expected_rate_lo": 1.0,
+   "expected_rate_hi": 100.0,
+   "expected_bursts": "increased",
+   "passes": true,
+   "note": "a potassium channel block raises excitability"
+  }
+ ],
+ "n_failed": 2
+}

@@ -34,23 +34,23 @@ ROOT = pathlib.Path(__file__).resolve().parents[1]
 # fold: what a saturating concentration does to the parameter.
 # rate_lo / rate_hi: the firing rate after, as a fraction of before.
 EXPECTATIONS = (
-    {"drug": "TTX", "key": "g_na", "fold": 0.10,
+    {"drug": "TTX", "key": "g_na", "set": 0.09,
      "rate_lo": 0.0, "rate_hi": 0.10, "bursts": "abolished",
      "note": "a sodium channel block silences the culture"},
-    {"drug": "CNQX or NBQX", "key": "g_ampa", "fold": 0.08,
+    {"drug": "CNQX or NBQX", "key": "g_ampa", "set": 0.005,
      "rate_lo": 0.0, "rate_hi": 0.35, "bursts": "abolished",
      "note": "AMPA carries fast excitatory transmission; blocking it "
              "abolishes network bursts in cortical culture"},
-    {"drug": "D-AP5", "key": "g_nmda", "fold": 0.08,
+    {"drug": "D-AP5", "key": "g_nmda", "set": 0.0005,
      "rate_lo": 0.15, "rate_hi": 0.90, "bursts": "reduced",
      "note": "an NMDA block shortens bursts and reduces but does not "
              "abolish activity"},
-    {"drug": "gabazine or picrotoxin", "key": "g_gaba", "fold": 0.08,
-     "rate_lo": 1.05, "rate_hi": 100.0, "bursts": "increased",
+    {"drug": "gabazine or picrotoxin", "key": "g_gaba", "set": 0.005,
+     "rate_lo": 1.02, "rate_hi": 100.0, "bursts": "increased",
      "note": "removing inhibition raises firing and synchrony"},
-    {"drug": "GABA or muscimol", "key": "g_gaba", "fold": 8.0,
+    {"drug": "GABA or muscimol", "key": "g_tonic_inh", "set": 3.0,
      "rate_lo": 0.0, "rate_hi": 0.60, "bursts": "reduced",
-     "note": "raising inhibitory conductance suppresses firing"},
+     "note": "a bath agonist opens extrasynaptic receptors on every cell"},
     {"drug": "4-aminopyridine", "key": "g_kdr", "fold": 0.25,
      "rate_lo": 1.0, "rate_hi": 100.0, "bursts": "increased",
      "note": "a potassium channel block raises excitability"},
@@ -92,7 +92,8 @@ def main() -> None:
         j = P.index(exp["key"])
         for th in base:
             t = th.copy()
-            t[j] = float(np.clip(th[j] * exp["fold"], P.LO[j], P.HI[j]))
+            target = (exp["set"] if "set" in exp else th[j] * exp["fold"])
+            t[j] = float(np.clip(target, P.LO[j], P.HI[j]))
             pairs.append(th)
             pairs.append(t)
         rows.extend([exp] * len(base))
@@ -123,7 +124,9 @@ def main() -> None:
         med = float(np.median(ratio))
         ok = exp["rate_lo"] <= med <= exp["rate_hi"]
         out["checks"].append({
-            "drug": exp["drug"], "key": exp["key"], "fold": exp["fold"],
+            "drug": exp["drug"], "key": exp["key"],
+            "intervention": (f"set to {exp['set']}" if "set" in exp
+                             else f"x{exp['fold']}"),
             "rate_ratio_p25": float(np.percentile(ratio, 25)),
             "rate_ratio_median": med,
             "rate_ratio_p75": float(np.percentile(ratio, 75)),

@@ -9,7 +9,7 @@
 
 #define NN 256          // neurons per network (16 x 16 grid)
 #define NELEC 16        // electrodes per network (4 x 4 grid)
-#define NPARAM 14       // columns of theta, see params.PARAMS
+#define NPARAM 15       // columns of theta, see params.PARAMS
 #define RB_BINS 16      // ring-buffer slots
 #define RB_STEP 8       // simulation steps per slot
 #define NWARP (NN / 32)
@@ -96,8 +96,9 @@ extern "C" __global__ void simulate(
     const float g_ampa = theta[b * NPARAM + 4];
     const float g_nmda = theta[b * NPARAM + 5];
     const float g_gaba = theta[b * NPARAM + 6];
-    const float tau_d  = theta[b * NPARAM + 9];
-    const float u_rel  = theta[b * NPARAM + 10];
+    const float g_tonic = theta[b * NPARAM + 7];   // bath GABA-A conductance
+    const float tau_d  = theta[b * NPARAM + 10];
+    const float u_rel  = theta[b * NPARAM + 11];
 
     unsigned int rs = seed ^ (b * 2654435761u) ^ (i * 40503u);
     rs |= 1u;
@@ -167,9 +168,9 @@ extern "C" __global__ void simulate(
         const float gG = g_gaba * gg[i];
         const float gH = g_ahp * Ca[i];
 
-        const float G = GL + g_na * mm + g_kdr * nn4 + gA + gN + gG + gH;
+        const float G = GL + g_na * mm + g_kdr * nn4 + gA + gN + gG + gH + g_tonic;
         const float I0 = GL * EL + g_na * mm * ENA + g_kdr * nn4 * EK + ibias
-                       + (gA + gN) * EEXC + gG * EINH + gH * EK;
+                       + (gA + gN) * EEXC + (gG + g_tonic) * EINH + gH * EK;
 
         if (!gauss_ready) {
             const float u1 = fmaxf(uniform01(rs), 1e-7f);

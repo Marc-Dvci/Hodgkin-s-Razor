@@ -1,0 +1,42 @@
+{
+ "unpaired": false,
+ "transforms": 6,
+ "hidden": 384,
+ "depth": 3,
+ "bank": "data/bank",
+ "pairs": 110000,
+ "val_loss": 17.967755883932114,
+ "val_nll": 17.614708764212473,
+ "val_bce": 0.35304711971964153,
+ "epochs_run": 55,
+ "param_keys": [
+  "noise",
+  "g_na",
+  "g_kdr",
+  "g_ahp",
+  "g_ampa",
+  "g_nmda",
+  "g_gaba",
+  "p_conn",
+  "f_inh",
+  "tau_d",
+  "u_rel",
+  "i_drive",
+  "p_detect",
+  "elec_het"
+ ],
+ "shift_keys": [
+  "g_na",
+  "g_kdr",
+  "g_ahp",
+  "g_ampa",
+  "g_nmda",
+  "g_gaba",
+  "tau_d",
+  "u_rel",
+  "i_drive"
+ ],
+ "n_val": 6600,
+ "n_cal": 6600,
+ "seed": 11
+}

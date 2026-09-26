@@ -34,7 +34,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 warnings.filterwarnings("ignore")
 
 from hodgkins_razor import features as F, params as P, shift as SH, simulator as S
-from fit_regime import CRITERION, is_living
+from fit_regime import CRITERION, ampa_dependent, is_living
 
 N_ELEC = S.NELEC
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -128,9 +128,15 @@ def main() -> None:
             seed = int(args.seed + 7919 * (s * 10000 + step))
             probe = sim.run(cand, duration_s=args.probe_duration,
                             transient_s=args.transient, seed=seed)
+            stats = [F.regime_stats(probe.as_events(k), N_ELEC,
+                                    args.probe_duration)
+                     for k in range(cand.shape[0])]
+            ratio = ampa_dependent(sim, cand, args.probe_duration,
+                                   args.transient, seed + 500003,
+                                   np.array([s_["mfr"] for s_ in stats]))
             live = [k for k in range(cand.shape[0])
-                    if is_living(F.regime_stats(probe.as_events(k), N_ELEC,
-                                                args.probe_duration))]
+                    if is_living(stats[k])
+                    and ratio[k] < CRITERION["ampa_block_max_ratio"]]
             screened += cand.shape[0]
             accepted += len(live)
             if not live:

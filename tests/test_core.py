@@ -131,15 +131,36 @@ def test_a_different_seed_changes_the_recording():
     assert any(not np.array_equal(a.times[i], b.times[i]) for i in range(4))
 
 
+def _living(sim, n: int = 1, seed: int = 3, batch: int = 384,
+            duration: float = 30.0) -> np.ndarray:
+    """Parameter sets whose simulated baseline is a living culture.
+
+    Most of the prior is silent or saturated, so a test that needs a working
+    network has to find one the same way the bank generator does.
+    """
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from fit_regime import is_living
+    rng = np.random.default_rng(seed)
+    out = []
+    for attempt in range(8):
+        th = P.sample_prior(batch, rng)
+        r = sim.run(th, duration_s=duration, transient_s=5.0,
+                    seed=seed * 100 + attempt)
+        for k in range(batch):
+            if is_living(F.regime_stats(r.as_events(k), 16, duration)):
+                out.append(th[k])
+                if len(out) >= n:
+                    return np.array(out)
+    raise AssertionError("no living baseline found")
+
+
 @needs_gpu
 def test_blocking_sodium_silences_the_network():
     """The model must reproduce the one effect every MEA laboratory knows."""
     sim = S.Simulator()
-    base = dict(noise=4.0, g_na=1.4, g_kdr=1.0, g_ahp=5.0, g_ampa=0.35,
-                g_nmda=0.25, g_gaba=1.0, p_conn=0.25, f_inh=0.2, tau_d=500.0,
-                u_rel=0.2, i_drive=18.0, p_detect=0.8, elec_het=0.3)
-    th = np.array([[base[k] for k in P.KEYS], [base[k] for k in P.KEYS]])
-    th[1, P.index("g_na")] = P.PARAMS[P.index("g_na")].lo
+    base = _living(sim, n=1, seed=3)[0]
+    th = np.array([base, base.copy()])
+    th[1, P.index("g_na")] = P.LO[P.index("g_na")]
     r = sim.run(th, duration_s=30.0, transient_s=5.0, seed=3)
     hi = F.compute(r.as_events(0), 16, 30.0)[0]
     lo = F.compute(r.as_events(1), 16, 30.0)[0]
@@ -174,12 +195,14 @@ def test_pair_mode_rejects_an_odd_batch():
 @needs_gpu
 def test_variant_kinetics_produce_a_different_recording():
     """The guard is only meaningful if the variant is genuinely out of reach."""
-    th = P.sample_prior(12, np.random.default_rng(12))
-    a = S.Simulator().run(th, duration_s=25.0, transient_s=5.0, seed=4)
+    sim = S.Simulator()
+    th = _living(sim, n=8, seed=12)
+    n = th.shape[0]
+    a = sim.run(th, duration_s=25.0, transient_s=5.0, seed=4)
     b = S.Simulator(kinetics={"TAU_AMPA": 20.0, "TAU_GABA": 40.0}).run(
         th, duration_s=25.0, transient_s=5.0, seed=4)
-    changed = sum(not np.array_equal(a.times[i], b.times[i]) for i in range(12))
-    assert changed >= 6
+    changed = sum(not np.array_equal(a.times[i], b.times[i]) for i in range(n))
+    assert changed >= max(n // 2, 1)
 
 
 # -------------------------------------------------------------------- report
@@ -292,3 +315,29 @@ def test_report_gives_a_mechanism_class():
 def test_every_shiftable_mechanism_has_a_class():
     for i in P.SHIFT_IDX:
         assert P.KEYS[i] in P.CLASS_OF
+
+
+# ----------------------------------------------------------------- the guard
+def test_discrepancy_sees_a_mismatch_confined_to_a_few_features():
+    """A recording that fails on a handful of statistics must score high.
+
+    Averaging over every feature hid exactly this case, which is why the
+    statistic takes the worst few instead.
+    """
+    from hodgkins_razor import ppc
+    rng = np.random.default_rng(0)
+    pred = rng.normal(0, 1, (48, F.N_FEATURE))
+    obs = np.zeros(F.N_FEATURE)
+    near = ppc.discrepancy(obs, obs, pred, pred)
+    far = obs.copy()
+    far[:4] = 30.0
+    high = ppc.discrepancy(far, obs, pred, pred)
+    assert high > 10 * max(near, 1e-9), (near, high)
+
+
+def test_discrepancy_is_low_for_a_recording_the_model_predicts():
+    from hodgkins_razor import ppc
+    rng = np.random.default_rng(1)
+    pred = rng.normal(0, 1, (48, F.N_FEATURE))
+    obs = pred.mean(axis=0)
+    assert ppc.discrepancy(obs, obs, pred, pred) < 3.0

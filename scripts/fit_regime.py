@@ -28,9 +28,14 @@ from hodgkins_razor import features as F, params as P, simulator as S
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
-# A living, network-driven preparation, judged on the recording alone.
+# A living, network-driven preparation, judged on the recording alone, plus
+# the property that defines a cortical culture pharmacologically: its activity
+# depends on fast excitatory transmission, so blocking AMPA collapses it. A
+# network that keeps firing through an AMPA block is not the preparation the
+# recorded compounds were applied to, and no method could attribute a compound
+# to a mechanism that does nothing in it.
 CRITERION = {"mfr_min": 0.3, "mfr_max": 40.0, "active_frac_min": 0.6,
-             "nbr_min": 1.0, "psib_min": 5.0}
+             "nbr_min": 1.0, "psib_min": 5.0, "ampa_block_max_ratio": 0.35}
 
 
 def is_living(f) -> bool:
@@ -46,6 +51,18 @@ def is_living(f) -> bool:
             and g("active_frac") >= c["active_frac_min"]
             and g("nbr") >= c["nbr_min"]
             and g("psib") >= c["psib_min"])
+
+
+def ampa_dependent(sim, theta: np.ndarray, duration: float, transient: float,
+                   seed: int, base_rate: np.ndarray | None = None):
+    """Rate after an AMPA block, as a fraction of the rate before."""
+    j = P.index("g_ampa")
+    blocked = theta.copy()
+    blocked[:, j] = P.LO[j]
+    r = sim.run(blocked, duration_s=duration, transient_s=transient, seed=seed)
+    after = np.array([F.regime_stats(r.as_events(k), S.NELEC, duration)["mfr"]
+                      for k in range(theta.shape[0])])
+    return after / np.maximum(base_rate, 1e-9)
 
 
 def main() -> None:
@@ -70,11 +87,16 @@ def main() -> None:
         th = P.sample_prior(nb, rng)
         r = sim.run(th, duration_s=args.duration, transient_s=args.transient,
                     seed=args.seed + a)
+        stats = [F.regime_stats(r.as_events(k), S.NELEC, args.duration)
+                 for k in range(nb)]
+        live = np.array([is_living(s_) for s_ in stats])
+        ratio = ampa_dependent(sim, th, args.duration, args.transient,
+                               args.seed + a + 500000,
+                               np.array([s_["mfr"] for s_ in stats]))
         TH.append(th)
-        Y.append(np.array([is_living(F.regime_stats(r.as_events(k), S.NELEC,
-                                                    args.duration)) for k in range(nb)]))
+        Y.append(live & (ratio < CRITERION["ampa_block_max_ratio"]))
         done = sum(len(y) for y in Y)
-        print(f"  screened {done}/{args.screen}, living {np.concatenate(Y).mean():.3f}"
+        print(f"  screened {done}/{args.screen}, usable {np.concatenate(Y).mean():.3f}"
               f"  ({time.time() - t0:.0f}s)", flush=True)
     TH = np.concatenate(TH)
     Y = np.concatenate(Y)
@@ -86,7 +108,7 @@ def main() -> None:
     out.parent.mkdir(parents=True, exist_ok=True)
     joblib.dump(model, out.with_suffix(".joblib"))
 
-    stats = {"screened": int(len(Y)), "living_rate": float(Y.mean()),
+    stats = {"screened": int(len(Y)), "usable_rate": float(Y.mean()),
              "criterion": CRITERION, "duration_s": args.duration,
              "quantiles": {}}
     for q in (0.5, 0.7, 0.8, 0.85, 0.9):

@@ -78,7 +78,7 @@ def main() -> None:
         rows = []
         for c in ph["checks"]:
             band = f"{c['expected_rate_lo']:.2f} to {c['expected_rate_hi']:.2f}"
-            rows.append([c["drug"], f"`{c['key']}`",
+            rows.append([c["drug"], f"`{c['key']}` {c.get('intervention', '')}",
                          f"{c['rate_ratio_median']:.3f}", band,
                          "pass" if c["passes"] else "**fail**"])
         ph_txt = ("Firing rate after the intervention as a fraction of before, "
