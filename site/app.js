@@ -45,13 +45,25 @@ function drawRaster(canvas, data, duration, nElec, colour) {
   g.fillText(`${data.n} events`, w - 78, 13);
 }
 
+const UNIT = {g_tonic_inh: " nS", i_drive: " pA"};
 function fmtEffect(m) {
   if (m.kind === "fold") return `${m.effect.toFixed(2)}x`;
-  return (m.effect >= 0 ? "+" : "") + m.effect.toFixed(2);
+  return (m.effect >= 0 ? "+" : "") + m.effect.toFixed(2) + (UNIT[m.key] || "");
 }
 function fmtInterval(m) {
-  if (m.kind === "fold") return `${m.lo.toFixed(2)} to ${m.hi.toFixed(2)}`;
-  return `${m.lo.toFixed(2)} to ${m.hi.toFixed(2)}`;
+  if (m.kind === "fold") return `${m.lo.toFixed(2)}x to ${m.hi.toFixed(2)}x`;
+  const u = UNIT[m.key] || "";
+  return `${m.lo.toFixed(2)} to ${m.hi.toFixed(2)}${u}`;
+}
+function guardText(g) {
+  if (!g) return "Guard not run on this host.";
+  const parts = [];
+  if (g.typicality !== undefined)
+    parts.push(`typicality ${g.typicality.toFixed(1)} (threshold ${g.typicality_threshold.toFixed(1)})`);
+  if (g.discrepancy !== undefined)
+    parts.push(`predictive check ${g.discrepancy.toFixed(0)} statistics outside (threshold ${g.threshold.toFixed(0)})`);
+  else parts.push("predictive check needs a CUDA device and was not run here");
+  return "Guard: " + parts.join("; ") + ".";
 }
 
 function render(d) {
@@ -61,9 +73,8 @@ function render(d) {
   if (rep.verdict === "outside_model") badge = '<span class="badge warn">outside the model</span>';
   else if (rep.verdict === "mechanism_called") badge = '<span class="badge ok">mechanism named</span>';
   $("verdict").innerHTML = badge + rep.sentence;
-  $("guardline").textContent = rep.guard
-    ? `Predictive check: discrepancy ${rep.guard.discrepancy.toFixed(2)}, threshold ${rep.guard.threshold.toFixed(2)}.`
-    : "Predictive check not run on this host.";
+  const sys_ = (rep.meta && rep.meta.recording_system) ? ` Read as ${rep.meta.recording_system}.` : "";
+  $("guardline").textContent = guardText(rep.guard) + sys_;
 
   const tb = $("mech").querySelector("tbody");
   tb.innerHTML = "";
@@ -89,14 +100,15 @@ function render(d) {
   $("classpanel").hidden = !(rep.classes && rep.classes.length);
 
   const dur = rep.meta.duration_s || 60;
+  const ne = (rep.meta.recording_system === "grid12") ? 12 : 16;
   $("rasterpanel").hidden = false;
-  drawRaster($("c_ob"), d.observed.base, dur, 16, "#5eb0ff");
-  drawRaster($("c_ot"), d.observed.treat, dur, 16, "#f0883e");
+  drawRaster($("c_ob"), d.observed.base, dur, ne, "#5eb0ff");
+  drawRaster($("c_ot"), d.observed.treat, dur, ne, "#f0883e");
   if (d.twin) {
-    drawRaster($("c_tb"), d.twin.base, dur, 16, "#7fc7ff");
-    drawRaster($("c_tt"), d.twin.treat, dur, 16, "#ffb27f");
+    drawRaster($("c_tb"), d.twin.base, dur, ne, "#7fc7ff");
+    drawRaster($("c_tt"), d.twin.treat, dur, ne, "#ffb27f");
   } else {
-    for (const id of ["c_tb", "c_tt"]) drawRaster($(id), null, dur, 16, "#888");
+    for (const id of ["c_tb", "c_tt"]) drawRaster($(id), null, dur, ne, "#888");
   }
 
   const cb = $("culture").querySelector("tbody");

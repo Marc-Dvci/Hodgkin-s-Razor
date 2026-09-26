@@ -26,9 +26,9 @@ warnings.filterwarnings("ignore")
 from hodgkins_razor import features as F, nde, params as P
 
 EXAMPLES = ROOT / "data" / "examples"
-KEY = {"CNQX": "g_ampa", "D-AP5": "g_nmda", "GABA": "g_gaba",
-       "gabazine": "g_gaba", "kainic acid": "g_ampa", "TTX": "g_na",
-       "vehicle control": None}
+KEY = {"CNQX": {"g_ampa"}, "D-AP5": {"g_nmda"}, "GABA": {"g_gaba", "g_tonic_inh"},
+       "gabazine": {"g_gaba"}, "kainic acid": {"g_ampa"}, "TTX": {"g_na"},
+       "Dynasore": {"u_rel", "tau_d"}, "vehicle control": None}
 SHIFT_KEYS = [P.KEYS[i] for i in P.SHIFT_IDX]
 
 
@@ -49,13 +49,14 @@ def run(live: bool) -> int:
             print("No CUDA device found; falling back to cached analyses.")
             live = False
         else:
-            twin = nde.Twin.load(ROOT / "models" / "twin", device="cuda")
+            twin = {v: nde.Twin.load(ROOT / "models" / f"twin_v2_{v}", device="cuda")
+                    for v in ("grid16", "grid12")}
             sim = S.Simulator()
 
     print()
     print("Hodgkin's Razor - which mechanism did the compound move?")
-    print(f"{len(files)} recording pairs from the Tampere comparative MEA dataset "
-          "(CC BY 4.0)")
+    print(f"{len(files)} recording pairs: Tampere comparative MEA dataset (CC BY 4.0)"
+          + (" and Doorn et al. 2024 (Apache-2.0)" if any("dynasore" in f.name for f in files) else ""))
     line("=")
     print(f"{'recording':44s} {'called':11s} {'prob':>5s} {'effect':>9s}  {'expected':11s} {'':4s}")
     line()
@@ -69,9 +70,11 @@ def run(live: bool) -> int:
             base = np.array(d["baseline"]).reshape(-1, 2)
             treat = np.array(d["treated"]).reshape(-1, 2)
             dur = float(d["duration"])
-            xb = F.compute(base, 16, dur)
-            xt = F.compute(treat, 16, dur)
-            rep = _live_report(twin, sim, xb, xt, dur)
+            n = int(d.get("n_elec", 16))
+            view = "grid12" if n == 12 else "grid16"
+            xb = F.compute(base, n, dur)
+            xt = F.compute(treat, n, dur)
+            rep = _live_report(twin[view], sim, xb, xt, dur, view)
         elif "analysis" in d:
             rep = d["analysis"]["report"]
         else:
@@ -81,15 +84,18 @@ def run(live: bool) -> int:
         top = rep["mechanisms"][0]
         called = top["key"] if top["p_active"] >= 0.5 else "-"
         eff = (f"{top['effect']:.2f}x" if top["kind"] == "fold"
-               else f"{top['effect']:+.2f}")
+               else f"{top['effect']:+.2f}nS" if top["key"] == "g_tonic_inh"
+               else f"{top['effect']:+.1f}pA")
+        if not rep.get("inside_model", True):
+            called = "outside"
         if want is None:
             ok = "ok" if called == "-" else "flag"
             mark = "  +" if called == "-" else "  ."
         else:
             total += 1
-            good = called == want
+            good = called in want
             hits += good
-            ok = want
+            ok = "/".join(sorted(want))
             mark = "  +" if good else "  ."
         print(f"{label:44s} {called:11s} {top['p_active']:5.2f} {eff:>9s}  {ok:11s}{mark}")
 
@@ -97,21 +103,28 @@ def run(live: bool) -> int:
     if total:
         print(f"top-1 mechanism accuracy on these examples: {hits}/{total} "
               f"= {hits / total:.2f}   (chance {1 / len(SHIFT_KEYS):.2f})")
-    print("Full pre-registered evaluation: python scripts/evaluate.py")
+    print("Effect: fold change if that mechanism moved; linear parameters in their own unit.")
+    print("Full pre-registered evaluation: python scripts/evaluate_v2.py")
     print()
     return 0
 
 
-def _live_report(twin, sim, xb, xt, dur):
+def _live_report(twin, sim, xb, xt, dur, view):
     from hodgkins_razor import ppc, report
     post = twin.posterior(xb, xt)
     thr = float("inf")
-    res = ROOT / "results" / "results.json"
+    res = ROOT / "results" / "v2" / "results.json"
     if res.exists():
-        thr = json.loads(res.read_text()).get(
-            "guard_calibration", {}).get("threshold", float("inf"))
-    guard = ppc.check(twin, sim, xb, xt, thr, dur, 5.0, n_draws=24, post=post)
-    return report.build(post, guard, xb, xt, meta={"duration_s": dur})
+        thr = json.loads(res.read_text()).get("guard_thresholds", {}).get(view, {}).get("ppc", thr)
+    g = ppc.check(twin, sim, xb, xt, thr, dur, 5.0, n_draws=24, post=post)
+    typ = ppc.Typicality.for_twin(twin)
+    guard = {"discrepancy": g["discrepancy"], "threshold": thr,
+             "inside_model": g["inside_model"]}
+    if typ is not None:
+        t = typ.of_pair(twin, xb, xt)
+        guard.update({"typicality": t, "typicality_threshold": typ.threshold})
+        guard["inside_model"] = guard["inside_model"] and t <= typ.threshold
+    return report.build(post, guard, xb, xt, meta={"duration_s": dur, "recording_system": view})
 
 
 def main() -> None:

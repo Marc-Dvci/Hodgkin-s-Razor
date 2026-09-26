@@ -174,14 +174,23 @@ def auroc(score: np.ndarray, label: np.ndarray) -> float:
     return float((r[y].sum() - n1 * (n1 + 1) / 2) / (n1 * n0))
 
 
-def prediction_for_recorded_chips(bank: dict) -> dict:
+SYMMETRIC_SEEDING = 0.7   # target autonomy at or above: both chambers self-active
+
+
+def prediction_for_recorded_chips(bank: dict, symmetric: bool = True) -> dict:
     """What the twin expects the two recorded-chip statistics to show.
 
     Strong diodes (direction_sel above 0.85) against symmetric channels (below
     0.6), scored with the same unsigned statistics `mateus_check.py` computes:
     the dominant share of channel propagation, and the asymmetry of the
-    chambers' rate cross-correlation.
+    chambers' rate cross-correlation. Mateus et al. seed both chambers with the
+    same neurons at the same density, so the prediction for their chips is made
+    on simulated chips whose two chambers are both self-active; a weakly active
+    target makes forward events dominate whatever the channel does.
     """
+    if symmetric:
+        keep = bank["chip"][:, 3] >= SYMMETRIC_SEEDING
+        bank = {k: v[keep] for k, v in bank.items()}
     d = bank["chip"][:, 1]
     strong, sym = d > 0.85, d < 0.6
     keep = strong | sym
@@ -263,6 +272,7 @@ def main() -> None:
         print(f"fitting {name} ({x.shape[1]} statistics) ...", flush=True)
         res["readouts"][name] = fit_readout(x, bank["chip"], seed=10 + i)
     res["prediction_for_recorded_chips"] = prediction_for_recorded_chips(bank)
+    res["prediction_all_chips"] = prediction_for_recorded_chips(bank, symmetric=False)
     print("NMDA check against Lassus et al. ...", flush=True)
     res["lassus_nmda"] = lassus_check(args)
     (ROOT / args.out).write_text(json.dumps(res, indent=1))

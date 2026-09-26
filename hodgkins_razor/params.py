@@ -91,6 +91,11 @@ PARAMS: tuple[Param, ...] = (
     # spread of that pickup, and it is a property of the plating, so it is held
     # fixed across a pair as well.
     Param("elec_het", "Electrode pickup spread", "", 0.01, 1.6, False, False, ""),
+    # Asynchronous release, with the range of Doorn et al. (2025). It keeps a
+    # culture firing through its own synapses between network bursts, which is
+    # what the recorded cultures do: CNQX abolishes that firing too. A
+    # property of the culture, held fixed across a pair.
+    Param("u_asyn", "Asynchronous release strength", "", 0.0, 0.005, False, False, ""),
 )
 
 N_PARAM = len(PARAMS)

@@ -26,7 +26,7 @@ def test_transform_round_trip():
 
 
 def test_nuisances_are_not_shiftable():
-    for key in ("noise", "p_conn", "f_inh", "p_detect", "elec_het"):
+    for key in ("noise", "p_conn", "f_inh", "p_detect", "elec_het", "u_asyn"):
         assert not P.PARAMS[P.index(key)].shiftable, key
     for key in ("g_ampa", "g_nmda", "g_gaba", "g_na"):
         assert P.PARAMS[P.index(key)].shiftable, key
@@ -494,3 +494,38 @@ def test_mateus_propagation_counts_planted_sequences():
                       duration=60.0, spikes=spikes)
     out = M.propagation(rec)
     assert out["down"] == len(t0) and out["up"] == 10
+
+
+def test_v2_metrics_on_synthetic_wells():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import evaluate_v2 as E
+    keys = E.SHIFT_KEYS
+    rng = np.random.default_rng(0)
+    rows = []
+    truth = {"A": "u_rel", "B": "g_ampa"}
+    for comp, want in truth.items():
+        for w in range(4):
+            for k in range(3):
+                p = rng.uniform(0, 0.2, len(keys))
+                p[keys.index(want)] = 0.9 if w < 3 else 0.1
+                rows.append({"plate": "x", "species": "rat" if w % 2 else "hPSC",
+                             "well": f"{comp}{w}", "compound": comp,
+                             "p_active": p.tolist(), "effect_med": np.full(len(keys), 0.5).tolist(),
+                             "effect_lo": [0] * len(keys), "effect_hi": [1] * len(keys),
+                             "x_base": rng.normal(size=40).tolist(),
+                             "x_treat": rng.normal(size=40).tolist()})
+    for w in range(3):
+        rows.append({"plate": "x", "species": "rat", "well": f"C{w}", "compound": "Control",
+                     "p_active": [0.05] * len(keys), "effect_med": [0] * len(keys),
+                     "effect_lo": [0] * len(keys), "effect_hi": [0] * len(keys),
+                     "x_base": [0.0] * 40, "x_treat": [0.0] * 40})
+    wells = E.by_well(rows)
+    key = {"A": {"accept": ["u_rel", "tau_d"], "direction": "up"},
+           "B": {"accept": ["g_ampa"], "direction": "any"},
+           "Control": {"control": True}}
+    m = E.mechanism_metrics(wells, key)
+    assert m["n_wells"] == 8 and m["top1_hits"] == 6
+    assert m["control_false_mechanism_rate"] == 0.0
+    assert m["detection_auroc"] > 0.5
+    t = E.transfer(rows, wells)
+    assert set(t) == {"raw", "twin"}

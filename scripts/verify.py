@@ -52,7 +52,8 @@ def main() -> None:
                 "hodgkins_razor/simulator.py", "hodgkins_razor/features.py",
                 "hodgkins_razor/nde.py", "hodgkins_razor/ppc.py",
                 "hodgkins_razor/chip.py", "hodgkins_razor/report.py",
-                "scripts/make_bank.py", "scripts/train.py", "scripts/evaluate.py",
+                "scripts/make_bank.py", "scripts/train.py", "scripts/evaluate_v2.py",
+                "hodgkins_razor/doorn.py", "hodgkins_razor/mateus.py",
                 "app/server.py", "demo.py", "README.md", "LICENSE",
                 "requirements.txt", "Dockerfile"]:
         c.add(f"{rel} present", (ROOT / rel).exists())
@@ -92,33 +93,57 @@ def main() -> None:
         ex = sorted((ROOT / "data" / "examples").glob("*.json"))
         c.add("bundled examples present", len(ex) >= 10, f"{len(ex)} files")
 
-    print("results")
-    rj = ROOT / "results" / "results.json"
+    print("pre-registration, version 2")
+    md2 = ROOT / "PREREGISTRATION_v2.md"
+    digest2 = ""
+    if md2.exists():
+        rec2 = (ROOT / "PREREGISTRATION_v2.sha256").read_text().split()[0]
+        digest2 = hashlib.sha256(md2.read_bytes()).hexdigest()
+        c.add("PREREGISTRATION_v2.md matches its recorded hash", digest2 == rec2, digest2[:16])
+        spec = json.loads(re.search(r"```json\n(.*?)\n```", md2.read_text(encoding="utf-8"),
+                                    re.S).group(1))
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from evaluate_v2 import model_digest
+        for name, want in spec["frozen_models"].items():
+            c.add(f"{name} is the model that was frozen",
+                  (ROOT / name).exists() and model_digest(ROOT / name) == want, want[:12])
+        dom = hashlib.sha256((ROOT / "models" / "domain.json").read_bytes()).hexdigest()
+        c.add("models/domain.json is the one that was frozen", dom == spec["domain_sha256"])
+    else:
+        c.add("PREREGISTRATION_v2.md present", False, "run scripts/freeze_v2.py")
+
+    if not args.skip_data:
+        print("external data")
+        out = subprocess.run([sys.executable, str(ROOT / "scripts" / "fetch_external.py")],
+                             capture_output=True, text=True, cwd=ROOT)
+        c.add("external files match the versions the results used",
+              out.returncode == 0, out.stdout.strip().splitlines()[-1] if out.stdout else "")
+
+    print("results, version 2")
+    rj = ROOT / "results" / "v2" / "results.json"
     if rj.exists():
         r = json.loads(rj.read_text())
-        c.add("results were produced against this pre-registration",
-              r.get("prereg_sha256") == digest)
-        rm = ROOT / "results" / "RESULTS.md"
-        if rm.exists():
-            text = rm.read_text()
-            top1 = r["mechanism"]["top1_accuracy"]
-            c.add("written top-1 accuracy matches the JSON",
-                  f"{top1:.3f}" in text, f"{top1:.3f}")
-            ctrl = r["mechanism"]["control_false_mechanism_rate"]
-            c.add("written control rate matches the JSON",
-                  f"{ctrl:.3f}" in text, f"{ctrl:.3f}")
-        else:
-            c.add("results/RESULTS.md present", False, "run scripts/render_results.py")
+        c.add("results were produced against the second pre-registration",
+              bool(digest2) and r.get("prereg_sha256") == digest2)
+        rm = ROOT / "results" / "v2" / "RESULTS.md"
+        text = rm.read_text(encoding="utf-8") if rm.exists() else ""
+        a = r.get("A_doorn", {}).get("metrics", {})
+        if a:
+            want = f"{a['top1_hits']}/{a['n_wells']}"
+            c.add("written blind-test result matches the JSON", want in text, want)
+        cm = r.get("C_tampere", {}).get("metrics_v1_key", {})
+        if cm:
+            want = f"{cm['top1_accuracy']:.2f}"
+            c.add("written Tampere result matches the JSON", want in text, want)
         rep = ROOT / "docs" / "TECHNICAL_REPORT.md"
         if rep.exists():
-            left = re.findall(r"\{\{(\w+)\}\}", rep.read_text())
+            left = re.findall(r"\{\{(\w+)\}\}", rep.read_text(encoding="utf-8"))
             c.add("technical report has no unfilled placeholder", not left,
                   ", ".join(sorted(set(left))))
-        for fig in ["confusion.png", "per_compound.png", "coverage.png",
-                    "reliability.png", "guard.png", "architecture.png"]:
-            c.add(f"figure {fig}", (ROOT / "results" / "figures" / fig).exists())
+            for img in re.findall(r"\]\(\.\./(results/[^)]+\.png)\)", rep.read_text(encoding="utf-8")):
+                c.add(f"figure {img}", (ROOT / img).exists())
     else:
-        c.add("results/results.json present", False, "run scripts/evaluate.py")
+        c.add("results/v2/results.json present", False, "run scripts/evaluate_v2.py")
 
     if not args.skip_tests:
         print("tests")

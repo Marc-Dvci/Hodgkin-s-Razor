@@ -1,0 +1,14 @@
+# CPU tests on every push: everything except the four tests that need CUDA,
+# which skip themselves when no device is present.
+name: tests
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  cpu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+      - run: python -m pytest tests/ -q

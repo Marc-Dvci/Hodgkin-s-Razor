@@ -48,8 +48,19 @@ VIEWS = list(S.VIEWS)
 DOMAINS = ("grid16", "grid12")
 
 
+def _unpack(packed) -> np.ndarray:
+    """Events sent to a worker as int32 steps and uint8 electrodes, not floats."""
+    t, e, dt_ms = packed
+    return np.stack([e.astype(np.float64), t * (dt_ms / 1000.0)], axis=1)
+
+
+def _pack(res, i: int) -> tuple:
+    return res.times[i], res.elecs[i], res.dt_ms
+
+
 def _all_views(args):
-    events, duration = args
+    packed, duration = args
+    events = _unpack(packed)
     out = []
     for v in VIEWS:
         ev, n = S.view_events(events, v)
@@ -57,9 +68,23 @@ def _all_views(args):
     return np.stack(out)
 
 
+def _one_view(args):
+    """Features through one system's view; the other views are left NaN.
+
+    Each twin is trained on the cultures of its own recording system, so
+    reading a culture through a view it will never be trained on only costs
+    time.
+    """
+    packed, view, duration = args
+    out = np.full((len(VIEWS), F.N_FEATURE), np.nan)
+    ev, n = S.view_events(_unpack(packed), view)
+    out[VIEWS.index(view)] = F.compute(ev, n, duration)
+    return out
+
+
 def _rate(args):
-    events, view, duration = args
-    ev, n = S.view_events(events, view)
+    packed, view, duration = args
+    ev, n = S.view_events(_unpack(packed), view)
     return ev.shape[0] / duration / n
 
 
@@ -99,7 +124,7 @@ def main() -> None:
     ap.add_argument("--transient", type=float, default=5.0)
     ap.add_argument("--seed", type=int, default=20261001)
     ap.add_argument("--out", default="data/bank_v2")
-    ap.add_argument("--workers", type=int, default=10)
+    ap.add_argument("--workers", type=int, default=9)
     ap.add_argument("--regime", default="models/regime.json")
     ap.add_argument("--regime-quantile", type=float, default=0.85)
     ap.add_argument("--domain-file", default="models/domain.json")
@@ -128,7 +153,7 @@ def main() -> None:
     # Two pools: the probe features gate the next GPU launch, so they must not
     # queue behind the pair features, which only need to be ready by the end
     # of the shard.
-    pool = cf.ProcessPoolExecutor(max_workers=max(args.workers // 3, 2))
+    pool = cf.ProcessPoolExecutor(max_workers=6)
     pair_pool = cf.ProcessPoolExecutor(max_workers=args.workers)
     t_start = time.time()
     done_pairs = 0
@@ -155,7 +180,7 @@ def main() -> None:
             seed = int(args.seed + 7919 * (s * 10000 + step))
             probe = sim.run(cand, duration_s=args.duration,
                             transient_s=args.transient, seed=seed)
-            xv = list(pool.map(_all_views, [(probe.raw_events(k), args.duration)
+            xv = list(pool.map(_one_view, [(_pack(probe, k), domain, args.duration)
                                             for k in range(cand.shape[0])], chunksize=8))
             first = [k for k in range(cand.shape[0])
                      if not probe.truncated[k] and in_domain(xv[k], domain, boxes)]
@@ -166,7 +191,7 @@ def main() -> None:
                 blocked[:, P.index("g_ampa")] = P.LO[P.index("g_ampa")]
                 rb = sim.run(blocked, duration_s=args.duration,
                              transient_s=args.transient, seed=seed + 500003)
-                after = np.array(list(pool.map(_rate, [(rb.raw_events(k), domain, args.duration)
+                after = np.array(list(pool.map(_rate, [(_pack(rb, k), domain, args.duration)
                                                        for k in range(len(sel))])))
                 before = np.array([xv[k][VIEWS.index(domain)][F.NAMES.index("mfr")]
                                    for k in sel])
@@ -193,7 +218,7 @@ def main() -> None:
             ok = ~(res.truncated[0::2] | res.truncated[1::2])
             # Features are computed while the GPU runs the next batch.
             keep = np.flatnonzero(np.repeat(ok, 2))
-            PENDING.append(pair_pool.map(_all_views, [(res.raw_events(int(i)), args.duration)
+            PENDING.append(pair_pool.map(_one_view, [(_pack(res, int(i)), domain, args.duration)
                                                  for i in keep], chunksize=8))
             TC.append(P.to_unit(theta_c)[ok])
             DL.append(realised[ok])

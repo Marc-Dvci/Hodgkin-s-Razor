@@ -9,7 +9,7 @@
 
 #define NN 256          // neurons per network (16 x 16 grid)
 #define NELEC 16        // electrodes per network (4 x 4 grid)
-#define NPARAM 15       // columns of theta, see params.PARAMS
+#define NPARAM 16       // columns of theta, see params.PARAMS
 #define RB_BINS 16      // ring-buffer slots
 #define RB_STEP 8       // simulation steps per slot
 #define NWARP (NN / 32)
@@ -31,6 +31,9 @@
 #define ALPHA_CA 0.00035f
 #define REFRAC 2.0f     // ms
 #define DEADTIME 0.2f   // ms, per electrode; each recording system adds its own, see simulator.VIEWS
+#define TAU_AR 700.0f   // ms, decay of the asynchronous release rate (Doorn et al.)
+#define U_MAX 0.5f      // per ms, saturation of the asynchronous release rate
+#define X0 5.0f         // vesicles; an asynchronous event depletes 1/X0 of the pool
 #define GNA_SCALE 150.0f
 #define GKDR_SCALE 15.0f
 
@@ -100,6 +103,7 @@ extern "C" __global__ void simulate(
     const float g_tonic = theta[b * NPARAM + 7];   // bath GABA-A conductance
     const float tau_d  = theta[b * NPARAM + 10];
     const float u_rel  = theta[b * NPARAM + 11];
+    const float u_asyn = theta[b * NPARAM + 15];   // asynchronous release strength
 
     unsigned int rs = seed ^ (b * 2654435761u) ^ (i * 40503u);
     rs |= 1u;
@@ -125,6 +129,13 @@ extern "C" __global__ void simulate(
     const float dn_ = __expf(-dt / TAU_NMDA);
     const float dg = __expf(-dt / TAU_GABA);
     const float dca = __expf(-dt / TAU_CA);
+    const float dar = __expf(-dt / TAU_AR);
+    // Asynchronous release, after Doorn et al.: each spike raises a release
+    // rate that decays over hundreds of milliseconds. A release event
+    // transmits like a spike and depletes the vesicle pool, but it is not a
+    // somatic spike, so no electrode records it. This is what keeps a
+    // culture firing, synaptically, between its network bursts.
+    float uar = 0.0f;
 
     float gauss_cache = 0.0f;
     int gauss_ready = 0;
@@ -197,13 +208,18 @@ extern "C" __global__ void simulate(
         if (fired) {
             ref[i] = t + REFRAC;
             Ca[i] += ALPHA_CA;
+            uar += u_asyn * (U_MAX - uar);
         }
-        const unsigned int ballot = __ballot_sync(0xFFFFFFFFu, fired);
+        uar *= dar;
+        const unsigned int async =
+            (!fired && uar > 1e-7f && uniform01(rs) < uar * dt) ? 1u : 0u;
+        const unsigned int tx = fired | async;
+        const unsigned int ballot = __ballot_sync(0xFFFFFFFFu, tx);
         if ((i & 31) == 0) wmask[i >> 5] = ballot;
         // An OR across the block is the barrier and the "did anyone fire"
         // reduction in one instruction.
         if (fired && myelec >= 0) atomicOr(emask, 1 << myelec);
-        const int any = __syncthreads_or((int)fired);
+        const int any = __syncthreads_or((int)tx);
 
         if (any) {
             // Each thread collects the arrivals addressed to its own neuron, in
@@ -225,6 +241,7 @@ extern "C" __global__ void simulate(
             __syncthreads();
             // Depress the sources only after every target has read xd.
             if (fired) xd[i] *= (1.0f - u_rel);
+            else if (async) xd[i] *= (1.0f - 1.0f / X0);
 
             // One event per electrode per dead-time window, written into that
             // electrode's own slice of the buffer.

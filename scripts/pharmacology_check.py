@@ -27,7 +27,6 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 warnings.filterwarnings("ignore")
 
 from hodgkins_razor import features as F, params as P, shift as SH, simulator as S
-from fit_regime import is_living
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
@@ -57,93 +56,112 @@ EXPECTATIONS = (
 )
 
 
-def living_baselines(sim, n: int, rng, duration: float, transient: float,
-                     batch: int = 384) -> np.ndarray:
-    keep: list[np.ndarray] = []
-    tries = 0
-    while len(keep) < n and tries < 40:
-        th = P.sample_prior(batch, rng)
-        r = sim.run(th, duration_s=duration, transient_s=transient,
-                    seed=5000 + tries)
-        for k in range(batch):
-            if is_living(F.regime_stats(r.as_events(k), S.NELEC, duration)):
-                keep.append(th[k])
-        tries += 1
-    return np.array(keep[:n])
+def bank_cultures(bank: pathlib.Path, view: str, n: int,
+                  rng: np.random.Generator) -> np.ndarray:
+    """Untreated cultures the version 2 bank admitted to one recording system.
+
+    These are the preparations the twin is trained on: inside the range that
+    system's recorded baselines span, living, and AMPA-dependent.
+    """
+    thetas = []
+    for f in sorted(bank.glob("shard_*.npz")):
+        d = np.load(f)
+        keep = d["domain"] == list(S.VIEWS).index(view)
+        tc, g = d["theta_c"][keep], d["group"][keep]
+        _, first = np.unique(g, return_index=True)
+        thetas.append(tc[first])
+    t = np.concatenate(thetas)
+    pick = rng.choice(len(t), size=min(n, len(t)), replace=False)
+    return P.from_unit(t[pick].astype(np.float64))
+
+
+GRADED_GABA = (0.25, 0.75, 1.5, 3.0)
+
+
+def _feats(args):
+    events, view, duration = args
+    ev, n = S.view_events(events, view)
+    return F.compute(ev, n, duration)
 
 
 def main() -> None:
+    import concurrent.futures as cf
     ap = argparse.ArgumentParser()
+    ap.add_argument("--bank", default="data/bank_v2")
+    ap.add_argument("--views", default="grid16,grid12")
     ap.add_argument("--baselines", type=int, default=120)
     ap.add_argument("--duration", type=float, default=60.0)
     ap.add_argument("--transient", type=float, default=5.0)
     ap.add_argument("--seed", type=int, default=77)
-    ap.add_argument("--out", default="results/pharmacology.json")
+    ap.add_argument("--out", default="results/v2/pharmacology.json")
     args = ap.parse_args()
 
     sim = S.Simulator()
     rng = np.random.default_rng(args.seed)
-    t0 = time.time()
-    base = living_baselines(sim, args.baselines, rng, args.duration, args.transient)
-    print(f"{len(base)} living baselines in {time.time() - t0:.0f}s")
-
-    rows, pairs = [], []
-    for exp in EXPECTATIONS:
-        j = P.index(exp["key"])
-        for th in base:
-            t = th.copy()
-            target = (exp["set"] if "set" in exp else th[j] * exp["fold"])
-            t[j] = float(np.clip(target, P.LO[j], P.HI[j]))
-            pairs.append(th)
-            pairs.append(t)
-        rows.extend([exp] * len(base))
-
-    feats = []
-    arr = np.array(pairs)
-    for a in range(0, arr.shape[0], 384):
-        chunk = arr[a:a + 384]
-        if chunk.shape[0] % 2:
-            chunk = arr[a:a + 383]
-        res = sim.run(chunk, duration_s=args.duration,
-                      transient_s=args.transient, seed=9000 + a, pair=True)
-        feats.extend(F.compute(res.as_events(i), S.NELEC, args.duration)
-                     for i in range(chunk.shape[0]))
-    feats = np.array(feats)
-    fb, ft = feats[0::2], feats[1::2]
+    pool = cf.ProcessPoolExecutor(max_workers=8)
+    out = {"duration_s": args.duration, "views": {}}
     mfr, nbr = F.NAMES.index("mfr"), F.NAMES.index("nbr")
-
-    out = {"baselines": int(len(base)), "duration_s": args.duration,
-           "checks": []}
-    print()
-    print(f"{'drug':24s} {'parameter':9s} {'rate ratio':>22s} {'expected':>14s}  verdict")
-    n = len(base)
-    for i, exp in enumerate(EXPECTATIONS):
-        s = slice(i * n, (i + 1) * n)
-        ratio = ft[s, mfr] / np.maximum(fb[s, mfr], 1e-9)
-        burst = ft[s, nbr] / np.maximum(fb[s, nbr], 1e-9)
-        med = float(np.median(ratio))
-        ok = exp["rate_lo"] <= med <= exp["rate_hi"]
-        out["checks"].append({
-            "drug": exp["drug"], "key": exp["key"],
-            "intervention": (f"set to {exp['set']}" if "set" in exp
-                             else f"x{exp['fold']}"),
-            "rate_ratio_p25": float(np.percentile(ratio, 25)),
-            "rate_ratio_median": med,
-            "rate_ratio_p75": float(np.percentile(ratio, 75)),
-            "burst_ratio_median": float(np.median(burst)),
-            "expected_rate_lo": exp["rate_lo"], "expected_rate_hi": exp["rate_hi"],
-            "expected_bursts": exp["bursts"], "passes": bool(ok),
-            "note": exp["note"]})
-        band = f"{exp['rate_lo']:.2f}-{exp['rate_hi']:.2f}"
-        print(f"{exp['drug']:24s} {exp['key']:9s} "
-              f"{np.percentile(ratio, 25):6.3f} {med:6.3f} {np.percentile(ratio, 75):6.3f}  "
-              f"{band:>14s}  {'pass' if ok else 'FAIL'}")
-
-    n_fail = sum(1 for c in out["checks"] if not c["passes"])
-    out["n_failed"] = n_fail
-    pathlib.Path(ROOT / args.out).parent.mkdir(parents=True, exist_ok=True)
-    pathlib.Path(ROOT / args.out).write_text(json.dumps(out, indent=1))
-    print(f"\n{len(out['checks']) - n_fail} of {len(out['checks'])} checks pass")
+    for view in args.views.split(","):
+        base = bank_cultures(ROOT / args.bank, view, args.baselines, rng)
+        n = len(base)
+        conds = [dict(e) for e in EXPECTATIONS]
+        conds += [{"drug": f"bath GABA, tonic +{g}", "key": "g_tonic_inh", "add": g,
+                   "graded": True} for g in GRADED_GABA]
+        pairs = []
+        for exp in conds:
+            j = P.index(exp["key"])
+            for th in base:
+                t = th.copy()
+                if "set" in exp:
+                    t[j] = exp["set"]
+                elif "fold" in exp:
+                    t[j] = th[j] * exp["fold"]
+                else:
+                    t[j] = th[j] + exp["add"]
+                t[j] = float(np.clip(t[j], P.LO[j], P.HI[j]))
+                pairs.extend([th, t])
+        arr = np.array(pairs)
+        feats = []
+        for a in range(0, arr.shape[0], 384):
+            chunk = arr[a:a + 384]
+            res = sim.run(chunk, duration_s=args.duration, transient_s=args.transient,
+                          seed=9000 + a, pair=True)
+            feats.extend(pool.map(_feats, [(res.raw_events(i), view, args.duration)
+                                           for i in range(chunk.shape[0])], chunksize=8))
+        feats = np.array(feats)
+        fb, ft = feats[0::2], feats[1::2]
+        rows = []
+        print(f"{view}: {n} admitted cultures")
+        for i, exp in enumerate(conds):
+            s = slice(i * n, (i + 1) * n)
+            ratio = ft[s, mfr] / np.maximum(fb[s, mfr], 1e-9)
+            burst = ft[s, nbr] / np.maximum(fb[s, nbr], 1e-9)
+            med = float(np.median(ratio))
+            row = {"drug": exp["drug"], "key": exp["key"],
+                   "rate_ratio_p25": float(np.percentile(ratio, 25)),
+                   "rate_ratio_median": med,
+                   "rate_ratio_p75": float(np.percentile(ratio, 75)),
+                   "burst_ratio_median": float(np.median(burst))}
+            if not exp.get("graded"):
+                row.update({"intervention": (f"set to {exp['set']}" if "set" in exp
+                                             else f"x{exp['fold']}"),
+                            "expected_rate_lo": exp["rate_lo"],
+                            "expected_rate_hi": exp["rate_hi"],
+                            "expected_bursts": exp["bursts"],
+                            "passes": bool(exp["rate_lo"] <= med <= exp["rate_hi"]),
+                            "note": exp["note"]})
+            rows.append(row)
+            verdict = "" if exp.get("graded") else ("pass" if row["passes"] else "FAIL")
+            print(f"  {exp['drug']:26s} {exp['key']:11s} {row['rate_ratio_p25']:6.3f} "
+                  f"{med:6.3f} {row['rate_ratio_p75']:6.3f}  {verdict}")
+        graded = [r["rate_ratio_median"] for r in rows if r["drug"].startswith("bath GABA")]
+        out["views"][view] = {"cultures": n, "checks": rows,
+                              "n_failed": sum(1 for r in rows if r.get("passes") is False),
+                              "graded_gaba_monotone": bool(np.all(np.diff(graded) <= 1e-9))}
+    pool.shutdown()
+    dest = ROOT / args.out
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(json.dumps(out, indent=1))
     print("wrote", args.out)
 
 

@@ -85,32 +85,52 @@ def rate_payload(events: np.ndarray, duration: float, bin_s: float = 0.05) -> li
     return h.astype(int).tolist()
 
 
+def view_for(n_elec: int) -> str:
+    """The recording system whose layout matches the upload."""
+    for v in S.VIEWS:
+        if S.n_electrodes(v) == n_elec and v in STATE["twins"]:
+            return v
+    return next(iter(STATE["twins"]))
+
+
 def analyse(base: np.ndarray, treat: np.ndarray, duration: float,
-            label: str = "") -> dict:
-    twin = STATE["twin"]
-    n_elec = S.NELEC
+            label: str = "", n_elec: int = 16) -> dict:
+    view = view_for(n_elec)
+    twin = STATE["twins"][view]
+    n_elec = S.n_electrodes(view)
     xb = F.compute(base, n_elec, duration)
     xt = F.compute(treat, n_elec, duration)
     post = twin.posterior(xb, xt, n_samples=STATE["n_samples"])
 
-    guard = None
+    # Typicality needs no simulation, so every analysis carries it; the
+    # predictive check is added when a CUDA device is present.
+    guard = {"inside_model": True}
+    typ = ppc.Typicality.for_twin(twin)
+    if typ is not None and typ.threshold is not None:
+        t = typ.of_pair(twin, xb, xt)
+        guard.update({"typicality": t, "typicality_threshold": typ.threshold})
+        guard["inside_model"] = t <= typ.threshold
     twin_raster = None
     if STATE["sim"] is not None:
-        g = ppc.check(twin, STATE["sim"], xb, xt, STATE["threshold"], duration,
+        thr = STATE["threshold"].get(view, float("inf"))
+        g = ppc.check(twin, STATE["sim"], xb, xt, thr, duration,
                       STATE["transient"], n_draws=STATE["n_draws"], post=post)
-        guard = {"inside_model": g["inside_model"],
-                 "discrepancy": g["discrepancy"], "threshold": g["threshold"]}
+        guard.update({"discrepancy": g["discrepancy"], "threshold": g["threshold"]})
+        guard["inside_model"] = guard["inside_model"] and g["inside_model"]
         res = g["result"]
         k = 2 * g.get("closest_draw", 0)
-        twin_raster = {"base": raster_payload(res.as_events(k), duration),
-                       "treat": raster_payload(res.as_events(k + 1), duration),
-                       "rate_base": rate_payload(res.as_events(k), duration),
-                       "rate_treat": rate_payload(res.as_events(k + 1), duration),
+        eb = S.view_events(res.raw_events(k), view)[0]
+        et = S.view_events(res.raw_events(k + 1), view)[0]
+        twin_raster = {"base": raster_payload(eb, duration),
+                       "treat": raster_payload(et, duration),
+                       "rate_base": rate_payload(eb, duration),
+                       "rate_treat": rate_payload(et, duration),
                        "draw": g.get("closest_draw", 0),
                        "n_draws": g.get("n_draws", 1)}
 
-    body = report.build(post, g if STATE["sim"] is not None else None, xb, xt,
-                        meta={"label": label, "duration_s": duration})
+    body = report.build(post, guard if len(guard) > 1 else None, xb, xt,
+                        meta={"label": label, "duration_s": duration,
+                              "recording_system": view})
     return {"report": body, "guard": guard,
             "features": {"names": list(F.NAMES),
                          "base": xb.tolist(), "treat": xt.tolist()},
@@ -146,19 +166,22 @@ def example(name: str) -> JSONResponse:
     base = np.array(d["baseline"], dtype=float).reshape(-1, 2)
     treat = np.array(d["treated"], dtype=float).reshape(-1, 2)
     return JSONResponse(analyse(base, treat, float(d.get("duration", 60.0)),
-                                label=d.get("label", name)))
+                                label=d.get("label", name),
+                                n_elec=int(d.get("n_elec", 16))))
 
 
 @app.post("/api/analyse")
 async def analyse_upload(baseline: UploadFile = File(...),
                          treated: UploadFile = File(...),
-                         duration: float = Form(60.0)) -> JSONResponse:
-    b = parse_events(await baseline.read(), S.NELEC, duration)
-    t = parse_events(await treated.read(), S.NELEC, duration)
+                         duration: float = Form(60.0),
+                         n_elec: int = Form(16)) -> JSONResponse:
+    b = parse_events(await baseline.read(), n_elec, duration)
+    t = parse_events(await treated.read(), n_elec, duration)
     if b.shape[0] < 20 or t.shape[0] < 20:
         raise HTTPException(400, "each recording needs at least 20 events "
                                  "inside the window")
-    return JSONResponse(analyse(b, t, duration, label=baseline.filename or ""))
+    return JSONResponse(analyse(b, t, duration, label=baseline.filename or "",
+                                n_elec=n_elec))
 
 
 @app.get("/")
@@ -168,37 +191,39 @@ def index() -> FileResponse:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--twin", default="models/twin")
+    ap.add_argument("--twins", default="models/twin_v2_grid16,models/twin_v2_grid12",
+                    help="one twin per recording system, comma separated")
     ap.add_argument("--host", default="127.0.0.1")
     ap.add_argument("--port", type=int, default=8000)
     ap.add_argument("--no-gpu", action="store_true",
                     help="serve cached analyses only, no simulation")
-    ap.add_argument("--threshold", type=float, default=None)
+
     ap.add_argument("--n-samples", type=int, default=4000)
     ap.add_argument("--n-draws", type=int, default=24)
     ap.add_argument("--transient", type=float, default=5.0)
     args = ap.parse_args()
 
     device = "cpu" if args.no_gpu else ("cuda" if S.available() else "cpu")
-    STATE["twin"] = nde.Twin.load(args.twin, device=device)
+    STATE["twins"] = {}
+    for path in args.twins.split(","):
+        t = nde.Twin.load(ROOT / path, device=device)
+        STATE["twins"][t.meta.get("view", "grid16")] = t
     STATE["n_samples"] = args.n_samples
     STATE["n_draws"] = args.n_draws
     STATE["transient"] = args.transient
     STATE["prefer_cache"] = args.no_gpu
     STATE["sim"] = None if args.no_gpu or not S.available() else S.Simulator()
-
-    threshold = args.threshold
-    if threshold is None:
-        res = ROOT / "results" / "results.json"
-        if res.exists():
-            d = json.loads(res.read_text())
-            threshold = d.get("guard_calibration", {}).get("threshold")
-    STATE["threshold"] = float(threshold) if threshold else float("inf")
+    # Predictive-check thresholds as calibrated by the pre-registered evaluation.
+    STATE["threshold"] = {}
+    res = ROOT / "results" / "v2" / "results.json"
+    if res.exists():
+        d = json.loads(res.read_text())
+        STATE["threshold"] = {v: g["ppc"] for v, g in d.get("guard_thresholds", {}).items()}
 
     app.mount("/static", StaticFiles(directory=STATIC), name="static")
     import uvicorn
-    print(f"twin on {device}; simulation "
-          f"{'on' if STATE['sim'] else 'off'}; guard threshold {STATE['threshold']:.2f}")
+    print(f"twins {list(STATE['twins'])} on {device}; simulation "
+          f"{'on' if STATE['sim'] else 'off'}; predictive-check thresholds {STATE['threshold']}")
     uvicorn.run(app, host=args.host, port=args.port, log_level="warning")
 
 

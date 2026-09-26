@@ -213,6 +213,53 @@ def search(sim, view: str, box: dict, rounds: int, pop: int, seed: int,
                                                           "n_inside": int(len(good))}
 
 
+def refine_by_neighbours(sim, view: str, box: dict, prop: "GaussianProposal",
+                         real: np.ndarray, n: int, k: int, seed: int, pool,
+                         duration: float, transient: float) -> tuple:
+    """Centre the proposal on admissible cultures that resemble recorded ones.
+
+    Screens `n` cultures from a mixture of the searched proposal and the plain
+    prior, keeps those a bank would admit (inside the box and AMPA-dependent),
+    and takes, for every recorded baseline window, its `k` nearest admissible
+    cultures over the detection-robust statistics. The union becomes the
+    proposal's centres, so the bank follows the recorded distribution rather
+    than whatever corner of the box a search happened to reach.
+    """
+    from fit_regime import CRITERION
+    rng = np.random.default_rng(seed)
+    mix = np.concatenate([prop.draw(n // 2, rng), P.sample_prior(n - n // 2, rng)])
+    xs, ok = [], []
+    for a in range(0, n, 768):
+        th = mix[a:a + 768]
+        res = sim.run(th, duration_s=duration, transient_s=transient, seed=seed + a)
+        x = np.stack(list(pool.map(_feat, [(res.raw_events(j), view, duration)
+                                           for j in range(th.shape[0])], chunksize=8)))
+        inside = (violation(x, box) == 0) & ~res.truncated
+        blocked = th.copy()
+        blocked[:, P.index("g_ampa")] = P.LO[P.index("g_ampa")]
+        rb = sim.run(blocked, duration_s=duration, transient_s=transient,
+                     seed=seed + a + 99991)
+        after = np.array([S.view_events(rb.raw_events(j), view)[0].shape[0]
+                          for j in range(th.shape[0])]) / duration / S.n_electrodes(view)
+        dep = after / np.maximum(x[:, F.NAMES.index("mfr")], 1e-9) < CRITERION["ampa_block_max_ratio"]
+        xs.append(x)
+        ok.append(inside & dep)
+    X, OK = np.concatenate(xs), np.concatenate(ok)
+    adm_x, adm_t = X[OK], mix[OK]
+    close = Closeness(real)
+    z_adm = (close._t(adm_x) - close.mu) / close.sd
+    pick = set()
+    for r in close.r:
+        d = np.sqrt(((z_adm - r[None, :]) ** 2).sum(1))
+        pick.update(np.argsort(d)[:k].tolist())
+    centres = to_cube(adm_t[sorted(pick)])
+    cov = np.cov(centres.T) * 0.05 + np.eye(P.N_PARAM) * 1e-4
+    info = {"screened": int(n), "admissible": int(OK.sum()),
+            "centres": int(len(centres)),
+            "admissible_rate": float(OK.mean())}
+    return GaussianProposal(centres, cov, uniform=0.0), info
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--rounds", type=int, default=6)
@@ -222,6 +269,10 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=2718)
     ap.add_argument("--workers", type=int, default=6)
     ap.add_argument("--views", default="grid12")
+    ap.add_argument("--neighbours", type=int, default=0,
+                    help="centre the proposal on the k admissible cultures "
+                         "nearest each recorded baseline window")
+    ap.add_argument("--screen", type=int, default=12288)
     ap.add_argument("--match", action="store_true",
                     help="inside the box, follow where the recorded baselines sit")
     ap.add_argument("--out", default="models/domain.json")
@@ -246,6 +297,12 @@ def main() -> None:
                             pool, args.duration, args.transient, close)
         if close is not None:
             info["recorded_within"] = close.within()
+        if args.neighbours:
+            prop, ninfo = refine_by_neighbours(sim, view, box, prop, x, args.screen,
+                                               args.neighbours, args.seed + 7,
+                                               pool, args.duration, args.transient)
+            info["neighbours"] = ninfo
+            print(f"  {view}: {ninfo}", flush=True)
         out["views"][view] = {"box": box, "n_baseline_windows": int(len(x)),
                               "baselines_inside": inside_real,
                               "proposal": prop.state(), **info}

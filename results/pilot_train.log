@@ -1,0 +1,47 @@
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\scripts\train.py:223: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:837.)
+  tot += float(loss); nb += 1
+bank: 28 shards, 67200 pairs, 11995 cultures, view grid12
+domain grid12: 30942 pairs
+split by culture: train 27232, val 1869, cal 1841
+epoch   1  train   32.703  val   25.155 (nll  24.810  bce 0.3456)      2s
+epoch   2  train   23.559  val   22.569 (nll  22.233  bce 0.3363)      3s
+epoch   3  train   22.291  val   21.767 (nll  21.435  bce 0.3321)      4s
+epoch   4  train   21.282  val   20.785 (nll  20.456  bce 0.3289)      4s
+epoch   5  train   20.284  val   19.803 (nll  19.477  bce 0.3257)      5s
+epoch   6  train   19.226  val   18.699 (nll  18.377  bce 0.3227)      6s
+epoch   7  train   17.981  val   17.406 (nll  17.086  bce 0.3198)      7s
+epoch   8  train   16.559  val   16.059 (nll  15.743  bce 0.3167)      7s
+epoch   9  train   15.222  val   14.806 (nll  14.492  bce 0.3137)      8s
+epoch  10  train   14.040  val   13.875 (nll  13.564  bce 0.3111)      9s
+epoch  11  train   13.252  val   13.080 (nll  12.772  bce 0.3083)     10s
+epoch  12  train   12.431  val   12.392 (nll  12.086  bce 0.3060)     10s
+epoch  13  train   11.862  val   12.060 (nll  11.756  bce 0.3042)     11s
+epoch  14  train   11.274  val   11.169 (nll  10.867  bce 0.3019)     12s
+epoch  15  train   10.687  val   10.862 (nll  10.561  bce 0.3004)     12s
+epoch  16  train   10.556  val   10.674 (nll  10.376  bce 0.2988)     13s
+epoch  17  train   10.400  val   10.293 (nll   9.997  bce 0.2963)     14s
+epoch  18  train   10.142  val   10.977 (nll  10.683  bce 0.2945)     15s
+epoch  19  train    9.571  val   10.190 (nll   9.897  bce 0.2927)     16s
+epoch  20  train    9.192  val    9.501 (nll   9.210  bce 0.2914)     16s
+epoch  21  train    8.660  val    9.135 (nll   8.844  bce 0.2905)     17s
+epoch  22  train    8.451  val    9.009 (nll   8.719  bce 0.2896)     18s
+epoch  23  train    8.283  val    8.838 (nll   8.549  bce 0.2891)     19s
+epoch  24  train    8.149  val    8.760 (nll   8.471  bce 0.2885)     20s
+epoch  25  train    8.005  val    8.635 (nll   8.347  bce 0.2880)     21s
+epoch  26  train    7.883  val    8.569 (nll   8.281  bce 0.2876)     22s
+epoch  27  train    7.753  val    8.453 (nll   8.166  bce 0.2871)     23s
+epoch  28  train    7.642  val    8.390 (nll   8.104  bce 0.2866)     24s
+epoch  29  train    7.526  val    8.311 (nll   8.025  bce 0.2864)     24s
+epoch  30  train    7.420  val    8.281 (nll   7.995  bce 0.2861)     25s
+epoch  31  train    7.342  val    8.173 (nll   7.887  bce 0.2857)     26s
+epoch  32  train    7.249  val    8.130 (nll   7.845  bce 0.2854)     27s
+epoch  33  train    7.220  val    8.059 (nll   7.775  bce 0.2845)     27s
+epoch  34  train    7.079  val    7.971 (nll   7.686  bce 0.2848)     28s
+epoch  35  train    6.970  val    7.920 (nll   7.635  bce 0.2844)     29s
+epoch  36  train    6.883  val    7.857 (nll   7.573  bce 0.2840)     29s
+epoch  37  train    6.817  val    7.836 (nll   7.552  bce 0.2839)     30s
+epoch  38  train    6.781  val    7.817 (nll   7.533  bce 0.2838)     31s
+epoch  39  train    6.767  val    7.800 (nll   7.517  bce 0.2837)     32s
+epoch  40  train    6.748  val    7.794 (nll   7.510  bce 0.2837)     33s
+saved models/_pilot_grid12 {"pairs": 30942, "val_loss": 7.793643370270729, "epochs_run": 40}

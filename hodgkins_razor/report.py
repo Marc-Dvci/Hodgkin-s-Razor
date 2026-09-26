@@ -75,8 +75,10 @@ def build(post: dict, guard: dict | None, x_base: np.ndarray,
         "verdict": verdict,
         "inside_model": inside,
         "guard": None if guard is None else {
-            "discrepancy": float(guard["discrepancy"]),
-            "threshold": float(guard["threshold"])},
+            k: float(guard[k]) for k in ("discrepancy", "threshold", "typicality",
+                                         "typicality_threshold")
+            if guard.get(k) is not None},
+        "effect_is_conditional": "effect_given_active" in post,
         "mechanisms": rows,
         "classes": classes,
         "called": [r["key"] for r in called],
@@ -96,10 +98,18 @@ def build(post: dict, guard: dict | None, x_base: np.ndarray,
 def sentence(body: dict) -> str:
     """One line stating what the recording supports."""
     if body["verdict"] == "outside_model":
-        d, t = body["guard"]["discrepancy"], body["guard"]["threshold"]
-        return (f"This recording is outside the twin: the fitted model cannot "
-                f"reproduce it (discrepancy {d:.1f} against a threshold of "
-                f"{t:.1f}). No mechanism is named.")
+        g = body["guard"]
+        why = []
+        if "typicality" in g and g["typicality"] > g.get("typicality_threshold", float("inf")):
+            why.append(f"no simulation the twin learned from resembles it "
+                       f"(typicality {g['typicality']:.1f} against "
+                       f"{g['typicality_threshold']:.1f})")
+        if "discrepancy" in g and g["discrepancy"] > g.get("threshold", float("inf")):
+            why.append(f"re-simulated at the fitted parameters it does not reproduce "
+                       f"the recording (discrepancy {g['discrepancy']:.1f} against "
+                       f"{g['threshold']:.1f})")
+        return ("This recording is outside the twin: " + "; and ".join(why or ["the guard fired"])
+                + ". No mechanism is named.")
     if body["verdict"] == "no_mechanism_called":
         top = body["mechanisms"][0]
         return (f"No mechanism reaches the calling threshold. The closest is "
@@ -122,11 +132,18 @@ def sentence(body: dict) -> str:
 
 def to_markdown(body: dict) -> str:
     lines = ["# Mechanism report", "", body["sentence"], ""]
-    if body["guard"]:
-        lines += [f"Predictive check: discrepancy {body['guard']['discrepancy']:.2f}, "
-                  f"threshold {body['guard']['threshold']:.2f}, "
-                  f"{'inside' if body['inside_model'] else 'outside'} the model.", ""]
-    lines += ["| Mechanism | Probability | Effect | Target |", "|---|---|---|---|"]
+    g = body["guard"] or {}
+    if "typicality" in g:
+        lines += [f"Typicality: {g['typicality']:.2f}, threshold "
+                  f"{g.get('typicality_threshold', float('nan')):.2f}."]
+    if "discrepancy" in g:
+        lines += [f"Predictive check: discrepancy {g['discrepancy']:.2f}, "
+                  f"threshold {g['threshold']:.2f}."]
+    if g:
+        lines += [f"Verdict: {'inside' if body['inside_model'] else 'outside'} the model.", ""]
+    head = ("Effect if it moved, 90% interval" if body.get("effect_is_conditional")
+            else "Effect, 90% interval")
+    lines += [f"| Mechanism | Probability | {head} | Target |", "|---|---|---|---|"]
     for r in body["mechanisms"]:
         lines.append(f"| {r['label']} | {r['p_active']:.2f} | {_fmt_effect(r)} | "
                      f"{r['target'] or '-'} |")
