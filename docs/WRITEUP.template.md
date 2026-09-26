@@ -35,9 +35,12 @@ calibrated probability. The razor is the prior: among the mechanisms that could
 explain the change, prefer the fewest.
 
 On {{n_wells}} wells of rat cortical and human iPSC-derived networks, across
-five compounds and vehicle controls, it named the correct mechanism in
-**{{top1}}** of wells against a chance rate of {{chance}}, and raised a
-mechanism on {{control_rate}} of vehicle controls. It has never seen a compound
+five compounds and vehicle controls, it named the exact conductance in
+**{{top1}}** of wells against a chance rate of {{chance}}, and the mechanism
+class in **{{class_top1}}** against {{class_chance}}. It raised a mechanism on
+{{control_rate}} of vehicle controls. How hard the exact question is was
+measured first: with the answer handed to a supervised classifier, the nine-way
+question tops out at 0.39 on simulations in the same regime. It has never seen a compound
 label: it is trained only on simulations, from a GPU network simulator that
 runs about {{sims_per_s}} networks per second on one desktop card and is
 bit-reproducible.

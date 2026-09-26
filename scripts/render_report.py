@@ -98,6 +98,10 @@ def main() -> None:
         "top1": f"{m['top1_accuracy']:.0%}",
         "chance": f"{m['chance']:.3f}",
         "control_rate": f"{m['control_false_mechanism_rate']:.0%}",
+        "class_top1": (f"{r['mechanism_class']['top1_accuracy']:.0%}"
+                       if r.get("mechanism_class", {}).get("n") else "n/a"),
+        "class_chance": (f"{r['mechanism_class']['chance']:.2f}"
+                         if r.get("mechanism_class", {}).get("n") else "n/a"),
         "param_table": "\n".join("| " + " | ".join(row) + " |" for row in params),
         "sims_per_s": args.sims_per_s,
         "bank_pairs": f"{r['twin_meta']['pairs']:,}".replace(",", " "),

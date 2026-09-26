@@ -22,10 +22,19 @@ calibrated probability. When the fitted model cannot reproduce the recording it
 says so and names nothing.
 
 On {{n_wells}} wells of rat cortical and human iPSC-derived networks it named
-the mechanism correctly in **{{top1}}** of wells against a chance rate of
-{{chance}}, having never seen a compound label. On vehicle controls it raised a
-mechanism in {{control_rate}} of wells. The model is trained only on
-simulations.
+the exact conductance in **{{top1}}** of wells against a chance rate of
+{{chance}}, and the mechanism class in **{{class_top1}}** against a chance rate
+of {{class_chance}}. On vehicle controls it raised a mechanism in
+{{control_rate}} of wells. The model is trained only on simulations and has
+never seen a compound label.
+
+How hard the exact question is was measured before the recordings were scored.
+With the answer given directly to a supervised classifier, on simulations in
+the regime the twin operates in, the nine-way question tops out at 0.39 and the
+four-way question among the receptor and channel mechanisms at 0.64. Those are
+limits of a sixty-second paired recording read through these statistics, not of
+one estimator, and they are why every call carries a probability and why the
+mechanism class is reported beside the conductance.
 
 ---
 
