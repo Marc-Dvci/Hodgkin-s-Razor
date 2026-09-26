@@ -1,0 +1,5 @@
+# Simulation needs a CUDA device. Match the wheel to your CUDA toolkit.
+# CUDA 12.x:
+cupy-cuda12x>=13.0
+# Install torch with CUDA from the PyTorch index, for example:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu128

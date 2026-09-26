@@ -1,0 +1,14 @@
+# GPU image: simulation, bank generation, training and the full evaluation.
+FROM nvidia/cuda:12.8.0-devel-ubuntu22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+WORKDIR /app
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      python3.12 python3-pip git && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt requirements-gpu.txt ./
+RUN pip3 install --no-cache-dir torch --index-url https://download.pytorch.org/whl/cu128 \
+ && pip3 install --no-cache-dir -r requirements.txt -r requirements-gpu.txt
+
+COPY . .
+CMD ["python3", "demo.py", "--live"]

@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+notebooks/.ipynb_checkpoints/
+
+# Downloaded recordings and the simulation bank are rebuilt by one command.
+data/raw/
+data/bank/
+data/bank_*/
+data/chip_bank.npz
+
+# Generated locally for the film, not part of the deliverable.
+results/capture/
+site/

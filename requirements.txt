@@ -1,0 +1,14 @@
+# Core. Everything except cupy runs on CPU.
+numpy>=1.26,<3
+scipy>=1.11
+pandas>=2.0
+torch>=2.4
+zuko>=1.3
+scikit-learn>=1.3
+fastapi>=0.110
+uvicorn[standard]>=0.27
+python-multipart>=0.0.9
+matplotlib>=3.8
+pytest>=8.0
+tqdm>=4.66
+openpyxl>=3.1
