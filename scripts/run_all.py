@@ -53,6 +53,8 @@ def main() -> None:
         ["scripts/train.py", "--bank", "data/bank",
          "--out", "models/twin_unpaired", "--unpaired"],
         ROOT / "models" / "twin_unpaired" / "flow.pt", f)
+    run("pharmacology check", ["scripts/pharmacology_check.py"],
+        ROOT / "results" / "pharmacology.json", f)
     run("evaluate", ["scripts/evaluate.py"], ROOT / "results" / "results.json", f)
     run("render results", ["scripts/render_results.py"],
         ROOT / "results" / "RESULTS.md", f)

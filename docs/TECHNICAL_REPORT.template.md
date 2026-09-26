@@ -359,6 +359,18 @@ This is the question a laboratory faces before it runs the experiment. The
 answer is a property of the readout and the question together, and it is
 computable in advance.
 
+## 6b. Does the twin reproduce known pharmacology?
+
+Accuracy on a scored set says nothing about whether a model can represent the
+compound it is being asked about. `scripts/pharmacology_check.py` applies a
+saturating block or agonist at each mechanism to living simulated cultures and
+compares the result against the published direction and rough magnitude for the
+matching compound. Those expectations come from the neuropharmacology
+literature and from no dataset scored here, so the check is independent of the
+evaluation.
+
+{{results_pharmacology}}
+
 ## 7. Reliability and limitations
 
 **What the evaluation does not establish.** Every recorded result comes from

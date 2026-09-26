@@ -72,6 +72,22 @@ def main() -> None:
     except Exception:
         pass
 
+    ph_path = ROOT / "results" / "pharmacology.json"
+    if ph_path.exists():
+        ph = json.loads(ph_path.read_text())
+        rows = []
+        for c in ph["checks"]:
+            band = f"{c['expected_rate_lo']:.2f} to {c['expected_rate_hi']:.2f}"
+            rows.append([c["drug"], f"`{c['key']}`",
+                         f"{c['rate_ratio_median']:.3f}", band,
+                         "pass" if c["passes"] else "**fail**"])
+        ph_txt = ("Firing rate after the intervention as a fraction of before, "
+                  f"median over {ph['baselines']} living simulated cultures.\n\n"
+                  + md_table(["Compound", "Parameter", "Rate ratio",
+                              "Expected", "Outcome"], rows))
+    else:
+        ph_txt = "_pharmacology check not yet run_"
+
     chip_path = ROOT / "results" / "chip_study.json"
     if chip_path.exists():
         cs = json.loads(chip_path.read_text())
@@ -114,6 +130,7 @@ def main() -> None:
         "results_class": section(res_md, "By mechanism class"),
         "results_guard": section(res_md, "The guard"),
         "results_chip": chip_txt,
+        "results_pharmacology": ph_txt,
         "n_tests": str(n_tests),
         "generated": date.today().isoformat(),
         "video_link": args.video,
