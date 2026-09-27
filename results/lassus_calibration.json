@@ -1,0 +1,64 @@
+{
+ "rule": {
+  "silent_fraction": 0.05,
+  "active_share": 0.5,
+  "per_chip": "active when driven (> 0.05 Hz) and silent rate at most 5% of driven",
+  "min_chips": 40
+ },
+ "chips": 576,
+ "duration_s": 120.0,
+ "table": [
+  {
+   "down_state_pa": 0.0,
+   "active_share": 0.5902777777777778,
+   "precondition_share": 0.017361111111111112,
+   "precondition_chips": 10,
+   "rate_driven_median": 0.2255952380952381,
+   "rate_silent_median": 0.20595238095238094,
+   "silent_over_driven": 0.9129287598944591,
+   "meets": false
+  },
+  {
+   "down_state_pa": -2.0,
+   "active_share": 0.3663194444444444,
+   "precondition_share": 0.022569444444444444,
+   "precondition_chips": 13,
+   "rate_driven_median": 0.16666666666666666,
+   "rate_silent_median": 0.12857142857142856,
+   "silent_over_driven": 0.7714285714285714,
+   "meets": false
+  },
+  {
+   "down_state_pa": -4.0,
+   "active_share": 0.1875,
+   "precondition_share": 0.024305555555555556,
+   "precondition_chips": 14,
+   "rate_driven_median": 0.12857142857142856,
+   "rate_silent_median": 0.07976190476190476,
+   "silent_over_driven": 0.6203703703703703,
+   "meets": false
+  },
+  {
+   "down_state_pa": -6.0,
+   "active_share": 0.08333333333333333,
+   "precondition_share": 0.027777777777777776,
+   "precondition_chips": 16,
+   "rate_driven_median": 0.09464285714285714,
+   "rate_silent_median": 0.03273809523809523,
+   "silent_over_driven": 0.34591194968553457,
+   "meets": false
+  },
+  {
+   "down_state_pa": -8.0,
+   "active_share": 0.03298611111111111,
+   "precondition_share": 0.024305555555555556,
+   "precondition_chips": 14,
+   "rate_driven_median": 0.1130952380952381,
+   "rate_silent_median": 0.0,
+   "silent_over_driven": 0.0,
+   "meets": false
+  }
+ ],
+ "chosen_down_state_pa": -6.0,
+ "chips_to_draw": 1800
+}

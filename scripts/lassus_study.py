@@ -138,6 +138,7 @@ def compare(base: list[dict], drug: list[dict]) -> dict:
 
 SILENT_FRACTION = 0.05     # unconnected striatum: at most 5% of its driven rate
 ACTIVE_SHARE = 0.5         # and still active when driven, in at least half the chips
+MIN_CHIPS = 40             # chips meeting the precondition chip by chip, for a paired test
 
 
 def calibrate(sim, theta, chips, args) -> None:
@@ -160,7 +161,10 @@ def calibrate(sim, theta, chips, args) -> None:
         r_on = np.array([C.chamber_events(on.as_events(k), 1).shape[0] for k in range(args.chips)]) / n
         r_off = np.array([C.chamber_events(off.as_events(k), 1).shape[0] for k in range(args.chips)]) / n
         act = r_on > 0.05
+        cond = act & (r_off <= SILENT_FRACTION * r_on)
         row = {"down_state_pa": b, "active_share": float(act.mean()),
+               "precondition_share": float(cond.mean()),
+               "precondition_chips": int(cond.sum()),
                "rate_driven_median": float(np.median(r_on[act])) if act.any() else 0.0,
                "rate_silent_median": float(np.median(r_off[act])) if act.any() else 0.0}
         row["silent_over_driven"] = (row["rate_silent_median"] / row["rate_driven_median"]
@@ -169,12 +173,18 @@ def calibrate(sim, theta, chips, args) -> None:
                             and row["silent_over_driven"] <= SILENT_FRACTION)
         table.append(row)
         print(json.dumps(row), flush=True)
-    ok = [r for r in table if r["meets"]]
-    # The weakest bias that meets the precondition (biases are negative).
-    chosen = max(ok, key=lambda r: r["down_state_pa"]) if ok else None
-    out = {"rule": {"silent_fraction": SILENT_FRACTION, "active_share": ACTIVE_SHARE},
+    # Chip by chip: the bias that leaves the most chips meeting the precondition
+    # (striatum active when the cortex drives it, silent when it does not).
+    chosen = max(table, key=lambda r: (r["precondition_share"], r["down_state_pa"]))
+    if chosen["precondition_share"] <= 0:
+        chosen = None
+    out = {"rule": {"silent_fraction": SILENT_FRACTION, "active_share": ACTIVE_SHARE,
+                    "per_chip": "active when driven (> 0.05 Hz) and silent rate at most "
+                                "5% of driven", "min_chips": MIN_CHIPS},
            "chips": args.chips, "duration_s": args.duration, "table": table,
-           "chosen_down_state_pa": chosen["down_state_pa"] if chosen else None}
+           "chosen_down_state_pa": chosen["down_state_pa"] if chosen else None,
+           "chips_to_draw": (int(np.ceil(1.25 * MIN_CHIPS / chosen["precondition_share"]))
+                             if chosen else None)}
     (ROOT / "results" / "lassus_calibration.json").write_text(json.dumps(out, indent=1))
     print("chosen", out["chosen_down_state_pa"])
 
@@ -191,6 +201,9 @@ def main() -> None:
     ap.add_argument("--calibrate", default="",
                     help="comma-separated down-state biases: set the bias from the "
                          "paper's precondition (unconnected striatum silent) with no drug")
+    ap.add_argument("--precondition", action="store_true",
+                    help="score only chips whose striatum is active when driven and "
+                         "silent (at most 5% of its driven rate) with the cortex held silent")
     ap.add_argument("--out", default="results/lassus_study.json")
     args = ap.parse_args()
     rng = np.random.default_rng(args.seed)
@@ -204,7 +217,8 @@ def main() -> None:
         calibrate(sim, theta, chips, args)
         return
     res = {"protocol": __doc__.split("\n\n")[2:6], "chips": args.chips,
-           "duration_s": args.duration, "down_state_pa": args.down_state}
+           "duration_s": args.duration, "down_state_pa": args.down_state,
+           "precondition": bool(args.precondition)}
     for label, striatal in (("striatal_target", True), ("generic_target", False)):
         def run(perf, silence=None):
             r = C.run_chip(sim, theta, chips, duration_s=args.duration, transient_s=5.0,
@@ -213,7 +227,9 @@ def main() -> None:
             return [readout(r.as_events(k), args.duration, k) for k in range(args.chips)]
         base = run(COCKTAIL)
         alone = run(COCKTAIL, silence=np.zeros(args.chips))   # cortex held silent
-        keep = [k for k in range(args.chips) if base[k]["tgt_rate_hz"] > 0.05]
+        keep = [k for k in range(args.chips) if base[k]["tgt_rate_hz"] > 0.05
+                and (not args.precondition or not striatal
+                     or alone[k]["tgt_rate_hz"] <= SILENT_FRACTION * base[k]["tgt_rate_hz"])]
         sec = {"n_active_chips": len(keep),
                "target_rate_hz_median": float(np.median([base[k]["tgt_rate_hz"] for k in keep])),
                "target_rate_without_cortex_hz_median":
