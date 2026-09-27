@@ -58,7 +58,7 @@ def run(live: bool) -> int:
     print(f"{len(files)} recording pairs: Tampere comparative MEA dataset (CC BY 4.0)"
           + (" and Doorn et al. 2024 (Apache-2.0)" if any("dynasore" in f.name for f in files) else ""))
     line("=")
-    print(f"{'recording':44s} {'called':11s} {'prob':>5s} {'effect':>9s}  {'expected':11s} {'':4s}")
+    print(f"{'recording':50s} {'top-1':12s} {'prob':>5s} {'verdict':9s} {'expected':20s}")
     line()
 
     hits = total = 0
@@ -78,31 +78,29 @@ def run(live: bool) -> int:
         elif "analysis" in d:
             rep = d["analysis"]["report"]
         else:
-            print(f"{label:44s} no cached analysis; run with --live")
+            print(f"{label:50s} no cached analysis; run with --live")
             continue
 
         top = rep["mechanisms"][0]
-        called = top["key"] if top["p_active"] >= 0.5 else "-"
-        eff = (f"{top['effect']:.2f}x" if top["kind"] == "fold"
-               else f"{top['effect']:+.1f}pA")
-        if not rep.get("inside_model", True):
-            called = "outside"
+        verdict = {"outside_model": "outside", "no_mechanism_called": "no call",
+                   "mechanism_called": "called"}[rep["verdict"]]
         if want is None:
-            ok = "ok" if called == "-" else "flag"
-            mark = "  +" if called == "-" else "  ."
+            expected = "nothing"
+            mark = "+" if verdict != "called" else "."
         else:
             total += 1
-            good = called in want
+            good = top["key"] in want
             hits += good
-            ok = "/".join(sorted(want))
-            mark = "  +" if good else "  ."
-        print(f"{label:44s} {called:11s} {top['p_active']:5.2f} {eff:>9s}  {ok:11s}{mark}")
+            expected = "/".join(sorted(want))
+            mark = "+" if good else "."
+        print(f"{label:50s} {top['key']:12s} {top['p_active']:5.2f} {verdict:9s} {expected:20s} {mark}")
 
     line()
     if total:
-        print(f"top-1 mechanism accuracy on these examples: {hits}/{total} "
-              f"= {hits / total:.2f}   (chance {1 / len(SHIFT_KEYS):.2f})")
-    print("Effect: fold change if that mechanism moved; linear parameters in their own unit.")
+        print(f"top-1 on these single 60 s windows: {hits}/{total}   (chance about "
+              f"{1 / len(SHIFT_KEYS):.2f}). 'outside': the guard says the twin cannot")
+        print("reproduce the pair, so no mechanism is named. The pre-registered scores")
+        print("average every window of every well: results/v2/RESULTS.md.")
     print("Full pre-registered evaluation: python scripts/evaluate_v2.py")
     print()
     return 0

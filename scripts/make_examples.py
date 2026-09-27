@@ -107,7 +107,7 @@ def main() -> None:
             rec["analysis"] = analyse(p.baseline, p.treated, p.duration, label, n_elec=12)
         (OUT / "human_dynasore.json").write_text(json.dumps(rec))
         print("human_dynasore.json")
-    print("wrote", len(wanted) + len(dyn), "examples to", OUT)
+    print("wrote", len(wanted) + (1 if dyn else 0), "examples to", OUT)
 
 
 if __name__ == "__main__":

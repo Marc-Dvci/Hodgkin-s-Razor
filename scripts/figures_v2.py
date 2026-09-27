@@ -81,11 +81,43 @@ def fig_doorn(r: dict) -> None:
                 color="white" if M[i, j] > .55 else INK)
     ax.grid(False)
     m = a["metrics"]
-    ax.set_title(f"Blind test, Dynasore (Doorn et al.): named {m['top1_hits']} of "
+    ax.set_title(f"Blind test, Dynasore (Doorn et al.), paired twin: named {m['top1_hits']} of "
                  f"{m['n_wells']} wells; boxed columns are the answer key")
     ax.set_xlabel("presence probability per mechanism (top call labelled)")
     fig.colorbar(im, ax=ax, shrink=.8, label="probability the mechanism moved")
     save(fig, "doorn_wells.png")
+
+
+def fig_doorn_models(r: dict) -> None:
+    """The three pre-registered readings of the blind wells, side by side."""
+    a = r.get("A_doorn")
+    ex = V2 / "exploratory.json"
+    if not a or not ex.exists():
+        return
+    rows = {x["well"]: x for x in json.loads(ex.read_text())["doorn"]["rows"]}
+    prior = {c["well"]: c["top1"] for c in a["prior_art"].get("calls", [])}
+    wells = sorted(rows)
+    models = [("paired twin\n(primary)", lambda w: rows[w]["paired"]),
+              ("unpaired twin", lambda w: rows[w]["unpaired"]),
+              ("Doorn et al. 2025\nestimator", lambda w: prior.get(w))]
+    ok = {"u_rel", "tau_d"}
+    fig, ax = plt.subplots(figsize=(7.6, 3.4))
+    for i, (name, f) in enumerate(models):
+        for j, w in enumerate(wells):
+            call = f(w)
+            hit = call in ok
+            ax.add_patch(plt.Rectangle((j - .42, i - .36), .84, .72, color=S1 if hit else "#e9e8e3",
+                                       ec=SURFACE, lw=2))
+            ax.text(j, i, (call or "-").replace("_", " "), ha="center", va="center", fontsize=7.2,
+                    color="white" if hit else INK2)
+        n = sum(f(w) in ok for w in wells)
+        ax.text(len(wells) - .3, i, f"{n}/{len(wells)}", va="center", fontsize=11, fontweight="bold")
+    ax.set_xlim(-.6, len(wells) + .6); ax.set_ylim(len(models) - .5, -.5)
+    ax.set_yticks(range(len(models)), [m[0] for m in models])
+    ax.set_xticks(range(len(wells)), wells, rotation=35, ha="right", fontsize=8)
+    ax.grid(False); ax.spines[:].set_visible(False)
+    ax.set_title("Blind test, three pre-registered readings: blue names short-term depression")
+    save(fig, "doorn_models.png")
 
 
 def fig_tampere_confusion(r: dict) -> None:
@@ -285,6 +317,7 @@ def main() -> None:
     chip_path = ROOT / "results" / "chip_study.json"
     chip = json.loads(chip_path.read_text()) if chip_path.exists() else None
     fig_doorn(r)
+    fig_doorn_models(r)
     fig_tampere_confusion(r)
     fig_transfer(r)
     fig_simulation(r)
