@@ -573,7 +573,7 @@ def test_second_sister_is_locked_and_pairs_are_well_formed():
     from hodgkins_razor import charlesworth as C
     idx = C.pairs_index()
     kinds = {r["kind"] for r in idx}
-    assert kinds == {"treated", "null", "pre-drug"}
+    assert kinds == {"treated", "null", "pre-drug", "a-c"}
     for r in idx:
         assert r["first_genotype"] == r["second_genotype"] or {
             r["first_genotype"], r["second_genotype"]} <= {"GluR1", "GluRAnull"}
@@ -582,6 +582,12 @@ def test_second_sister_is_locked_and_pairs_are_well_formed():
     treated = [r for r in idx if r["kind"] == "treated"]
     assert {r["prep"] for r in treated}.isdisjoint(
         {r["prep"] for r in idx if r["kind"] == "null"})
+    # The A-C pairs never touch a locked array, and their preparations are
+    # outside the scored null group.
+    ac = [r for r in idx if r["kind"] == "a-c"]
+    assert ac and all(not C.locked(r["first"], r["div"]) and not C.locked(r["second"], r["div"])
+                      for r in ac)
+    assert {r["prep"] for r in ac}.isdisjoint({r["prep"] for r in idx if r["kind"] == "null"})
     if not C._unblinded():
         with pytest.raises(SystemExit):
             C.read(treated[0]["second"], treated[0]["div"])
