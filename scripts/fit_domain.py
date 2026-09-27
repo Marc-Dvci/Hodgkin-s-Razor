@@ -120,12 +120,16 @@ class Closeness:
         return float(np.median(np.sort(d, axis=1)[:, 1:4].mean(1)))
 
 
-def recorded_baselines(view: str) -> np.ndarray:
-    """Feature vectors of the untreated recordings a system produced."""
+def recorded_baselines(view: str, species: str = "") -> np.ndarray:
+    """Feature vectors of the untreated recordings a system produced.
+
+    `species` restricts the Axion (grid16) baselines to one species, so human
+    cultures, which the joint domain leaves outside the model, get their own.
+    """
     if view == "grid16":
         from hodgkins_razor import tampere as T
         return np.array([F.compute(p.baseline, p.n_elec, p.duration)
-                         for p in T.load_all()])
+                         for p in T.load_all() if not species or p.species == species])
     if view == "mcs60q":
         # The first array of every scored sister pair, which never carries a
         # drug, read as quadrants.
@@ -280,6 +284,8 @@ def main() -> None:
     ap.add_argument("--screen", type=int, default=12288)
     ap.add_argument("--match", action="store_true",
                     help="inside the box, follow where the recorded baselines sit")
+    ap.add_argument("--species", default="",
+                    help="grid16 only: fit on one species' baselines (rat or hPSC)")
     ap.add_argument("--out", default="models/domain.json")
     args = ap.parse_args()
 
@@ -290,7 +296,7 @@ def main() -> None:
     pool = cf.ProcessPoolExecutor(max_workers=args.workers)
     t0 = time.time()
     for view in args.views.split(","):
-        x = recorded_baselines(view)
+        x = recorded_baselines(view, args.species)
         # One rule for every recording system: the range its own untreated
         # baselines span, widened, and a living network-driven culture.
         box = with_living(box_from_baselines(x))
