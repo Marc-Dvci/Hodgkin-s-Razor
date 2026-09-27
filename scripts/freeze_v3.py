@@ -133,7 +133,8 @@ def main() -> None:
     sim_path = ROOT / "results" / "v3" / "sim_mcs60q.json"
     sim = json.loads(sim_path.read_text())
     twin = nde.Twin.load(ROOT / TWIN, device="cuda")
-    bank = load_bank(ROOT / BANK, VIEW)
+    bank_path = twin.meta.get("bank", BANK)      # the bank the frozen twin was trained on
+    bank = load_bank(ROOT / bank_path, VIEW)
     keep = bank["domain"] == list(S.VIEWS).index(VIEW)
     bank = {k: v[keep] for k, v in bank.items()}
     idx_val = np.load(ROOT / TWIN / "val_index.npy")
@@ -159,7 +160,7 @@ def main() -> None:
         return hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
 
     spec = {
-        "view": VIEW, "twin": TWIN, "unpaired": UNPAIRED, "bank": BANK,
+        "view": VIEW, "twin": TWIN, "unpaired": UNPAIRED, "bank": bank_path,
         "domain_file": DOMAIN, "drift": drift["chosen"],
         "frozen_models": {TWIN: model_digest(ROOT / TWIN),
                           UNPAIRED: model_digest(ROOT / UNPAIRED)},

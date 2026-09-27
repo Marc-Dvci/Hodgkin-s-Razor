@@ -30,9 +30,15 @@ def load_bank(path: pathlib.Path, view: str = "grid16") -> dict:
 
     Version 1 shards hold one layout and no culture index; the culture index is
     then recovered from runs of identical baseline parameters, which is how
-    they were written.
+    they were written. Several banks of one design can be read together by
+    passing their directories joined with commas; relative parts after the
+    first resolve against the repository root.
     """
-    shards = sorted(path.glob("shard_*.npz"))
+    root = pathlib.Path(__file__).resolve().parents[1]
+    parts = str(path).split(",")
+    dirs = [pathlib.Path(parts[0])] + [pathlib.Path(q) if pathlib.Path(q).is_absolute()
+                                       else root / q for q in parts[1:]]
+    shards = [s for d in dirs for s in sorted(d.glob("shard_*.npz"))]
     if not shards:
         raise SystemExit(f"no shards in {path}")
     views = list(S.VIEWS)
