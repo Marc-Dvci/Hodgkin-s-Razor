@@ -1,0 +1,453 @@
+{
+ "recorded": {
+  "auroc": 0.62,
+  "ci95": [
+   0.28,
+   0.88
+  ],
+  "chips": 17,
+  "source": "results/v2/mateus.json (Mateus et al. 2024)"
+ },
+ "power_target": 0.8,
+ "reps": 2000,
+ "n_sim_strong": 1060,
+ "n_sim_symmetric": 729,
+ "readouts": {
+  "channel_dominant_share": {
+   "simulated_auroc": 0.7712995315371276,
+   "twin": {
+    "curve": [
+     {
+      "chips_per_design": 4,
+      "power_ci_clears_0.5": 0.3125,
+      "median_auroc": 0.75,
+      "auroc_90pct_range": [
+       0.375,
+       1.0
+      ]
+     },
+     {
+      "chips_per_design": 6,
+      "power_ci_clears_0.5": 0.4885,
+      "median_auroc": 0.75,
+      "auroc_90pct_range": [
+       0.4722222222222222,
+       1.0
+      ]
+     },
+     {
+      "chips_per_design": 8,
+      "power_ci_clears_0.5": 0.5,
+      "median_auroc": 0.7421875,
+      "auroc_90pct_range": [
+       0.484375,
+       0.953125
+      ]
+     },
+     {
+      "chips_per_design": 10,
+      "power_ci_clears_0.5": 0.5855,
+      "median_auroc": 0.75,
+      "auroc_90pct_range": [
+       0.54,
+       0.93
+      ]
+     },
+     {
+      "chips_per_design": 12,
+      "power_ci_clears_0.5": 0.6495,
+      "median_auroc": 0.7569444444444444,
+      "auroc_90pct_range": [
+       0.5690972222222223,
+       0.9236111111111112
+      ]
+     },
+     {
+      "chips_per_design": 15,
+      "power_ci_clears_0.5": 0.6645,
+      "median_auroc": 0.7333333333333333,
+      "auroc_90pct_range": [
+       0.56,
+       0.8977777777777778
+      ]
+     },
+     {
+      "chips_per_design": 20,
+      "power_ci_clears_0.5": 0.829,
+      "median_auroc": 0.7525,
+      "auroc_90pct_range": [
+       0.605,
+       0.8801249999999999
+      ]
+     },
+     {
+      "chips_per_design": 25,
+      "power_ci_clears_0.5": 0.912,
+      "median_auroc": 0.7488,
+      "auroc_90pct_range": [
+       0.6288,
+       0.86088
+      ]
+     },
+     {
+      "chips_per_design": 30,
+      "power_ci_clears_0.5": 0.898,
+      "median_auroc": 0.7355555555555555,
+      "auroc_90pct_range": [
+       0.6066666666666667,
+       0.8466666666666667
+      ]
+     },
+     {
+      "chips_per_design": 40,
+      "power_ci_clears_0.5": 0.975,
+      "median_auroc": 0.7525,
+      "auroc_90pct_range": [
+       0.64434375,
+       0.84625
+      ]
+     },
+     {
+      "chips_per_design": 50,
+      "power_ci_clears_0.5": 0.9975,
+      "median_auroc": 0.7508,
+      "auroc_90pct_range": [
+       0.662,
+       0.8292200000000001
+      ]
+     },
+     {
+      "chips_per_design": 60,
+      "power_ci_clears_0.5": 0.9925,
+      "median_auroc": 0.7354166666666666,
+      "auroc_90pct_range": [
+       0.6485972222222223,
+       0.8183611111111111
+      ]
+     },
+     {
+      "chips_per_design": 80,
+      "power_ci_clears_0.5": 1.0,
+      "median_auroc": 0.7499218750000001,
+      "auroc_90pct_range": [
+       0.6763984375,
+       0.8161328124999999
+      ]
+     },
+     {
+      "chips_per_design": 100,
+      "power_ci_clears_0.5": 1.0,
+      "median_auroc": 0.7522,
+      "auroc_90pct_range": [
+       0.6898,
+       0.80741
+      ]
+     }
+    ],
+    "chips_needed": 20
+   },
+   "observed": {
+    "curve": [
+     {
+      "chips_per_design": 4,
+      "power_ci_clears_0.5": 0.1545,
+      "median_auroc": 0.625,
+      "auroc_90pct_range": [
+       0.25,
+       0.9375
+      ]
+     },
+     {
+      "chips_per_design": 6,
+      "power_ci_clears_0.5": 0.2025,
+      "median_auroc": 0.6388888888888888,
+      "auroc_90pct_range": [
+       0.3333333333333333,
+       0.8888888888888888
+      ]
+     },
+     {
+      "chips_per_design": 8,
+      "power_ci_clears_0.5": 0.2185,
+      "median_auroc": 0.625,
+      "auroc_90pct_range": [
+       0.375,
+       0.859375
+      ]
+     },
+     {
+      "chips_per_design": 10,
+      "power_ci_clears_0.5": 0.225,
+      "median_auroc": 0.63,
+      "auroc_90pct_range": [
+       0.42,
+       0.82
+      ]
+     },
+     {
+      "chips_per_design": 12,
+      "power_ci_clears_0.5": 0.2225,
+      "median_auroc": 0.625,
+      "auroc_90pct_range": [
+       0.4166666666666667,
+       0.8055555555555556
+      ]
+     },
+     {
+      "chips_per_design": 15,
+      "power_ci_clears_0.5": 0.246,
+      "median_auroc": 0.6177777777777778,
+      "auroc_90pct_range": [
+       0.44,
+       0.7822222222222223
+      ]
+     },
+     {
+      "chips_per_design": 20,
+      "power_ci_clears_0.5": 0.294,
+      "median_auroc": 0.6225,
+      "auroc_90pct_range": [
+       0.4675,
+       0.7575
+      ]
+     },
+     {
+      "chips_per_design": 25,
+      "power_ci_clears_0.5": 0.3445,
+      "median_auroc": 0.6208,
+      "auroc_90pct_range": [
+       0.4896,
+       0.7456
+      ]
+     },
+     {
+      "chips_per_design": 30,
+      "power_ci_clears_0.5": 0.41,
+      "median_auroc": 0.6244444444444445,
+      "auroc_90pct_range": [
+       0.5010555555555555,
+       0.735611111111111
+      ]
+     },
+     {
+      "chips_per_design": 40,
+      "power_ci_clears_0.5": 0.502,
+      "median_auroc": 0.623125,
+      "auroc_90pct_range": [
+       0.5218125,
+       0.7225
+      ]
+     },
+     {
+      "chips_per_design": 50,
+      "power_ci_clears_0.5": 0.5865,
+      "median_auroc": 0.6232,
+      "auroc_90pct_range": [
+       0.5236,
+       0.71482
+      ]
+     },
+     {
+      "chips_per_design": 60,
+      "power_ci_clears_0.5": 0.6535,
+      "median_auroc": 0.6216666666666667,
+      "auroc_90pct_range": [
+       0.5363611111111112,
+       0.7047222222222222
+      ]
+     },
+     {
+      "chips_per_design": 80,
+      "power_ci_clears_0.5": 0.778,
+      "median_auroc": 0.6209375,
+      "auroc_90pct_range": [
+       0.5485859375,
+       0.695
+      ]
+     },
+     {
+      "chips_per_design": 100,
+      "power_ci_clears_0.5": 0.86,
+      "median_auroc": 0.6232,
+      "auroc_90pct_range": [
+       0.5566949999999999,
+       0.68601
+      ]
+     },
+     {
+      "chips_per_design": 120,
+      "power_ci_clears_0.5": 0.899,
+      "median_auroc": 0.6207291666666667,
+      "auroc_90pct_range": [
+       0.559857638888889,
+       0.6791701388888889
+      ]
+     },
+     {
+      "chips_per_design": 150,
+      "power_ci_clears_0.5": 0.9575,
+      "median_auroc": 0.6209111111111112,
+      "auroc_90pct_range": [
+       0.5673622222222222,
+       0.67264
+      ]
+     },
+     {
+      "chips_per_design": 200,
+      "power_ci_clears_0.5": 0.987,
+      "median_auroc": 0.6223375,
+      "auroc_90pct_range": [
+       0.57457375,
+       0.6681625
+      ]
+     }
+    ],
+    "chips_needed": 100
+   },
+   "power_at_recorded_size": {
+    "twin": 0.4765
+   }
+  },
+  "chamber_asymmetry": {
+   "simulated_auroc": 0.5218236405518026,
+   "twin": {
+    "curve": [
+     {
+      "chips_per_design": 4,
+      "power_ci_clears_0.5": 0.076,
+      "median_auroc": 0.5,
+      "auroc_90pct_range": [
+       0.1875,
+       0.875
+      ]
+     },
+     {
+      "chips_per_design": 6,
+      "power_ci_clears_0.5": 0.0945,
+      "median_auroc": 0.5277777777777778,
+      "auroc_90pct_range": [
+       0.25,
+       0.8055555555555556
+      ]
+     },
+     {
+      "chips_per_design": 8,
+      "power_ci_clears_0.5": 0.0645,
+      "median_auroc": 0.515625,
+      "auroc_90pct_range": [
+       0.265625,
+       0.75
+      ]
+     },
+     {
+      "chips_per_design": 10,
+      "power_ci_clears_0.5": 0.0505,
+      "median_auroc": 0.51,
+      "auroc_90pct_range": [
+       0.31,
+       0.73
+      ]
+     },
+     {
+      "chips_per_design": 12,
+      "power_ci_clears_0.5": 0.0475,
+      "median_auroc": 0.5138888888888888,
+      "auroc_90pct_range": [
+       0.3263888888888889,
+       0.7083333333333334
+      ]
+     },
+     {
+      "chips_per_design": 15,
+      "power_ci_clears_0.5": 0.0535,
+      "median_auroc": 0.5155555555555555,
+      "auroc_90pct_range": [
+       0.3377777777777778,
+       0.6977777777777778
+      ]
+     },
+     {
+      "chips_per_design": 20,
+      "power_ci_clears_0.5": 0.0565,
+      "median_auroc": 0.52,
+      "auroc_90pct_range": [
+       0.3625,
+       0.6725
+      ]
+     },
+     {
+      "chips_per_design": 25,
+      "power_ci_clears_0.5": 0.06,
+      "median_auroc": 0.5248,
+      "auroc_90pct_range": [
+       0.3872,
+       0.6592
+      ]
+     },
+     {
+      "chips_per_design": 30,
+      "power_ci_clears_0.5": 0.0515,
+      "median_auroc": 0.5166666666666667,
+      "auroc_90pct_range": [
+       0.39111111111111113,
+       0.6411111111111111
+      ]
+     },
+     {
+      "chips_per_design": 40,
+      "power_ci_clears_0.5": 0.0555,
+      "median_auroc": 0.525625,
+      "auroc_90pct_range": [
+       0.41059375000000004,
+       0.62815625
+      ]
+     },
+     {
+      "chips_per_design": 50,
+      "power_ci_clears_0.5": 0.055,
+      "median_auroc": 0.5192,
+      "auroc_90pct_range": [
+       0.422,
+       0.61202
+      ]
+     },
+     {
+      "chips_per_design": 60,
+      "power_ci_clears_0.5": 0.0715,
+      "median_auroc": 0.5188888888888888,
+      "auroc_90pct_range": [
+       0.431375,
+       0.6122916666666666
+      ]
+     },
+     {
+      "chips_per_design": 80,
+      "power_ci_clears_0.5": 0.068,
+      "median_auroc": 0.52140625,
+      "auroc_90pct_range": [
+       0.4495234375,
+       0.5954765625
+      ]
+     },
+     {
+      "chips_per_design": 100,
+      "power_ci_clears_0.5": 0.084,
+      "median_auroc": 0.5221,
+      "auroc_90pct_range": [
+       0.45588500000000004,
+       0.58815
+      ]
+     }
+    ],
+    "chips_needed": null
+   },
+   "observed": {
+    "curve": [],
+    "chips_needed": null
+   },
+   "power_at_recorded_size": {
+    "twin": 0.067
+   }
+  }
+ }
+}
