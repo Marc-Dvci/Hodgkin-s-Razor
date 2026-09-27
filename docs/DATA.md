@@ -7,6 +7,8 @@
 | Tampere comparative MEA dataset | development set; the domain of the Axion twin | CC BY 4.0 | gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset |
 | Doorn et al. 2024, Dynasore peak trains | blind test of version 2; the untreated baselines set the domain of the MCS twin | Apache-2.0 | gitlab.utwente.nl/m7706783/fb_model (commit a88e15d) |
 | Mateus et al. 2024, microchannel chip recordings | blind test of the chip readout prediction | CC BY-NC-ND (dataset README) | zenodo.org/records/14525182 |
+| Charlesworth et al. 2015, sister-array recordings | blind test of version 3 (chronic APV); the untreated first sisters set the domain of the MCS 60-electrode twin, and untreated sister pairs set the drift | CC0 1.0 (public domain) | zenodo.org/records/31085 |
+| Lassus et al. 2018, cortico-striatal chips | published directions of the GluN2B result only (no data) | cited | Sci Rep 8:17461 |
 | Doorn et al. 2025, SBI repository | prior art: their trained estimator and feature code, scored beside the twin | Apache-2.0 | gitlab.utwente.nl/m7706783/SBI_MEA_model (commit d7f3615) |
 
 No purchased data, no restricted repository, no data behind a login, and no
@@ -70,6 +72,41 @@ the stricter terms: the data are downloaded by a script, read in place, never
 redistributed or altered, and only derived summary statistics are published,
 with credit to the authors.
 
+## Charlesworth et al. 2015, sister arrays
+
+Charlesworth P., Morton A., Eglen S.J., Komiyama N.H., Grant S.G.N.
+*Canalization of genetic and pharmacological perturbations in developing
+primary neuronal activity patterns.* Neuropharmacology 100:47-55 (2015).
+
+Mouse hippocampal neurons on Multi Channel Systems 60-electrode arrays,
+recorded twice a week from 6 to about 30 days in vitro. Each preparation was
+plated on two sister arrays (A and B; 21 preparations on four, A to D). After
+the recording at 7 days, 50 uM APV was added to the B array of some
+preparations and kept in the medium. Wild type and eight knockout lines
+(Gria1, PSD-95, PSD-93, SAP102, SPA, GNB1, GRIT). Spike times as released by
+the authors (detection at -20 uV); each 8 x 8 recording is read as four
+4 x 4 quadrants.
+
+**Use.** The blind test of `PREREGISTRATION_v3.md`. `hodgkins_razor/charlesworth.py`
+returns a B or D recording made at 8 days or later only when that file exists
+and matches its hash. Before the freeze, only the metadata sheet, the A and C
+arrays and the recordings at 6 and 7 days were read. The four-array
+preparations' A–C pairs (never treated) set the drift at the scored ages and
+are excluded from scoring.
+
+**Licence.** CC0 1.0 on the Zenodo record: no restriction. The data are
+downloaded by `scripts/fetch_external.py` and not redistributed in the
+repository.
+
+## Lassus et al. 2018, cortico-striatal chips
+
+Lassus B., Naudé J., Faure P., Guedin D., Von Boxberg Y., Mannoury la Cour C.,
+Millan M.J., Peyrin J.-M. *Glutamatergic and dopaminergic modulation of
+cortico-striatal circuits probed by dynamic calcium imaging of networks
+reconstructed in microfluidic chips.* Sci Rep 8:17461 (2018). Only the
+published directions of the GluN2B result and the protocol description are
+used (`docs/LASSUS_PREDICTION.md`); no data from the paper.
+
 ## Doorn et al. 2025, prior art
 
 Doorn N., van Putten M.J.A.M., Frega M. *Automated inference of disease
@@ -87,5 +124,6 @@ its simulated baseline, read through that system, falls inside the range the
 system's untreated baselines span (2nd to 98th percentile of eight
 detection-robust statistics, widened), is a living network-driven culture, and
 collapses below 35 percent of its activity when AMPA is blocked. Only baseline
-windows enter this: 198 Tampere windows and 50 Doorn windows. No treated
+windows enter this: 198 Tampere windows, 50 Doorn windows and the first-sister
+quadrant windows of the Charlesworth pairs at 9 days and later. No treated
 recording and no compound label.
