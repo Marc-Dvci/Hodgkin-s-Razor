@@ -1,0 +1,38 @@
+{
+ "view": "mcs60q",
+ "chosen": 0.12,
+ "table": [
+  {
+   "drift": 0.1,
+   "n_sim": 638,
+   "log_ratio": 0.26711900209107137,
+   "recorded_outside_95": 0.06342657342657343
+  },
+  {
+   "drift": 0.12,
+   "n_sim": 633,
+   "log_ratio": 0.08678025425868073,
+   "recorded_outside_95": 0.05527972027972028
+  },
+  {
+   "drift": 0.14,
+   "n_sim": 628,
+   "log_ratio": -0.1198633892428736,
+   "recorded_outside_95": 0.0543006993006993
+  },
+  {
+   "drift": 0.16,
+   "n_sim": 623,
+   "log_ratio": -0.29204578464604614,
+   "recorded_outside_95": 0.049545454545454545
+  },
+  {
+   "drift": 0.2,
+   "n_sim": 619,
+   "log_ratio": -0.52604827292101,
+   "recorded_outside_95": 0.045104895104895106
+  }
+ ],
+ "n_recorded": 715,
+ "source": "Charlesworth et al., sister arrays at 6 and 7 days in vitro, before any drug"
+}

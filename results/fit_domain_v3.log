@@ -1,0 +1,10 @@
+mcs60q: box from 6984 baseline windows, 0.81 of them inside
+  mcs60q round 0: inside 0.080, median violation 10.48
+  mcs60q round 1: inside 0.206, median violation 10.12
+  mcs60q round 2: inside 0.342, median violation 10.11
+  mcs60q round 3: inside 0.378, median violation 10.10
+  mcs60q round 4: inside 0.491, median violation 0.19
+  mcs60q round 5: inside 0.609, median violation 0.07
+  mcs60q: {'screened': 12288, 'admissible': 2745, 'centres': 2533, 'admissible_rate': 0.223388671875}
+  mcs60q: 1607 simulated cultures inside (646s)
+wrote models/domain_v3.json

@@ -126,6 +126,11 @@ def recorded_baselines(view: str) -> np.ndarray:
         from hodgkins_razor import tampere as T
         return np.array([F.compute(p.baseline, p.n_elec, p.duration)
                          for p in T.load_all()])
+    if view == "mcs60q":
+        # The first array of every scored sister pair, which never carries a
+        # drug, read as quadrants.
+        from hodgkins_razor import charlesworth as C
+        return np.array([F.compute(ev, C.N_ELEC, 60.0) for ev in C.baselines(n_windows=2)])
     from hodgkins_razor import doorn as D
     return np.array([F.compute(p.baseline, p.n_elec, p.duration)
                      for p in D.load()])

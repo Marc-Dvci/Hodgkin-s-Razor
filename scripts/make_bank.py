@@ -48,6 +48,22 @@ VIEWS = list(S.VIEWS)
 DOMAINS = ("grid16", "grid12")
 
 
+def sister_drift(theta_t: np.ndarray, scale: float, rng: np.random.Generator) -> np.ndarray:
+    """The second sister of a preparation: every parameter nudged, none labelled.
+
+    Sister arrays plated from one dissociation are the same preparation, not
+    the same network. Their wiring and electrode pickup differ (the simulator's
+    unpaired mode draws both afresh), and so do their culture parameters, by a
+    small amount. `scale` is that spread as a fraction of each parameter's
+    baseline range, in transformed units; `scripts/calibrate_drift.py` sets it
+    from sister pairs recorded before any drug. The drift is never labelled as
+    a mechanism, so the twin learns to see through it.
+    """
+    t = P.to_unit(theta_t)
+    t = t + rng.normal(0.0, scale, size=t.shape) * (P.TBHI - P.TBLO)
+    return P.from_unit(np.clip(t, P.TLO, P.THI))
+
+
 def _unpack(packed) -> np.ndarray:
     """Events sent to a worker as int32 steps and uint8 electrodes, not floats."""
     t, e, dt_ms = packed
@@ -128,18 +144,26 @@ def main() -> None:
     ap.add_argument("--regime", default="models/regime.json")
     ap.add_argument("--regime-quantile", type=float, default=0.85)
     ap.add_argument("--domain-file", default="models/domain.json")
+    ap.add_argument("--domains", default="grid16,grid12")
+    ap.add_argument("--design", choices=("paired", "sister"), default="paired",
+                    help="paired: one well recorded twice; sister: two arrays "
+                         "plated from one preparation")
+    ap.add_argument("--drift", type=float, default=0.0,
+                    help="sister design: culture drift, fraction of the baseline range")
     args = ap.parse_args()
 
     out = pathlib.Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     dom = json.loads((ROOT / args.domain_file).read_text())
     boxes = {v: d["box"] for v, d in dom["views"].items() if "box" in d}
-    proposals = {v: GaussianProposal.load(dom["views"][v]["proposal"]) for v in DOMAINS}
-    meta = {"version": 2, "pairs": args.pairs, "duration_s": args.duration,
+    domains = tuple(args.domains.split(","))
+    proposals = {v: GaussianProposal.load(dom["views"][v]["proposal"]) for v in domains}
+    meta = {"version": 3 if args.design == "sister" else 2,
+            "design": args.design, "drift": args.drift, "pairs": args.pairs, "duration_s": args.duration,
             "transient_s": args.transient, "seed": args.seed,
             "views": {v: {"n_elec": S.n_electrodes(v), "dead_ms": S.VIEWS[v]["dead_ms"]}
                       for v in VIEWS},
-            "domains": list(DOMAINS), "param_keys": list(P.KEYS),
+            "domains": list(domains), "param_keys": list(P.KEYS),
             "shift_keys": [P.KEYS[i] for i in P.SHIFT_IDX],
             "feature_names": list(F.NAMES),
             "inactive_scale": SH.INACTIVE_SCALE,
@@ -157,8 +181,8 @@ def main() -> None:
     pair_pool = cf.ProcessPoolExecutor(max_workers=args.workers)
     t_start = time.time()
     done_pairs = 0
-    screened = {d: 0 for d in DOMAINS}
-    accepted = {d: 0 for d in DOMAINS}
+    screened = {d: 0 for d in domains}
+    accepted = {d: 0 for d in domains}
 
     for s in range(n_shards):
         path = out / f"shard_{s:04d}.npz"
@@ -167,13 +191,13 @@ def main() -> None:
             continue
         rng = np.random.default_rng(args.seed + 1000 * s)
         n_here = min(args.shard, args.pairs - s * args.shard)
-        TC, DL, AC, GR, DM, PENDING = [], [], [], [], [], []
+        TC, TT, DL, AC, GR, DM, PENDING = [], [], [], [], [], [], []
         have = 0
         step = 0
         culture = 0
         while have < n_here:
             # Alternate the domains so every shard holds both in equal measure.
-            domain = DOMAINS[step % len(DOMAINS)]
+            domain = domains[step % len(domains)]
             want = max(int(np.ceil((n_here - have) / args.shifts_per_baseline)), 1)
             want = min(want, max(args.batch // args.shifts_per_baseline, 8))
             cand = proposals[domain].draw(want * 3, rng)
@@ -212,19 +236,23 @@ def main() -> None:
             nb = theta_c.shape[0]
             delta, active = SH.sample_shift(nb, rng, theta_c=theta_c)
             theta_t, realised, active = SH.apply_shift(theta_c, delta, active)
+            sister = args.design == "sister"
+            if sister:
+                theta_t = sister_drift(theta_t, args.drift, rng)
             stacked = SH.interleave(theta_c, theta_t)
             res = sim.run(stacked, duration_s=args.duration,
-                          transient_s=args.transient, seed=seed + 13, pair=True)
+                          transient_s=args.transient, seed=seed + 13, pair=not sister)
             ok = ~(res.truncated[0::2] | res.truncated[1::2])
             # Features are computed while the GPU runs the next batch.
             keep = np.flatnonzero(np.repeat(ok, 2))
             PENDING.append(pair_pool.map(_one_view, [(_pack(res, int(i)), domain, args.duration)
                                                  for i in keep], chunksize=8))
             TC.append(P.to_unit(theta_c)[ok])
+            TT.append(P.to_unit(theta_t)[ok])
             DL.append(realised[ok])
             AC.append(active[ok])
             GR.append(groups[ok])
-            DM.append(np.full(int(ok.sum()), DOMAINS.index(domain), dtype=np.int8))
+            DM.append(np.full(int(ok.sum()), VIEWS.index(domain), dtype=np.int8))
             have += int(ok.sum())
 
         fx = np.concatenate([np.stack(list(f)) for f in PENDING])
@@ -232,6 +260,9 @@ def main() -> None:
         np.savez_compressed(
             path,
             theta_c=np.concatenate(TC)[:n_here].astype(np.float32),
+            # The second recording's own parameters: the shift plus, in the
+            # sister design, the drift between sisters.
+            theta_t=np.concatenate(TT)[:n_here].astype(np.float32),
             delta=np.concatenate(DL)[:n_here].astype(np.float32),
             active=np.concatenate(AC)[:n_here],
             x_base=np.concatenate(XB)[:n_here].astype(np.float32),
@@ -240,7 +271,7 @@ def main() -> None:
             domain=np.concatenate(DM)[:n_here])
         done_pairs += n_here
         rate = done_pairs / max(time.time() - t_start, 1e-9)
-        acc = {d: round(accepted[d] / max(screened[d], 1), 3) for d in DOMAINS}
+        acc = {d: round(accepted[d] / max(screened[d], 1), 3) for d in domains}
         print(f"shard {s + 1}/{n_shards}  pairs {done_pairs}  {rate:.1f} pairs/s  "
               f"acceptance {acc}  "
               f"eta {(args.pairs - done_pairs) / max(rate, 1e-9) / 60:.0f} min",

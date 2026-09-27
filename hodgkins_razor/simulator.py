@@ -243,10 +243,15 @@ def available() -> bool:
 # grid12  Multi Channel Systems 24-well plate, a 4 x 4 grid whose four corner
 #         positions are reference electrodes, so 12 record (Doorn et al.).
 #         Their peak trains carry intervals down to 0.2 ms, so 0.3 ms.
+# mcs60q  One 4 x 4 quadrant of a Multi Channel Systems 60-electrode array
+#         (Charlesworth et al.), read on the grid12 layout. The shortest
+#         recorded interval on any electrode is 1.08 ms.
 VIEWS: dict[str, dict] = {
     "grid16": {"electrodes": tuple(range(NELEC)), "dead_ms": 2.0},
     "grid12": {"electrodes": tuple(e for e in range(NELEC) if e not in (0, 3, 12, 15)),
                "dead_ms": 0.3},
+    "mcs60q": {"electrodes": tuple(e for e in range(NELEC) if e not in (0, 3, 12, 15)),
+               "dead_ms": 1.08},
 }
 
 

@@ -8,6 +8,8 @@
   The dataset README states CC BY-NC-ND: research use with credit, no altered
   redistribution and no commercial use. It is downloaded to data/raw and read
   in place; nothing derived from it is written except summary statistics.
+* Charlesworth et al. (2015) sister-culture recordings, Zenodo record 31085,
+  CC0 (public domain). The blind test of the third pre-registration.
 
 Every file the results depend on is checked against the SHA-256 it had when
 the results were produced, so a changed upstream file is reported instead of
@@ -31,8 +33,12 @@ REPOS = {
     "doorn_sbi": ("https://gitlab.utwente.nl/m7706783/SBI_MEA_model.git",
                   "d7f3615762d6c72d5075dc509262d6accbc91406"),
 }
-MATEUS = ("https://zenodo.org/records/14525182/files/1_MEA_Recordings.zip?download=1",
-          "mateus2024/1_MEA_Recordings.zip")
+ARCHIVES = {
+    "mateus2024/1_MEA_Recordings.zip":
+        "https://zenodo.org/records/14525182/files/1_MEA_Recordings.zip?download=1",
+    "charlesworth2015/g2c-1.zip":
+        "https://zenodo.org/records/31085/files/g2c-1.zip?download=1",
+}
 
 SHA256 = {
     "doorn_fb_model/Experimental_peaktrains/APS_FB2_B6.mat": "020a0bb40403c262282cc204b43c7aab4dae454b430633e659e08d489c799996",
@@ -48,6 +54,7 @@ SHA256 = {
     "doorn_sbi/TrainedNDE": "5655060603b08e18804437be83526525e88b7264cc6987ef44731c62228d7999",
     "doorn_sbi/FeatureExtraction.py": "d7c367ae6aa0056bf50245d559c6d4b3cdd1b2bd7e63913729917ef2752e1a68",
     "mateus2024/1_MEA_Recordings.zip": "f70d42656a9e0d4bd7c65b33b9b535b90401139b91def8262098d0449bb71371",
+    "charlesworth2015/g2c-1.zip": "bbac9851229c7768d2099594a241433fc00b0edb385fed860c0bbb464d946239",
 }
 
 
@@ -63,16 +70,17 @@ def main() -> None:
             subprocess.run(["git", "clone", "--quiet", url, str(dest)], check=True)
         subprocess.run(["git", "-C", str(dest), "checkout", "--quiet", commit], check=True)
         print(f"{name} at {commit[:10]}")
-    url, rel = MATEUS
-    out = RAW / rel
-    if not out.exists():
-        out.parent.mkdir(parents=True, exist_ok=True)
-        with urllib.request.urlopen(url, timeout=900) as r, open(out, "wb") as f:
-            while chunk := r.read(1 << 20):
-                f.write(chunk)
-    if not (out.parent / "1_MEA_Recordings").exists():
+    for rel, url in ARCHIVES.items():
+        out = RAW / rel
+        if not out.exists():
+            out.parent.mkdir(parents=True, exist_ok=True)
+            with urllib.request.urlopen(url, timeout=900) as r, open(out, "wb") as f:
+                while chunk := r.read(1 << 20):
+                    f.write(chunk)
         with zipfile.ZipFile(out) as z:
-            z.extractall(out.parent)
+            top = z.namelist()[0].split("/")[0]
+            if not (out.parent / top).exists():
+                z.extractall(out.parent)
     bad = []
     for rel, want in SHA256.items():
         p = RAW / rel

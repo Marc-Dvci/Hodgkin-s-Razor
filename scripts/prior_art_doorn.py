@@ -2,6 +2,7 @@
 
     .venv-doorn/Scripts/python scripts/prior_art_doorn.py --dataset tampere
     .venv-doorn/Scripts/python scripts/prior_art_doorn.py --dataset doorn
+    .venv-doorn/Scripts/python scripts/prior_art_doorn.py --dataset charlesworth
 
 Runs in its own environment (`requirements-doorn.txt`: Python 3.9, sbi 0.21,
 torch 1.13, brian2), because the trained estimator is a pickled sbi 0.21
@@ -65,7 +66,7 @@ def to_samples(events: np.ndarray, n_elec: int, duration: float) -> np.ndarray:
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", choices=["tampere", "doorn"], required=True)
+    ap.add_argument("--dataset", choices=["tampere", "doorn", "charlesworth"], required=True)
     ap.add_argument("--samples", type=int, default=2000)
     args = ap.parse_args()
 
@@ -79,14 +80,23 @@ def main() -> None:
     if args.dataset == "tampere":
         from hodgkins_razor import tampere as T
         pairs = T.load_all() + [p for n in T.PLATES for p in T.load_ttx(n)]
-    else:
+    elif args.dataset == "doorn":
         from hodgkins_razor import doorn as D
         pairs = D.load(treated=True)
+    else:
+        # The protocol of PREREGISTRATION_v3: sister pairs at 9 to 15 days, the
+        # first 60 s window of two diagonal quadrants, because their estimator
+        # takes seconds per recording.
+        from hodgkins_razor import charlesworth as C
+        pairs = C.load(kinds=("treated", "null"), min_div=9.0, max_div=15.0,
+                       n_windows=1, quadrants=(0, 3))
 
     rows = []
     for k, p in enumerate(pairs):
         rec = {"plate": p.plate, "species": p.species, "well": p.well,
                "compound": p.compound}
+        if args.dataset == "charlesworth":
+            rec.update({"prep": p.prep, "div": p.div, "kind": p.kind})
         for side, ev in (("baseline", p.baseline), ("treated", p.treated)):
             aps = to_samples(ev, p.n_elec, p.duration)
             if aps.shape[0] < 20:

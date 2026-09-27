@@ -59,6 +59,10 @@ def load_bank(path: pathlib.Path, view: str = "grid16") -> dict:
         offset += int(g.max()) + 1
         for k in ("theta_c", "delta", "active"):
             acc[k].append(d[k])
+        # Sister banks store the second recording's own parameters, which
+        # carry the drift between sisters as well as the shift.
+        acc.setdefault("theta_t", []).append(
+            d["theta_t"] if "theta_t" in d else d["theta_c"] + d["delta"])
         acc["x_base"].append(xb)
         acc["x_treat"].append(xt)
     out = {k: np.concatenate(v) for k, v in acc.items()}
@@ -154,7 +158,7 @@ def main() -> None:
         # Every recording becomes its own record: the baseline with theta_c and
         # the treated one with theta_c + delta. The shift is then recovered as a
         # difference of two independent posteriors.
-        theta_t = bank["theta_c"] + bank["delta"]
+        theta_t = bank["theta_t"]
         ctx = nde.phi(np.concatenate([bank["x_base"], bank["x_treat"]]))
         lat = nde.theta_to_z(np.concatenate([bank["theta_c"], theta_t]))
         idx_val = np.concatenate([idx_val, idx_val + n])

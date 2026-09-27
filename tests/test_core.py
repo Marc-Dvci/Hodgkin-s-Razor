@@ -544,3 +544,44 @@ def test_v2_metrics_on_synthetic_wells():
     assert m["detection_auroc"] > 0.5
     t = E.transfer(rows, wells)
     assert set(t) == {"raw", "twin"}
+
+
+# ------------------------------------------------------- sister-culture reader
+needs_charlesworth = pytest.mark.skipif(
+    not (ROOT / "data" / "raw" / "charlesworth2015" / "g2c-1" / "00g2cdata.csv").exists(),
+    reason="needs scripts/fetch_external.py")
+
+
+def test_quadrants_keep_twelve_electrodes_and_never_the_reference():
+    """Every electrode of the 8 x 8 array lands in one quadrant, once; the
+    array corners (11, 18, 81, 88) and the reference (15) fall on dropped
+    quadrant corners."""
+    from hodgkins_razor import charlesworth as C
+    labels = [f"{c}{r}" for c in range(1, 9) for r in range(1, 9)]
+    spikes = {l: np.array([float(i)]) for i, l in enumerate(labels)}
+    seen = []
+    for q in range(4):
+        ev = C.quadrant_events(spikes, q, 0.0, 100.0)
+        assert sorted(np.unique(ev[:, 0]).astype(int).tolist()) == list(range(12))
+        seen += [labels[int(t)] for t in ev[:, 1]]
+    assert len(seen) == len(set(seen)) == 48
+    assert not {"11", "18", "81", "88", "15"} & set(seen)
+
+
+@needs_charlesworth
+def test_second_sister_is_locked_and_pairs_are_well_formed():
+    from hodgkins_razor import charlesworth as C
+    idx = C.pairs_index()
+    kinds = {r["kind"] for r in idx}
+    assert kinds == {"treated", "null", "pre-drug"}
+    for r in idx:
+        assert r["first_genotype"] == r["second_genotype"] or {
+            r["first_genotype"], r["second_genotype"]} <= {"GluR1", "GluRAnull"}
+        if r["kind"] == "pre-drug":
+            assert r["div"] < C.LOCK_FROM_DIV
+    treated = [r for r in idx if r["kind"] == "treated"]
+    assert {r["prep"] for r in treated}.isdisjoint(
+        {r["prep"] for r in idx if r["kind"] == "null"})
+    if not C._unblinded():
+        with pytest.raises(SystemExit):
+            C.read(treated[0]["second"], treated[0]["div"])
