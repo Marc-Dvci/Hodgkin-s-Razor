@@ -103,8 +103,12 @@ def geometry() -> ChipGeometry:
 GEOMETRY = geometry()
 
 
+RSCALE_KEYS = ("g_ampa", "g_nmda", "g_gaba", "g_kdr")   # order of the kernel's RSCALE
+
+
 def wiring(theta: np.ndarray, chip: np.ndarray, rng: np.random.Generator,
-           pair: bool = False, silence: np.ndarray | None = None) -> dict:
+           pair: bool = False, silence: np.ndarray | None = None,
+           striatal: bool = False, perfuse: dict | None = None) -> dict:
     """Wiring, drive and electrode maps for a batch of chips.
 
     Within a chamber the network is wired as usual. `p_cross` is the fraction
@@ -119,6 +123,14 @@ def wiring(theta: np.ndarray, chip: np.ndarray, rng: np.random.Generator,
     direction, so that readout follows each chip's own wiring. `silence`
     (one of -1, 0, 1 per row) holds the source (0) or the target (1) chamber
     below threshold, which is what perfusing that chamber with TTX does.
+
+    `striatal` makes every target neuron GABAergic, as the medium spiny
+    neurons of a cortico-striatal chip are: they excite nothing, and they
+    fire only when the source drives them if `tgt_autonomy` is low.
+    `perfuse` maps a chamber (0 source, 1 target) to conductance factors,
+    for example {1: {"g_nmda": 0.3}}, applied to that chamber's neurons
+    only: a drug perfused into one compartment of a fluidically isolated
+    device.
     """
     theta = np.atleast_2d(theta)
     chip = np.atleast_2d(chip)
@@ -157,6 +169,8 @@ def wiring(theta: np.ndarray, chip: np.ndarray, rng: np.random.Generator,
         w[b] = (weight * m * scale * (S.REF_N / NN)).astype(np.float32)
         np.fill_diagonal(w[b], 0.0)
         isinh[b] = (rng.random(NN) < f_inh[b]).astype(np.uint8)
+        if striatal:
+            isinh[b, comp == 1] = 1
         e = GEOMETRY.elec.copy()
         e[fwd] = ELEC_FWD
         e[bwd] = ELEC_BWD
@@ -177,8 +191,15 @@ def wiring(theta: np.ndarray, chip: np.ndarray, rng: np.random.Generator,
         for c in (0, 1):
             rows = silence == c
             ibias[np.ix_(rows, comp == c)] = SILENCE_PA
-    return {"w": w, "isinh": isinh, "delay": GEOMETRY.delay,
-            "elec": elec, "ibias": ibias}
+    out = {"w": w, "isinh": isinh, "delay": GEOMETRY.delay,
+           "elec": elec, "ibias": ibias}
+    if perfuse:
+        rscale = np.ones((B, NN, len(RSCALE_KEYS)), dtype=np.float32)
+        for c, factors in perfuse.items():
+            for key, f in factors.items():
+                rscale[:, comp == c, RSCALE_KEYS.index(key)] = f
+        out["rscale"] = rscale
+    return out
 
 
 def sample_chip_prior(n: int, rng: np.random.Generator) -> np.ndarray:
@@ -191,11 +212,14 @@ def sample_chip_prior(n: int, rng: np.random.Generator) -> np.ndarray:
 def run_chip(sim: S.Simulator, theta: np.ndarray, chip: np.ndarray,
              duration_s: float = 60.0, transient_s: float = 5.0,
              seed: int = 0, pair: bool = False,
-             silence: np.ndarray | None = None) -> S.SimResult:
+             silence: np.ndarray | None = None, striatal: bool = False,
+             perfuse: dict | None = None) -> S.SimResult:
     """Simulate chips. The wiring depends only on `seed`, so the same seed
-    with a different `silence` is the same device under another perfusion."""
+    with a different `silence` or `perfuse` is the same device under another
+    perfusion."""
     rng = np.random.default_rng(seed * 104729 + 7)
-    struct = wiring(theta, chip, rng, pair=pair, silence=silence)
+    struct = wiring(theta, chip, rng, pair=pair, silence=silence,
+                    striatal=striatal, perfuse=perfuse)
     return sim.run(theta, duration_s=duration_s, transient_s=transient_s,
                    seed=seed, pair=pair, structure=struct)
 

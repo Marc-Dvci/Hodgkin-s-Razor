@@ -1,1 +1,5 @@
 shard 1/60  pairs 2400  28.4 pairs/s  acceptance {'mcs60q': 0.751}  eta 83 min
+shard 2/60  pairs 4800  28.6 pairs/s  acceptance {'mcs60q': 0.753}  eta 81 min
+shard 3/60  pairs 7200  26.5 pairs/s  acceptance {'mcs60q': 0.755}  eta 86 min
+shard 4/60  pairs 9600  26.4 pairs/s  acceptance {'mcs60q': 0.758}  eta 85 min
+shard 5/60  pairs 12000  26.6 pairs/s  acceptance {'mcs60q': 0.756}  eta 83 min

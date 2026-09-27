@@ -57,6 +57,9 @@ extern "C" __global__ void simulate(
     const unsigned char* __restrict__ DB, // [NN*NN] delay slot, shared across networks
     const unsigned char* __restrict__ ISINH,  // [B, NN]
     const float* __restrict__ IBIAS,      // [B, NN]
+    const float* __restrict__ RSCALE,     // [B, NN, 4] per-neuron scale of g_ampa, g_nmda,
+                                          // g_gaba and g_kdr: 1 everywhere unless a drug
+                                          // was perfused into one compartment only
     const int* __restrict__ ELEC,         // [NN] or [B, NN] electrode of each neuron, -1 if unseen
     const int elec_stride,                // 0: one map shared by the batch; NN: one map per network
     const int n_steps,
@@ -122,6 +125,13 @@ extern "C" __global__ void simulate(
     __syncthreads();
 
     const float ibias = IBIAS[b * NN + i];
+    // A scale of exactly 1 leaves every product unchanged, so a run without a
+    // compartment perfusion is bit-identical to one before this term existed.
+    const float* rs4 = RSCALE + ((size_t)b * NN + i) * 4;
+    const float g_ampa_i = g_ampa * rs4[0];
+    const float g_nmda_i = g_nmda * rs4[1];
+    const float g_gaba_i = g_gaba * rs4[2];
+    const float g_kdr_i  = g_kdr  * rs4[3];
     const int myelec = ELEC[(size_t)b * elec_stride + i];
     const float noise_amp = noise_sd * sqrtf(2.0f * GL / CM) * sqrtf(dt);
     const float dxd = dt / tau_d;
@@ -175,13 +185,13 @@ extern "C" __global__ void simulate(
         const float mm = m[i] * m[i] * m[i] * h[i];
         const float nn4 = n[i] * n[i] * n[i] * n[i];
         const float mg = 1.0f / (1.0f + __expf(-0.062f * v) / 3.57f);
-        const float gA = g_ampa * ga[i];
-        const float gN = g_nmda * gn[i] * mg;
-        const float gG = g_gaba * gg[i];
+        const float gA = g_ampa_i * ga[i];
+        const float gN = g_nmda_i * gn[i] * mg;
+        const float gG = g_gaba_i * gg[i];
         const float gH = g_ahp * Ca[i];
 
-        const float G = GL + g_na * mm + g_kdr * nn4 + gA + gN + gG + gH + g_tonic;
-        const float I0 = GL * EL + g_na * mm * ENA + g_kdr * nn4 * EK + ibias
+        const float G = GL + g_na * mm + g_kdr_i * nn4 + gA + gN + gG + gH + g_tonic;
+        const float I0 = GL * EL + g_na * mm * ENA + g_kdr_i * nn4 * EK + ibias
                        + (gA + gN) * EEXC + (gG + g_tonic) * EINH + gH * EK;
 
         if (!gauss_ready) {

@@ -129,7 +129,10 @@ class Simulator:
         the same well twice gives.
 
         `structure` overrides the wiring, the delay table and the electrode map,
-        which is how a compartmented chip is simulated on the same kernel.
+        which is how a compartmented chip is simulated on the same kernel. Its
+        optional "rscale" entry, shape (B, NN, 4), scales g_ampa, g_nmda,
+        g_gaba and g_kdr neuron by neuron, which is how a drug perfused into
+        one compartment is represented; without it every scale is 1.
         """
         cp = self.cp
         theta = np.atleast_2d(np.asarray(theta, dtype=np.float64))
@@ -175,6 +178,9 @@ class Simulator:
                 elec = cp.asarray(structure["elec"], dtype=cp.int32)
             if "ibias" in structure:
                 ibias = cp.asarray(structure["ibias"], dtype=cp.float32)
+        rscale = (cp.asarray(structure["rscale"], dtype=cp.float32)
+                  if structure is not None and "rscale" in structure
+                  else cp.ones((B, NN, 4), dtype=cp.float32))
 
         out_t = cp.zeros((B, NELEC, PER_ELEC), dtype=cp.int32)
         out_e = cp.zeros((B, NELEC, PER_ELEC), dtype=cp.uint8)
@@ -186,7 +192,7 @@ class Simulator:
         stride = np.int32(NN if elec.ndim == 2 else 0)
         elec = elec.ravel() if elec.ndim == 2 else elec
         self.kern((B,), (NN,),
-                  (th, w, db, isinh, ibias, elec, stride,
+                  (th, w, db, isinh, ibias, rscale, elec, stride,
                    np.int32(n_steps), np.int32(n_trans), np.float32(self.dt),
                    out_t, out_e, out_c, np.int32(PER_ELEC),
                    np.uint32((seed * 2654435761 + 12345) & 0xFFFFFFFF)),

@@ -1,0 +1,137 @@
+{
+ "note": "Post hoc. Pre-drug windows 0-180 s against 240-420 s of each Doorn well; chance of a method = its hit rate here.",
+ "paired": {
+  "wells": [
+   {
+    "well": "FB2_B6",
+    "top1": "g_tonic_inh",
+    "p_top1": 0.31479746636129563,
+    "called": false
+   },
+   {
+    "well": "FB2_C6",
+    "top1": "g_kdr",
+    "p_top1": 0.22726424556807298,
+    "called": false
+   },
+   {
+    "well": "FB2_D6",
+    "top1": "i_drive",
+    "p_top1": 0.20812725489854733,
+    "called": false
+   },
+   {
+    "well": "FB2t_A2",
+    "top1": "tau_d",
+    "p_top1": 0.33327071122063795,
+    "called": false
+   },
+   {
+    "well": "FB2t_A3",
+    "top1": "tau_d",
+    "p_top1": 0.3267828528954913,
+    "called": false
+   },
+   {
+    "well": "FB2t_B1",
+    "top1": "g_ampa",
+    "p_top1": 0.36791151207951467,
+    "called": false
+   },
+   {
+    "well": "FB2t_C1",
+    "top1": "g_ampa",
+    "p_top1": 0.333202704498009,
+    "called": false
+   },
+   {
+    "well": "FB3t_A3",
+    "top1": "i_drive",
+    "p_top1": 0.23544133045043947,
+    "called": false
+   },
+   {
+    "well": "FB3t_C3",
+    "top1": "g_kdr",
+    "p_top1": 0.2365586035196137,
+    "called": false
+   },
+   {
+    "well": "FB3t_D1",
+    "top1": "g_kdr",
+    "p_top1": 0.1314878892733564,
+    "called": false
+   }
+  ],
+  "null_hits": 2,
+  "n": 10,
+  "null_called": 0
+ },
+ "unpaired": {
+  "wells": [
+   {
+    "well": "FB2_B6",
+    "top1": "g_ahp",
+    "p_top1": 0.4661647918135405,
+    "called": false
+   },
+   {
+    "well": "FB2_C6",
+    "top1": "i_drive",
+    "p_top1": 0.2628573454129048,
+    "called": false
+   },
+   {
+    "well": "FB2_D6",
+    "top1": "g_na",
+    "p_top1": 0.24356333652898088,
+    "called": false
+   },
+   {
+    "well": "FB2t_A2",
+    "top1": "tau_d",
+    "p_top1": 0.39234082767725553,
+    "called": false
+   },
+   {
+    "well": "FB2t_A3",
+    "top1": "tau_d",
+    "p_top1": 0.40865685157107334,
+    "called": false
+   },
+   {
+    "well": "FB2t_B1",
+    "top1": "u_rel",
+    "p_top1": 0.5288307794691917,
+    "called": true
+   },
+   {
+    "well": "FB2t_C1",
+    "top1": "tau_d",
+    "p_top1": 0.42891870746729466,
+    "called": false
+   },
+   {
+    "well": "FB3t_A3",
+    "top1": "tau_d",
+    "p_top1": 0.48293837715645055,
+    "called": false
+   },
+   {
+    "well": "FB3t_C3",
+    "top1": "u_rel",
+    "p_top1": 0.36516117634645145,
+    "called": false
+   },
+   {
+    "well": "FB3t_D1",
+    "top1": "g_ahp",
+    "p_top1": 0.17471426114671496,
+    "called": false
+   }
+  ],
+  "null_hits": 6,
+  "n": 10,
+  "null_called": 1
+ }
+}
