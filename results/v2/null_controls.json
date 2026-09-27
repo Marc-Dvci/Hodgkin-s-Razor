@@ -133,5 +133,71 @@
   "null_hits": 6,
   "n": 10,
   "null_called": 1
+ },
+ "prior_art": {
+  "wells": [
+   {
+    "well": "FB2_B6",
+    "top1": "tau_d",
+    "direction": "down",
+    "abs_z": 0.15169726312160492
+   },
+   {
+    "well": "FB2_C6",
+    "top1": "g_kdr",
+    "direction": "down",
+    "abs_z": 0.14461183547973633
+   },
+   {
+    "well": "FB2_D6",
+    "top1": "u_asyn",
+    "direction": "up",
+    "abs_z": 0.3495725393295288
+   },
+   {
+    "well": "FB2t_A2",
+    "top1": "u_asyn",
+    "direction": "down",
+    "abs_z": 0.30283939838409424
+   },
+   {
+    "well": "FB2t_A3",
+    "top1": "g_ampa",
+    "direction": "up",
+    "abs_z": 0.3243255615234375
+   },
+   {
+    "well": "FB2t_B1",
+    "top1": "g_ampa",
+    "direction": "up",
+    "abs_z": 0.2524067759513855
+   },
+   {
+    "well": "FB2t_C1",
+    "top1": "g_ahp",
+    "direction": "down",
+    "abs_z": 0.33705487847328186
+   },
+   {
+    "well": "FB3t_A3",
+    "top1": "u_rel",
+    "direction": "down",
+    "abs_z": 0.5889884829521179
+   },
+   {
+    "well": "FB3t_C3",
+    "top1": "g_ampa",
+    "direction": "down",
+    "abs_z": 0.36110448837280273
+   },
+   {
+    "well": "FB3t_D1",
+    "top1": "g_ahp",
+    "direction": "down",
+    "abs_z": 0.1392940878868103
+   }
+  ],
+  "null_hits": 2,
+  "n": 10
  }
 }
