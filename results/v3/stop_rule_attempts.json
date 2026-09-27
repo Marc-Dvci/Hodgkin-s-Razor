@@ -1,0 +1,22 @@
+[
+ {
+  "twin": "models/twin_v3_mcs60q",
+  "digest": "c4096c60149d8911e6da54b2d92d2716fe733459dd8e83dd2ef1821836e81e63",
+  "alone": {
+   "n_treated": 144,
+   "n_null": 1329,
+   "auroc_key_window": 0.7918025248725022,
+   "top1_treated": 0.4097222222222222,
+   "top1_null": 0.10158013544018059,
+   "called_key_treated": 0.22916666666666666,
+   "called_key_null": 0.006019563581640331
+  },
+  "coshift": {
+   "n_treated": 421,
+   "n_null": 1329,
+   "auroc_key_window": 0.7466778907935351
+  },
+  "passed": false,
+  "date": "2026-09-27T15:31:14"
+ }
+]

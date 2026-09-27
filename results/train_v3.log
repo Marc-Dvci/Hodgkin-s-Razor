@@ -1,0 +1,142 @@
+== twin mcs60q Sun Sep 27 15:22:48 RDT 2026
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\scripts\train.py:227: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:837.)
+  tot += float(loss); nb += 1
+bank: 60 shards, 144000 pairs, 25435 cultures, view mcs60q
+domain mcs60q: 144000 pairs
+split by culture: train 126670, val 8688, cal 8642
+epoch   1  train   25.719  val   18.401 (nll  18.023  bce 0.3778)      2s
+epoch   2  train   16.965  val   16.034 (nll  15.659  bce 0.3742)      4s
+epoch   3  train   15.180  val   14.801 (nll  14.429  bce 0.3727)      6s
+epoch   4  train   14.168  val   14.011 (nll  13.640  bce 0.3714)      8s
+epoch   5  train   13.364  val   13.375 (nll  13.005  bce 0.3701)     11s
+epoch   6  train   12.780  val   12.887 (nll  12.517  bce 0.3703)     12s
+epoch   7  train   12.322  val   12.536 (nll  12.167  bce 0.3697)     14s
+epoch   8  train   11.934  val   12.159 (nll  11.790  bce 0.3691)     16s
+epoch   9  train   11.636  val   11.869 (nll  11.500  bce 0.3691)     18s
+epoch  10  train   11.351  val   11.599 (nll  11.231  bce 0.3684)     20s
+epoch  11  train   11.002  val   11.449 (nll  11.081  bce 0.3679)     22s
+epoch  12  train   10.776  val   11.408 (nll  11.040  bce 0.3684)     24s
+epoch  13  train   10.557  val   11.216 (nll  10.848  bce 0.3681)     26s
+epoch  14  train   10.414  val   10.889 (nll  10.521  bce 0.3682)     28s
+epoch  15  train   10.089  val   10.767 (nll  10.399  bce 0.3679)     30s
+epoch  16  train    9.960  val   10.698 (nll  10.331  bce 0.3679)     32s
+epoch  17  train    9.776  val   10.864 (nll  10.496  bce 0.3683)     34s
+epoch  18  train    9.660  val   10.491 (nll  10.122  bce 0.3682)     36s
+epoch  19  train    9.427  val   10.398 (nll  10.030  bce 0.3680)     38s
+epoch  20  train    9.296  val   10.214 (nll   9.846  bce 0.3682)     40s
+epoch  21  train    9.052  val   10.088 (nll   9.719  bce 0.3685)     42s
+epoch  22  train    8.908  val    9.969 (nll   9.600  bce 0.3689)     43s
+epoch  23  train    8.713  val    9.839 (nll   9.470  bce 0.3695)     45s
+epoch  24  train    8.536  val    9.670 (nll   9.301  bce 0.3684)     47s
+epoch  25  train    8.391  val    9.980 (nll   9.611  bce 0.3695)     49s
+epoch  26  train    8.268  val    9.545 (nll   9.175  bce 0.3697)     51s
+epoch  27  train    8.085  val    9.559 (nll   9.189  bce 0.3702)     53s
+epoch  28  train    7.968  val    9.433 (nll   9.063  bce 0.3705)     55s
+epoch  29  train    7.797  val    9.348 (nll   8.978  bce 0.3704)     57s
+epoch  30  train    7.707  val    9.357 (nll   8.985  bce 0.3711)     59s
+epoch  31  train    7.622  val    9.397 (nll   9.025  bce 0.3713)     61s
+epoch  32  train    7.447  val    9.287 (nll   8.915  bce 0.3720)     63s
+epoch  33  train    7.390  val    9.151 (nll   8.779  bce 0.3717)     65s
+epoch  34  train    7.196  val    9.185 (nll   8.812  bce 0.3729)     67s
+epoch  35  train    7.152  val    9.089 (nll   8.716  bce 0.3730)     69s
+epoch  36  train    6.960  val    9.064 (nll   8.690  bce 0.3740)     71s
+epoch  37  train    6.809  val    9.103 (nll   8.728  bce 0.3746)     73s
+epoch  38  train    6.765  val    9.038 (nll   8.663  bce 0.3749)     75s
+epoch  39  train    6.665  val    9.106 (nll   8.730  bce 0.3753)     77s
+epoch  40  train    6.622  val    8.995 (nll   8.618  bce 0.3765)     79s
+epoch  41  train    6.503  val    8.966 (nll   8.589  bce 0.3764)     82s
+epoch  42  train    6.338  val    8.810 (nll   8.433  bce 0.3777)     83s
+epoch  43  train    6.289  val    9.075 (nll   8.697  bce 0.3777)     85s
+epoch  44  train    6.182  val    8.785 (nll   8.406  bce 0.3791)     87s
+epoch  45  train    6.017  val    9.158 (nll   8.779  bce 0.3794)     89s
+epoch  46  train    5.943  val    8.845 (nll   8.465  bce 0.3804)     91s
+epoch  47  train    5.862  val    8.921 (nll   8.540  bce 0.3807)     93s
+epoch  48  train    5.816  val    8.979 (nll   8.599  bce 0.3806)     95s
+epoch  49  train    5.734  val    9.046 (nll   8.663  bce 0.3831)     97s
+epoch  50  train    5.618  val    8.908 (nll   8.525  bce 0.3830)     99s
+epoch  51  train    5.515  val    8.839 (nll   8.456  bce 0.3831)    101s
+epoch  52  train    5.452  val    8.945 (nll   8.560  bce 0.3849)    104s
+epoch  53  train    5.323  val    8.823 (nll   8.437  bce 0.3860)    106s
+epoch  54  train    5.280  val    8.763 (nll   8.376  bce 0.3866)    108s
+epoch  55  train    5.218  val    8.893 (nll   8.506  bce 0.3866)    110s
+epoch  56  train    5.075  val    9.076 (nll   8.688  bce 0.3880)    112s
+epoch  57  train    4.989  val    8.911 (nll   8.522  bce 0.3890)    114s
+epoch  58  train    4.932  val    9.043 (nll   8.653  bce 0.3894)    116s
+epoch  59  train    4.845  val    9.009 (nll   8.618  bce 0.3906)    118s
+epoch  60  train    4.772  val    9.115 (nll   8.723  bce 0.3914)    120s
+epoch  61  train    4.726  val    8.989 (nll   8.596  bce 0.3930)    122s
+epoch  62  train    4.620  val    9.128 (nll   8.735  bce 0.3932)    124s
+epoch  63  train    4.565  val    9.156 (nll   8.762  bce 0.3944)    126s
+epoch  64  train    4.512  val    9.063 (nll   8.667  bce 0.3954)    128s
+epoch  65  train    4.432  val    9.052 (nll   8.656  bce 0.3963)    130s
+epoch  66  train    4.368  val    9.251 (nll   8.855  bce 0.3963)    132s
+early stop
+saved models/twin_v3_mcs60q {"pairs": 144000, "val_loss": 8.744384434488085, "epochs_run": 66}
+== unpaired Sun Sep 27 15:25:05 RDT 2026
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\scripts\train.py:227: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:837.)
+  tot += float(loss); nb += 1
+bank: 60 shards, 144000 pairs, 25435 cultures, view mcs60q
+domain mcs60q: 144000 pairs
+split by culture: train 126670, val 8688, cal 8642
+epoch   1  train    5.685  val    3.357 (nll   3.357  bce 0.0000)      3s
+epoch   2  train    2.484  val    1.911 (nll   1.911  bce 0.0000)      6s
+epoch   3  train    1.545  val    1.333 (nll   1.333  bce 0.0000)      8s
+epoch   4  train    0.981  val    0.782 (nll   0.782  bce 0.0000)     11s
+epoch   5  train    0.556  val    0.684 (nll   0.684  bce 0.0000)     13s
+epoch   6  train    0.154  val    0.146 (nll   0.146  bce 0.0000)     16s
+epoch   7  train   -0.144  val   -0.074 (nll  -0.074  bce 0.0000)     18s
+epoch   8  train   -0.420  val   -0.365 (nll  -0.365  bce 0.0000)     21s
+epoch   9  train   -0.661  val   -0.666 (nll  -0.666  bce 0.0000)     23s
+epoch  10  train   -0.820  val   -0.700 (nll  -0.700  bce 0.0000)     26s
+epoch  11  train   -1.060  val   -0.835 (nll  -0.835  bce 0.0000)     29s
+epoch  12  train   -1.239  val   -1.059 (nll  -1.059  bce 0.0000)     31s
+epoch  13  train   -1.400  val   -1.162 (nll  -1.162  bce 0.0000)     34s
+epoch  14  train   -1.643  val   -1.387 (nll  -1.387  bce 0.0000)     36s
+epoch  15  train   -1.736  val   -1.475 (nll  -1.475  bce 0.0000)     39s
+epoch  16  train   -1.880  val   -1.321 (nll  -1.321  bce 0.0000)     41s
+epoch  17  train   -1.974  val   -1.667 (nll  -1.667  bce 0.0000)     44s
+epoch  18  train   -2.129  val   -1.722 (nll  -1.722  bce 0.0000)     46s
+epoch  19  train   -2.211  val   -1.663 (nll  -1.663  bce 0.0000)     49s
+epoch  20  train   -2.326  val   -1.636 (nll  -1.636  bce 0.0000)     51s
+epoch  21  train   -2.464  val   -1.609 (nll  -1.609  bce 0.0000)     54s
+epoch  22  train   -2.517  val   -2.006 (nll  -2.006  bce 0.0000)     56s
+epoch  23  train   -2.610  val   -2.025 (nll  -2.025  bce 0.0000)     59s
+epoch  24  train   -2.752  val   -2.083 (nll  -2.083  bce 0.0000)     61s
+epoch  25  train   -2.823  val   -2.180 (nll  -2.180  bce 0.0000)     64s
+epoch  26  train   -2.912  val   -2.268 (nll  -2.268  bce 0.0000)     67s
+epoch  27  train   -2.961  val   -2.151 (nll  -2.151  bce 0.0000)     70s
+epoch  28  train   -3.058  val   -2.041 (nll  -2.041  bce 0.0000)     72s
+epoch  29  train   -3.137  val   -2.332 (nll  -2.332  bce 0.0000)     75s
+epoch  30  train   -3.180  val   -2.268 (nll  -2.268  bce 0.0000)     77s
+epoch  31  train   -3.271  val   -2.397 (nll  -2.397  bce 0.0000)     80s
+epoch  32  train   -3.328  val   -2.560 (nll  -2.560  bce 0.0000)     83s
+epoch  33  train   -3.386  val   -2.535 (nll  -2.535  bce 0.0000)     86s
+epoch  34  train   -3.440  val   -2.460 (nll  -2.460  bce 0.0000)     89s
+epoch  35  train   -3.561  val   -2.692 (nll  -2.692  bce 0.0000)     92s
+epoch  36  train   -3.623  val   -2.582 (nll  -2.582  bce 0.0000)     95s
+epoch  37  train   -3.676  val   -2.490 (nll  -2.490  bce 0.0000)     98s
+epoch  38  train   -3.719  val   -2.588 (nll  -2.588  bce 0.0000)    100s
+epoch  39  train   -3.791  val   -2.483 (nll  -2.483  bce 0.0000)    103s
+epoch  40  train   -3.801  val   -2.436 (nll  -2.436  bce 0.0000)    106s
+epoch  41  train   -3.910  val   -2.859 (nll  -2.859  bce 0.0000)    108s
+epoch  42  train   -3.912  val   -2.281 (nll  -2.281  bce 0.0000)    111s
+epoch  43  train   -3.952  val   -2.446 (nll  -2.446  bce 0.0000)    114s
+epoch  44  train   -3.970  val   -2.834 (nll  -2.834  bce 0.0000)    117s
+epoch  45  train   -4.063  val   -2.972 (nll  -2.972  bce 0.0000)    121s
+epoch  46  train   -4.130  val   -2.963 (nll  -2.963  bce 0.0000)    124s
+epoch  47  train   -4.122  val   -2.888 (nll  -2.888  bce 0.0000)    126s
+epoch  48  train   -4.102  val   -2.585 (nll  -2.585  bce 0.0000)    129s
+epoch  49  train   -4.156  val   -2.809 (nll  -2.809  bce 0.0000)    132s
+epoch  50  train   -4.149  val   -2.749 (nll  -2.749  bce 0.0000)    136s
+epoch  51  train   -4.207  val   -2.721 (nll  -2.721  bce 0.0000)    139s
+epoch  52  train   -4.172  val   -2.917 (nll  -2.917  bce 0.0000)    142s
+epoch  53  train   -4.313  val   -2.955 (nll  -2.955  bce 0.0000)    145s
+epoch  54  train   -4.335  val   -2.910 (nll  -2.910  bce 0.0000)    149s
+epoch  55  train   -4.315  val   -2.876 (nll  -2.876  bce 0.0000)    152s
+epoch  56  train   -4.138  val   -2.375 (nll  -2.375  bce 0.0000)    155s
+epoch  57  train   -4.243  val   -2.764 (nll  -2.764  bce 0.0000)    158s
+early stop
+saved models/twin_v3_unpaired_mcs60q {"pairs": 144000, "val_loss": -2.9721106746617485, "epochs_run": 57}
+== done Sun Sep 27 15:27:47 RDT 2026
