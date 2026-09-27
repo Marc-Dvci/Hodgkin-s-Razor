@@ -144,7 +144,10 @@ def main() -> None:
           and co["auroc_key_window"] >= STOP_RULE["coshift_min_auroc"])
     log = ROOT / "results" / "v3" / "stop_rule_attempts.json"
     attempts = json.loads(log.read_text()) if log.exists() else []
-    attempts.append({"twin": TWIN, "digest": model_digest(ROOT / TWIN),
+    digest = model_digest(ROOT / TWIN)
+    # One entry per twin: a repeated check of the same model is not a new attempt.
+    attempts = [x for x in attempts if x["digest"] != digest]
+    attempts.append({"twin": TWIN, "digest": digest,
                      "alone": test, "coshift": co, "passed": bool(ok),
                      "date": datetime.datetime.now().isoformat(timespec="seconds")})
     log.parent.mkdir(parents=True, exist_ok=True)
@@ -217,7 +220,19 @@ def main() -> None:
         f"{co['auroc_key_window']:.2f}. Both clear the stop rule "
         f"(`docs/STOP_RULE_v3.md`, bars {STOP_RULE['alone_min_auroc']:.2f} and "
         f"{STOP_RULE['coshift_min_auroc']:.2f}); every attempt is in "
-        "`results/v3/stop_rule_attempts.json`.",
+        "`results/v3/stop_rule_attempts.json`:",
+        "",
+        "| Attempt | Twin | Alone | Co-shift | Passed |", "|---|---|---|---|---|"]
+    lines += [f"| {k + 1} | `{a['digest'][:12]}` | {a['alone']['auroc_key_window']:.3f} | "
+              f"{a['coshift']['auroc_key_window']:.3f} | {'yes' if a['passed'] else 'no'} |"
+              for k, a in enumerate(attempts)]  # noqa: B020
+    lines += [
+        "",
+        "The first twin, trained on 144,000 simulated sister pairs, missed the first bar. "
+        "Its presence heads stopped improving after about 16 epochs, so a second bank "
+        "of 144,000 pairs (new seed, same design and drift) was simulated and the twin "
+        "retrained on both. The bars were not moved. The held-out simulations grow with "
+        "the bank, so the two attempts are scored on different held-out sets.",
         "",
         f"The twin on the real untreated A-C sister pairs at 10 to 14 days "
         f"({ac['n_preps']} preparations, {ac['n_windows']} windows, excluded from "

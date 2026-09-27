@@ -18,5 +18,25 @@
   },
   "passed": false,
   "date": "2026-09-27T15:31:14"
+ },
+ {
+  "twin": "models/twin_v3_mcs60q",
+  "digest": "a4f079b64bb4ab5c14de93bb1abb5e3af1b499c2fd965d0f656cc2eb720d2f50",
+  "alone": {
+   "n_treated": 243,
+   "n_null": 2801,
+   "auroc_key_window": 0.8099370742077712,
+   "top1_treated": 0.3292181069958848,
+   "top1_null": 0.0767583006069261,
+   "called_key_treated": 0.19753086419753085,
+   "called_key_null": 0.011424491253123885
+  },
+  "coshift": {
+   "n_treated": 792,
+   "n_null": 2801,
+   "auroc_key_window": 0.7549846916144667
+  },
+  "passed": true,
+  "date": "2026-09-27T21:01:12"
  }
 ]
