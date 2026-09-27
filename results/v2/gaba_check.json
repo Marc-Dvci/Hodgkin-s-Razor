@@ -1,0 +1,137 @@
+{
+ "twin": "models/twin_v2_grid16",
+ "view": "grid16",
+ "cultures": 150,
+ "conditions": [
+  {
+   "condition": "bath GABA, tonic +0.01",
+   "true": "g_tonic_inh",
+   "n": 150,
+   "rate_ratio_median": 0.8580889782606521,
+   "top1_true": 0.15333333333333332,
+   "top1_g_na": 0.0,
+   "top1_inhibition": 0.18666666666666668,
+   "called": 0.05333333333333334,
+   "median_p_true": 0.10317267255746168,
+   "top1_counts": {
+    "g_kdr": 53,
+    "g_ahp": 24,
+    "g_tonic_inh": 23,
+    "i_drive": 23,
+    "u_rel": 11,
+    "g_nmda": 6,
+    "g_gaba": 5,
+    "tau_d": 3,
+    "g_ampa": 2
+   }
+  },
+  {
+   "condition": "bath GABA, tonic +0.02",
+   "true": "g_tonic_inh",
+   "n": 150,
+   "rate_ratio_median": 0.7016174926966221,
+   "top1_true": 0.24,
+   "top1_g_na": 0.03333333333333333,
+   "top1_inhibition": 0.25333333333333335,
+   "called": 0.22666666666666666,
+   "median_p_true": 0.1627681770057383,
+   "top1_counts": {
+    "g_ahp": 42,
+    "g_tonic_inh": 36,
+    "i_drive": 16,
+    "g_nmda": 14,
+    "g_kdr": 12,
+    "g_ampa": 11,
+    "u_rel": 7,
+    "tau_d": 5,
+    "g_na": 5,
+    "g_gaba": 2
+   }
+  },
+  {
+   "condition": "bath GABA, tonic +0.04",
+   "true": "g_tonic_inh",
+   "n": 150,
+   "rate_ratio_median": 0.39275884804529426,
+   "top1_true": 0.19333333333333333,
+   "top1_g_na": 0.23333333333333334,
+   "top1_inhibition": 0.21333333333333335,
+   "called": 0.36,
+   "median_p_true": 0.20004866363986307,
+   "top1_counts": {
+    "g_ahp": 38,
+    "g_na": 35,
+    "g_tonic_inh": 29,
+    "g_ampa": 16,
+    "i_drive": 10,
+    "u_rel": 8,
+    "g_nmda": 5,
+    "tau_d": 5,
+    "g_gaba": 3,
+    "g_kdr": 1
+   }
+  },
+  {
+   "condition": "bath GABA, saturating (0.25)",
+   "true": "g_tonic_inh",
+   "n": 150,
+   "rate_ratio_median": 0.0,
+   "top1_true": 0.3333333333333333,
+   "top1_g_na": 0.64,
+   "top1_inhibition": 0.3333333333333333,
+   "called": 0.9066666666666666,
+   "median_p_true": 0.38401547426000204,
+   "top1_counts": {
+    "g_na": 96,
+    "g_tonic_inh": 50,
+    "g_ahp": 2,
+    "g_ampa": 1,
+    "i_drive": 1
+   }
+  },
+  {
+   "condition": "synaptic GABA-A x3",
+   "true": "g_gaba",
+   "n": 150,
+   "rate_ratio_median": 0.6574797289251189,
+   "top1_true": 0.4066666666666667,
+   "top1_g_na": 0.006666666666666667,
+   "top1_inhibition": 0.44,
+   "called": 0.41333333333333333,
+   "median_p_true": 0.22559338454526412,
+   "top1_counts": {
+    "g_gaba": 61,
+    "g_kdr": 31,
+    "u_rel": 25,
+    "g_nmda": 12,
+    "g_ampa": 7,
+    "g_tonic_inh": 5,
+    "i_drive": 4,
+    "tau_d": 4,
+    "g_na": 1
+   }
+  },
+  {
+   "condition": "sodium block x0.4",
+   "true": "g_na",
+   "n": 150,
+   "rate_ratio_median": 0.14351401136744646,
+   "top1_true": 0.5933333333333334,
+   "top1_g_na": 0.5933333333333334,
+   "top1_inhibition": 0.08,
+   "called": 0.52,
+   "median_p_true": 0.42467153689801584,
+   "top1_counts": {
+    "g_na": 89,
+    "g_ampa": 23,
+    "tau_d": 10,
+    "g_ahp": 7,
+    "g_gaba": 7,
+    "g_tonic_inh": 5,
+    "g_nmda": 5,
+    "i_drive": 2,
+    "u_rel": 2
+   }
+  }
+ ]
+}
