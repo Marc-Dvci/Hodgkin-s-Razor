@@ -156,16 +156,31 @@ def _living(sim, n: int = 1, seed: int = 3, batch: int = 384,
 
 @needs_gpu
 def test_blocking_sodium_silences_the_network():
-    """The model must reproduce the one effect every MEA laboratory knows."""
-    sim = S.Simulator()
-    base = _living(sim, n=1, seed=3)[0]
-    th = np.array([base, base.copy()])
-    th[1, P.index("g_na")] = P.LO[P.index("g_na")]
-    r = sim.run(th, duration_s=30.0, transient_s=5.0, seed=3)
-    hi = F.compute(r.as_events(0), 16, 30.0)[0]
-    lo = F.compute(r.as_events(1), 16, 30.0)[0]
-    assert hi > 0.2, "control condition produced no activity"
-    assert lo < 0.2 * hi, f"a sodium block left {lo:.2f} against {hi:.2f}"
+    """The model must reproduce the one effect every MEA laboratory knows.
+
+    The cultures are centres of the fitted domain proposals, the preparations
+    the twin is trained on. A culture drawn from the whole prior can sit at
+    maximal drive and noise, where membrane noise alone fires a cell with no
+    sodium current worth the name, and no laboratory records such a culture.
+    """
+    import json
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from fit_domain import from_cube
+    dom = json.loads((ROOT / "models" / "domain.json").read_text())
+    base = np.concatenate([from_cube(np.array(dom["views"][v]["proposal"]["centres"][:4]))
+                           for v in ("grid16", "grid12")])
+    th = np.repeat(base, 2, axis=0)
+    th[1::2, P.index("g_na")] = P.LO[P.index("g_na")]
+    r = S.Simulator().run(th, duration_s=30.0, transient_s=5.0, seed=3)
+    hi = np.array([F.compute(r.as_events(k), 16, 30.0)[0] for k in range(0, len(th), 2)])
+    lo = np.array([F.compute(r.as_events(k), 16, 30.0)[0] for k in range(1, len(th), 2)])
+    alive = hi > 0.2
+    assert alive.sum() >= 4, "too few domain cultures produced activity"
+    ratio = lo[alive] / hi[alive]
+    # The criterion of scripts/pharmacology_check.py: the median culture keeps
+    # under a tenth of its firing, and most are silent.
+    assert np.median(ratio) < 0.1, f"a sodium block left {ratio.round(2)} of the firing"
+    assert np.mean(ratio < 0.01) >= 0.5, f"a sodium block left {ratio.round(2)} of the firing"
 
 
 @needs_gpu
