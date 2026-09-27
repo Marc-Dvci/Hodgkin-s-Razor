@@ -44,10 +44,24 @@ def _feat(args):
     return F.compute(ev, n, duration)
 
 
+def recorded_pairs(kind: str, n_windows: int, min_div: float, max_div: float) -> list:
+    """Untreated pairs of one kind. Sister kinds come from Charlesworth et al.;
+    the within-well kinds are one well recorded twice with no compound:
+    `tampere-vehicle` (vehicle added, the same time gap as a compound) and
+    `doorn-null` (two pre-drug stretches of each Dynasore well, 4 minutes apart)."""
+    if kind == "tampere-vehicle":
+        from hodgkins_razor import tampere as T
+        return [q for q in T.load_all() if q.is_control]
+    if kind == "doorn-null":
+        from null_controls_v2 import null_pairs
+        return null_pairs()
+    return C.load(kinds=(kind,), min_div=min_div, max_div=max_div, n_windows=n_windows)
+
+
 def recorded_differences(box: dict, n_windows: int, kind: str = "pre-drug",
                          min_div: float = 0.0, max_div: float = 99.0) -> np.ndarray:
     rows = []
-    for p in C.load(kinds=(kind,), min_div=min_div, max_div=max_div, n_windows=n_windows):
+    for p in recorded_pairs(kind, n_windows, min_div, max_div):
         if p.baseline.shape[0] < 50 or p.treated.shape[0] < 50:
             continue
         xa = F.compute(p.baseline, p.n_elec, p.duration)
@@ -58,12 +72,13 @@ def recorded_differences(box: dict, n_windows: int, kind: str = "pre-drug",
     return np.array(rows)
 
 
-def simulated_differences(sim, prop, box, view, drift, n, seed, pool, duration):
+def simulated_differences(sim, prop, box, view, drift, n, seed, pool, duration,
+                          paired: bool = False):
     rng = np.random.default_rng(seed)
     th = prop.draw(n, rng)
     tw = sister_drift(th, drift, rng)
     res = sim.run(np.stack([th, tw], 1).reshape(-1, th.shape[1]), duration_s=duration,
-                  transient_s=5.0, seed=seed, pair=False)
+                  transient_s=5.0, seed=seed, pair=paired)
     x = np.stack(list(pool.map(_feat, [(res.raw_events(k), view, duration)
                                        for k in range(2 * n)], chunksize=8)))
     xa, xb = x[0::2], x[1::2]
@@ -80,9 +95,12 @@ def main() -> None:
     ap.add_argument("--duration", type=float, default=60.0)
     ap.add_argument("--windows", type=int, default=3)
     ap.add_argument("--seed", type=int, default=4242)
-    ap.add_argument("--kind", default="pre-drug", choices=("pre-drug", "a-c"),
+    ap.add_argument("--kind", default="pre-drug",
+                    choices=("pre-drug", "a-c", "tampere-vehicle", "doorn-null"),
                     help="pre-drug: A-B sisters at 6-7 days; a-c: the never-treated A and C "
                          "sisters of four-array preparations, at the scored ages")
+    ap.add_argument("--paired", action="store_true",
+                    help="one network recorded twice (within-well kinds), not two sisters")
     ap.add_argument("--min-div", type=float, default=0.0)
     ap.add_argument("--max-div", type=float, default=99.0)
     ap.add_argument("--out", default="models/drift_v3.json")
@@ -99,7 +117,7 @@ def main() -> None:
     table = []
     for d in [float(v) for v in args.drifts.split(",")]:
         diff = simulated_differences(sim, prop, box, args.view, d, args.n,
-                                     args.seed, pool, args.duration)
+                                     args.seed, pool, args.duration, args.paired)
         s_spread = np.nanmedian(np.abs(diff), axis=0)
         ok = (r_spread > 0) & (s_spread > 0)
         score = float(np.median(np.log(r_spread[ok] / s_spread[ok])))
@@ -111,11 +129,14 @@ def main() -> None:
               f"{score:+.3f}, recorded outside the simulated 95% band {outside:.3f}", flush=True)
     pool.shutdown()
     best = min(table, key=lambda r: abs(r["log_ratio"]))
-    source = ("Charlesworth et al., sister arrays at 6 and 7 days in vitro, before any drug"
-              if args.kind == "pre-drug" else
-              "Charlesworth et al., never-treated A and C sisters of four-array preparations, "
-              f"{args.min_div:g} to {args.max_div:g} days in vitro")
+    source = {"pre-drug": "Charlesworth et al., sister arrays at 6 and 7 days in vitro, "
+                          "before any drug",
+              "a-c": "Charlesworth et al., never-treated A and C sisters of four-array "
+                     f"preparations, {args.min_div:g} to {args.max_div:g} days in vitro",
+              "tampere-vehicle": "Tampere vehicle wells, one well before and after vehicle",
+              "doorn-null": "Doorn et al. Dynasore wells, two pre-drug stretches"}[args.kind]
     out = {"view": args.view, "chosen": best["drift"], "table": table, "kind": args.kind,
+           "paired": bool(args.paired),
            "divs": [args.min_div, args.max_div],
            "n_recorded": int(len(real)), "source": source}
     (ROOT / args.out).write_text(json.dumps(out, indent=1))

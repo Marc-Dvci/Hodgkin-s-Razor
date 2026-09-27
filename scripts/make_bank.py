@@ -149,7 +149,8 @@ def main() -> None:
                     help="paired: one well recorded twice; sister: two arrays "
                          "plated from one preparation")
     ap.add_argument("--drift", type=float, default=0.0,
-                    help="sister design: culture drift, fraction of the baseline range")
+                    help="culture drift between the two recordings, fraction of the "
+                         "baseline range (sister design; or a paired well drifting)")
     args = ap.parse_args()
 
     out = pathlib.Path(args.out)
@@ -237,7 +238,9 @@ def main() -> None:
             delta, active = SH.sample_shift(nb, rng, theta_c=theta_c)
             theta_t, realised, active = SH.apply_shift(theta_c, delta, active)
             sister = args.design == "sister"
-            if sister:
+            # Sister design: the second array's parameters drift. Paired design
+            # with a drift: the same network drifts between the two recordings.
+            if sister or args.drift > 0:
                 theta_t = sister_drift(theta_t, args.drift, rng)
             stacked = SH.interleave(theta_c, theta_t)
             res = sim.run(stacked, duration_s=args.duration,
