@@ -84,11 +84,11 @@ def main() -> None:
         from hodgkins_razor import doorn as D
         pairs = D.load(treated=True)
     else:
-        # The protocol of PREREGISTRATION_v3: sister pairs at 9 to 15 days, the
+        # The protocol of PREREGISTRATION_v3: sister pairs at 10 to 14 days, the
         # first 60 s window of two diagonal quadrants, because their estimator
         # takes seconds per recording.
         from hodgkins_razor import charlesworth as C
-        pairs = C.load(kinds=("treated", "null"), min_div=9.0, max_div=15.0,
+        pairs = C.load(kinds=("treated", "null"), min_div=10.0, max_div=14.0,
                        n_windows=1, quadrants=(0, 3))
 
     rows = []
@@ -96,7 +96,8 @@ def main() -> None:
         rec = {"plate": p.plate, "species": p.species, "well": p.well,
                "compound": p.compound}
         if args.dataset == "charlesworth":
-            rec.update({"prep": p.prep, "div": p.div, "kind": p.kind})
+            rec.update({"prep": p.prep, "div": p.div, "kind": p.kind,
+                        "genotype": p.genotype})
         for side, ev in (("baseline", p.baseline), ("treated", p.treated)):
             aps = to_samples(ev, p.n_elec, p.duration)
             if aps.shape[0] < 20:

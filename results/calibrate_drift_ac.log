@@ -1,0 +1,11 @@
+recorded a-c sister windows inside the domain: 369
+drift 0.060: simulated pairs 641, median log(recorded/simulated) +0.688, recorded outside the simulated 95% band 0.117
+drift 0.080: simulated pairs 638, median log(recorded/simulated) +0.475, recorded outside the simulated 95% band 0.104
+drift 0.100: simulated pairs 638, median log(recorded/simulated) +0.209, recorded outside the simulated 95% band 0.087
+drift 0.120: simulated pairs 633, median log(recorded/simulated) +0.042, recorded outside the simulated 95% band 0.077
+drift 0.140: simulated pairs 628, median log(recorded/simulated) -0.134, recorded outside the simulated 95% band 0.076
+drift 0.160: simulated pairs 623, median log(recorded/simulated) -0.267, recorded outside the simulated 95% band 0.070
+drift 0.200: simulated pairs 619, median log(recorded/simulated) -0.495, recorded outside the simulated 95% band 0.063
+drift 0.250: simulated pairs 602, median log(recorded/simulated) -0.702, recorded outside the simulated 95% band 0.058
+drift 0.300: simulated pairs 596, median log(recorded/simulated) -0.897, recorded outside the simulated 95% band 0.056
+chosen drift 0.12 -> models/drift_v3_ac.json

@@ -173,6 +173,45 @@ def contrast(preps: list[dict], key: str, direction: str) -> dict:
             "top1_null_counts": _counts([p["top1"] for p in z])}
 
 
+def matched(preps: list[dict]) -> list[dict]:
+    """Treated preparations, and the null preparations of the treated genotypes.
+
+    The null group holds knockouts the treated group lacks (PSD-95, PSD-93 and
+    SAP102 among them, all NMDA-receptor scaffolds), which could shift where a
+    culture sits and how readable `g_nmda` is. The primary compares like with
+    like; the pooled contrast is secondary.
+    """
+    genes = {C._gene(p["genotype"]) for p in preps if p["kind"] == "treated"}
+    return [p for p in preps if p["kind"] == "treated" or C._gene(p["genotype"]) in genes]
+
+
+def by_genotype(preps: list[dict], key: str, direction: str) -> dict:
+    """Treated preparations of one genotype against null preparations of the same one."""
+    genes = sorted({C._gene(p["genotype"]) for p in preps if p["kind"] == "treated"})
+    return {g: contrast([p for p in preps if C._gene(p["genotype"]) == g], key, direction)
+            for g in genes}
+
+
+def profile(preps: list[dict]) -> dict:
+    """Exploratory: every mechanism's presence, treated against matched null.
+
+    Days of NMDA blockade can recruit compensation, so `g_nmda` may move with a
+    second mechanism. Reported for all mechanisms, with no bar.
+    """
+    t = [p for p in preps if p["kind"] == "treated"]
+    z = [p for p in preps if p["kind"] == "null"]
+    if not t or not z:
+        return {}
+    y = np.r_[np.ones(len(t)), np.zeros(len(z))]
+    out = {}
+    for j, k in enumerate(SHIFT_KEYS):
+        s = np.r_[[p["p_active"][j] for p in t], [p["p_active"][j] for p in z]]
+        out[k] = {"auroc": auroc(s, y),
+                  "median_treated": float(np.median(s[:len(t)])),
+                  "median_null": float(np.median(s[len(t):]))}
+    return out
+
+
 def _counts(xs: list[str]) -> dict:
     out: dict[str, int] = {}
     for x in xs:
@@ -263,12 +302,13 @@ def main() -> None:
         rows = score_windows(twin, pairs, ops["posterior_samples"], key, **kw)
         early, late = by_prep(rows, lo, hi, key), by_prep(rows, hi + 0.5, 99.0, key)
         res["A_blind"] = {
-            "early": {"preps": early, "metrics": contrast(early, key, direction)},
-            "late": {"preps": late, "metrics": contrast(late, key, direction)},
-            "by_genotype": {g: contrast([p for p in early if p["kind"] == "null"
-                                         or p["genotype"] == g], key, direction)
-                            for g in sorted({p["genotype"] for p in early
-                                             if p["kind"] == "treated"})},
+            # Primary and co-primary: genotype-matched nulls.
+            "early": {"preps": early, "metrics": contrast(matched(early), key, direction)},
+            "early_pooled_null": contrast(early, key, direction),
+            "late": {"preps": late, "metrics": contrast(matched(late), key, direction)},
+            "late_pooled_null": contrast(late, key, direction),
+            "by_genotype": by_genotype(early, key, direction),
+            "profile_exploratory": profile(matched(early)),
             "canalization": canalization(rows, key, lo, hi),
             "n_windows_scored": len(rows)}
         m = res["A_blind"]["early"]["metrics"]
@@ -281,7 +321,8 @@ def main() -> None:
         unp = nde.UnpairedTwin.load(ROOT / spec["unpaired"], device="cuda")
         urows = unpaired_windows(unp, pairs, ops["posterior_samples"], **kw)
         ue = by_prep(urows, lo, hi, key)
-        res["B_comparators"] = {"unpaired": {"preps": ue, "metrics": contrast(ue, key, direction)}}
+        res["B_comparators"] = {"unpaired": {"preps": ue, "metrics": contrast(matched(ue), key, direction),
+                                             "pooled_null": contrast(ue, key, direction)}}
         pa = ROOT / "results" / "prior_art_doorn_charlesworth.json"
         if pa.exists():
             res["B_comparators"]["prior_art"] = prior_art(json.loads(pa.read_text()),
@@ -333,7 +374,7 @@ def main() -> None:
         if "A_blind" in res:
             early = res["A_blind"]["early"]["preps"]
             inside = [p for p in early if not outside.get(f"{p['prep']}|{p['kind']}", False)]
-            res["C_guard"]["inside_metrics"] = contrast(inside, key, direction)
+            res["C_guard"]["inside_metrics"] = contrast(matched(inside), key, direction)
         print(f"C done ({time.time() - t0:.0f}s)", flush=True)
         res_path.write_text(json.dumps(res, indent=1))
 
@@ -355,9 +396,11 @@ def prior_art(d: dict, key: str, direction: str, lo: float, hi: float) -> dict:
             "g_NMDA": "g_nmda", "tau_D": "tau_d", "U_STD": "u_rel", "U_asyn": "u_asyn"}
     idx = [names.index(k) for k in cand]
     groups: dict[tuple, list] = {}
+    genotype: dict[tuple, str] = {}
     for r in d["rows"]:
         if not (lo <= r["div"] <= hi) or not r.get("baseline") or not r.get("treated"):
             continue
+        genotype[(r["prep"], r["kind"])] = r["genotype"]
         mb, mt = np.array(r["baseline"]["median"]), np.array(r["treated"]["median"])
         sb, st = np.array(r["baseline"]["sd"]), np.array(r["treated"]["sd"])
         groups.setdefault((r["prep"], r["kind"]), []).append((mt - mb) / np.sqrt(sb ** 2 + st ** 2 + 1e-12))
@@ -370,11 +413,13 @@ def prior_art(d: dict, key: str, direction: str, lo: float, hi: float) -> dict:
         # mechanism is the size of its standardised shift in the answer's
         # direction.
         s = -z[j] if direction == "down" else z[j]
-        preps.append({"prep": prep, "kind": kind, "p_key": float(s),
+        preps.append({"prep": prep, "kind": kind, "genotype": genotype[(prep, kind)],
+                      "p_key": float(s),
                       "top1": cand[names[top]], "called_key": False,
                       "effect_key": float(z[j]),
                       "p_active": [float(abs(z[i])) for i in idx]})
-    return {"preps": preps, "metrics": contrast(preps, key, direction)}
+    return {"preps": preps, "metrics": contrast(matched(preps), key, direction),
+            "pooled_null": contrast(preps, key, direction)}
 
 
 if __name__ == "__main__":
