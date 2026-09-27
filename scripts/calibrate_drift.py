@@ -44,9 +44,10 @@ def _feat(args):
     return F.compute(ev, n, duration)
 
 
-def recorded_differences(box: dict, n_windows: int) -> np.ndarray:
+def recorded_differences(box: dict, n_windows: int, kind: str = "pre-drug",
+                         min_div: float = 0.0, max_div: float = 99.0) -> np.ndarray:
     rows = []
-    for p in C.load(kinds=("pre-drug",), min_div=0.0, n_windows=n_windows):
+    for p in C.load(kinds=(kind,), min_div=min_div, max_div=max_div, n_windows=n_windows):
         if p.baseline.shape[0] < 50 or p.treated.shape[0] < 50:
             continue
         xa = F.compute(p.baseline, p.n_elec, p.duration)
@@ -79,13 +80,18 @@ def main() -> None:
     ap.add_argument("--duration", type=float, default=60.0)
     ap.add_argument("--windows", type=int, default=3)
     ap.add_argument("--seed", type=int, default=4242)
+    ap.add_argument("--kind", default="pre-drug", choices=("pre-drug", "a-c"),
+                    help="pre-drug: A-B sisters at 6-7 days; a-c: the never-treated A and C "
+                         "sisters of four-array preparations, at the scored ages")
+    ap.add_argument("--min-div", type=float, default=0.0)
+    ap.add_argument("--max-div", type=float, default=99.0)
     ap.add_argument("--out", default="models/drift_v3.json")
     args = ap.parse_args()
 
     dom = json.loads((ROOT / args.domain_file).read_text())["views"][args.view]
     box, prop = dom["box"], GaussianProposal.load(dom["proposal"])
-    real = recorded_differences(box, args.windows)
-    print(f"recorded pre-drug sister windows inside the domain: {len(real)}", flush=True)
+    real = recorded_differences(box, args.windows, args.kind, args.min_div, args.max_div)
+    print(f"recorded {args.kind} sister windows inside the domain: {len(real)}", flush=True)
     r_spread = np.nanmedian(np.abs(real), axis=0)
 
     sim = S.Simulator()
@@ -105,9 +111,13 @@ def main() -> None:
               f"{score:+.3f}, recorded outside the simulated 95% band {outside:.3f}", flush=True)
     pool.shutdown()
     best = min(table, key=lambda r: abs(r["log_ratio"]))
-    out = {"view": args.view, "chosen": best["drift"], "table": table,
-           "n_recorded": int(len(real)), "source": "Charlesworth et al., sister arrays "
-           "at 6 and 7 days in vitro, before any drug"}
+    source = ("Charlesworth et al., sister arrays at 6 and 7 days in vitro, before any drug"
+              if args.kind == "pre-drug" else
+              "Charlesworth et al., never-treated A and C sisters of four-array preparations, "
+              f"{args.min_div:g} to {args.max_div:g} days in vitro")
+    out = {"view": args.view, "chosen": best["drift"], "table": table, "kind": args.kind,
+           "divs": [args.min_div, args.max_div],
+           "n_recorded": int(len(real)), "source": source}
     (ROOT / args.out).write_text(json.dumps(out, indent=1))
     print("chosen drift", best["drift"], "->", args.out)
 

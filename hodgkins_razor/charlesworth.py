@@ -20,7 +20,9 @@ the same day:
 
 * treated: the B sister carries APV;
 * null: neither sister was treated, at the same ages as the treated pairs;
-* pre-drug: any preparation at 7 days or earlier, before APV was added.
+* pre-drug: any preparation at 7 days or earlier, before APV was added;
+* a-c: the A and C arrays of a four-array preparation, never treated and never
+  locked, at every age (see `pairs_index`).
 
 This dataset is the blind test of the third pre-registration. Every recording
 from a B or D array at 8 days or later is the second half of a scored pair, and
@@ -146,14 +148,34 @@ def _sister(array: str) -> str | None:
     return {"A": "B", "C": "D"}.get(array)
 
 
+def four_array_preps(files: list[File] | None = None) -> set[str]:
+    """Preparations plated on four arrays (A to D); none of them was ever treated."""
+    return {f.prep for f in (files or catalogue()) if f.array == "C"}
+
+
 def pairs_index() -> list[dict]:
-    """Every same-day sister pair, labelled by kind. Reads only the metadata."""
+    """Every same-day sister pair, labelled by kind. Reads only the metadata.
+
+    The preparations plated on four arrays give a fourth kind, "a-c": their A
+    and C arrays are sisters, neither is ever locked, and neither was treated,
+    so they are untreated sister pairs at every age, readable before the
+    freeze. They set the drift between sisters at the scored ages. Their A-B
+    and C-D pairs are therefore left out of the scored null group, so no
+    scored preparation informed a choice.
+    """
     files = catalogue()
     by = {(f.prep, f.array, f.div): f for f in files}
     # A preparation is an APV preparation if any of its B recordings carries APV.
     apv_preps = {f.prep for f in files if f.drug == "APV"}
+    four = four_array_preps(files)
     out = []
     for f in files:
+        if f.array == "A" and f.prep in four and (f.prep, "C", f.div) in by:
+            c = by[(f.prep, "C", f.div)]
+            if not f.treated and not c.treated and _gene(c.genotype) == _gene(f.genotype):
+                out.append({"prep": f.prep, "div": f.div, "genotype": f.genotype,
+                            "kind": "a-c", "first": f.name, "second": c.name,
+                            "first_genotype": f.genotype, "second_genotype": c.genotype})
         s = _sister(f.array)
         if s is None or (f.prep, s, f.div) not in by:
             continue
@@ -164,7 +186,7 @@ def pairs_index() -> list[dict]:
             kind = "pre-drug"
         elif g.drug == "APV":
             kind = "treated"
-        elif not g.treated and f.prep not in apv_preps:
+        elif not g.treated and f.prep not in apv_preps and f.prep not in four:
             kind = "null"
         else:
             continue
