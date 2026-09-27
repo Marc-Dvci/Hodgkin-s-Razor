@@ -136,6 +136,49 @@ def compare(base: list[dict], drug: list[dict]) -> dict:
     return out
 
 
+SILENT_FRACTION = 0.05     # unconnected striatum: at most 5% of its driven rate
+ACTIVE_SHARE = 0.5         # and still active when driven, in at least half the chips
+
+
+def calibrate(sim, theta, chips, args) -> None:
+    """Set the down-state bias from a published precondition, with no drug.
+
+    Lassus et al. report that striatal neurons with no cortical partner show
+    no spontaneous oscillations. The chosen bias is the weakest for which the
+    median striatal rate with the cortex held silent is at most 5% of the
+    median rate with the cortex driving, while the striatum is still active
+    (above 0.05 Hz) when driven in at least half the chips. No NMDA condition
+    is simulated here.
+    """
+    table = []
+    for b in [float(x) for x in args.calibrate.split(",")]:
+        kw = dict(duration_s=args.duration, transient_s=5.0, seed=args.seed,
+                  striatal=True, perfuse=COCKTAIL, down_state_pa=b)
+        on = C.run_chip(sim, theta, chips, **kw)
+        off = C.run_chip(sim, theta, chips, silence=np.zeros(args.chips), **kw)
+        n = C.N_COMP_ELEC * args.duration
+        r_on = np.array([C.chamber_events(on.as_events(k), 1).shape[0] for k in range(args.chips)]) / n
+        r_off = np.array([C.chamber_events(off.as_events(k), 1).shape[0] for k in range(args.chips)]) / n
+        act = r_on > 0.05
+        row = {"down_state_pa": b, "active_share": float(act.mean()),
+               "rate_driven_median": float(np.median(r_on[act])) if act.any() else 0.0,
+               "rate_silent_median": float(np.median(r_off[act])) if act.any() else 0.0}
+        row["silent_over_driven"] = (row["rate_silent_median"] / row["rate_driven_median"]
+                                     if row["rate_driven_median"] > 0 else float("nan"))
+        row["meets"] = bool(row["active_share"] >= ACTIVE_SHARE
+                            and row["silent_over_driven"] <= SILENT_FRACTION)
+        table.append(row)
+        print(json.dumps(row), flush=True)
+    ok = [r for r in table if r["meets"]]
+    # The weakest bias that meets the precondition (biases are negative).
+    chosen = max(ok, key=lambda r: r["down_state_pa"]) if ok else None
+    out = {"rule": {"silent_fraction": SILENT_FRACTION, "active_share": ACTIVE_SHARE},
+           "chips": args.chips, "duration_s": args.duration, "table": table,
+           "chosen_down_state_pa": chosen["down_state_pa"] if chosen else None}
+    (ROOT / "results" / "lassus_calibration.json").write_text(json.dumps(out, indent=1))
+    print("chosen", out["chosen_down_state_pa"])
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--chips", type=int, default=192)
@@ -143,6 +186,12 @@ def main() -> None:
     ap.add_argument("--nmda", default="0.3,0.5,0.15",
                     help="NMDA factors on the striatal chamber; the first is the headline")
     ap.add_argument("--seed", type=int, default=2018)
+    ap.add_argument("--down-state", type=float, default=0.0,
+                    help="hyperpolarising bias on striatal neurons, pA (0: the first run)")
+    ap.add_argument("--calibrate", default="",
+                    help="comma-separated down-state biases: set the bias from the "
+                         "paper's precondition (unconnected striatum silent) with no drug")
+    ap.add_argument("--out", default="results/lassus_study.json")
     args = ap.parse_args()
     rng = np.random.default_rng(args.seed)
     dom = json.loads((ROOT / "models" / "domain.json").read_text())
@@ -151,13 +200,16 @@ def main() -> None:
     chips[:, 1] = rng.uniform(0.85, 1.0, args.chips)       # axon diodes
     chips[:, 3] = rng.uniform(0.05, 0.3, args.chips)       # striatum not self-active
     sim = S.Simulator()
+    if args.calibrate:
+        calibrate(sim, theta, chips, args)
+        return
     res = {"protocol": __doc__.split("\n\n")[2:6], "chips": args.chips,
-           "duration_s": args.duration}
+           "duration_s": args.duration, "down_state_pa": args.down_state}
     for label, striatal in (("striatal_target", True), ("generic_target", False)):
         def run(perf, silence=None):
             r = C.run_chip(sim, theta, chips, duration_s=args.duration, transient_s=5.0,
                            seed=args.seed, striatal=striatal, perfuse=perf,
-                           silence=silence)
+                           silence=silence, down_state_pa=args.down_state)
             return [readout(r.as_events(k), args.duration, k) for k in range(args.chips)]
         base = run(COCKTAIL)
         alone = run(COCKTAIL, silence=np.zeros(args.chips))   # cortex held silent
@@ -178,7 +230,7 @@ def main() -> None:
     res["published"] = {"source": "Lassus et al. 2018, GluN2B antagonists in the striatal chamber",
                         "tgt_freq": "lower", "striato_striatal_sync": "lower",
                         "cortico_striatal_sync": "lower"}
-    out = ROOT / "results" / "lassus_study.json"
+    out = ROOT / args.out
     out.write_text(json.dumps(res, indent=1))
     print("wrote", out)
 
