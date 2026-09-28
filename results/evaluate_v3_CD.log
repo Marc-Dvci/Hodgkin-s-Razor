@@ -1,0 +1,30 @@
+14808 quadrant windows from 617 sister pairs
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\hodgkins_razor\features.py:217: RuntimeWarning: Mean of empty slice
+  per_time = np.nanmean(isi, axis=0)
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\hodgkins_razor\features.py:217: RuntimeWarning: Mean of empty slice
+  per_time = np.nanmean(isi, axis=0)
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\hodgkins_razor\features.py:217: RuntimeWarning: Mean of empty slice
+  per_time = np.nanmean(isi, axis=0)
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\hodgkins_razor\features.py:217: RuntimeWarning: Mean of empty slice
+  per_time = np.nanmean(isi, axis=0)
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\hodgkins_razor\features.py:217: RuntimeWarning: Mean of empty slice
+  per_time = np.nanmean(isi, axis=0)
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\hodgkins_razor\features.py:217: RuntimeWarning: Mean of empty slice
+  per_time = np.nanmean(isi, axis=0)
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\.venv\Lib\site-packages\numpy\lib\_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\.venv\Lib\site-packages\numpy\lib\_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\.venv\Lib\site-packages\numpy\lib\_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\.venv\Lib\site-packages\numpy\lib\_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\.venv\Lib\site-packages\numpy\lib\_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\.venv\Lib\site-packages\numpy\lib\_nanfunctions_impl.py:1997: RuntimeWarning: Degrees of freedom <= 0 for slice.
+  var = nanvar(a, axis=axis, dtype=dtype, out=out, ddof=ddof,
+bank: 120 shards, 288000 pairs, 50892 cultures, view mcs60q
+C done (4139s)
+bank: 120 shards, 288000 pairs, 50892 cultures, view mcs60q
+D done (4625s)
+wrote D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\results\v3\results.json
