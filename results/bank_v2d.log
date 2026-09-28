@@ -1,0 +1,60 @@
+shard 1/50  pairs 2400  21.8 pairs/s  acceptance {'grid12': 0.561}  eta 90 min
+shard 2/50  pairs 4800  21.5 pairs/s  acceptance {'grid12': 0.565}  eta 89 min
+shard 3/50  pairs 7200  21.4 pairs/s  acceptance {'grid12': 0.569}  eta 88 min
+shard 4/50  pairs 9600  21.1 pairs/s  acceptance {'grid12': 0.573}  eta 87 min
+shard 5/50  pairs 12000  21.1 pairs/s  acceptance {'grid12': 0.577}  eta 85 min
+shard 6/50  pairs 14400  21.1 pairs/s  acceptance {'grid12': 0.573}  eta 83 min
+shard 7/50  pairs 16800  21.1 pairs/s  acceptance {'grid12': 0.572}  eta 82 min
+shard 8/50  pairs 19200  21.1 pairs/s  acceptance {'grid12': 0.568}  eta 80 min
+shard 9/50  pairs 21600  20.9 pairs/s  acceptance {'grid12': 0.568}  eta 79 min
+Traceback (most recent call last):
+  File "D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\scripts\make_bank.py", line 288, in <module>
+    main()
+  File "D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\scripts\make_bank.py", line 261, in main
+    fx = np.concatenate([np.stack(list(f)) for f in PENDING])
+                         ^^^^^^^^^^^^^^^^^
+  File "D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\.venv\Lib\site-packages\numpy\_core\shape_base.py", line 454, in stack
+    raise ValueError('need at least one array to stack')
+ValueError: need at least one array to stack
+shard 10/50  pairs 24000  180.6 pairs/s  acceptance {'grid12': 0.562}  eta 9 min
+shard 11/50  pairs 26400  102.6 pairs/s  acceptance {'grid12': 0.576}  eta 15 min
+shard 12/50  pairs 28800  75.5 pairs/s  acceptance {'grid12': 0.576}  eta 20 min
+shard 13/50  pairs 31200  62.8 pairs/s  acceptance {'grid12': 0.576}  eta 24 min
+shard 14/50  pairs 33600  55.1 pairs/s  acceptance {'grid12': 0.58}  eta 26 min
+shard 15/50  pairs 36000  49.7 pairs/s  acceptance {'grid12': 0.576}  eta 28 min
+shard 16/50  pairs 38400  45.8 pairs/s  acceptance {'grid12': 0.573}  eta 30 min
+shard 17/50  pairs 40800  43.0 pairs/s  acceptance {'grid12': 0.572}  eta 31 min
+shard 18/50  pairs 43200  40.6 pairs/s  acceptance {'grid12': 0.573}  eta 31 min
+shard 19/50  pairs 45600  38.8 pairs/s  acceptance {'grid12': 0.573}  eta 32 min
+shard 20/50  pairs 48000  37.2 pairs/s  acceptance {'grid12': 0.575}  eta 32 min
+shard 21/50  pairs 50400  35.8 pairs/s  acceptance {'grid12': 0.575}  eta 32 min
+shard 22/50  pairs 52800  34.6 pairs/s  acceptance {'grid12': 0.573}  eta 32 min
+shard 23/50  pairs 55200  33.6 pairs/s  acceptance {'grid12': 0.573}  eta 32 min
+shard 24/50  pairs 57600  32.7 pairs/s  acceptance {'grid12': 0.572}  eta 32 min
+shard 25/50  pairs 60000  31.9 pairs/s  acceptance {'grid12': 0.572}  eta 31 min
+shard 26/50  pairs 62400  31.3 pairs/s  acceptance {'grid12': 0.572}  eta 31 min
+shard 27/50  pairs 64800  30.7 pairs/s  acceptance {'grid12': 0.573}  eta 30 min
+shard 28/50  pairs 67200  30.2 pairs/s  acceptance {'grid12': 0.573}  eta 29 min
+shard 29/50  pairs 69600  29.7 pairs/s  acceptance {'grid12': 0.572}  eta 28 min
+shard 30/50  pairs 72000  29.2 pairs/s  acceptance {'grid12': 0.571}  eta 27 min
+shard 31/50  pairs 74400  28.9 pairs/s  acceptance {'grid12': 0.571}  eta 26 min
+shard 32/50  pairs 76800  28.5 pairs/s  acceptance {'grid12': 0.571}  eta 25 min
+shard 33/50  pairs 79200  28.2 pairs/s  acceptance {'grid12': 0.571}  eta 24 min
+shard 34/50  pairs 81600  27.9 pairs/s  acceptance {'grid12': 0.572}  eta 23 min
+shard 35/50  pairs 84000  27.7 pairs/s  acceptance {'grid12': 0.572}  eta 22 min
+shard 36/50  pairs 86400  27.4 pairs/s  acceptance {'grid12': 0.571}  eta 20 min
+shard 37/50  pairs 88800  27.0 pairs/s  acceptance {'grid12': 0.571}  eta 19 min
+shard 38/50  pairs 91200  26.7 pairs/s  acceptance {'grid12': 0.57}  eta 18 min
+shard 39/50  pairs 93600  26.3 pairs/s  acceptance {'grid12': 0.569}  eta 17 min
+shard 40/50  pairs 96000  26.0 pairs/s  acceptance {'grid12': 0.569}  eta 15 min
+shard 41/50  pairs 98400  25.7 pairs/s  acceptance {'grid12': 0.569}  eta 14 min
+shard 42/50  pairs 100800  25.5 pairs/s  acceptance {'grid12': 0.569}  eta 13 min
+shard 43/50  pairs 103200  25.2 pairs/s  acceptance {'grid12': 0.568}  eta 11 min
+shard 44/50  pairs 105600  25.0 pairs/s  acceptance {'grid12': 0.568}  eta 10 min
+shard 45/50  pairs 108000  24.8 pairs/s  acceptance {'grid12': 0.568}  eta 8 min
+shard 46/50  pairs 110400  24.7 pairs/s  acceptance {'grid12': 0.568}  eta 6 min
+shard 47/50  pairs 112800  24.5 pairs/s  acceptance {'grid12': 0.568}  eta 5 min
+shard 48/50  pairs 115200  24.4 pairs/s  acceptance {'grid12': 0.568}  eta 3 min
+shard 49/50  pairs 117600  24.2 pairs/s  acceptance {'grid12': 0.568}  eta 2 min
+shard 50/50  pairs 120000  24.0 pairs/s  acceptance {'grid12': 0.568}  eta 0 min
+bank complete data\bank_v2d

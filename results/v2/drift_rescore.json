@@ -1,0 +1,130 @@
+{
+ "note": "Post hoc development evidence; the Dynasore wells are not blind any more.",
+ "frozen_v2": {
+  "treated": {
+   "n": 10,
+   "top1_hits": 2,
+   "class_hits": 8,
+   "called": 9,
+   "top1": {
+    "FB2_B6": "g_ampa",
+    "FB2_C6": "tau_d",
+    "FB2_D6": "g_ahp",
+    "FB2t_A2": "tau_d",
+    "FB2t_A3": "g_ahp",
+    "FB2t_B1": "g_ahp",
+    "FB2t_C1": "g_ahp",
+    "FB3t_A3": "g_ahp",
+    "FB3t_C3": "g_ahp",
+    "FB3t_D1": "g_gaba"
+   },
+   "p_accept_max": {
+    "FB2_B6": 0.4304273201110961,
+    "FB2_C6": 0.705637971837246,
+    "FB2_D6": 0.26434458226741187,
+    "FB2t_A2": 0.9186979046208155,
+    "FB2t_A3": 0.570976303961306,
+    "FB2t_B1": 0.7397709384957466,
+    "FB2t_C1": 0.48491743697105594,
+    "FB3t_A3": 0.04844723554732376,
+    "FB3t_C3": 0.3195973771916999,
+    "FB3t_D1": 0.08641395591496115
+   }
+  },
+  "null": {
+   "n": 10,
+   "top1_hits": 2,
+   "class_hits": 2,
+   "called": 0,
+   "top1": {
+    "FB2_B6": "g_tonic_inh",
+    "FB2_C6": "g_kdr",
+    "FB2_D6": "i_drive",
+    "FB2t_A2": "tau_d",
+    "FB2t_A3": "tau_d",
+    "FB2t_B1": "g_ampa",
+    "FB2t_C1": "g_ampa",
+    "FB3t_A3": "i_drive",
+    "FB3t_C3": "g_kdr",
+    "FB3t_D1": "g_kdr"
+   },
+   "p_accept_max": {
+    "FB2_B6": 0.004439690902237608,
+    "FB2_C6": 0.0022110542884231426,
+    "FB2_D6": 0.0046987823816067925,
+    "FB2t_A2": 0.33327071122063795,
+    "FB2t_A3": 0.3267828528954913,
+    "FB2t_B1": 0.28546165106946525,
+    "FB2t_C1": 0.23868943284309854,
+    "FB3t_A3": 0.0008059000386844159,
+    "FB3t_C3": 0.0019097901007469936,
+    "FB3t_D1": 0.007769111774788188
+   }
+  },
+  "auroc_accept_treated_vs_null": 0.87
+ },
+ "drift": {
+  "treated": {
+   "n": 10,
+   "top1_hits": 4,
+   "class_hits": 9,
+   "called": 9,
+   "top1": {
+    "FB2_B6": "tau_d",
+    "FB2_C6": "tau_d",
+    "FB2_D6": "g_ahp",
+    "FB2t_A2": "tau_d",
+    "FB2t_A3": "g_ahp",
+    "FB2t_B1": "tau_d",
+    "FB2t_C1": "g_ahp",
+    "FB3t_A3": "g_ahp",
+    "FB3t_C3": "g_ahp",
+    "FB3t_D1": "g_kdr"
+   },
+   "p_accept_max": {
+    "FB2_B6": 0.8284115463224493,
+    "FB2_C6": 0.9732704655275434,
+    "FB2_D6": 0.8427952636347882,
+    "FB2t_A2": 0.7339398194866037,
+    "FB2t_A3": 0.39165646804094606,
+    "FB2t_B1": 0.669936012671984,
+    "FB2t_C1": 0.5084203887364479,
+    "FB3t_A3": 0.0173541038346881,
+    "FB3t_C3": 0.3263467385789565,
+    "FB3t_D1": 0.05313012821795252
+   }
+  },
+  "null": {
+   "n": 10,
+   "top1_hits": 3,
+   "class_hits": 3,
+   "called": 0,
+   "top1": {
+    "FB2_B6": "g_tonic_inh",
+    "FB2_C6": "g_kdr",
+    "FB2_D6": "i_drive",
+    "FB2t_A2": "tau_d",
+    "FB2t_A3": "tau_d",
+    "FB2t_B1": "tau_d",
+    "FB2t_C1": "g_ampa",
+    "FB3t_A3": "g_kdr",
+    "FB3t_C3": "g_kdr",
+    "FB3t_D1": "g_kdr"
+   },
+   "p_accept_max": {
+    "FB2_B6": 0.017929785132244292,
+    "FB2_C6": 0.003738729224304474,
+    "FB2_D6": 0.00650680908321898,
+    "FB2t_A2": 0.3249116485283991,
+    "FB2t_A3": 0.3215425698790517,
+    "FB2t_B1": 0.30949746221768987,
+    "FB2t_C1": 0.25048528252243124,
+    "FB3t_A3": 0.0040425142797629945,
+    "FB3t_C3": 0.011880824186924094,
+    "FB3t_D1": 0.04702416408349757
+   }
+  },
+  "auroc_accept_treated_vs_null": 0.9
+ },
+ "drift_twin": "models/twin_v2d_grid12"
+}

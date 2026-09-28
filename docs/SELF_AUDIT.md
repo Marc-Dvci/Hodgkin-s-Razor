@@ -124,6 +124,11 @@ minutes each to rebuild. The v3 evaluation needs the low-memory runner on a
 3. **A recording from the supporting organisation's own chips.**
 4. **A human-only domain.** 27 of 28 human Tampere wells were outside the
    model.
-5. **The within-well drift found in version 3 applied to the version 2 twins.**
-   The drift is measured at 0.03–0.04 of each parameter's range; retraining
-   and rescoring Doorn as development evidence are the next step.
+5. **Within-well drift in the version 2 twins.** A grid12 twin retrained with
+   the measured drift (0.04) was rescored on the Dynasore wells as development
+   evidence:
+   - named member 4/10, against 3/10 on untreated pairs, where the frozen twin
+     had 2/10 against 2/10;
+   - AUROC 0.90, against 0.87 for the frozen twin.
+
+   It has not been frozen or blind-tested; a fresh blind set would be needed.

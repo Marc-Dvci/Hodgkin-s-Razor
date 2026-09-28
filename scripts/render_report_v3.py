@@ -142,6 +142,23 @@ def doorn(r2, nul) -> str:
             "fall outside the simulated 95% band, against about 0.05 once the drift is "
             "added. A twin that has never seen drift must explain every slow change as a "
             "compound. The version 3 design includes a calibrated drift from the start.")
+    dr = load("results/v2/drift_rescore.json")
+    if dr:
+        fz, d = dr["frozen_v2"], dr["drift"]
+        txt.append(
+            "**Post hoc, development evidence** (`scripts/drift_rescore_doorn.py`; these wells "
+            "are no longer blind). A grid12 twin was retrained on a bank with the measured "
+            f"drift. It names the accepted mechanism in {d['treated']['top1_hits']}/10 treated "
+            f"wells, against {fz['treated']['top1_hits']}/10 for the frozen twin. But its "
+            f"untreated null pairs also rise, to {d['null']['top1_hits']}/10, so top-1 does "
+            "not separate treated from untreated for either twin. Read with the version 3 "
+            "primary instead (the accepted mechanisms' probability, treated wells against "
+            "their own null pairs), the frozen twin scores AUROC "
+            f"{f2(fz['auroc_accept_treated_vs_null'])} and the drift twin "
+            f"{f2(d['auroc_accept_treated_vs_null'])}. Neither metric was pre-registered for "
+            "version 2. The pattern is the same as in the version 3 blind test: the twin "
+            "ranks the right mechanism above untreated wells even where its single top call "
+            "is wrong.")
     return "\n\n".join(txt)
 
 

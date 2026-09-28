@@ -52,8 +52,13 @@ def summarise(wells: list[dict]) -> dict:
 
 def score(twin_dir: str, treated, null) -> dict:
     twin = nde.Twin.load(ROOT / twin_dir, device="cuda")
-    return {"treated": summarise(E.by_well(E.score_pairs(twin, treated, 4000))),
-            "null": summarise(E.by_well(E.score_pairs(twin, null, 4000)))}
+    t = summarise(E.by_well(E.score_pairs(twin, treated, 4000)))
+    z = summarise(E.by_well(E.score_pairs(twin, null, 4000)))
+    # The version 3 primary, applied post hoc: the accepted mechanisms'
+    # presence, treated wells against their own pre-drug null pairs.
+    a, b = np.array(list(t["p_accept_max"].values())), np.array(list(z["p_accept_max"].values()))
+    auc = E.auroc(np.r_[a, b], np.r_[np.ones(a.size), np.zeros(b.size)])
+    return {"treated": t, "null": z, "auroc_accept_treated_vs_null": auc}
 
 
 def main() -> None:
@@ -70,7 +75,7 @@ def main() -> None:
         t, z = out[name]["treated"], out[name]["null"]
         print(f"{name:10s} treated: top-1 {t['top1_hits']}/{t['n']}, class {t['class_hits']}/{t['n']}, "
               f"called {t['called']}/{t['n']}  |  null: top-1 {z['top1_hits']}/{z['n']}, "
-              f"called {z['called']}/{z['n']}")
+              f"called {z['called']}/{z['n']}  |  AUROC {out[name]['auroc_accept_treated_vs_null']:.2f}")
 
 
 if __name__ == "__main__":

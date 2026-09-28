@@ -422,6 +422,8 @@ The unpaired comparator's 8/10 is a fixed preference, not a detection. The paire
 
 **Why the named member failed.** The version 2 bank assumed that nothing changes in a well between two recordings. Measured on untreated pairs, the no-compound drift is 0.03 of each parameter's range over 4 minutes (Doorn pre-drug pairs) and 0.04 across a wash-on (Tampere vehicle wells). With no drift, 0.23 of the recorded untreated differences fall outside the simulated 95% band, against about 0.05 once the drift is added. A twin that has never seen drift must explain every slow change as a compound. The version 3 design includes a calibrated drift from the start.
 
+**Post hoc, development evidence** (`scripts/drift_rescore_doorn.py`; these wells are no longer blind). A grid12 twin was retrained on a bank with the measured drift. It names the accepted mechanism in 4/10 treated wells, against 2/10 for the frozen twin. But its untreated null pairs also rise, to 3/10, so top-1 does not separate treated from untreated for either twin. Read with the version 3 primary instead (the accepted mechanisms' probability, treated wells against their own null pairs), the frozen twin scores AUROC 0.87 and the drift twin 0.90. Neither metric was pre-registered for version 2. The pattern is the same as in the version 3 blind test: the twin ranks the right mechanism above untreated wells even where its single top call is wrong.
+
 ![Figure 6. Blind test: presence probability per well and mechanism.](../results/v2/figures/doorn_wells.png)
 
 ### 7.3 Development set: Tampere, fifth scoring
