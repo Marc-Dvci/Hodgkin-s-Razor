@@ -273,6 +273,12 @@ answer key is `g_nmda`, direction down. The primary is the AUROC of the
 presence probability of `g_nmda`, treated preparations against untreated
 preparations of the same genotypes, over 10 to 14 days in vitro.
 
+![Figure 3. Version 3 blind test: per-preparation reading, and three methods on the same preparations.](../results/v3/figures/charlesworth_primary.png)
+
+![Figure 4. The reading fades as the cultures compensate.](../results/v3/figures/canalization.png)
+
+![Figure 5. Exploratory: every mechanism, treated against untreated.](../results/v3/figures/mechanism_profile.png)
+
 {{CHARLESWORTH}}
 
 ### 7.2 Blind test, version 2: Dynasore on human iPSC networks
@@ -283,33 +289,33 @@ Both `u_rel` (U) and `tau_d` (vesicle recovery) are accepted, direction up.
 
 {{DOORN}}
 
-![Figure 3. Blind test: presence probability per well and mechanism.](../results/v2/figures/doorn_wells.png)
+![Figure 6. Blind test: presence probability per well and mechanism.](../results/v2/figures/doorn_wells.png)
 
 ### 7.3 Development set: Tampere, fifth scoring
 
 {{TAMPERE}}
 
-![Figure 4. Tampere development set.](../results/v2/figures/tampere_confusion.png)
+![Figure 7. Tampere development set.](../results/v2/figures/tampere_confusion.png)
 
 ### 7.4 The chip readout prediction, on recorded microchannel chips
 
 {{CHIPS}}
 
-![Figure 5. What each chip readout recovers, in simulation.](../results/v2/figures/chip_readouts.png)
+![Figure 8. What each chip readout recovers, in simulation.](../results/v2/figures/chip_readouts.png)
 
-![Figure 6. The prediction tested on recorded chips.](../results/v2/figures/mateus_chips.png)
+![Figure 9. The prediction tested on recorded chips.](../results/v2/figures/mateus_chips.png)
 
 ### 7.5 Simulations and calibration
 
 {{SIMULATION}}
 
-![Figure 7. Held-out simulations.](../results/v2/figures/simulation.png)
+![Figure 10. Held-out simulations.](../results/v2/figures/simulation.png)
 
 ### 7.6 The guard
 
 {{GUARD}}
 
-![Figure 8. The guard.](../results/v2/figures/guard.png)
+![Figure 11. The guard.](../results/v2/figures/guard.png)
 
 ### 7.7 Does the twin reproduce known pharmacology?
 
@@ -319,9 +325,11 @@ the change in firing is compared with the published direction and rough size.
 
 {{PHARMACOLOGY}}
 
-![Figure 9. Pharmacology check.](../results/v2/figures/pharmacology.png)
+![Figure 12. Pharmacology check.](../results/v2/figures/pharmacology.png)
 
 ## 8. From description to predictive simulation: the planning tool
+
+![Figure 13. How many chips a directionality claim needs.](../results/v3/figures/chip_power.png)
 
 {{CHIP_DESIGN}}
 
