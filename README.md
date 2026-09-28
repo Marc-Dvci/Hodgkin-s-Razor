@@ -1,6 +1,6 @@
 # Hodgkin's Razor
 
-**A mechanistic digital twin for neural organ-on-chip recordings: from two recordings of one well, the molecular mechanism a compound moved, or a refusal.**
+**A mechanistic digital twin for neural organ-on-chip recordings: from a baseline and a treated recording, the molecular mechanism a compound moved, or a refusal.**
 
 AI4S Open Innovation: AI for Life Science, 5th Pazhou Algorithm Competition.
 Category: **End-to-End System**. Apache-2.0.
@@ -12,14 +12,33 @@ slowed vesicle recycling, and those have different consequences for a drug
 programme.
 
 Hodgkin's Razor fits a biophysical network model to the recording itself. It
-reads a baseline and a treated recording of the same well and returns, for ten
+reads a baseline and a treated recording (one well twice, or two sister
+cultures) and returns, for ten
 mechanisms, the probability that each moved, the size of the shift if it did,
 and an interval. When no simulation resembles the recording, or the fitted
 twin cannot reproduce it, it says so and names nothing. The razor is the
 sparse prior: among the mechanisms that could explain a change, prefer the
 fewest.
 
-<!-- RESULTS -->
+## Results
+
+Every result is scored against untreated recordings read the same way: pre-drug
+stretches of the same well, sister cultures neither of which was treated, and
+vehicle wells. A method's chance level is its own hit rate when nothing was
+applied.
+
+| Test (pre-registered, blind) | What was asked | Result |
+|---|---|---|
+| **Chronic NMDA blockade**, mouse hippocampal sister cultures (Charlesworth et al. 2015), version 3 | does p(NMDA) separate 29 treated from 23 untreated preparations of the same genotypes? bar AUROC 0.70 | **0.86** [0.74, 0.96]: **met**. Doorn et al. estimator 0.49; same twin unpaired 0.66 |
+| same | is NMDA the single top-ranked mechanism? | 2/29 against 1/23: **not met** |
+| same, secondary | does the reading fade as the cultures compensate, as the authors report? | yes, early > late, p = 3e-5 |
+| **Dynasore**, human iPSC networks (Doorn et al. 2024), version 2 | named mechanism (u_rel or tau_d) in at least 5 of 10 wells | 2/10: **not met** |
+| same, secondaries | detection; mechanism class | drug called in 9/10 wells and 0/10 untreated pairs; class 8/10 (p = 0.0016) |
+| **Recorded microchannel chips** (Mateus et al. 2024), version 2 | channel statistic separates diodes (AUROC >= 0.75) | 0.62 [0.28, 0.88]: not met, and underpowered (power 0.48); the twin says 20 chips per design are needed |
+
+The failures are reported in full in [`results/v3/RESULTS.md`](results/v3/RESULTS.md)
+and [`results/v2/RESULTS.md`](results/v2/RESULTS.md), and discussed in section 9
+of the report.
 
 ---
 
@@ -27,7 +46,7 @@ fewest.
 
 ```bash
 pip install -r requirements.txt          # CPU is enough
-python demo.py                           # bundled pairs, cached analyses
+python demo.py                           # the pre-registered evidence, well by well
 python demo.py --serve                   # web application on 127.0.0.1:8000
 python -m pytest tests/ -q
 python scripts/verify.py                 # hashes, checksums, frozen models, written numbers
@@ -42,7 +61,7 @@ With a CUDA device, the whole pipeline rebuilds from public data:
 ```bash
 pip install -r requirements-gpu.txt
 python scripts/fetch_tampere.py          # Tampere recordings, CC BY 4.0, checksummed
-python scripts/fetch_external.py         # Doorn et al. and Mateus et al., checksummed
+python scripts/fetch_external.py         # Doorn, Mateus and Charlesworth et al., checksummed
 python scripts/run_all.py
 ```
 
@@ -80,7 +99,13 @@ neuron order, so floating-point sums never reorder.
 
 **Recording systems.** The kernel records at 0.2 ms. Each system is a view with
 its own electrode layout and dead time: the Axion 48-well plate (16 electrodes,
-2 ms) and the MCS 24-well plate (12 electrodes, 0.3 ms).
+2 ms), the MCS 24-well plate (12 electrodes, 0.3 ms) and the MCS 60-electrode
+array read as four quadrants (1.08 ms).
+
+**Two designs.** One well recorded twice holds wiring and pickup fixed. Two
+sister cultures share a preparation but not a network, so the bank draws the
+second sister's wiring afresh and adds a drift between sisters, measured on
+sister pairs that were never treated.
 
 **The domain.** A twin is trained on the cultures its own recording system
 produces: the range the system's untreated baselines span, a living
@@ -110,7 +135,7 @@ which readout resolves it, before the experiment is run.
 
 ## Validation
 
-Two pre-registrations, both hashed before scoring.
+Three pre-registrations, each hashed before its blind data was read.
 
 * `PREREGISTRATION.md` (version 1) fixed the Tampere answer key. The
   pre-registered model scored at chance, and after three label-free corrections
@@ -124,7 +149,14 @@ Two pre-registrations, both hashed before scoring.
   until that file exists and matches its hash, and `scripts/evaluate_v2.py`
   checks it and every frozen model's digest before it runs.
 
-Every outcome, including what failed, is in `results/v2/RESULTS.md`.
+* `PREREGISTRATION_v3.md` was hashed after the version 3 twin passed a stop
+  rule committed before it was trained (`docs/STOP_RULE_v3.md`; the first twin
+  failed it and both attempts are listed). Its null group is matched on
+  genotype. `hodgkins_razor/charlesworth.py` refuses to return a treated
+  sister until that file matches its hash.
+
+Every outcome, including what failed, is in `results/v3/RESULTS.md` and
+`results/v2/RESULTS.md`.
 
 ---
 
@@ -133,6 +165,7 @@ Every outcome, including what failed, is in `results/v2/RESULTS.md`.
 | Dataset | Use | Licence |
 |---|---|---|
 | [Tampere comparative MEA dataset](https://gin.g-node.org/NeuroGroup_TUNI/Comparative_MEA_dataset) | development set; domain of the Axion twin | CC BY 4.0 |
+| [Charlesworth et al. 2015, sister-array recordings](https://zenodo.org/records/31085) | blind test of version 3; domain and drift (untreated sisters only) | CC0 1.0 |
 | [Doorn et al. 2024, Dynasore peak trains](https://gitlab.utwente.nl/m7706783/fb_model) | blind test; domain of the MCS twin (baselines only) | Apache-2.0 |
 | [Mateus et al. 2024, microchannel chips](https://zenodo.org/records/14525182) | blind test of the chip readout prediction | CC BY-NC-ND, read in place, not redistributed |
 | [Doorn et al. 2025, SBI estimator](https://gitlab.utwente.nl/m7706783/SBI_MEA_model) | prior art, scored beside the twin | Apache-2.0 |
@@ -155,12 +188,14 @@ hodgkins_razor/
   report.py      the mechanism report
   design.py      the next experiment, when two mechanisms tie
   chip.py        two-compartment chip twin and its four readouts
-  tampere.py  doorn.py  mateus.py   readers for the three datasets
+  tampere.py doorn.py mateus.py charlesworth.py   readers for the four datasets
 scripts/
   fit_domain.py make_bank.py train.py sim_eval.py guard_sim_check.py
-  pharmacology_check.py chip_study.py freeze_v2.py
-  evaluate_v2.py mateus_check.py prior_art_doorn.py
-  render_v2.py figures_v2.py render_report_v2.py make_examples.py
+  calibrate_drift.py pharmacology_check.py gaba_check.py chip_study.py chip_power.py
+  lassus_study.py design_study.py null_controls_v2.py
+  freeze_v2.py evaluate_v2.py mateus_check.py prior_art_doorn.py
+  freeze_v3.py evaluate_v3.py evaluate_v3_lowmem.py
+  render_v2.py render_v3.py figures_v2.py render_report_v3.py make_examples.py
   export_static.py make_notebook.py verify.py run_all.py
 app/        FastAPI service and the single-page interface
 site/       the same page as a static site
@@ -180,8 +215,9 @@ for the record; they describe the version 1 model at the tag `v1`.
 | | |
 |---|---|
 | [`docs/TECHNICAL_REPORT.md`](docs/TECHNICAL_REPORT.md) | the full report (PDF in `docs/`) |
-| [`results/v2/RESULTS.md`](results/v2/RESULTS.md) | every pre-registered outcome |
-| [`PREREGISTRATION_v2.md`](PREREGISTRATION_v2.md) | the blind tests, fixed before scoring |
+| [`results/v3/RESULTS.md`](results/v3/RESULTS.md) | every version 3 outcome, the stop rule, the chip and design studies |
+| [`results/v2/RESULTS.md`](results/v2/RESULTS.md) | every version 2 outcome |
+| [`PREREGISTRATION_v3.md`](PREREGISTRATION_v3.md), [`PREREGISTRATION_v2.md`](PREREGISTRATION_v2.md) | the blind tests, fixed before scoring |
 | [`docs/DATA.md`](docs/DATA.md) | sources, licences, compliance |
 | [`docs/REPRODUCTION.md`](docs/REPRODUCTION.md) | how to rebuild everything |
 | [`docs/SELF_AUDIT.md`](docs/SELF_AUDIT.md) | scored against the published criteria, with the open items |
