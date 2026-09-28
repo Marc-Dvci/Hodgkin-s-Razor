@@ -1,126 +1,129 @@
 # Self-audit against the published criteria
 
-Written before submission, against the rubric in the challenge brief. Scores
-are the author's own and deliberately harsh. Every gap that is still open is
-listed at the end.
+Written before submission, against the rubric in the challenge brief. The
+scores are my own. Every gap still open is listed at the end. Every number is
+taken from `results/v3/RESULTS.md` or `results/v2/RESULTS.md`.
 
-## Problem importance and potential impact — 30 percent
+## Problem importance and potential impact (30 percent)
 
 **What is claimed.** Organ-on-chip electrophysiology produces a description,
-not a mechanism, and two compounds with opposite pharmacology produce the same
-rate plot. Naming the mechanism changes what the assay is for.
+not a mechanism, and two compounds with different pharmacology can produce the
+same rate plot. Naming the mechanism, against untreated controls read the same
+way, changes what the assay is for. The chip twin says before an experiment
+which electrodes and how many chips a claim needs.
 
-**Supporting it.** Real recordings of five compounds on two species. A
-measurable question with a fixed answer key. The supporting organisation's own
-stated goal, moving from description to predictive simulation, is the thing
-that was built.
+**Supporting it.**
+- Three public datasets from three laboratories: rat, mouse and human cultures,
+  and three recording systems.
+- A blind result on chronic NMDA blockade, which tests the mechanism reading on
+  a drug the model has an answer for.
+- Partial reproduction of the sponsor laboratory's cortico-striatal NMDA result
+  (both synchrony readouts), after a failed first prediction that is also
+  reported.
+- A sample-size output that turns the one inconclusive recorded-chip test into
+  a design recommendation.
 
-**Against it.** Two plates in one dataset. No dose-response. No physical chip
-recording from a two-compartment device. The impact argument rests on the
-method transferring, and transfer is argued rather than shown.
+**Against it.**
+- The blind tests are on conventional MEA cultures, not chips.
+- The one recorded chip set is 17 chips.
+- No dose-response, and no human culture inside the model yet.
 
-**Score: 25 of 30.**
+**Score: 24 of 30.**
 
-## Technical approach and innovation — 30 percent
+## Technical approach and innovation (30 percent)
 
-**What is new.** Inhibition in the network model, so GABAergic compounds are
-readable at all. A paired design that infers the shift within a well, so
-culture and plate offsets cancel. A separate calibrated presence probability
-per mechanism. A guard that refuses, calibrated on held-out simulations and
-tested on two classes of recording it must reject. A bit-reproducible GPU
-simulator fast enough to build the bank on a desktop. A two-compartment chip
-twin that answers what a readout resolves before the experiment is run.
+**What is new.**
+- An inhibitory population and tonic GABA-A, so GABAergic compounds are
+  readable at all.
+- Paired inference within a well, and between sister cultures with a drift
+  measured on untreated sisters.
+- A calibrated presence probability per mechanism.
+- A guard that refuses.
+- Recording systems as explicit views.
+- A bit-reproducible GPU simulator.
+- A chip twin with a striatal target, readout-resolution analysis, sample size
+  and a follow-up recommender.
+- Methodologically:
+  - null-pair scoring, which exposed a comparator's 8/10 as a preference;
+  - pre-registration enforced in code;
+  - a stop rule that forbids freezing a test the model fails on its own
+    simulations.
 
-**Against it.** Every component is an application of an existing idea:
-simulation-based inference, normalising flows, predictive checks. The
-composition is the contribution, not any single part. The simulator is a
-simplification of the one it extends, with event-driven synapses and quantised
-delays.
+**Against it.** Each component applies an existing idea (simulation-based
+inference, normalising flows, predictive checks); the composition and the
+evaluation design are the contribution. The simulator is a point-neuron
+simplification.
 
-**Score: 25 of 30.**
+**Score: 26 of 30.**
 
-## Results and validation — 20 percent
+## Results and validation (20 percent)
 
-**What is done.** Pre-registration hashed before scoring, with the answer key,
-the metric, the unit of analysis, the operating points and the failure
-conditions fixed in advance. Interval coverage and rank statistics on held-out
-simulations. Presence reliability with expected calibration error. An ablation
-that removes only the paired design. A supervised baseline that is given the
-labels the twin never sees. The guard tested on cases it must catch and cases
-it must pass. Every compound reported, including the ones that fail.
+**What is done.**
+- Three pre-registrations, each hashed before its blind data was read.
+- A prior-art estimator run unchanged on every test.
+- An unpaired ablation.
+- Untreated null groups inside every primary.
+- Every outcome reported, including the failures.
 
-**What the discipline bought.** The first scored run came out at 0.091 against
-a chance rate of 0.111. Rather than tune until the number moved, the cause was
-found with a check that uses no recorded label: applying a saturating block at
-each mechanism in simulation and comparing against published pharmacology. It
-showed that an AMPA block left 90 percent of the firing and that a GABA agonist
-had no way to act at all, so two of the six compounds were unrepresentable and a
-third was mimicked by sodium. Three parameterisation defects and one missing
-conductance were fixed, and the corrections raise separation on simulations from
-0.64 to 0.89 among the four receptor and channel mechanisms, again without a
-recorded label. Both scored runs are reported.
+**What holds up.**
+- Version 3 primary met: AUROC 0.86 [0.74, 0.96], against 0.49 for the prior
+  art and 0.66 unpaired, on the same preparations.
+- The canalization secondary: the reading fades with maturation, p = 3e-5.
+- Version 2: detection 9/10 against 0/10 on untreated pairs, and mechanism
+  class 8/10 (p = 0.0016).
 
-**Against it.** The recorded set was scored four times. The first scoring is
-the only blind one, at 0.091. The corrections that followed were each driven by
-a label-free check, but the final choice between the two best variants could
-not be made on simulation evidence, which does not separate them, so the
-reported 0.303 carries selection on the recorded set. That is stated in the
-report rather than left for a reader to infer. The guard failed its
-pre-registered test at every one of three attempts at the statistic.
+**Against it.**
+- Naming the exact mechanism failed on both blind tests: 2/29 top-1 in
+  version 3, and 2/10 in version 2.
+- In version 3, no preparation's probability reached 0.5.
+- The guard missed both must-fire bars on sister pairs (0.58 and 0.63).
+- The stop rule needed two attempts; both are listed.
+- The Tampere set is development data, scored five times.
 
-**Score: 14 of 20.** The honesty is complete; the number is selected and the
-guard does not work.
+**Score: 15 of 20.**
 
-## Reproducibility and implementation quality — 10 percent
+## Reproducibility and implementation quality (10 percent)
 
-One command runs the demo with no GPU. One command rebuilds everything.
-Checksums on every downloaded file. A verification script that re-checks the
-pre-registration hash, the data checksums, the tests and the agreement between
-the written results and the JSON they came from. Twenty-seven tests, including
-one that fails if the simulator stops being bit-reproducible. Docker for CPU
-and GPU. A notebook for reviewers without a GPU. A static site that needs no
-server.
+- One command runs the demo without a GPU.
+- `run_all.py` rebuilds everything, with every frozen model in the repository.
+- Checksums on every downloaded file.
+- `verify.py` re-checks every pre-registration hash, every frozen model and
+  file, the agreement between the written numbers and the JSON, and 43 tests
+  (61 checks pass).
+- Docker images for CPU and GPU.
 
-**Against it.** The bank is not distributed and takes about two hours to
-rebuild. The GPU path needs CUDA and is not exercised by the CPU image.
+**Against it.** The simulation banks are not distributed; they take about 80
+minutes each to rebuild. The v3 evaluation needs the low-memory runner on a
+32 GB machine.
 
 **Score: 9 of 10.**
 
-## Presentation quality — 10 percent
+## Presentation quality (10 percent)
 
-A script cued to measured narration, an architecture diagram, figures produced
-from the results file rather than drawn, application screenshots captured from
-the running page, subtitles planned in English and Chinese, and hosting on a
-platform reachable from the panel's country.
+- A film rendered frame by frame from the results and captures of the running
+  application.
+- Narration measured and cued, and checked against the results files.
+- English and Chinese subtitles.
+- The writeup summary in both languages.
 
-**Against it.** The video is not cut yet.
+**Against it.** Not yet published on YouTube and Bilibili.
 
-**Score: 7 of 10, pending the cut.**
+**Score: 8 of 10.**
 
 ---
 
 ## Open items
 
-0. **The pre-registration was scored twice.** The first run is in
-   `results/run1/`, the second is the headline, and section 6b of the report
-   gives the defects, the independent check that found them and the
-   corrections. Every change was made on simulation evidence; none used a
-   recorded label. The git history carries the order.
-1. **The demo video is not produced.** The script, the figures and the captured
-   application screens are in the repository; the cut, the narration and the
-   upload are not done.
-2. **The registration form is not submitted.** It is mandatory for eligibility
-   and only the entrant can submit it.
-3. **The repository is not published.** Links in the writeup are placeholders
-   until it is.
-4. **The HESI multi-laboratory dataset is behind a login.** It is the natural
-   source of dose-response and cross-laboratory invariance, and both are absent
-   because of it.
-5. **No recording from a physical two-compartment chip.** One from the
-   supporting organisation would be the single most valuable addition.
-
-## What would most improve the score
-
-Not another model. A second dataset. Every weakness above is a data weakness:
-one study, one concentration, no chip recording. The method is amortised, so a
-new dataset costs a forward pass and nothing else.
+1. **Publishing.** The repository, the video (YouTube and Bilibili), the
+   Pages site, the Kaggle Notebook and Dataset, and the Writeup. The
+   placeholders in `docs/WRITEUP.md` are marked `<...>`.
+2. **HESI multi-laboratory dataset.** It needs a free EDAP login. It would add
+   acute drugs across several mechanisms, drugs the model cannot represent (a
+   real-data guard test), true negatives, dose-response and seven
+   laboratories.
+3. **A recording from the supporting organisation's own chips.**
+4. **A human-only domain.** 27 of 28 human Tampere wells were outside the
+   model.
+5. **The within-well drift found in version 3 applied to the version 2 twins.**
+   The drift is measured at 0.03–0.04 of each parameter's range; retraining
+   and rescoring Doorn as development evidence are the next step.
