@@ -1,0 +1,140 @@
+== bank Mon Sep 28 22:02:37 RDT 2026
+shard 1/50  pairs 2400  16.6 pairs/s  acceptance {'grid16': 0.175}  eta 118 min
+shard 2/50  pairs 4800  17.1 pairs/s  acceptance {'grid16': 0.185}  eta 112 min
+shard 3/50  pairs 7200  16.7 pairs/s  acceptance {'grid16': 0.186}  eta 112 min
+shard 4/50  pairs 9600  16.7 pairs/s  acceptance {'grid16': 0.191}  eta 110 min
+shard 5/50  pairs 12000  16.7 pairs/s  acceptance {'grid16': 0.189}  eta 108 min
+shard 6/50  pairs 14400  16.8 pairs/s  acceptance {'grid16': 0.19}  eta 105 min
+shard 7/50  pairs 16800  17.1 pairs/s  acceptance {'grid16': 0.191}  eta 101 min
+shard 8/50  pairs 19200  17.1 pairs/s  acceptance {'grid16': 0.192}  eta 98 min
+shard 9/50  pairs 21600  17.1 pairs/s  acceptance {'grid16': 0.192}  eta 96 min
+shard 10/50  pairs 24000  17.1 pairs/s  acceptance {'grid16': 0.191}  eta 93 min
+shard 11/50  pairs 26400  17.3 pairs/s  acceptance {'grid16': 0.19}  eta 90 min
+shard 12/50  pairs 28800  17.6 pairs/s  acceptance {'grid16': 0.19}  eta 86 min
+shard 13/50  pairs 31200  17.9 pairs/s  acceptance {'grid16': 0.19}  eta 83 min
+shard 14/50  pairs 33600  18.2 pairs/s  acceptance {'grid16': 0.19}  eta 79 min
+shard 15/50  pairs 36000  18.4 pairs/s  acceptance {'grid16': 0.191}  eta 76 min
+shard 16/50  pairs 38400  18.7 pairs/s  acceptance {'grid16': 0.192}  eta 73 min
+shard 17/50  pairs 40800  18.9 pairs/s  acceptance {'grid16': 0.192}  eta 70 min
+shard 18/50  pairs 43200  19.0 pairs/s  acceptance {'grid16': 0.192}  eta 67 min
+shard 19/50  pairs 45600  19.2 pairs/s  acceptance {'grid16': 0.193}  eta 64 min
+shard 20/50  pairs 48000  19.3 pairs/s  acceptance {'grid16': 0.192}  eta 62 min
+shard 21/50  pairs 50400  19.4 pairs/s  acceptance {'grid16': 0.192}  eta 60 min
+shard 22/50  pairs 52800  19.5 pairs/s  acceptance {'grid16': 0.192}  eta 58 min
+shard 23/50  pairs 55200  19.4 pairs/s  acceptance {'grid16': 0.192}  eta 56 min
+shard 24/50  pairs 57600  19.4 pairs/s  acceptance {'grid16': 0.191}  eta 53 min
+shard 25/50  pairs 60000  19.4 pairs/s  acceptance {'grid16': 0.191}  eta 51 min
+shard 26/50  pairs 62400  19.4 pairs/s  acceptance {'grid16': 0.191}  eta 49 min
+shard 27/50  pairs 64800  19.5 pairs/s  acceptance {'grid16': 0.191}  eta 47 min
+shard 28/50  pairs 67200  19.4 pairs/s  acceptance {'grid16': 0.19}  eta 45 min
+shard 29/50  pairs 69600  19.5 pairs/s  acceptance {'grid16': 0.19}  eta 43 min
+shard 30/50  pairs 72000  19.5 pairs/s  acceptance {'grid16': 0.191}  eta 41 min
+shard 31/50  pairs 74400  19.6 pairs/s  acceptance {'grid16': 0.191}  eta 39 min
+shard 32/50  pairs 76800  19.7 pairs/s  acceptance {'grid16': 0.191}  eta 37 min
+shard 33/50  pairs 79200  19.8 pairs/s  acceptance {'grid16': 0.192}  eta 34 min
+shard 34/50  pairs 81600  19.9 pairs/s  acceptance {'grid16': 0.192}  eta 32 min
+shard 35/50  pairs 84000  20.0 pairs/s  acceptance {'grid16': 0.191}  eta 30 min
+shard 36/50  pairs 86400  20.0 pairs/s  acceptance {'grid16': 0.191}  eta 28 min
+shard 37/50  pairs 88800  20.1 pairs/s  acceptance {'grid16': 0.191}  eta 26 min
+shard 38/50  pairs 91200  20.1 pairs/s  acceptance {'grid16': 0.191}  eta 24 min
+shard 39/50  pairs 93600  20.2 pairs/s  acceptance {'grid16': 0.191}  eta 22 min
+shard 40/50  pairs 96000  20.2 pairs/s  acceptance {'grid16': 0.191}  eta 20 min
+shard 41/50  pairs 98400  20.2 pairs/s  acceptance {'grid16': 0.191}  eta 18 min
+shard 42/50  pairs 100800  20.3 pairs/s  acceptance {'grid16': 0.191}  eta 16 min
+shard 43/50  pairs 103200  20.3 pairs/s  acceptance {'grid16': 0.191}  eta 14 min
+shard 44/50  pairs 105600  20.4 pairs/s  acceptance {'grid16': 0.192}  eta 12 min
+shard 45/50  pairs 108000  20.4 pairs/s  acceptance {'grid16': 0.192}  eta 10 min
+shard 46/50  pairs 110400  20.4 pairs/s  acceptance {'grid16': 0.192}  eta 8 min
+shard 47/50  pairs 112800  20.5 pairs/s  acceptance {'grid16': 0.192}  eta 6 min
+shard 48/50  pairs 115200  20.5 pairs/s  acceptance {'grid16': 0.192}  eta 4 min
+shard 49/50  pairs 117600  20.5 pairs/s  acceptance {'grid16': 0.192}  eta 2 min
+shard 50/50  pairs 120000  20.6 pairs/s  acceptance {'grid16': 0.191}  eta 0 min
+bank complete data\bank_v2h
+== train Mon Sep 28 23:39:51 RDT 2026
+D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\scripts\train.py:233: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:837.)
+  tot += float(loss); nb += 1
+bank: 50 shards, 120000 pairs, 20730 cultures, view grid16
+domain grid16: 120000 pairs
+split by culture: train 105581, val 7229, cal 7190
+epoch   1  train   27.732  val   20.434 (nll  20.078  bce 0.3557)      2s
+epoch   2  train   18.159  val   16.459 (nll  16.112  bce 0.3465)      4s
+epoch   3  train   15.599  val   14.763 (nll  14.420  bce 0.3424)      6s
+epoch   4  train   14.215  val   13.543 (nll  13.202  bce 0.3406)      8s
+epoch   5  train   13.074  val   12.631 (nll  12.293  bce 0.3386)      9s
+epoch   6  train   12.062  val   11.980 (nll  11.644  bce 0.3364)     11s
+epoch   7  train   11.278  val   11.010 (nll  10.675  bce 0.3351)     13s
+epoch   8  train   10.511  val   10.477 (nll  10.144  bce 0.3333)     15s
+epoch   9  train    9.834  val    9.757 (nll   9.425  bce 0.3326)     16s
+epoch  10  train    9.148  val    9.025 (nll   8.693  bce 0.3323)     18s
+epoch  11  train    8.467  val    8.549 (nll   8.218  bce 0.3313)     19s
+epoch  12  train    7.815  val    8.164 (nll   7.833  bce 0.3310)     21s
+epoch  13  train    7.387  val    7.513 (nll   7.183  bce 0.3296)     23s
+epoch  14  train    6.826  val    7.170 (nll   6.841  bce 0.3291)     25s
+epoch  15  train    6.360  val    6.799 (nll   6.471  bce 0.3282)     27s
+epoch  16  train    5.944  val    6.201 (nll   5.873  bce 0.3281)     29s
+epoch  17  train    5.448  val    6.012 (nll   5.685  bce 0.3271)     30s
+epoch  18  train    5.169  val    5.685 (nll   5.358  bce 0.3270)     32s
+epoch  19  train    4.743  val    5.382 (nll   5.056  bce 0.3258)     34s
+epoch  20  train    4.361  val    5.237 (nll   4.911  bce 0.3259)     36s
+epoch  21  train    4.082  val    5.229 (nll   4.903  bce 0.3260)     37s
+epoch  22  train    3.826  val    4.762 (nll   4.436  bce 0.3259)     39s
+epoch  23  train    3.494  val    4.575 (nll   4.250  bce 0.3244)     41s
+epoch  24  train    3.296  val    4.591 (nll   4.266  bce 0.3252)     43s
+epoch  25  train    3.067  val    4.110 (nll   3.785  bce 0.3250)     44s
+epoch  26  train    2.757  val    3.846 (nll   3.522  bce 0.3238)     46s
+epoch  27  train    2.484  val    3.684 (nll   3.359  bce 0.3248)     48s
+epoch  28  train    2.246  val    3.829 (nll   3.505  bce 0.3246)     50s
+epoch  29  train    2.006  val    3.698 (nll   3.373  bce 0.3246)     51s
+epoch  30  train    1.798  val    3.339 (nll   3.012  bce 0.3266)     53s
+epoch  31  train    1.604  val    3.225 (nll   2.898  bce 0.3263)     55s
+epoch  32  train    1.419  val    3.311 (nll   2.985  bce 0.3258)     56s
+epoch  33  train    1.259  val    2.971 (nll   2.645  bce 0.3262)     58s
+epoch  34  train    1.057  val    2.777 (nll   2.451  bce 0.3263)     59s
+epoch  35  train    0.909  val    2.685 (nll   2.358  bce 0.3266)     61s
+epoch  36  train    0.718  val    2.567 (nll   2.241  bce 0.3255)     63s
+epoch  37  train    0.621  val    2.631 (nll   2.306  bce 0.3250)     64s
+epoch  38  train    0.377  val    2.288 (nll   1.961  bce 0.3264)     66s
+epoch  39  train    0.276  val    2.355 (nll   2.028  bce 0.3266)     67s
+epoch  40  train    0.112  val    2.315 (nll   1.989  bce 0.3256)     69s
+epoch  41  train   -0.002  val    2.291 (nll   1.963  bce 0.3276)     71s
+epoch  42  train   -0.144  val    2.218 (nll   1.889  bce 0.3291)     72s
+epoch  43  train   -0.250  val    2.319 (nll   1.991  bce 0.3277)     74s
+epoch  44  train   -0.430  val    2.065 (nll   1.736  bce 0.3293)     75s
+epoch  45  train   -0.548  val    2.099 (nll   1.770  bce 0.3296)     77s
+epoch  46  train   -0.675  val    2.015 (nll   1.685  bce 0.3298)     78s
+epoch  47  train   -0.746  val    2.075 (nll   1.744  bce 0.3307)     80s
+epoch  48  train   -0.872  val    2.392 (nll   2.061  bce 0.3315)     82s
+epoch  49  train   -0.928  val    1.863 (nll   1.532  bce 0.3312)     83s
+epoch  50  train   -1.133  val    1.976 (nll   1.644  bce 0.3322)     85s
+epoch  51  train   -1.167  val    1.937 (nll   1.606  bce 0.3309)     86s
+epoch  52  train   -1.253  val    1.747 (nll   1.414  bce 0.3327)     88s
+epoch  53  train   -1.362  val    2.057 (nll   1.724  bce 0.3328)     90s
+epoch  54  train   -1.491  val    2.574 (nll   2.240  bce 0.3338)     91s
+epoch  55  train   -1.503  val    1.798 (nll   1.465  bce 0.3332)     93s
+epoch  56  train   -1.626  val    1.818 (nll   1.483  bce 0.3346)     94s
+epoch  57  train   -1.710  val    1.636 (nll   1.301  bce 0.3350)     96s
+epoch  58  train   -1.804  val    1.779 (nll   1.443  bce 0.3358)     98s
+epoch  59  train   -1.809  val    1.726 (nll   1.389  bce 0.3370)     99s
+epoch  60  train   -1.930  val    1.815 (nll   1.478  bce 0.3370)    101s
+epoch  61  train   -2.064  val    1.878 (nll   1.542  bce 0.3366)    102s
+epoch  62  train   -2.162  val    1.431 (nll   1.094  bce 0.3376)    104s
+epoch  63  train   -2.147  val    2.043 (nll   1.703  bce 0.3395)    105s
+epoch  64  train   -2.282  val    1.854 (nll   1.514  bce 0.3403)    107s
+epoch  65  train   -2.327  val    2.068 (nll   1.729  bce 0.3396)    108s
+epoch  66  train   -2.245  val    2.428 (nll   2.088  bce 0.3409)    110s
+epoch  67  train   -2.414  val    2.039 (nll   1.698  bce 0.3406)    112s
+epoch  68  train   -2.543  val    1.663 (nll   1.322  bce 0.3412)    113s
+epoch  69  train   -2.446  val    1.765 (nll   1.423  bce 0.3415)    115s
+epoch  70  train   -2.587  val    1.879 (nll   1.536  bce 0.3434)    116s
+epoch  71  train   -2.542  val    1.647 (nll   1.303  bce 0.3437)    118s
+epoch  72  train   -2.660  val    1.688 (nll   1.344  bce 0.3442)    119s
+epoch  73  train   -2.796  val    1.921 (nll   1.575  bce 0.3468)    121s
+epoch  74  train   -2.868  val    1.937 (nll   1.591  bce 0.3453)    122s
+early stop
+saved models/twin_v2h_grid16 {"pairs": 120000, "val_loss": 1.4174330099485815, "epochs_run": 74}
+== rescore Mon Sep 28 23:42:05 RDT 2026
+bank: 50 shards, 120000 pairs, 20730 cultures, view grid16
+frozen_v2 {'n_wells': 28, 'outside': 27, 'top1_hits': 0, 'n_treated': 24, 'class_accuracy': 0.16666666666666666, 'control_false_mechanism_rate': 0.0, 'detection_auroc': 0.7916666666666666}
+human_domain {'n_wells': 28, 'outside': 27, 'top1_hits': 6, 'n_treated': 24, 'class_accuracy': 0.25, 'control_false_mechanism_rate': 0.0, 'detection_auroc': 0.8229166666666666}
+== done Mon Sep 28 23:54:34 RDT 2026

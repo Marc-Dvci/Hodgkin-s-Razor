@@ -147,7 +147,9 @@ untreated null group.
 
 - 0/11 vehicle wells called; treated-against-vehicle detection AUROC 0.89.
 - Rat: 16/42 named.
-- Human: 27/28 wells flagged as outside the model.
+- Human: 27/28 wells flagged as outside the model. Post hoc, a twin trained
+  on a human-only domain names 6/24 (the frozen twin names 0/24; p = 0.06
+  against chance). Its guard still flags 27/28.
 - Bath GABA is read as a sodium block. Simulations show why: both silence the
   culture, and a silent recording carries no signature.
 

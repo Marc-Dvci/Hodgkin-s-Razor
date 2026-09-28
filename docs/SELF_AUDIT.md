@@ -122,8 +122,11 @@ minutes each to rebuild. The v3 evaluation needs the low-memory runner on a
    real-data guard test), true negatives, dose-response and seven
    laboratories.
 3. **A recording from the supporting organisation's own chips.**
-4. **A human-only domain.** 27 of 28 human Tampere wells were outside the
-   model.
+4. **Human cultures.** 27 of 28 human Tampere wells were outside the model. A
+   human-only twin (post hoc, development data) names 6 of 24 (the frozen
+   twin names 0; p = 0.06 against chance), but its guard still flags 27 of 28.
+   The simulator rarely produces human-like baselines (4% of screened
+   cultures).
 5. **Within-well drift in the version 2 twins.** A grid12 twin retrained with
    the measured drift (0.04) was rescored on the Dynasore wells as development
    evidence:

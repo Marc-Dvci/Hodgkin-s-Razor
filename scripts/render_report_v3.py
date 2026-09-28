@@ -162,9 +162,29 @@ def doorn(r2, nul) -> str:
     return "\n\n".join(txt)
 
 
+def human_text() -> str:
+    h = load("results/v2/human_rescore.json")
+    if not h:
+        return ""
+    a, b = h["frozen_v2"], h["human_domain"]
+    return ("**Human cultures, post hoc** (`scripts/human_rescore.py`, development data). The "
+            "joint rat-and-human domain left human wells outside the model. A twin trained on a "
+            "domain fitted to the 72 human baseline windows alone, with the measured drift, "
+            f"names the accepted mechanism in {b['top1_hits']}/{b['n_treated']} treated human "
+            f"wells, against {a['top1_hits']}/{a['n_treated']} for the frozen twin (2 of 4 each "
+            "for gabazine, D-AP5 and TTX; none for CNQX, kainic acid or GABA; one-sided binomial "
+            "p = 0.06 against chance 0.12). It calls nothing on the four vehicle wells, and its "
+            f"detection AUROC is {f2(b['detection_auroc'])} (frozen {f2(a['detection_auroc'])}). "
+            f"Its guard still puts {b['outside']} of {b['n_wells']} wells outside the model. "
+            "Only 4% of screened simulated cultures fall inside the human range, so the "
+            "simulator produces human-like baselines rarely. The reading moves in the right "
+            "direction, but the model does not yet cover these cultures.")
+
+
 def tampere(r2) -> str:
     return "\n\n".join([
         R2.tampere_tables(r2),
+        human_text(),
         "Bath GABA was read wrongly in every well. On simulations (section 7.7) this is "
         "an identifiability limit rather than a simulator error. Saturating bath GABA "
         "silences the culture, and a silenced culture carries no signature of what "
@@ -294,7 +314,8 @@ def limitations(r3, r2) -> str:
         "recordings, against bars of 0.80. It met all three bars within wells.",
         f"**Human cultures are outside the model.** "
         f"{sum(w['outside_model'] for w in hum)} of {len(hum)} human Tampere wells were "
-        "flagged, and none was named correctly. A human-only domain is the next step.",
+        "flagged, and none was named correctly. A human-only twin (post hoc) names 6 of 24, "
+        "but its guard still flags 27 of 28 (section 7.3).",
         "**A silenced culture cannot be read.** Saturating inhibition and a sodium block "
         "leave the same silent recording (section 7.7).",
         "**Most real data are conventional MEA cultures, not chips.** The blind tests are "

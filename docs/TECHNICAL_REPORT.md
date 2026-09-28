@@ -458,6 +458,8 @@ The unpaired comparator's 8/10 is a fixed preference, not a detection. The paire
 Wells the guard passes: 39; top-1 on them (v2 key) 0.39.
 
 
+**Human cultures, post hoc** (`scripts/human_rescore.py`, development data). The joint rat-and-human domain left human wells outside the model. A twin trained on a domain fitted to the 72 human baseline windows alone, with the measured drift, names the accepted mechanism in 6/24 treated human wells, against 0/24 for the frozen twin (2 of 4 each for gabazine, D-AP5 and TTX; none for CNQX, kainic acid or GABA; one-sided binomial p = 0.06 against chance 0.12). It calls nothing on the four vehicle wells, and its detection AUROC is 0.82 (frozen 0.79). Its guard still puts 27 of 28 wells outside the model. Only 4% of screened simulated cultures fall inside the human range, so the simulator produces human-like baselines rarely. The reading moves in the right direction, but the model does not yet cover these cultures.
+
 Bath GABA was read wrongly in every well. On simulations (section 7.7) this is an identifiability limit rather than a simulator error. Saturating bath GABA silences the culture, and a silenced culture carries no signature of what silenced it: the twin reads it as a sodium block in most simulations, as it does in the recorded rat wells.
 
 ![Figure 7. Tampere development set.](../results/v2/figures/tampere_confusion.png)
@@ -631,7 +633,7 @@ The recommendation resolves 0.54 of ties. That beats recording the same well aga
 
 1. **Naming the exact mechanism is the weak link.** Both blind tests show it. On version 3, NMDA was the top-ranked mechanism in 2 of 29 treated preparations, and no probability reached 0.5. On version 2, the named member was right in 2 of 10 wells. On simulated sister pairs, single-mechanism top-1 is 0.31. What holds up blind is detection, mechanism class, and the ranking of one mechanism against untreated cultures.
 2. **The guard is weaker on sister pairs.** It fires on 0.58 of simulated unmodelled kinetics and 0.63 of shuffled recordings, against bars of 0.80. It met all three bars within wells.
-3. **Human cultures are outside the model.** 27 of 28 human Tampere wells were flagged, and none was named correctly. A human-only domain is the next step.
+3. **Human cultures are outside the model.** 27 of 28 human Tampere wells were flagged, and none was named correctly. A human-only twin (post hoc) names 6 of 24, but its guard still flags 27 of 28 (section 7.3).
 4. **A silenced culture cannot be read.** Saturating inhibition and a sodium block leave the same silent recording (section 7.7).
 5. **Most real data are conventional MEA cultures, not chips.** The blind tests are 2D cultures on arrays; the one set of recorded chips (17 chips) is underpowered for the question asked of it. The chip twin's claims rest on simulations, one underpowered recorded test, and a reproduction attempt (section 8).
 6. **The next-experiment recommender is not yet better than a fixed protocol** (section 8). It beats recording the same well again, but not a fixed choice of follow-up compound.
