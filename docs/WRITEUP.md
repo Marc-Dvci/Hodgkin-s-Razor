@@ -138,6 +138,10 @@ untreated null group.
 - Diagnosis: the v2 bank assumed no drift between recordings. Measured drift
   is 0.03–0.04 of each parameter's range, and with none, 23% of recorded
   untreated differences fall outside the simulated band.
+- Post hoc (these wells are no longer blind), read with the v3 primary: the
+  accepted mechanisms' probability separates treated wells from their own
+  untreated pairs with AUROC 0.87. A twin retrained with the measured drift
+  scores 0.90.
 
 **Development set (Tampere, scored five times, not blind).**
 
