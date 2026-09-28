@@ -1,740 +1,758 @@
-# Hodgkin's Razor: mechanism inference for neural organ-on-chip recordings
+# Hodgkin's Razor: a mechanistic digital twin for neural organ-on-chip recordings
 
 **AI4S Open Innovation: AI for Life Science**, 5th Pazhou Algorithm Competition
 **Category: End-to-End System**
-Author: Marc Donovici (solo entrant). Apache-2.0.
-Code: `github.com/Marc-Dvci/hodgkins-razor` · Pre-registration hash `c40708bb19668164`
+Marc Donovici · Apache-2.0 · `github.com/Marc-Dvci/Hodgkin-s-Razor`
+Pre-registrations: v1 `c40708bb19668164` (Tampere), v2 `5dc7a927085f8e46` (Dynasore, chips), v3 `2e1e630e6bffbecf` (chronic APV)
 
 ---
 
 ## Summary
 
-A microelectrode array on a neural organ-on-chip records every spike from a
-living network for half an hour. Standard analysis turns that into a table of
-descriptive statistics: firing rate fell, bursts stopped, synchrony dropped. It
-does not say which molecular mechanism the compound moved, and that is the
-question a drug programme, a safety assessment and a disease model all ask.
+A microelectrode array under a neural organ-on-chip records every network burst
+of a living culture. Standard analysis turns that into a description: firing
+fell, bursts shortened, synchrony dropped. It does not say which molecular
+mechanism a compound moved. Blocking AMPA receptors, opening chloride channels
+and shutting sodium channels can all look the same in a rate plot.
 
-Hodgkin's Razor fits a conductance-based network model to the recording. It
-reads a baseline and a treated recording of the same well and returns the
-mechanism the compound moved, with an effect size, a credible interval and a
-calibrated probability. When the fitted model cannot reproduce the recording it
-says so and names nothing.
+Hodgkin's Razor fits a biophysical network model to the recording itself. From
+a baseline and a treated recording it returns the probability that each of ten
+mechanisms moved, the size of the shift if it did, and an interval. When no
+fitted model can reproduce the recording, it says so and names nothing. It is
+trained only on simulations from a GPU network simulator and has never seen a
+compound label.
 
-On 66 wells of rat cortical and human iPSC-derived networks it named
-the exact conductance in **30%** of wells against a chance rate of
-0.100, and the mechanism class in **39%** against a chance rate
-of 0.25. On vehicle controls it raised a mechanism in
-0% of wells. The model is trained only on simulations and has
-never seen a compound label.
+Every result is scored the same way on untreated recordings: two stretches of
+one well before any drug, sister cultures neither of which was treated, and
+vehicle wells. A method's chance level is its own hit rate when nothing was
+applied. That rule exposed a comparator whose 8/10 blind score was a fixed
+preference: it named the same mechanisms on 6 of 10 untreated pairs.
 
-How hard the exact question is was measured before the recordings were scored.
-With the answer given directly to a supervised classifier, on simulations in
-the regime the twin operates in, the nine-way question tops out at 0.39 and the
-four-way question among the receptor and channel mechanisms at 0.64. Those are
-limits of a sixty-second paired recording read through these statistics, not of
-one estimator, and they are why every call carries a probability and why the
-mechanism class is reported beside the conductance.
+**Blind test, version 3.** Charlesworth et al. (2015) plated mouse hippocampal cultures on sister arrays and kept an NMDA-receptor antagonist on one sister for days. The twin's probability that NMDA moved separates the 29 treated preparations from 23 untreated preparations of the same genotypes with an AUROC of **0.86** (95% CI 0.74 to 0.96), against a pre-registered bar of 0.70. On the same preparations, the published estimator of Doorn et al. scores 0.49, and the same twin with its pairing removed scores 0.66. The cultures compensate as they mature, as the original authors report. The twin's reading of NMDA fades with them (one-sided Wilcoxon p = 3e-05). The co-primary, NMDA as the single most probable mechanism, was not met (2/29 against 1/23), and no preparation's probability reached 0.5. The twin ranks the treated cultures above the untreated ones, but is not confident about any one of them.
+
+**Blind test, version 2.** On human iPSC networks from another laboratory treated with Dynasore (Doorn et al. 2024), the twin failed its primary: it named the accepted mechanism in 2 of 10 wells, against a bar of 5. It detected the drug in 9 of 10 wells and in 0 of 10 untreated pairs of the same wells. It placed it in the right mechanism class in 8 of 10 (p = 0.0016).
+
+The same simulator runs a two-compartment chip with directional microchannels,
+the geometry of the supporting organisation. It computes, before an experiment
+is run, which readout can resolve which property of a device and how many chips
+a claim needs. For directional channels it gives the number of chips a claim needs: about 20 per design. The one public test available had about 8, which gives power 0.48. It also reproduces part of the sponsor laboratory's cortico-striatal result. The first committed prediction failed. The revision imposed only the paper's own statement that an isolated striatum is silent, and it moved both synchrony readouts in the published direction (p = 0.002 and 0.008). Calcium-event frequency did not follow.
+
+Everything runs from public data on one desktop GPU. The demo, the web
+application and the notebook run on a CPU.
 
 ---
 
-## 1. Problem
+## 1. The problem
 
-Organ-on-chip platforms are built to replace animal experiments in
-neurotoxicity and neuropharmacology. The readout that carries the most
-information per unit of cost is extracellular electrophysiology: a multi-well
-MEA plate records network activity non-invasively for weeks.
+Organ-on-chip platforms exist to replace animal experiments in neurotoxicity
+and neuropharmacology. Extracellular electrophysiology is the readout that
+carries the most information per unit cost: a multi-well array records network
+activity non-invasively for weeks. The analysis stops at description. Published
+pipelines report firing rate, burst rate and duration, the fraction of spikes
+in bursts and pairwise synchrony. Those are the right numbers, but they do not
+answer the question an experiment is run to answer.
 
-The analysis, however, stops at description. Published MEA pipelines report
-firing rate, burst rate, burst duration, percentage of spikes in bursts and
-pairwise synchrony. These are the right descriptors, and they do not answer the
-question the experiment was run to answer. Two compounds with opposite
-mechanisms can produce the same drop in firing rate: blocking AMPA receptors
-removes excitatory drive, opening GABA-A channels shunts the membrane, and both
-show up as "firing fell by 70 percent, bursting stopped".
+Mechanism matters downstream. In safety pharmacology, a compound that silences
+a network by blocking sodium channels carries a different liability from one
+that potentiates inhibition. In disease modelling, a patient line that is quiet
+because of reduced excitatory conductance points somewhere different from one
+that is quiet because of raised adaptation. The supporting organisation of this
+challenge, CellShells, states the goal directly: AI-driven organ-on-chip
+digital twins built on neural chip data, moving the field from experimental
+description toward predictive simulation. This project is that step, for the
+two questions a laboratory asks: what did the compound do, and what should be
+measured next.
 
-The distinction matters. In safety pharmacology, a compound that silences a
-network by blocking sodium channels carries a different liability from one that
-does it by potentiating inhibition. In disease modelling, a patient line whose
-network is quiet because of reduced excitatory conductance points somewhere
-different from one that is quiet because of raised adaptation current.
+## 2. What the system is
 
-The supporting organisation for this challenge, CellShells, states the goal
-directly: to build AI-driven organ-on-chip digital twins from neural chip data,
-moving the field from experimental description toward predictive simulation.
-This project is an attempt at exactly that step.
+An end-to-end system from a recording to a decision (Figure 1):
 
-## 2. Related work and what is new
+1. **Input.** Two spike tables: one well before and after wash-on, or two
+   sister cultures. Any array works (Axion, Multi Channel Systems, or a
+   two-column CSV).
+2. **Recording system.** The array's electrode layout and detection dead time
+   are applied identically to the recording and to every simulation.
+3. **Statistics.** Forty summary statistics, computed by one function for
+   recorded and simulated events alike.
+4. **Posterior.** Five presence heads give the probability that each mechanism
+   moved. A conditional normalising flow gives the culture's parameters, and the
+   size of each shift given that it moved.
+5. **Guard.** Two tests: typicality (does any simulation resemble this pair?)
+   and a predictive check (does the twin, re-simulated at the posterior,
+   reproduce it?). If either fires, no mechanism is named.
+6. **Report.** The called mechanisms with direction, effect and interval; the
+   mechanism class; the rivals the recording cannot separate; the culture's
+   parameters; and a content hash. Available as JSON, Markdown, a web page or
+   a notebook cell.
+7. **Next experiment.** When two mechanisms tie, the tool compound that best
+   separates them. For a chip, which readout resolves which property, and how
+   many chips a claim needs.
 
-Simulation-based inference has been applied to this problem once, well. Doorn,
-van Putten and Frega (*Communications Biology*, 2025) trained a neural density
-estimator on 300,000 simulations of a 100-neuron Hodgkin-Huxley network and
-recovered ten parameters from MEA features of human iPSC-derived networks,
-identifying mechanisms behind SCN1A and CACNA1A patient phenotypes. Their code,
-their simulation bank and their trained estimator are public, and they are the
-baseline here.
+![Figure 1. Architecture.](../results/v2/figures/architecture.png)
 
-They state five limitations. This project addresses each:
+## 3. Related work and what is new
 
-| Their limitation | This work |
+Simulation-based inference has been applied to MEA recordings once, and well.
+Doorn, van Putten and Frega (*Communications Biology*, 2025) trained a masked
+autoregressive flow on 300,000 simulations of a 100-neuron Hodgkin-Huxley
+network, and recovered ten parameters of human iPSC-derived networks. Their
+code and trained estimator are public, and both are used here. Their simulator
+is the starting point of this one, and their estimator is scored beside it on
+every test.
+
+| Their stated limitation | Here |
 |---|---|
-| The model has only excitatory neurons, so GABAergic compounds are out of reach | an inhibitory population and a GABA-A conductance; gabazine and GABA are in scope and are scored |
-| Posteriors are comparable only within one MEA experiment, because of batch effects | the shift is inferred within a single well, with wiring and recording nuisances held fixed across the pair, so culture and plate offsets cancel |
-| Model misspecification is noted as a risk and not handled | a calibrated predictive check that refuses to name a mechanism, tested on two classes of recording it must reject |
-| A single population, with no device geometry | a two-compartment chip twin with directional microchannels and a population calcium readout |
-| Effect sizes only | a separate calibrated probability, per mechanism, that it moved at all |
+| Excitatory neurons only, so GABAergic compounds are out of reach | an inhibitory population, synaptic and tonic GABA-A; gabazine and GABA are scored |
+| Posteriors comparable only within one MEA experiment | the shift is inferred within a well or between sister cultures, from a paired design with a calibrated nuisance drift |
+| Misspecification noted, not handled | a guard with two tests that refuses to name a mechanism, its thresholds fixed on held-out simulations |
+| One population, no device geometry | a two-compartment chip twin with directional channels, four readouts and a striatal target |
+| One recording system | recording systems as explicit views; one twin per system, trained on the domain its own untreated baselines span |
 
-Three further contributions are independent of that comparison: a GPU simulator
-fast enough to build the bank on a desktop and bit-reproducible while doing it;
-a prior whose ranges were set by measuring the model's response rather than
-assumed; and an evaluation whose answer key, metric and failure conditions were
-hashed before the first recording was scored.
+What is new in method, beyond the table:
 
-## 3. Data
+* **Null-pair scoring.** Every test pairs treated recordings with untreated
+  pairs read the same way, and a method's chance is its hit rate on those. A
+  ranking of mechanisms by shift size can land on an answer key by preference
+  alone. Section 7.2 shows it happening to a comparator built from this twin.
+* **Pre-registration enforced in code.** The readers refuse to return a blind
+  recording until the pre-registration exists and matches its hash. The
+  evaluation refuses to run if any frozen model changed. A stop rule, committed
+  before training, forbids freezing a test the twin fails on its own
+  simulations.
 
-| Dataset | Role | Licence |
-|---|---|---|
-| Tampere comparative MEA dataset | every recorded result | CC BY 4.0 |
-| Doorn et al. 2025 SBI repository | prior art and comparison | Apache-2.0 |
+Other entries to this challenge that work on neural MEA data describe
+recordings (quality control, feature fingerprints, forecasts). None infers a
+mechanism with a model that can be re-simulated.
 
-The Tampere dataset (Hyvärinen and colleagues, *Scientific Data* 9:118, 2022)
-provides two pharmacology plates recorded on 48-well MEAs at 16 electrodes per
-well: rat cortical neurons at DIV 22 and human pluripotent-stem-cell-derived
-neurons at DIV 29. Each plate holds three 30-minute recordings of the same
-wells, a baseline, a recording after compound wash-on, and a recording after
-TTX. Compounds are CNQX 50 uM, D-AP5 50 uM, GABA 10 uM, gabazine 30 uM, kainic
-acid 5 uM, and vehicle controls, with 7 wells per condition on the rat plate
-and 4 on the human plate.
+## 4. Data
 
-Electrodes the original authors marked as noisy are dropped. Analysis windows
-are three consecutive 60-second blocks starting 300 seconds into each
-recording, the same window on both sides of every pair.
-
-No restricted, clinical or personal data is used. No data was purchased, and
-nothing in this project requires a paid service.
-
-## 4. The model
-
-### 4.1 Network
-
-Each network is 256 conductance-based neurons on a 16 x 16 grid at 45 um
-spacing, read by 16 electrodes in a 4 x 4 arrangement. The membrane follows
-Traub-Miles kinetics, with sodium, delayed-rectifier potassium and leak
-currents, a slow calcium-dependent after-hyperpolarisation, and a noisy
-membrane drive.
-
-Synapses are conductance-based: AMPA and NMDA for excitatory connections, with
-the standard magnesium block on the NMDA component, and GABA-A with a chloride
-reversal for inhibitory ones. A fraction of neurons is inhibitory. Every
-presynaptic terminal carries short-term depression, and conduction delays scale
-with the distance between neurons.
-
-The fourteen parameters, and whether a wash-on may move them:
-
-| Parameter | Range | Scale | Shiftable |
+| Dataset | What it is | Role | Licence |
 |---|---|---|---|
-| `noise` | 1.5 to 7 | linear | no |
-| `g_na` | 0.08 to 2 | log | yes |
-| `g_kdr` | 0.3 to 4 | log | yes |
-| `g_ahp` | 0.5 to 10 | log | yes |
-| `g_ampa` | 0.004 to 1.2 | log | yes |
-| `g_nmda` | 0.0004 to 0.12 | log | yes |
-| `g_gaba` | 0.004 to 8 | log | yes |
-| `g_tonic_inh` | 0 to 6 | linear | yes |
-| `p_conn` | 0.1 to 0.6 | linear | no |
-| `f_inh` | 0.05 to 0.4 | linear | no |
-| `tau_d` | 150 to 1200 | log | yes |
-| `u_rel` | 0.02 to 0.6 | log | yes |
-| `i_drive` | 0 to 22 | linear | yes |
-| `p_detect` | 0.02 to 1 | log | no |
-| `elec_het` | 0.01 to 1.6 | linear | no |
+| Charlesworth et al., *Neuropharmacology* 2015 | mouse hippocampal cultures on sister MCS 60-electrode arrays, recorded from 6 to 30 days; chronic 50 uM APV on one sister from day 7; wild type and eight knockout lines | **blind test** of version 3 | CC0 1.0 |
+| Doorn et al., *Stem Cell Rep.* 2024 | human iPSC Ngn2 neurons with rat astrocytes, 10 uM Dynasore, 10 wells; MCS 24-well, 12 electrodes | **blind test** of version 2 | Apache-2.0 repository |
+| Mateus et al., bioRxiv 2024 | rat hippocampal neurons in two-compartment chips with straight, Tesla, Tesla v2, Rams and Arrows microchannels; MCS 256-electrode | **blind test** of the chip readout prediction | CC BY-NC-ND (research use; read in place, not redistributed) |
+| Tampere comparative MEA (Hyvärinen et al., *Sci Data* 2022) | rat cortical DIV 22 and hPSC-derived DIV 29 plates; CNQX, D-AP5, GABA, gabazine, kainic acid, TTX, vehicle; 16 electrodes | development set (scored in version 1) | CC BY 4.0 |
+| Doorn et al., *Commun Biol* 2025 | trained estimator and feature code | prior art, scored beside the twin | Apache-2.0 |
+| Lassus et al., *Sci Rep* 2018 | published directions of NMDA (GluN2B) block in cortico-striatal chips | a reproduction target for the chip twin | cited, no data used |
 
-Wiring, the inhibitory fraction and the two recording nuisances describe the
-well and the amplifier, not the drug. Holding them fixed across a pair is the
-mechanism by which culture-to-culture and plate-to-plate offsets cancel.
+No restricted, clinical or personal data is used. Every file the results depend
+on is checked against its SHA-256 by `scripts/fetch_tampere.py` and
+`scripts/fetch_external.py`. Details in `docs/DATA.md`.
 
-### 4.2 Observation model
+## 5. The model
 
-An electrode reports an event when a neuron within its pickup radius fires,
-subject to a 2 ms dead time, which is what makes a real electrode report
-multi-unit activity rather than single spikes. Two nuisance parameters complete
-the model: the fraction of candidate events that clear the detection threshold,
-and the spread of pickup across electrodes within a well. Both are properties of
-the plating and the amplifier, so both are held fixed across a pair.
+### 5.1 The network
 
-These two parameters are what let one simulator match datasets recorded on
-different systems. The Tampere plates report 0.05 to 7 events per second per
-electrode; the recordings used by Doorn et al. report 2.6 to 76. The dynamics
-are the same; the detection threshold is not.
+256 conductance-based neurons on a 16 x 16 grid at 45 um. Each has Traub-Miles
+sodium and potassium currents, a slow calcium-dependent after-hyperpolarisation
+and membrane noise. A fraction of neurons is inhibitory. Synapses are AMPA,
+NMDA with its magnesium block, and GABA-A; bath-applied GABA acts through a
+tonic GABA-A conductance on every cell. Every terminal carries short-term
+depression. After Doorn et al., it also carries asynchronous release: each
+spike raises a release rate that decays over 700 ms, and each asynchronous
+release transmits and depletes the vesicle pool without a somatic spike.
+Conduction delays scale with distance.
 
-### 4.3 Implementation
+Sixteen parameters, ten of which a compound may move:
 
-One CUDA block simulates one network and one thread integrates one neuron, with
-all neuron state held in shared memory so the time loop never leaves the
-streaming multiprocessor. Synaptic arrivals pass through a shared ring buffer,
-which quantises conduction delays to 0.8 ms. Gating variables and the membrane
-potential are advanced by exponential Euler at a 0.1 ms step.
-
-Throughput is about 35 networks per second of 65 simulated seconds
-on one RTX 4070, so the 27 314-pair bank used here was built in under
-two hours on a desktop.
-
-The simulation is bit-reproducible. Spiking neurons are collected with a warp
-ballot and read back in neuron order, so the floating-point accumulation of
-synaptic input never reorders between runs. An atomic counter, the obvious
-implementation, does reorder and produced runs that diverged; the test
-`test_simulator_is_deterministic` exists because that version failed it.
-
-### 4.4 The domain the twin covers
-
-Sampling the prior uniformly produces mostly networks that cannot answer the
-question. Measured over 9 600 screening simulations, **9.9 percent** of
-parameter sets give a living, network-driven culture. In the rest, activity
-comes from membrane noise rather than from the network's own synapses, so
-removing a synaptic conductance changes nothing that a recording can show, and
-no method could identify what a compound did.
-
-That is not a nuisance to be trained through. It is a statement about which
-experiments carry information. The criterion is measured on the recording, not
-on the parameters:
-
-| | |
-|---|---|
-| firing rate | 0.3 to 40 events per second per electrode |
-| active electrodes | at least 60 percent |
-| network bursts | at least 1 per minute |
-| spikes inside bursts | at least 5 percent |
-
-`scripts/fit_regime.py` screens the prior once, fits a classifier over
-parameters, and `scripts/make_bank.py` uses it as a proposal and then confirms
-every accepted parameter set by simulation. Acceptance rises from 9.9 percent
-to about 38 percent, which is what makes the bank affordable.
-
-Applying the same criterion to the recorded baselines puts **70 percent of the
-rat windows and 99 percent of the human windows** inside the twin's domain,
-spread evenly across compounds. Recordings outside it are not excluded from the
-evaluation: they are scored like any other, and the guard is what reports them.
-
-The measured identifiability, on simulations where the answer is known and the
-baseline is a living culture, is a 9-way top-1 of 0.39 for a classifier given
-the labels directly. Among the four receptor and channel mechanisms that the
-recorded compounds act on it is 0.64, against a chance rate of 0.25. Those are
-ceilings for any method reading the same features, and they are the reason the
-report gives a probability per mechanism rather than a single name.
-
-### 4.5 Choosing the features by measurement
-
-The same discipline applies to the features. Removing excitatory drive and
-adding inhibition both lower the firing rate, and the descriptors in common use
-do not separate them: with the twenty-two standard statistics, a classifier
-given the labels directly reaches 0.57 on the four receptor and channel
-mechanisms. Eighteen further statistics were added for that job, chosen for
-what they measure rather than for what they scored: spike-time tiling, the rate
-that survives between bursts, burst participation and onset jitter, burst shape,
-Fano factors and population autocorrelation at three timescales each, and
-rate-robust interval statistics. They raise that number to 0.64. Both figures
-are measured on simulations, before any recording was scored.
-
-`scripts/sensitivity.py` sweeps each parameter across its prior range against
-six random backgrounds and reports whether the recording responds. A parameter
-whose range sits in a flat region cannot be recovered and cannot represent a
-compound acting on it.
-
-That sweep changed the model. The sodium conductance was initially given a
-linear range from 0.5 to 2.0 times the nominal value. Sweeping it across that
-range, the lowest firing rate the model could reach was **13.5 events per
-second per electrode**: the entire prior sat above the region where a channel
-block happens, so TTX was unrepresentable and the twin would have explained it
-with whatever else fit. Log-scaled from 0.08, the same sweep reaches **0.27**,
-and the rank correlation with firing rate rises from 0.83 to 0.98. Both sweeps
-are kept, in `results/sensitivity_before_sodium_fix.json` and
-`results/sensitivity.json`.
-
-### 4.6 The razor
-
-A compound acts on one or two targets. The prior over the shift is sparse: for
-each shiftable parameter, a narrow component of width 0.02 in
-transformed units, and for a small active set, a wide component spanning fold
-changes from 1.5 to 25 in either direction. The lower bound is set
-where it is because a smaller change leaves no trace in a 60 second recording,
-and labelling such a case active would ask the model to detect something that
-is not there. The number of active mechanisms is
-drawn from {0: 0.15, 1: 0.45, 2: 0.25, 3: 0.15}. The zero case is what teaches
-the model what a vehicle control looks like.
-
-Shifts are applied in the transformed space and clipped to the prior box, and
-the label stored is the shift that was realised after clipping, so a training
-label always describes the simulation that was actually run.
-
-### 4.7 Inference
-
-Two heads read the same paired recording, because effect size and presence are
-different questions.
-
-A conditional masked autoregressive flow models the joint posterior over the
-fourteen baseline parameters and the nine shifts, conditioned on the
-transformed features of both recordings and their difference. The shift is
-modelled on an inverse-hyperbolic-sine scale so that the narrow prior component
-occupies order-one width, which keeps the target well conditioned.
-
-A presence head outputs, per mechanism, the probability that it was in the
-active set. It is trained with the same bank and calibrated on a split that the
-flow never trained on.
-
-Reading presence off the size posterior would have been possible and wrong: the
-sparse prior is so sharp that a credible interval containing zero conflates "no
-effect" with "no information".
-
-### 4.8 The guard
-
-A posterior is worth reading only if the twin, run at those parameters,
-reproduces the recording. The check re-simulates from posterior draws and scores
-the measured features against the predictive spread as a mean squared robust
-z-score over both recordings.
-
-The threshold is the 95th percentile of that statistic over held-out bank
-records, where the model generated the data and is correct by construction. It
-is fixed before any recording is scored.
-
-The guard is tested on cases it must catch: simulations from a variant
-simulator whose AMPA and GABA decay constants were changed, which no parameter
-of the twin can produce; and real recordings whose spike times were circularly
-shifted per electrode, which preserves every per-electrode rate and interval
-distribution while destroying the network structure between electrodes.
-
-## 5. Evaluation
-
-Every threshold, metric, answer key and failure condition is in
-`PREREGISTRATION.md`, hashed as `c40708bb19668164`. `scripts/evaluate.py` verifies the
-hash before running and refuses to proceed if the file changed.
-
-The unit is the well, not the window: windows from one well are replicates.
-
-### 5.1 Primary result
-
-| Quantity | Value | Pre-registered | Outcome |
+| Parameter | Range | Scale | Compound may move it |
 |---|---|---|---|
-| Top-1 mechanism accuracy | **0.303** (66 wells) | at least 0.50 | **not met** |
-| Chance | 0.100 | | |
-| Control false-mechanism rate | **0.000** (11 wells) | at most 0.20 | met |
-| Top-2 accuracy | 0.364 | | |
-| Direction agreement | 0.650 (20 wells) | | |
+| `noise` (Membrane noise) | 1.5 to 7 | linear | no, held fixed across a pair |
+| `g_na` (Na conductance) | 0.08 to 2 | log | yes |
+| `g_kdr` (Kdr conductance) | 0.3 to 4 | log | yes |
+| `g_ahp` (Slow AHP conductance) | 0.5 to 10 | log | yes |
+| `g_ampa` (AMPA conductance) | 0.004 to 1.2 | log | yes |
+| `g_nmda` (NMDA conductance) | 0.0004 to 0.12 | log | yes |
+| `g_gaba` (Synaptic GABA-A conductance) | 0.004 to 8 | log | yes |
+| `g_tonic_inh` (Tonic GABA-A conductance) | 0.001 to 0.5 | log | yes |
+| `p_conn` (Connection probability) | 0.1 to 0.6 | linear | no, held fixed across a pair |
+| `f_inh` (Inhibitory fraction) | 0.05 to 0.4 | linear | no, held fixed across a pair |
+| `tau_d` (Vesicle recovery time) | 150 to 1200 | log | yes |
+| `u_rel` (Release fraction per spike) | 0.02 to 0.6 | log | yes |
+| `i_drive` (Tonic drive) | 0 to 22 | linear | yes |
+| `p_detect` (Event detection fraction) | 0.02 to 1 | log | no, held fixed across a pair |
+| `elec_het` (Electrode pickup spread) | 0.01 to 1.6 | linear | no, held fixed across a pair |
+| `u_asyn` (Asynchronous release strength) | 0 to 0.005 | linear | no, held fixed across a pair |
 
-### How many times this was scored, and what that costs
+### 5.2 Implementation
 
-The recorded set was scored four times, and a reader should discount the
-headline accordingly.
+One CUDA block simulates one network and one thread simulates one neuron, with
+the whole time loop in shared memory. Spiking neurons are collected with a warp
+ballot and read back in neuron order, so floating-point sums never reorder and a
+run is bit-reproducible (`test_simulator_is_deterministic`). On one RTX 4070,
+the kernel simulates about  networks of 65 simulated seconds per
+second.
 
-| Scoring | Model | Top-1 | Why it changed |
-|---|---|---|---|
-| 1 | as pre-registered | 0.091 | failed; a pharmacology check found the cause |
-| 2 | corrected pharmacology | 0.167 | improved; comparing recorded and simulated feature changes showed a population mismatch |
-| 3 | restricted to the recorded baseline domain | **0.303** | the reported result |
-| 4 | domain reweighted rather than restricted | 0.121 | an attempted improvement that failed and was dropped |
+### 5.3 Recording systems
 
-The corrections between scorings 1, 2 and 3 were each driven by a check that
-uses no compound label: published pharmacology for the first, and the
-unlabelled baseline recordings for the second. Scoring 4 tested whether
-weighting the loss toward the recorded baseline distribution would beat
-discarding what falls outside it, so that all 100 000 pairs could be used
-rather than 27 314.
+A real array reports what its electrodes see after its own detection. The
+kernel records every electrode at 0.2 ms. Each recording system is a view that
+applies its electrode layout and dead time to recorded and simulated events
+alike:
+- the Axion 48-well plate of the Tampere data (16 electrodes, 2 ms);
+- the MCS 24-well plate of the Doorn data (a 4 x 4 grid whose four corners are
+  reference electrodes, 0.3 ms);
+- the MCS 60-electrode array of the Charlesworth data, read as four 4 x 4
+  quadrants on the same 12-electrode layout, 1.08 ms.
 
-It did not, and the two models are indistinguishable on held-out simulations:
-top-1 of 0.369 against 0.342 overall, 0.576 against 0.644 in the saturating
-regime, mean presence AUROC 0.699 against 0.698. Simulation evidence therefore
-does not separate them, and the recorded set does. **The reported 0.303 carries
-that selection and is not a blind number.** The pre-registered scoring is the
-0.091 of the first run. Everything after it is reported so the reader can see
-the whole sequence rather than the best of it.
+Each dead time is the shortest interval in that system's own recordings.
 
-The first two runs are in `results/run1/` and `results/run2/`, section 6b gives
-the defects each exposed, and the git history preserves the order.
+### 5.4 The domain each twin covers
 
-The answer key, the primary metric, the unit of analysis and the success
-threshold are the ones hashed in the pre-registration and are unchanged. One
-number in it moved for a stated reason: adding a tonic inhibitory conductance
-gives the model ten shiftable mechanisms rather than nine, so the chance rate
-for the primary metric is 0.100 rather than the 0.111 written there.
+Most of the prior produces cultures that are silent, saturated or driven by
+membrane noise, in which blocking a synapse changes nothing. Each recording
+system's domain is read from its own untreated baselines:
+- the 2nd to 98th percentile of eight detection-robust statistics, widened;
+- a living, network-driven culture;
+- the pharmacological definition of a cortical culture: blocking AMPA
+  collapses its activity below 35 percent.
 
-### 5.2 Per compound
+A population search, then a nearest-neighbour step, finds where the simulator
+produces that domain. No treated recording and no compound label enters it
+(Figure 2).
 
-| Compound | Target | Wells | Top-1 | Top-2 | Rat | Human |
-|---|---|---|---|---|---|---|
-| CNQX | `g_ampa` | 11 | 3/11 | 6/11 | 1/7 | 2/4 |
-| D-AP5 | `g_nmda` | 11 | 2/11 | 2/11 | 0/7 | 2/4 |
-| GABA | `g_gaba` | 11 | 0/11 | 0/11 | 0/7 | 0/4 |
-| Gabazine | `g_gaba` | 11 | 4/11 | 4/11 | 4/7 | 0/4 |
-| Kainic acid | `g_ampa` | 11 | 7/11 | 7/11 | 3/7 | 4/4 |
-| TTX | `g_na` | 11 | 4/11 | 5/11 | 4/7 | 0/4 |
+![Figure 2. Recorded baselines against the simulated cultures admitted to each domain.](../results/v2/figures/domain.png)
 
-### 5.3 Against baselines
+### 5.5 The sparse prior over what a compound does
 
-| Method | Sees compound labels | Top-1 accuracy |
-|---|---|---|
-| Hodgkin's Razor | no | **0.303** |
-| Same twin, paired design removed | no | 0.091 |
-| Supervised nearest centroid, leave-one-well-out | yes | 0.515 |
+A compound moves one to three mechanisms, rarely all. For each shiftable
+parameter, the prior has a narrow component near zero and, for a small active
+set, a wide component: fold changes from 1.5 to 25 for conductances, and
+log-uniform magnitudes for the linear parameters. The direction of each active
+shift is drawn among the directions the baseline leaves room for. A shift that
+the prior bounds would clip away is labelled inactive.
 
-The unpaired baseline is the same simulator, features, bank and flow size with
-only the paired design removed: parameters are inferred separately for the two
-recordings and the shift is the difference of posterior medians. The supervised
-classifier is given the compound labels the twin never sees, under
-leave-one-well-out cross-validation.
+### 5.6 Two designs: one well twice, or two sisters
 
-### 5.4 The same metric on simulations
+**Within a well** (versions 1 and 2), the baseline and treated recordings share
+wiring and electrode pickup, so the simulator holds both fixed across a pair.
 
-Held-out simulated experiments, where the answer is known. The second row is the regime a saturating concentration produces, which is where the recorded compounds sit.
+**Between sisters** (version 3), a preparation is plated on two arrays and
+only one receives the compound. Sisters are the same preparation, not the same
+network. The bank simulates the second sister with its own wiring and pickup,
+and nudges every culture parameter by a drift that is never labelled as a
+mechanism. The drift's size is set so that simulated sister differences match
+recorded untreated sister pairs. It came out at 0.12 of each parameter's
+range at 6–7 days, and again at 10–14 days on sister pairs that were never
+treated.
 
-| Case | n | Top-1 | Top-2 | Class |
+### 5.7 Inference
+
+The bank holds 240 000 within-well and 288 000 sister simulated pairs. Five presence heads read both
+recordings and their difference, and give the probability each mechanism
+moved; they are averaged and calibrated on held-out cultures. A masked
+autoregressive flow, conditioned on the recordings and on the active set, gives
+the culture's parameters and the shift. Sampling the active set from the
+presence probabilities gives the joint posterior. Fixing it to one mechanism
+gives the effect of that mechanism, if it is the one that moved. Training,
+validation and calibration are split by simulated culture.
+
+### 5.8 The guard
+
+A posterior is worth reading only if the twin can produce the recording.
+- **Typicality** is the mean distance of the pair, in the twin's standardised
+  statistics, to its ten nearest training simulations.
+- **The predictive check** re-simulates 48 posterior draws and counts the
+  statistics that fall outside their predictive band.
+
+Each threshold is the 97.5th percentile over held-out simulations, where the
+model is right by construction. Either test firing means the recording is
+outside the model, and no mechanism is named.
+
+## 6. How it was evaluated, and what was scored more than once
+
+There were three pre-registrations, each hashed before the model it covers saw
+its blind data. The code enforces the order: the Doorn and Charlesworth readers
+refuse to return a blind recording, and the evaluations refuse to run, unless
+the pre-registration matches its recorded hash and every frozen model matches
+the digest it lists.
+
+* **Version 1** fixed the Tampere answer key. The pre-registered model reached
+  0.091, which is chance. Three corrections, driven by label-free checks,
+  followed, and Tampere was scored four times in version 1. It is therefore a
+  development set, and no blind claim rests on it.
+* **Version 2** was scored on Dynasore wells from another laboratory and on
+  recorded chips (sections 7.2 and 7.4). Its primary failed.
+* **Version 3** was built on what version 2 diagnosed (section 7.1). Its null
+  group is matched on genotype. A stop rule, committed before the version 3 twin
+  was trained, required the twin to pass the test on its own simulations before
+  the pre-registration could be hashed.
+
+The stop rule required an AUROC of at least 0.80 on simulated sister pairs with NMDA blocked alone, and 0.70 with a second mechanism moving. The first twin missed the first bar. A second simulation bank was added and the twin retrained. The bars did not move:
+
+| Attempt | Twin digest | `g_nmda` alone (bar 0.80) | With a co-shift (bar 0.70) | Passed |
 |---|---|---|---|---|
-| every single-mechanism pair | 716 | 0.369 | 0.514 | 0.529 |
-| strong effect and a large observable change | 85 | 0.576 | 0.718 | 0.635 |
-| chance | | 0.100 | | 0.250 |
+| 1 | `c4096c60149d` | 0.792 | 0.747 | no |
+| 2 | `a4f079b64bb4` | 0.810 | 0.755 | yes |
 
-The gap between this and the recorded result is the part of the problem the
-simulator does not capture. Reporting both separates that from the difficulty
-of the question itself.
+## 7. Results
 
-### 5.5 By mechanism class
+### 7.1 Blind test, version 3: chronic NMDA blockade on sister cultures
 
-Secondary and not pre-registered. Classes are excitatory transmission, inhibitory transmission, intrinsic excitability, and adaptation with short-term plasticity.
+Charlesworth et al. plated each preparation on two sister arrays and added the
+NMDA antagonist APV to one of them after day 7. The twin reads the untreated
+sister as the baseline and the treated sister as the treated recording. The
+same reading is applied to preparations where neither sister was treated. The
+answer key is `g_nmda`, direction down. The primary is the AUROC of the
+presence probability of `g_nmda`, treated preparations against untreated
+preparations of the same genotypes, over 10 to 14 days in vitro.
+
+![Figure 3. Version 3 blind test: per-preparation reading, and three methods on the same preparations.](../results/v3/figures/charlesworth_primary.png)
+
+![Figure 4. The reading fades as the cultures compensate.](../results/v3/figures/canalization.png)
+
+![Figure 5. Exploratory: every mechanism, treated against untreated.](../results/v3/figures/mechanism_profile.png)
+
+| Pre-registered outcome | Bar | Result | Outcome |
+|---|---|---|---|
+| **Primary**: AUROC of p(`g_nmda`), treated against genotype-matched null preparations, 10–14 days | ≥ 0.70, lower 95% bound > 0.50 | **0.864** [0.74, 0.96] | **met** |
+| **Co-primary**: share with `g_nmda` top-1, treated against null | higher, one-sided Fisher p < 0.05 | 2/29 against 1/23, p = 0.59 | **not met** |
+
+| Contrast | Treated / null preparations | AUROC of p(`g_nmda`) [95% CI] | Top-1 `g_nmda` | Median p(`g_nmda`) | Detection AUROC |
+|---|---|---|---|---|---|
+| Primary ages, genotype-matched null | 29 / 23 | **0.86** [0.74, 0.96] | 2/29 vs 1/23 (p 0.59) | 0.12 vs 0.10 | 0.62 |
+| Primary ages, pooled null (all genotypes) | 29 / 78 | **0.79** [0.70, 0.87] | 2/29 vs 4/78 (p 0.52) | 0.12 vs 0.10 | 0.60 |
+| Primary ages, GluR1 only | 13 / 6 | **0.71** [0.45, 0.92] | 1/13 vs 0/6 (p 0.68) | 0.12 vs 0.11 | 0.85 |
+| Primary ages, WT only | 16 / 17 | **0.92** [0.78, 1.00] | 1/16 vs 1/17 (p 0.74) | 0.14 vs 0.10 | 0.53 |
+| Late (15 days and after), genotype-matched null | 44 / 24 | **0.48** [0.33, 0.63] | 1/44 vs 0/24 (p 0.65) | 0.10 vs 0.10 | 0.50 |
+| Late, pooled null | 44 / 79 | **0.49** [0.38, 0.60] | 1/44 vs 0/79 (p 0.36) | 0.10 vs 0.10 | 0.63 |
+
+**Canalization** (pre-registered secondary): in the 29 treated preparations recorded at both ages, the median presence of `g_nmda` is 0.125 at 10–14 days and 0.099 at 15 days and after; one-sided Wilcoxon signed-rank p = 3e-05.
+
+Calls above 0.5: 0.00 of treated and 0.00 of null preparations. The twin ranks treated preparations above untreated ones on `g_nmda`, but no preparation's presence probability reaches 0.5: the reading is a ranking against untreated sisters, not a call on one culture.
+Direction among top-1 hits: 1.00 down (2 preparations).
+Windows scored: 14607.
+
+**Exploratory: every mechanism, treated against matched null** (no bar). AUROC of each mechanism's presence probability:
+
+| Mechanism | AUROC | Median treated | Median null |
+|---|---|---|---|
+| `g_nmda` | 0.86 | 0.125 | 0.103 |
+| `tau_d` | 0.79 | 0.127 | 0.089 |
+| `g_na` | 0.70 | 0.095 | 0.087 |
+| `g_ahp` | 0.55 | 0.108 | 0.093 |
+| `g_ampa` | 0.55 | 0.052 | 0.045 |
+| `u_rel` | 0.52 | 0.095 | 0.097 |
+| `g_gaba` | 0.48 | 0.136 | 0.136 |
+| `i_drive` | 0.44 | 0.129 | 0.132 |
+| `g_kdr` | 0.37 | 0.148 | 0.152 |
+| `g_tonic_inh` | 0.18 | 0.123 | 0.132 |
+
+The top-1 counts show why the co-primary failed while the primary passed: the most probable mechanism is usually another one in both groups, and `g_nmda` rises relative to untreated preparations without becoming the largest.
+
+| Group | Top-1 counts |
+|---|---|
+| Treated | `g_gaba` 10, `g_kdr` 7, `tau_d` 7, `g_na` 2, `g_nmda` 2, `g_ampa` 1 |
+| Null | `g_kdr` 13, `g_gaba` 5, `u_rel` 2, `tau_d` 1, `g_nmda` 1, `g_ahp` 1 |
+
+**Comparators on the same preparations.**
+
+| Contrast | Treated / null preparations | AUROC of p(`g_nmda`) [95% CI] | Top-1 `g_nmda` | Median p(`g_nmda`) | Detection AUROC |
+|---|---|---|---|---|---|
+| Hodgkin's Razor (paired twin) | 29 / 23 | **0.86** [0.74, 0.96] | 2/29 vs 1/23 (p 0.59) | 0.12 vs 0.10 | 0.62 |
+| Same twin, pairing removed (unpaired) | 29 / 23 | **0.66** [0.51, 0.81] | 1/29 vs 5/23 (p 1) | 0.31 vs 0.26 | 0.72 |
+| Doorn et al. 2025 estimator (score: standardised g_NMDA shift, downward) | 29 / 23 | **0.49** [0.33, 0.65] | 2/29 vs 5/23 (p 0.98) | -0.10 vs -0.01 | 0.54 |
+
+For the unpaired twin and the Doorn estimator, the "median p" column is their own score, not a probability.
+
+**The guard on this test.**
+
+| Test | Bar | Fire rate | Outcome |
+|---|---|---|---|
+| Held-out simulated sister pairs | ≤ 0.10 | 0.02 (n 60) | met |
+| Simulated pairs with unmodelled receptor kinetics | ≥ 0.80 | 0.58 (n 60) | not met |
+| Recorded pairs, electrodes circularly shifted | ≥ 0.80 | 0.63 (n 60) | not met |
+
+On the recorded windows it fires on 0.35 of treated and 0.46 of null windows.
+Preparations outside the model (most windows fire): 37 of 107.
+Primary contrast restricted to preparations the guard passes: AUROC 0.89 [0.75, 0.98] (24 treated, 16 null).
+
+The guard's two must-fire bars were not met on sister pairs, where the second recording differs from the first in wiring and pickup as well as in the compound. Its version 2 counterpart on the MCS 24-well plate met all three (section 7.6). The primary does not depend on the guard. Restricted to the preparations the guard passes, the contrast is the one reported above the table.
+
+### 7.2 Blind test, version 2: Dynasore on human iPSC networks
+
+Dynasore inhibits dynamin, slows vesicle recycling and strengthens short-term
+depression; Doorn et al. model it as an increase of the depression parameter U.
+Both `u_rel` (U) and `tau_d` (vesicle recovery) are accepted, direction up.
 
 | Quantity | Value |
 |---|---|
-| Class accuracy | **0.394** (66 wells) |
-| Chance | 0.250 |
+| Wells scored | 10 |
+| Top-1 (u_rel or tau_d) | **2/10 = 0.20**, 95% CI 0.06 to 0.51 |
+| Chance | 0.20 |
+| P under chance | 0.62 |
+| Pre-registered success | at least 5 of 10: **not met** |
+| Mechanism class (adaptation and short-term plasticity) | 0.80 (chance 0.30) |
+| Top-2 | 0.40 |
+| Direction up, among correct calls | 1.00 (2 wells) |
+| Wells with a call above 0.5 | 0.90 |
 
-| Compound | Class correct |
+Per well: the named mechanism, its probability, and the effect if it moved.
+
+| Well | Top-1 | p | Effect of top-1 (transformed units) | u_rel p | tau_d p | Guard |
+|---|---|---|---|---|---|---|
+| FB2_B6 | `g_ampa` | 0.94 | +0.63 [+0.14, +1.11] | 0.43 | 0.32 | outside |
+| FB2_C6 | `tau_d` | 0.71 | +1.38 [+1.13, +1.57] | 0.10 | 0.71 | outside |
+| FB2_D6 | `g_ahp` | 0.95 | +1.19 [+0.86, +1.55] | 0.16 | 0.26 | outside |
+| FB2t_A2 | `tau_d` | 0.92 | +1.54 [+1.26, +1.74] | 0.08 | 0.92 | outside |
+| FB2t_A3 | `g_ahp` | 0.93 | +0.08 [+0.01, +0.48] | 0.57 | 0.24 | inside |
+| FB2t_B1 | `g_ahp` | 0.83 | +0.55 [+0.26, +0.86] | 0.74 | 0.23 | inside |
+| FB2t_C1 | `g_ahp` | 0.96 | +0.54 [+0.16, +0.91] | 0.48 | 0.29 | outside |
+| FB3t_A3 | `g_ahp` | 0.96 | +1.13 [+0.74, +1.50] | 0.05 | 0.02 | outside |
+| FB3t_C3 | `g_ahp` | 0.80 | +0.65 [+0.21, +1.21] | 0.04 | 0.32 | inside |
+| FB3t_D1 | `g_gaba` | 0.41 | +1.43 [+0.33, +3.36] | 0.09 | 0.04 | outside |
+
+| Method | Top-1 |
 |---|---|
-| CNQX | 6/11 |
-| D-AP5 | 3/11 |
-| GABA | 0/11 |
-| Gabazine | 4/11 |
-| Kainic acid | 7/11 |
-| TTX | 6/11 |
+| Hodgkin's Razor | 0.20 |
+| Same twin, pairing removed | 0.80 |
+| Doorn et al. 2025 estimator (U or tau_D accepted) | 0.80 |
+| Hodgkin's Razor, wells the guard passes (3) | 0.00 |
 
-A compound identified as acting on inhibition rather than on excitatory
-transmission is a useful answer even when the exact conductance is not
-resolved, and it is the level at which the measured identifiability is high.
-This analysis is secondary and was not pre-registered; it is reported alongside
-the primary metric, not in place of it.
 
-### 5.6 Calibration and recovery
+**The same wells read with null pairs (post hoc).** Two pre-drug stretches of each well, 4 minutes apart, are read exactly as a drug pair. For a method with a preference, chance is its own hit rate here, not one in ten:
 
-1200 records the model never saw.
-
-| Parameter | 50% | 80% | 90% | rank KS | recovery r (active) |
-|---|---|---|---|---|---|
-| `g_na` | 0.46 | 0.75 | 0.85 | 0.046 | 0.435 (184) |
-| `g_kdr` | 0.54 | 0.74 | 0.82 | 0.046 | 0.059 (181) |
-| `g_ahp` | 0.51 | 0.76 | 0.83 | 0.039 | 0.512 (165) |
-| `g_ampa` | 0.49 | 0.76 | 0.86 | 0.047 | 0.341 (180) |
-| `g_nmda` | 0.49 | 0.78 | 0.87 | 0.027 | 0.369 (176) |
-| `g_gaba` | 0.52 | 0.77 | 0.85 | 0.040 | 0.238 (186) |
-| `g_tonic_inh` | 0.43 | 0.73 | 0.83 | 0.049 | 0.651 (146) |
-| `tau_d` | 0.51 | 0.75 | 0.82 | 0.045 | 0.454 (184) |
-| `u_rel` | 0.50 | 0.75 | 0.83 | 0.036 | 0.557 (181) |
-| `i_drive` | 0.49 | 0.75 | 0.84 | 0.043 | 0.299 (165) |
-
-Nominal coverage is 0.50, 0.80 and 0.90. The rank statistic is the Kolmogorov-Smirnov distance from uniform; 0 is exact.
-
-### 5.7 The guard
-
-Threshold 3.05, the 95% percentile of the discrepancy over 100 held-out records, fixed before any recording was scored.
-
-| Case | Must | n | Fired | Median discrepancy | Outcome |
-|---|---|---|---|---|---|
-| held-out simulations | pass (at most 0.10) | 40 | 0.07 | 1.0 | met |
-| changed receptor kinetics | fire (at least 0.80) | 8 | 0.50 | 2.5 | **not met** |
-| real recordings, structure destroyed | fire (at least 0.80) | 40 | 0.30 | 3.0 | **not met** |
-| real recordings | reported (-) | 40 | 0.25 | 2.0 | - |
-
-## 6. The chip twin
-
-The geometry that CellShells works in is two chambers joined by asymmetric
-microchannels that let axons grow one way, the "axon diode" of Peyrin et al.
-(*Lab on a Chip*, 2011), which reaches about 97 percent directional
-selectivity. Lassus et al. (*Scientific Reports*, 2018) read such
-cortico-striatal chips with Fluo-4 calcium imaging at 2 Hz rather than with
-electrodes.
-
-The same CUDA kernel runs that device, because a chip is a wiring matrix, a
-delay table and an electrode map. Four parameters describe the device: the
-cross-channel connection probability, the directional selectivity, the strength
-of cross-channel synapses, and the autonomy of the target chamber, which scales
-both its tonic drive and its own recurrent weights so that at the low end the
-target only fires when the source drives it.
-
-A population calcium observation model convolves the spike train of each
-chamber with a double-exponential indicator kernel and samples it at 2 Hz.
-
-`scripts/chip_study.py` asks what each readout resolves.
-
-Recovery correlation between the true and the posterior median, on 9085 simulated chips held out from fitting.
-
-| Chip parameter | Electrode array | Calcium at 2 Hz | Both |
+| Method | Dynasore pairs: top-1 in {`u_rel`, `tau_d`} | Pre-drug null pairs: same | Null pairs with a call |
 |---|---|---|---|
-| `p_cross` | 0.159 | 0.211 | 0.175 |
-| `direction_sel` | 0.007 | 0.042 | 0.020 |
-| `g_cross` | 0.281 | 0.303 | 0.267 |
-| `tgt_autonomy` | 0.325 | 0.375 | 0.361 |
+| Hodgkin's Razor (paired twin) | 2/10 | 2/10 | 0/10 |
+| Same twin, pairing removed | 8/10 | 6/10 | 1/10 |
+| Doorn et al. estimator | 8/10 | 2/10 ignoring direction; 0/10 in the answer's direction (up) | - |
 
-This is the question a laboratory faces before it runs the experiment. The
-answer is a property of the readout and the question together, and it is
-computable in advance.
+The unpaired comparator's 8/10 is a fixed preference, not a detection. The paired twin named nothing on any null pair and called the drug in 9 of 10 treated wells. This is why every version 3 result is scored against untreated pairs.
 
-## 6a. An independent axis: a culture as it matures
+**Why the named member failed.** The version 2 bank assumed that nothing changes in a well between two recordings. Measured on untreated pairs, the no-compound drift is 0.03 of each parameter's range over 4 minutes (Doorn pre-drug pairs) and 0.04 across a wash-on (Tampere vehicle wells). With no drift, 0.23 of the recorded untreated differences fall outside the simulated 95% band, against about 0.05 once the drift is added. A twin that has never seen drift must explain every slow change as a compound. The version 3 design includes a calibrated drift from the start.
 
-The pharmacology plates are not the only recordings in the dataset. Three
-development plates hold the same wells from day 2 to day 66 in vitro with no
-compound applied. The day is an ordering the model has never seen and there is
-no drug label anywhere in it, so it is an independent test of whether the
-parameter axis means anything.
+![Figure 6. Blind test: presence probability per well and mechanism.](../results/v2/figures/doorn_wells.png)
 
-Maturation is not a wash-on: it changes the wiring, and the paired model holds
-wiring fixed across a pair precisely because a drug cannot change it. So this
-uses the unpaired model, reading absolute parameters from each recording, and
-correlates them with the day. The null permutes the day within each well, so
-the well structure survives it.
+### 7.3 Development set: Tampere, fifth scoring
 
-321 recordings from 24 wells, days 7 to 66 in vitro. Rank correlation of each inferred parameter with the day, and a p-value from permuting the day within each well.
+| Quantity | Version 1 key | Version 2 key |
+|---|---|---|
+| Top-1 | **0.24** (16/66) | **0.24** (16/66) |
+| Chance | 0.10 | 0.12 |
+| Top-2 | 0.35 | 0.35 |
+| Mechanism class | 0.33 | 0.33 |
+| Control false-mechanism rate (ceiling 0.20) | 0.00 | - |
+| Treated wells with a call | 0.32 | - |
+| Accuracy of those calls | 0.52 | 0.52 |
+| Detection AUROC, treated against control | 0.89 | - |
 
-| Parameter | rho with day | p | Expected | Outcome |
+| Compound | Wells | Top-1 (v1 key) | Rat | Human |
 |---|---|---|---|---|
-| `g_ahp` | +0.552 | 0.0005 | - |  |
-| `g_ampa` | -0.208 | 0.9975 | up | **disagrees** |
-| `g_nmda` | +0.447 | 0.0005 | up | agrees |
-| `g_gaba` | +0.493 | 0.0005 | up | agrees |
-| `p_conn` | +0.143 | 0.8156 | up | agrees |
-| `tau_d` | -0.468 | 0.0005 | - |  |
-| `u_rel` | -0.478 | 0.0005 | - |  |
-| `i_drive` | -0.439 | 0.0005 | - |  |
+| CNQX | 11 | 4/11 | 4/7 | 0/4 |
+| D-AP5 | 11 | 1/11 | 1/7 | 0/4 |
+| GABA | 11 | 0/11 | 0/7 | 0/4 |
+| Gabazine | 11 | 2/11 | 2/7 | 0/4 |
+| Kainic acid | 11 | 5/11 | 5/7 | 0/4 |
+| TTX | 11 | 4/11 | 4/7 | 0/4 |
 
-Two of the four parameters that should rise over the first weeks in vitro do,
-and both clear the permutation null comfortably. AMPA conductance does not,
-which disagrees with the developmental literature and is reported as a miss
-rather than dropped. This analysis was added after the scored runs and is
-secondary.
+| Method | Sees labels | Top-1 (v1 key) |
+|---|---|---|
+| Hodgkin's Razor v2 | no | 0.24 |
+| Same twin, pairing removed | no | 0.09 |
+| Doorn et al. 2025 estimator | no | 0.15 |
+| Supervised nearest centroid, leave one well out | yes | 0.52 |
 
-## 6b. Does the twin reproduce known pharmacology?
+Wells the guard passes: 39; top-1 on them (v2 key) 0.39.
 
-Accuracy on a scored set says nothing about whether a model can represent the
-compound it is being asked about. `scripts/pharmacology_check.py` applies a
-saturating block or agonist at each mechanism to living simulated cultures and
-compares the result against the published direction and rough magnitude for the
-matching compound. Those expectations come from the neuropharmacology
-literature and from no dataset scored here, so the check is independent of the
-evaluation.
 
-Firing rate after the intervention as a fraction of before, median over 100 living simulated cultures.
+Bath GABA was read wrongly in every well. On simulations (section 7.7) this is an identifiability limit rather than a simulator error. Saturating bath GABA silences the culture, and a silenced culture carries no signature of what silenced it: the twin reads it as a sodium block in most simulations, as it does in the recorded rat wells.
 
-| Compound | Parameter | Rate ratio | Expected | Outcome |
+![Figure 7. Tampere development set.](../results/v2/figures/tampere_confusion.png)
+
+### 7.4 The chip readout prediction, on recorded microchannel chips
+
+Simulated chips: recovery r and 90% interval coverage of each chip parameter, by readout (held-out chips).
+
+| Readout | `p_cross` r (cov.) | `direction_sel` r (cov.) | `g_cross` r (cov.) | `tgt_autonomy` r (cov.) |
 |---|---|---|---|---|
-| TTX | `g_na`  | 0.006 | 0.00 to 0.10 | pass |
-| CNQX or NBQX | `g_ampa`  | 0.904 | 0.00 to 0.35 | **fail** |
-| D-AP5 | `g_nmda`  | 0.369 | 0.15 to 0.90 | pass |
-| gabazine or picrotoxin | `g_gaba`  | 1.104 | 1.05 to 100.00 | pass |
-| GABA or muscimol | `g_gaba`  | 0.845 | 0.00 to 0.60 | **fail** |
-| 4-aminopyridine | `g_kdr`  | 1.023 | 1.00 to 100.00 | pass |
+| compartment | 0.17 (0.93) | -0.01 (0.95) | 0.26 (0.91) | 0.39 (0.90) |
+| calcium_2hz | 0.16 (0.89) | 0.02 (0.92) | 0.26 (0.90) | 0.33 (0.89) |
+| channel | 0.59 (0.89) | 0.37 (0.88) | 0.03 (0.89) | 0.14 (0.89) |
+| perfusion | 0.23 (0.88) | 0.11 (0.96) | 0.35 (0.90) | 0.40 (0.91) |
+| compartment+channel | 0.73 (0.90) | 0.45 (0.91) | 0.28 (0.93) | 0.41 (0.92) |
 
-### What the check found, and what it changed
+Simulated AUROC, strong diode against symmetric channel: channel statistic 0.78, chamber statistic 0.52.
 
-The first scored run of this project failed, at a top-1 of 0.091 against a
-chance rate of 0.111, and the confusion matrix said why: of 22 wells treated
-with an AMPA-acting compound, 10 were attributed to sodium channels and none to
-AMPA. The pharmacology check, run afterwards on the same model, found the cause
-without reference to any recording. Blocking AMPA in that simulator left 90
-percent of the firing, and raising inhibition left 85 percent. A twin in which
-those two compounds do almost nothing cannot attribute a recording to them, and
-its accuracy on a scored set was never going to reveal which of the fifteen
-parameters was at fault.
+NMDA reduction on 191 source-driven chips: target calcium event frequency lower in 0.30, target synchrony lower in 0.32 of chips (Lassus et al.: both lower).
 
-Three defects, all of the same kind:
+Recorded chips (Mateus et al. 2024), diode (Rams, Arrows) against straight channels:
 
-1. **NMDA substituted for AMPA.** At this model family's resting potential of
-   -39.2 mV the magnesium block leaves about a quarter of the NMDA conductance
-   open, and NMDA decays fifty times more slowly than AMPA, so equal
-   conductances give NMDA twelve times the synaptic charge. With both priors
-   spanning the same range, NMDA carried fast transmission and an AMPA block
-   was compensated. The NMDA range was scaled down accordingly.
-2. **A bath-applied agonist had no way to act.** The model had only synaptic
-   GABA-A, released by inhibitory neurons. GABA and muscimol open
-   extrasynaptic receptors on every cell, so a tonic inhibitory conductance was
-   added as a parameter in its own right.
-3. **The receptor ranges did not reach the blocked extreme.** The same defect
-   already caught for sodium, where the original prior could not fall below a
-   firing rate of 13.5 events per second per electrode. Every receptor range
-   now reaches the value a saturating antagonist produces. Because that leaves
-   most of the range dead, the prior a baseline is drawn from was separated
-   from the support a compound can reach: a healthy culture is never at the
-   blocked extreme, but a drug must be able to take it there.
+| Statistic | AUROC | 95% CI (chips resampled) | Pre-registered | Outcome |
+|---|---|---|---|---|
+| Channel electrodes: dominant share of propagation | 0.62 | 0.28 to 0.88 | separates (>= 0.75) | **not met** |
+| Chamber electrodes: cross-correlation asymmetry | 0.41 | 0.20 to 0.60 | does not separate (< 0.7) | **met** |
 
-A fourth followed from the same reasoning. A cortical culture is defined
-pharmacologically by its activity depending on fast excitatory transmission, so
-the criterion for admitting a simulated culture to the bank now requires that
-blocking AMPA collapses it below 35 percent of baseline. A network that keeps
-firing through an AMPA block is not the preparation these compounds were
-applied to. The recorded CNQX wells are the check on that threshold rather than
-its source: they fall to 0.10 of baseline on the rat plate and 0.14 on the
-human one, comfortably inside it.
+33 recordings from 17 chips scored.
 
-Measured on simulations, with the answer handed to a supervised classifier, the
-corrections move separation among the four receptor and channel mechanisms from
-0.64 to 0.89, the four mechanism classes from 0.62 to 0.76, and the full
-mechanism question from 0.39 to 0.63. None of those numbers uses a recorded
-label.
+| Design | Recordings | Median dominant share | Median chamber asymmetry |
+|---|---|---|---|
+| arrows | 13 | 0.84 | 0.16 |
+| control | 15 | 0.73 | 0.21 |
+| rams | 11 | 0.91 | 0.25 |
+| tesla | 8 | 0.79 | 0.17 |
+| tesla_v2 | 10 | 0.84 | 0.16 |
 
-### A third run, and the domain the twin was trained on
 
-The corrected model was scored again and reached 0.167, above chance but still
-far below a classifier that is handed the compound labels. Comparing the
-recorded feature changes against the simulated ones showed why, and it was not
-a pharmacology failure this time but a population one. The simulated cultures
-admitted to the bank burst far more tightly than the recorded cultures do:
-median spikes-inside-bursts of 52 percent against 13, median pairwise
-correlation of 0.52 against 0.11, median spike-time tiling of 0.30 against
-0.00. In a network that synchronised, any silencing intervention destroys all
-of the structure at once, so a sodium block, an AMPA block and saturating
-inhibition all produce the same collapse. In the recorded cultures they do not:
-each leaves a different residue.
+The channel statistic's interval spans 0.28 to 0.88. With about 8 chips per design, the test could not have told 0.75 from 0.5, so the outcome is inconclusive rather than negative. Section 8 turns this into the tool's first design output: how many chips the claim needs.
 
-The bank is therefore restricted to simulated baselines whose summary
-statistics fall inside the range the recorded baselines span. That range comes
-from the unlabelled baseline recordings and from no compound label, and it is
-in `scripts/fit_regime.py` as `BASELINE_BOX`. About 27 percent of the bank
-survives it. Training on that subset alone, with a quarter of the data, raises
-the recorded result from 0.167 to 30%.
+![Figure 8. What each chip readout recovers, in simulation.](../results/v2/figures/chip_readouts.png)
 
-This is the clearest single lesson of the project. Two of the three failures
-were the model being unable to represent the thing it was asked about, and the
-third was it being fluent in a regime the experiment does not occupy. None of
-the three would have been found by looking at accuracy.
+![Figure 9. The prediction tested on recorded chips.](../results/v2/figures/mateus_chips.png)
 
-### The guard also failed, and why
+### 7.5 Simulations and calibration
 
-The first run's guard fired on 12 percent of recordings from a simulator whose
-receptor kinetics the twin has no parameter for, where the pre-registered
-requirement was 80 percent. The statistic averaged a robust z-score over all
-eighty numbers, and a recording the model cannot produce usually fails on a few
-statistics rather than drifting on all of them, so the average buried it. It
-now takes the worst eight. The safety net that should have caught the
-misspecification was itself too blunt to see it, which is the more useful half
-of that finding.
+**Version 3: sister pairs on the MCS 60-electrode array (quadrants).** Two sisters differ in wiring and electrode pickup, not only in the compound, so every number here is lower than for one well recorded twice.
 
-## 7. Reliability and limitations
+| Held-out simulated sister pairs | n | Top-1 | Top-2 | Class |
+|---|---|---|---|---|
+| all single mechanism | 7858 | 0.31 | 0.45 | 0.45 |
+| saturating | 1730 | 0.43 | 0.58 | 0.57 |
 
-**What the evaluation does not establish.** Every recorded result comes from
-two plates in one published dataset. Two species and two independent cultures
-are not a multi-laboratory validation, and the wells within a plate share a
-culture, a plating day and an amplifier.
+| Mechanism | Presence AUROC | 90% coverage | Effect r |
+|---|---|---|---|
+| `g_na` | 0.71 | 0.89 | 0.76 |
+| `g_kdr` | 0.54 | 0.85 | 0.21 |
+| `g_ahp` | 0.71 | 0.88 | 0.63 |
+| `g_ampa` | 0.80 | 0.89 | 0.73 |
+| `g_nmda` | 0.67 | 0.88 | 0.68 |
+| `g_gaba` | 0.60 | 0.87 | 0.53 |
+| `g_tonic_inh` | 0.58 | 0.87 | 0.44 |
+| `tau_d` | 0.74 | 0.89 | 0.54 |
+| `u_rel` | 0.72 | 0.89 | 0.74 |
+| `i_drive` | 0.56 | 0.88 | 0.41 |
 
-**One concentration per compound.** The Tampere plates use a single
-concentration, so no dose-response in parameter space is reported. The
-multi-laboratory HESI dataset that would supply seven laboratories and five
-concentrations per compound is registered as public but served behind a login,
-so it is listed here as an open item rather than a result.
+**Version 2: one well recorded twice.**
 
-**The twin carries the mechanisms its equations carry.** A compound acting
-through a target the model does not represent is reported as outside the model.
-That is the correct answer and not an informative one, and it is the reason the
-guard exists rather than a defence of it.
+**grid16**
 
-**Kainic acid is a hard case by construction.** At 5 uM the recorded effect is
-a fall in firing, through receptor desensitisation and depolarisation block,
-while the answer key scores the compound on raising AMPA conductance. The
-pre-registration states that it is scored on the parameter regardless of sign,
-and its direction is reported separately.
+| Case | n | Top-1 | Top-2 | Class |
+|---|---|---|---|---|
+| all single mechanism | 3356 | 0.57 | 0.75 | 0.65 |
+| saturating | 536 | 0.77 | 0.90 | 0.80 |
+| chance | | 0.10 | | 0.25 |
 
-**The chip twin has not been fitted to a physical chip.** It reproduces
-published directions and answers the readout question. No recording from a
-two-compartment device is public, and one from the supporting organisation
-would be the single most valuable addition to this work.
+| Mechanism | Presence AUROC | ECE | Coverage 50/80/90 | Effect r (given active) |
+|---|---|---|---|---|
+| `g_na` | 0.90 | 0.012 | 0.41 / 0.75 / 0.88 | 0.84 (128) |
+| `g_kdr` | 0.56 | 0.019 | 0.49 / 0.80 / 0.87 | 0.30 (112) |
+| `g_ahp` | 0.77 | 0.004 | 0.41 / 0.75 / 0.86 | 0.71 (116) |
+| `g_ampa` | 0.95 | 0.010 | 0.44 / 0.75 / 0.89 | 0.50 (120) |
+| `g_nmda` | 0.85 | 0.008 | 0.43 / 0.77 / 0.88 | 0.78 (115) |
+| `g_gaba` | 0.86 | 0.010 | 0.38 / 0.73 / 0.86 | 0.73 (150) |
+| `g_tonic_inh` | 0.72 | 0.009 | 0.44 / 0.77 / 0.89 | 0.68 (117) |
+| `tau_d` | 0.83 | 0.006 | 0.45 / 0.76 / 0.86 | 0.68 (103) |
+| `u_rel` | 0.77 | 0.010 | 0.46 / 0.77 / 0.89 | 0.71 (98) |
+| `i_drive` | 0.66 | 0.011 | 0.45 / 0.79 / 0.89 | 0.57 (95) |
 
-## 8. Impact
+**grid12**
 
-A working mechanism readout changes what an MEA experiment is for. Three
-consequences follow directly from what is demonstrated here.
+| Case | n | Top-1 | Top-2 | Class |
+|---|---|---|---|---|
+| all single mechanism | 3161 | 0.75 | 0.88 | 0.82 |
+| saturating | 614 | 0.77 | 0.90 | 0.82 |
+| chance | | 0.10 | | 0.25 |
 
-**Screening gains a mechanistic axis.** A developmental-neurotoxicity or
-seizure-liability screen currently ranks compounds by how much they perturb
-activity. With a mechanism attached, compounds group by target, and a hit whose
-mechanism is inconsistent with its intended pharmacology is visible
-immediately.
+| Mechanism | Presence AUROC | ECE | Coverage 50/80/90 | Effect r (given active) |
+|---|---|---|---|---|
+| `g_na` | 0.95 | 0.008 | 0.42 / 0.74 / 0.89 | 0.93 (120) |
+| `g_kdr` | 0.66 | 0.016 | 0.44 / 0.76 / 0.86 | 0.41 (124) |
+| `g_ahp` | 0.95 | 0.003 | 0.43 / 0.76 / 0.88 | 0.73 (77) |
+| `g_ampa` | 0.96 | 0.006 | 0.45 / 0.76 / 0.89 | 0.74 (109) |
+| `g_nmda` | 0.92 | 0.011 | 0.44 / 0.76 / 0.89 | 0.74 (84) |
+| `g_gaba` | 0.88 | 0.007 | 0.43 / 0.78 / 0.89 | 0.76 (120) |
+| `g_tonic_inh` | 0.70 | 0.009 | 0.42 / 0.74 / 0.86 | 0.48 (100) |
+| `tau_d` | 0.94 | 0.008 | 0.49 / 0.78 / 0.87 | 0.84 (130) |
+| `u_rel` | 0.91 | 0.008 | 0.45 / 0.78 / 0.89 | 0.86 (111) |
+| `i_drive` | 0.74 | 0.008 | 0.45 / 0.79 / 0.89 | 0.70 (96) |
 
-**Patient-derived lines can be compared across sites.** Because the shift is
-estimated within a well, the culture and plate offsets that normally prevent
-pooling across laboratories cancel. That is what the paired design buys, and it
-is measured here against the unpaired ablation.
+![Figure 10. Held-out simulations.](../results/v2/figures/simulation.png)
 
-**Experiments can be designed before they are run.** The chip study shows the
-readout question answered in advance: which device parameters an electrode
-array resolves, which a 2 Hz calcium movie resolves, and which neither does.
+### 7.6 The guard
 
-The refusal path matters as much as the answer. A system that names a mechanism
-for every recording is useless in a laboratory, because the recordings that
-matter most are the surprising ones. The guard is what makes the output
-safe to act on.
+**Version 2, one well recorded twice.**
 
-## 9. Reproduction
+| System | Case | Must | n | Fired | Typicality fired | Check fired | Outcome |
+|---|---|---|---|---|---|---|---|
+| grid16 | bank holdout | pass, at most 0.10 | 60 | 0.03 | 0.00 | 0.03 | **met** |
+| grid16 | variant kinetics | fire, at least 0.80 | 60 | 0.53 | 0.30 | 0.43 | **not met** |
+| grid16 | shuffled real | fire, at least 0.80 | 60 | 0.45 | 0.20 | 0.32 | **not met** |
+| grid12 | bank holdout | pass, at most 0.10 | 60 | 0.02 | 0.02 | 0.02 | **met** |
+| grid12 | variant kinetics | fire, at least 0.80 | 60 | 0.95 | 0.92 | 0.83 | **met** |
+| grid12 | shuffled real | fire, at least 0.80 | 50 | 1.00 | 1.00 | 1.00 | **met** |
+
+Thresholds: grid16: typicality 10.04, predictive check 5.03; grid12: typicality 9.54, predictive check 4.03.
+
+
+**Version 3, sister pairs.**
+
+| Test | Bar | Fire rate | Outcome |
+|---|---|---|---|
+| Held-out simulated sister pairs | ≤ 0.10 | 0.02 (n 60) | met |
+| Simulated pairs with unmodelled receptor kinetics | ≥ 0.80 | 0.58 (n 60) | not met |
+| Recorded pairs, electrodes circularly shifted | ≥ 0.80 | 0.63 (n 60) | not met |
+
+On the recorded windows it fires on 0.35 of treated and 0.46 of null windows.
+Preparations outside the model (most windows fire): 37 of 107.
+Primary contrast restricted to preparations the guard passes: AUROC 0.89 [0.75, 0.98] (24 treated, 16 null).
+
+![Figure 11. The guard.](../results/v2/figures/guard.png)
+
+### 7.7 Does the twin reproduce known pharmacology?
+
+A twin that cannot represent a compound cannot attribute a recording to it.
+Saturating blocks and agonists are applied to cultures the bank admitted, and
+the change in firing is compared with the published direction and rough size.
+
+| System | Compound | Parameter | Rate after / before (median, IQR) | Published range | Outcome |
+|---|---|---|---|---|---|
+| grid16 | TTX | `g_na` | 0.00 (0.00 to 0.00) | 0 to 0.1 | pass |
+| grid16 | CNQX or NBQX | `g_ampa` | 0.16 (0.09 to 0.23) | 0 to 0.35 | pass |
+| grid16 | D-AP5 | `g_nmda` | 0.53 (0.32 to 0.68) | 0.15 to 0.9 | pass |
+| grid16 | gabazine or picrotoxin | `g_gaba` | 3.87 (1.91 to 10.50) | 1.02 to 100 | pass |
+| grid16 | GABA or muscimol | `g_tonic_inh` | 0.00 (0.00 to 0.00) | 0 to 0.6 | pass |
+| grid16 | 4-aminopyridine | `g_kdr` | 1.03 (0.99 to 1.15) | 1 to 100 | pass |
+| grid16 | bath GABA, graded | `g_tonic_inh` | 0.92, 0.84, 0.69, 0.32, 0.02 | falls with dose | monotone |
+| grid12 | TTX | `g_na` | 0.00 (0.00 to 0.01) | 0 to 0.1 | pass |
+| grid12 | CNQX or NBQX | `g_ampa` | 0.12 (0.07 to 0.23) | 0 to 0.35 | pass |
+| grid12 | D-AP5 | `g_nmda` | 0.37 (0.18 to 0.71) | 0.15 to 0.9 | pass |
+| grid12 | gabazine or picrotoxin | `g_gaba` | 1.16 (1.07 to 1.35) | 1.02 to 100 | pass |
+| grid12 | GABA or muscimol | `g_tonic_inh` | 0.00 (0.00 to 0.00) | 0 to 0.6 | pass |
+| grid12 | 4-aminopyridine | `g_kdr` | 1.00 (0.98 to 1.04) | 1 to 100 | pass |
+| grid12 | bath GABA, graded | `g_tonic_inh` | 0.98, 0.97, 0.81, 0.67, 0.17 | falls with dose | monotone |
+
+**Bath GABA, read by the twin on simulations** (`scripts/gaba_check.py`):
+
+| Simulated condition | Rate after / before | Top-1 correct | Top-1 `g_na` | Top-1 inhibition |
+|---|---|---|---|---|
+| bath GABA, tonic +0.01 | 0.86 | 0.15 | 0.00 | 0.19 |
+| bath GABA, tonic +0.02 | 0.70 | 0.24 | 0.03 | 0.25 |
+| bath GABA, tonic +0.04 | 0.39 | 0.19 | 0.23 | 0.21 |
+| bath GABA, saturating (0.25) | 0.00 | 0.33 | 0.64 | 0.33 |
+| synaptic GABA-A x3 | 0.66 | 0.41 | 0.01 | 0.44 |
+| sodium block x0.4 | 0.14 | 0.59 | 0.59 | 0.08 |
+
+As bath GABA rises towards saturation, the culture falls silent and the twin's reading moves from inhibition to the sodium channel. Both silence the culture, and nothing in a silent recording separates them. A partial concentration, or a follow-up with a GABA-A antagonist, would.
+
+![Figure 12. Pharmacology check.](../results/v2/figures/pharmacology.png)
+
+## 8. From description to predictive simulation: the planning tool
+
+![Figure 13. How many chips a directionality claim needs.](../results/v3/figures/chip_power.png)
+
+The sponsor's stated goal is to move neural organ-on-chip work from experimental description to predictive simulation. This section is that step: before any experiment is run, the twin says what to measure, how many chips to use, and which follow-up resolves an ambiguity.
+
+**Which readout resolves which property of a chip** (simulations, held-out chips): channel electrodes recover direction selectivity; chamber electrodes and 2 Hz calcium do not (section 7.4, Figure 5). A laboratory that wants to show its diodes work should put electrodes in the channels.
+
+**How many chips a claim needs** (`scripts/chip_power.py`):
+
+| Chips per design | Power if the twin is right | Power at the recorded separation (0.62) |
+|---|---|---|
+| 6 | 0.49 | 0.20 |
+| 8 | 0.50 | 0.22 |
+| 10 | 0.59 | 0.23 |
+| 15 | 0.66 | 0.25 |
+| 20 | 0.83 | 0.29 |
+| 30 | 0.90 | 0.41 |
+| 50 | 1.00 | 0.59 |
+| 100 | 1.00 | 0.86 |
+
+Channel statistic, simulated AUROC 0.77. Chips per design for 80% power: **20** if the twin is right, **100** at the recorded separation. The recorded test (17 chips, about 8 per design) had power 0.48 even if the twin is right.
+
+**Which follow-up resolves a tie between two mechanisms** (`scripts/design_study.py`, held-out simulations with known answers):
+
+_Not run yet._
+
+**Reproducing the sponsor laboratory's cortico-striatal chip** (Lassus et al. 2018; predictions in `docs/LASSUS_PREDICTION.md` and `docs/LASSUS_PREDICTION_2.md`, each committed before its run):
+
+**First run** (prediction `docs/LASSUS_PREDICTION.md`, committed before the run). 109 chips scored. Striatal rate with the cortex silent: 0.223 Hz, with it driving: 0.244 Hz.
+
+| Readout, NMDA x0.3 on the striatum | Published | Share of chips lower | Median change | Wilcoxon p (lower) | Criterion |
+|---|---|---|---|---|---|
+| striatal calcium-event frequency | lower | 0.50 | -0.2% | 0.46 | not met |
+| striato-striatal synchrony | lower | 0.47 | +0.2% | 0.55 | not met |
+| cortico-striatal synchrony | lower | 0.52 | -0.4% | 0.29 | not met |
+
+**Second run** (prediction `docs/LASSUS_PREDICTION_2.md`, committed before the run). 34 chips scored, down state -6 pA, chips kept only if the cortex drives the striatum. Striatal rate with the cortex silent: 0.000 Hz, with it driving: 0.148 Hz.
+
+| Readout, NMDA x0.3 on the striatum | Published | Share of chips lower | Median change | Wilcoxon p (lower) | Criterion |
+|---|---|---|---|---|---|
+| striatal calcium-event frequency | lower | 0.59 | -3.3% | 0.49 | not met |
+| striato-striatal synchrony | lower | 0.76 | -9.0% | 0.0023 | met |
+| cortico-striatal synchrony | lower | 0.62 | -3.6% | 0.0077 | met |
+
+## 9. Reliability and limitations
+
+1. **Naming the exact mechanism is the weak link.** Both blind tests show it. On version 3, NMDA was the top-ranked mechanism in 2 of 29 treated preparations, and no probability reached 0.5. On version 2, the named member was right in 2 of 10 wells. On simulated sister pairs, single-mechanism top-1 is 0.31. What holds up blind is detection, mechanism class, and the ranking of one mechanism against untreated cultures.
+2. **The guard is weaker on sister pairs.** It fires on 0.58 of simulated unmodelled kinetics and 0.63 of shuffled recordings, against bars of 0.80. It met all three bars within wells.
+3. **Human cultures are outside the model.** 27 of 28 human Tampere wells were flagged, and none was named correctly. A human-only domain is the next step.
+4. **A silenced culture cannot be read.** Saturating inhibition and a sodium block leave the same silent recording (section 7.7).
+5. **Most real data are conventional MEA cultures, not chips.** The blind tests are 2D cultures on arrays; the one set of recorded chips (17 chips) is underpowered for the question asked of it. The chip twin's claims rest on simulations, one underpowered recorded test, and a reproduction attempt (section 8).
+6. **The drift between recordings is one number per design.** It was measured on untreated pairs, but a real culture may drift more along some parameters than others.
+7. **The stop rule needed two attempts.** The first twin missed the simulated bar by 0.008. More simulations were added, the bars were not moved, and both attempts are in the pre-registration.
+8. **The Tampere plates are a development set.** They have been scored five times, and no blind claim rests on them.
+
+## 10. Impact
+
+**For a neural organ-on-chip laboratory**, the twin turns a recording into a mechanism hypothesis with an interval, together with the untreated comparison that says how much to trust it. It also says in advance how many chips and which electrodes an experiment needs. CellShells' stated aim is organ-on-chip digital twins that move the field from experimental description toward predictive simulation. The chip twin, the sample-size output and the follow-up recommender are that, in code that runs on public data.
+
+**For safety pharmacology**, a mechanism reading distinguishes a compound that silences a network through sodium channels from one that acts on excitatory transmission. Rate plots cannot. Every call is scored against vehicle and sister controls read the same way, which is what a regulatory reader will ask for.
+
+**For the method**, scoring every test against untreated pairs changed a conclusion in this project. A comparator's 8/10 blind score turned out to be a preference it shows on untreated pairs too. That rule, with pre-registration enforced in code and a stop rule that forbids freezing a test the model fails on its own simulations, carries over to any simulation-based inference on biological recordings.
+
+**As a data asset**, every report carries the SHA-256 of its input, of the frozen model and of the prior. A result can be traced to the exact recording and model that produced it, which supports the standardisation of chip data the sponsor describes.
+
+## 11. Reproduction
 
 ```bash
 pip install -r requirements.txt
-python demo.py                      # bundled recordings, no GPU needed
-python -m pytest tests/ -q          # 30 tests
+python demo.py                       # the pre-registered evidence, well by well, CPU only
+python demo.py --serve               # web application on 127.0.0.1:8000
+python -m pytest tests/ -q           # 43 tests
+python scripts/verify.py             # hashes, checksums, tests, written numbers
 ```
 
-Full rebuild on a CUDA device:
+Full rebuild on a CUDA device, with each step skipped when its output exists:
 
 ```bash
 pip install -r requirements-gpu.txt
-python scripts/fetch_tampere.py
-python scripts/sensitivity.py
-python scripts/make_bank.py --pairs 27 314
-python scripts/train.py  --bank data/bank --out models/twin
-python scripts/train.py  --bank data/bank --out models/twin_unpaired --unpaired
-python scripts/evaluate.py
-python scripts/render_results.py
-python scripts/chip_study.py
-python scripts/figures.py
+python scripts/fetch_tampere.py && python scripts/fetch_external.py
+python scripts/run_all.py
 ```
 
-Hardware used: one RTX 4070 12 GB, 32 GB RAM, six-core CPU. No cloud service,
-paid API or proprietary model is required at any point.
+The prior-art estimator runs in its own environment (`requirements-doorn.txt`).
+Hardware used: one RTX 4070 12 GB, 32 GB RAM, a 12-thread CPU. No cloud
+service, paid API or proprietary model is required.
 
-## 10. Sources and licences
+## 12. Team, sources and licences
 
-**Data.** Tampere comparative MEA dataset, CC BY 4.0. Doorn et al. 2025 SBI
-repository, Apache-2.0.
+Marc Donovici, solo entrant: audit, and applied machine learning, including earlier competition work on brain-imaging and brain-decoding data. I designed the simulator, the inference, the pre-registrations and the evaluations.
 
-**Software.** Python, NumPy, SciPy, pandas, PyTorch, zuko, CuPy, scikit-learn,
-FastAPI, uvicorn, Matplotlib, pytest. All open source under permissive
+**Data.**
+- Charlesworth et al. recordings: CC0 1.0.
+- Tampere comparative MEA dataset: CC BY 4.0.
+- Doorn et al. peak trains and estimator: Apache-2.0.
+- Mateus et al. chip recordings: CC BY-NC-ND. Used for research, read in place
+  and not redistributed.
+
+**Software.** Python, NumPy, SciPy, pandas, PyTorch, zuko, CuPy, numba, h5py,
+scikit-learn, FastAPI, Matplotlib, Playwright and pytest; sbi 0.21 and brian2
+for the prior-art estimator only. All are open source under permissive
 licences.
 
+**Models.** Every model in the repository was trained here, from simulations
+generated here. No pretrained model, foundation model, commercial API or cloud
+service is part of the system.
+
 **References.**
-
-1. Doorn N., van Putten M., Frega M. Automated inference of disease mechanisms
-   in patient-hiPSC-derived neuronal networks. *Communications Biology*, 2025.
-2. Hyvärinen T. et al. Comparative microelectrode array data of the functional
-   development of hPSC-derived and rat neuronal networks. *Scientific Data*
-   9:118, 2022.
-3. Peyrin J.-M. et al. Axon diodes for the reconstruction of oriented neuronal
-   networks in microfluidic chambers. *Lab on a Chip* 11:3663, 2011.
-4. Lassus B. et al. Glutamatergic and dopaminergic modulation of cortico-striatal
-   circuits probed by dynamic calcium imaging of networks reconstructed in
-   microfluidic chips. *Scientific Reports* 8:17461, 2018.
-5. Papamakarios G., Pavlakou T., Murray I. Masked autoregressive flow for
-   density estimation. *NeurIPS*, 2017.
-6. Cranmer K., Brehmer J., Louppe G. The frontier of simulation-based
-   inference. *PNAS* 117:30055, 2020.
-7. Traub R., Miles R. *Neuronal Networks of the Hippocampus*. Cambridge, 1991.
-8. Tsodyks M., Markram H. The neural code between neocortical pyramidal neurons
-   depends on neurotransmitter release probability. *PNAS* 94:719, 1997.
-
-**External models and services.** None. No pretrained model, foundation model,
-commercial API or cloud service is part of the system. Every model in this
-repository was trained here from simulations generated here, and every number
-in this report is produced by a script in the repository from public data.
-
----
-
-*Generated 2026-09-26 from `results/results.json`.*
+1. Doorn N., van Putten M., Frega M. Automated inference of disease mechanisms in patient-hiPSC-derived neuronal networks. *Commun Biol*, 2025.
+2. Doorn N., Voogd E., Levers M., van Putten M., Frega M. Breaking the burst: unveiling mechanisms behind fragmented network bursts in patient-derived neurons. *Stem Cell Rep* 19:1583, 2024.
+3. Charlesworth P., Morton A., Eglen S.J., Komiyama N.H., Grant S.G.N. Canalization of genetic and pharmacological perturbations in developing primary neuronal activity patterns. *Neuropharmacology* 100:47, 2015.
+4. Hyvärinen T. et al. Comparative microelectrode array data of the functional development of hPSC-derived and rat neuronal networks. *Sci Data* 9:118, 2022.
+5. Mateus J., Melo P., Aroso M., Charlot B., Aguiar P. Influence of asymmetric microchannels in the structure and function of engineered neuronal circuits. bioRxiv 10.1101/2024.07.09.602729, 2024.
+6. Peyrin J.-M. et al. Axon diodes for the reconstruction of oriented neuronal networks in microfluidic chambers. *Lab Chip* 11:3663, 2011.
+7. Lassus B. et al. Glutamatergic and dopaminergic modulation of cortico-striatal circuits probed by dynamic calcium imaging of networks reconstructed in microfluidic chips. *Sci Rep* 8:17461, 2018.
+8. Papamakarios G., Pavlakou T., Murray I. Masked autoregressive flow for density estimation. *NeurIPS*, 2017.
+9. Cranmer K., Brehmer J., Louppe G. The frontier of simulation-based inference. *PNAS* 117:30055, 2020.
+10. Tsodyks M., Markram H. The neural code between neocortical pyramidal neurons depends on neurotransmitter release probability. *PNAS* 94:719, 1997.
+11. Cutts C., Eglen S. Detecting pairwise correlations in spike trains: an objective comparison of methods. *J Neurosci* 34:14288, 2014.

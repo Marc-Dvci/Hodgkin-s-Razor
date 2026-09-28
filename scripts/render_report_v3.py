@@ -83,10 +83,18 @@ def summary_chip() -> str:
                    f"public test available had about 8, which gives power "
                    f"{f2(ch['power_at_recorded_size']['twin'])}.")
     l2 = load("results/lassus_study_v2.json")
-    out.append("A reproduction of the sponsor laboratory's cortico-striatal NMDA "
-               "result failed on its first committed prediction"
-               + (" and is reported with its revision in section 8." if l2 else
-                  "; a revision is committed and reported in section 8."))
+    if l2:
+        h = l2["striatal_target"]["nmda"]["0.3"]
+        out.append("It also reproduces part of the sponsor laboratory's cortico-striatal "
+                   "result. The first committed prediction failed. The revision imposed only "
+                   "the paper's own statement that an isolated striatum is silent, and it "
+                   "moved both synchrony readouts in the published direction "
+                   f"(p = {h['striato_striatal_sync']['wilcoxon_p_lower']:.1g} and "
+                   f"{h['cortico_striatal_sync']['wilcoxon_p_lower']:.1g}). Calcium-event "
+                   "frequency did not follow.")
+    else:
+        out.append("A reproduction of the sponsor laboratory's cortico-striatal NMDA result "
+                   "failed on its first committed prediction; a revision is committed.")
     return " ".join(out)
 
 

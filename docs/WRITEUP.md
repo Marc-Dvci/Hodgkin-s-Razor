@@ -148,10 +148,13 @@ untreated null group.
 - Recorded microchannel chips (Mateus et al. 2024): the channel statistic
   scored AUROC 0.62 [0.28, 0.88]. That is inconclusive at 17 chips (power
   0.48); the twin says about 20 per design are needed.
-- The sponsor laboratory's cortico-striatal NMDA result (Lassus et al. 2018)
-  was not reproduced by the first committed prediction: the model's striatum
-  was 91% self-driven. The revision and its result are in section 8 of the
-  report.
+- The sponsor laboratory's cortico-striatal NMDA result (Lassus et al. 2018):
+  - The first committed prediction failed; the model's striatum was 91%
+    self-driven.
+  - The second changed one thing, imposing the paper's own statement that an
+    isolated striatum is silent. Both synchrony readouts then fell in the
+    published direction across 34 chips (p = 0.002 and 0.008).
+  - Calcium-event frequency did not follow (p = 0.49).
 
 ### Data and compliance
 

@@ -113,7 +113,14 @@ Primary contrast restricted to preparations the guard passes: AUROC 0.89 [0.75, 
 | striato-striatal synchrony | lower | 0.47 | +0.2% | 0.55 | not met |
 | cortico-striatal synchrony | lower | 0.52 | -0.4% | 0.29 | not met |
 
-**Second run** (`docs/LASSUS_PREDICTION_2.md`): not run yet.
+**Second run** (prediction `docs/LASSUS_PREDICTION_2.md`, committed before the run). 34 chips scored, down state -6 pA, chips kept only if the cortex drives the striatum. Striatal rate with the cortex silent: 0.000 Hz, with it driving: 0.148 Hz.
+
+| Readout, NMDA x0.3 on the striatum | Published | Share of chips lower | Median change | Wilcoxon p (lower) | Criterion |
+|---|---|---|---|---|---|
+| striatal calcium-event frequency | lower | 0.59 | -3.3% | 0.49 | not met |
+| striato-striatal synchrony | lower | 0.76 | -9.0% | 0.0023 | met |
+| cortico-striatal synchrony | lower | 0.62 | -3.6% | 0.0077 | met |
+
 
 ## Chip sample size
 
