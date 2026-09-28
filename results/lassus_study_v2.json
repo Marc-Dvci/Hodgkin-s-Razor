@@ -1,0 +1,188 @@
+{
+ "protocol": [
+  "Lassus B., Naud\u00e9 J., Faure P., Guedin D., Von Boxberg Y., Mannoury la Cour C.,\nMillan M.J., Peyrin J.-M. \"Glutamatergic and dopaminergic modulation of\ncortico-striatal circuits probed by dynamic calcium imaging of networks\nreconstructed in microfluidic chips.\" Sci Rep 8:17461 (2018).",
+  "Their protocol, as the paper states it:",
+  "* cortical neurons in one chamber, striatal neurons in the other, joined by\n  axon diodes; unconnected striatal neurons show no spontaneous oscillations;\n* the cortical chamber is stimulated throughout with bicuculline, 4-AP and\n  nimodipine;\n* drugs are perfused into the striatal chamber only;\n* each neuron is imaged at 2 Hz; a calcium event is a crossing of the mean\n  plus one standard deviation of its detrended signal; synchrony is the\n  SPIKE-synchronisation index of Kreuz et al. over those events.",
+  "Their result for GluN2B antagonists (ifenprodil, RO256981) in the striatal\nchamber: striatal event frequency down, striato-striatal synchrony down and\ncortico-striatal synchrony down. That direction is fixed here before the\nsimulation is run."
+ ],
+ "chips": 1800,
+ "duration_s": 300.0,
+ "down_state_pa": -6.0,
+ "precondition": true,
+ "striatal_target": {
+  "n_active_chips": 34,
+  "target_rate_hz_median": 0.14809523809523809,
+  "target_rate_without_cortex_hz_median": 0.0,
+  "nmda": {
+   "0.3": {
+    "tgt_freq": {
+     "n": 34,
+     "fraction_lower": 0.5882352941176471,
+     "median_change_percent": -3.258963661648221,
+     "wilcoxon_p_lower": 0.4932692584116012
+    },
+    "tgt_rate_hz": {
+     "n": 34,
+     "fraction_lower": 0.8823529411764706,
+     "median_change_percent": -22.441939890710376,
+     "wilcoxon_p_lower": 7.609405060034451e-06
+    },
+    "striato_striatal_sync": {
+     "n": 34,
+     "fraction_lower": 0.7647058823529411,
+     "median_change_percent": -8.972760894698192,
+     "wilcoxon_p_lower": 0.0022954594460316002
+    },
+    "cortico_striatal_sync": {
+     "n": 34,
+     "fraction_lower": 0.6176470588235294,
+     "median_change_percent": -3.6333165571604042,
+     "wilcoxon_p_lower": 0.007654711196664721
+    }
+   },
+   "0.5": {
+    "tgt_freq": {
+     "n": 34,
+     "fraction_lower": 0.6764705882352942,
+     "median_change_percent": -4.810039670430275,
+     "wilcoxon_p_lower": 0.10070410808513042
+    },
+    "tgt_rate_hz": {
+     "n": 34,
+     "fraction_lower": 0.9117647058823529,
+     "median_change_percent": -17.137065296769162,
+     "wilcoxon_p_lower": 8.545606454598119e-06
+    },
+    "striato_striatal_sync": {
+     "n": 34,
+     "fraction_lower": 0.7352941176470589,
+     "median_change_percent": -5.4278922520708,
+     "wilcoxon_p_lower": 0.0011642565368674695
+    },
+    "cortico_striatal_sync": {
+     "n": 34,
+     "fraction_lower": 0.7058823529411765,
+     "median_change_percent": -4.743358234326851,
+     "wilcoxon_p_lower": 0.0015959016745910048
+    }
+   },
+   "0.15": {
+    "tgt_freq": {
+     "n": 34,
+     "fraction_lower": 0.7058823529411765,
+     "median_change_percent": -8.708089984858333,
+     "wilcoxon_p_lower": 0.006430624388489284
+    },
+    "tgt_rate_hz": {
+     "n": 34,
+     "fraction_lower": 0.9705882352941176,
+     "median_change_percent": -30.993664039561118,
+     "wilcoxon_p_lower": 2.5029294192790985e-09
+    },
+    "striato_striatal_sync": {
+     "n": 34,
+     "fraction_lower": 0.7941176470588235,
+     "median_change_percent": -10.208811734346787,
+     "wilcoxon_p_lower": 4.063645610585809e-05
+    },
+    "cortico_striatal_sync": {
+     "n": 34,
+     "fraction_lower": 0.7941176470588235,
+     "median_change_percent": -7.726577317611627,
+     "wilcoxon_p_lower": 7.512862794101238e-07
+    }
+   }
+  }
+ },
+ "generic_target": {
+  "n_active_chips": 1079,
+  "target_rate_hz_median": 0.3004761904761905,
+  "target_rate_without_cortex_hz_median": 0.2523809523809524,
+  "nmda": {
+   "0.3": {
+    "tgt_freq": {
+     "n": 1079,
+     "fraction_lower": 0.5588507877664504,
+     "median_change_percent": -1.3636363636363589,
+     "wilcoxon_p_lower": 3.353604964804197e-07
+    },
+    "tgt_rate_hz": {
+     "n": 1079,
+     "fraction_lower": 0.7516218721037998,
+     "median_change_percent": -3.5175879396984864,
+     "wilcoxon_p_lower": 7.605353506172294e-89
+    },
+    "striato_striatal_sync": {
+     "n": 1079,
+     "fraction_lower": 0.5912882298424467,
+     "median_change_percent": -2.0023488321621827,
+     "wilcoxon_p_lower": 6.490535655909676e-11
+    },
+    "cortico_striatal_sync": {
+     "n": 1079,
+     "fraction_lower": 0.5523632993512512,
+     "median_change_percent": -1.1103796417199117,
+     "wilcoxon_p_lower": 1.5022429541009682e-07
+    }
+   },
+   "0.5": {
+    "tgt_freq": {
+     "n": 1079,
+     "fraction_lower": 0.5013901760889713,
+     "median_change_percent": -0.24875621890548721,
+     "wilcoxon_p_lower": 0.05927712169935931
+    },
+    "tgt_rate_hz": {
+     "n": 1079,
+     "fraction_lower": 0.7182576459684893,
+     "median_change_percent": -2.7972027972028033,
+     "wilcoxon_p_lower": 1.137852332835918e-70
+    },
+    "striato_striatal_sync": {
+     "n": 1079,
+     "fraction_lower": 0.5514365152919369,
+     "median_change_percent": -1.3403146385078222,
+     "wilcoxon_p_lower": 1.4188220435542794e-07
+    },
+    "cortico_striatal_sync": {
+     "n": 1079,
+     "fraction_lower": 0.5597775718257646,
+     "median_change_percent": -1.214597437425768,
+     "wilcoxon_p_lower": 3.1551150495361853e-06
+    }
+   },
+   "0.15": {
+    "tgt_freq": {
+     "n": 1079,
+     "fraction_lower": 0.556997219647822,
+     "median_change_percent": -1.2345679012346016,
+     "wilcoxon_p_lower": 2.201475669594023e-08
+    },
+    "tgt_rate_hz": {
+     "n": 1079,
+     "fraction_lower": 0.7692307692307693,
+     "median_change_percent": -3.90625000000002,
+     "wilcoxon_p_lower": 1.4548922750615027e-99
+    },
+    "striato_striatal_sync": {
+     "n": 1079,
+     "fraction_lower": 0.5662650602409639,
+     "median_change_percent": -1.6293017271542838,
+     "wilcoxon_p_lower": 3.220668500506392e-11
+    },
+    "cortico_striatal_sync": {
+     "n": 1079,
+     "fraction_lower": 0.5764596848934198,
+     "median_change_percent": -1.3679256299101699,
+     "wilcoxon_p_lower": 5.41020559732162e-10
+    }
+   }
+  }
+ },
+ "published": {
+  "source": "Lassus et al. 2018, GluN2B antagonists in the striatal chamber",
+  "tgt_freq": "lower",
+  "striato_striatal_sync": "lower",
+  "cortico_striatal_sync": "lower"
+ }
+}
