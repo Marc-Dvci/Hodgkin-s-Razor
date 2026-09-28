@@ -1,0 +1,4398 @@
+{
+ "twin": "models/twin_v2_grid16",
+ "view": "grid16",
+ "margin": 0.15,
+ "draws": 24,
+ "summary": {
+  "recommended": {
+   "correct": 65,
+   "n": 120,
+   "rate": 0.5416666666666666,
+   "ci95": [
+    0.4526096906236998,
+    0.6281387121747415
+   ]
+  },
+  "fixed_best": {
+   "correct": 56,
+   "n": 120,
+   "rate": 0.4666666666666667,
+   "ci95": [
+    0.3798291704579899,
+    0.555572107303257
+   ]
+  },
+  "random": {
+   "correct": 59,
+   "n": 120,
+   "rate": 0.49166666666666664,
+   "ci95": [
+    0.4038757172769723,
+    0.5799746021633394
+   ]
+  },
+  "repeat": {
+   "correct": 51,
+   "n": 120,
+   "rate": 0.425,
+   "ci95": [
+    0.3402303921927357,
+    0.5144224827700697
+   ]
+  },
+  "oracle": {
+   "correct": 120,
+   "n": 120,
+   "rate": 1.0,
+   "ci95": [
+    0.9689808335812965,
+    1.0
+   ]
+  },
+  "random_expected": {
+   "rate": 0.530952380952381,
+   "note": "mean over every active candidate, per case"
+  }
+ },
+ "fixed_best_choice": {
+  "0": "D-AP5",
+  "1": "gabazine"
+ },
+ "mcnemar_recommended_over_random": {
+  "b": 30,
+  "c": 24,
+  "p": 0.24830871765896673
+ },
+ "mcnemar_recommended_over_fixed_best": {
+  "b": 26,
+  "c": 17,
+  "p": 0.1110264100780114
+ },
+ "mcnemar_recommended_over_repeat": {
+  "b": 35,
+  "c": 21,
+  "p": 0.04071340730475309
+ },
+ "rows": [
+  {
+   "truth": "g_gaba",
+   "tied": [
+    "g_gaba",
+    "g_na"
+   ],
+   "p_gap": 0.05939718532507143,
+   "recommended": "gabazine",
+   "random": "CNQX",
+   "separation": {
+    "gabazine": 0.4146795091549637,
+    "CNQX": 0.30997488792663547,
+    "D-AP5": 0.40521710138581846,
+    "TTX": 0.18514405140675674,
+    "4-aminopyridine": 0.28912381716334,
+    "apamin": 0.3485024845796377,
+    "baclofen-like drive reduction": 0.24294339910599722,
+    "no follow-up": 0.41360460464127147
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "u_rel"
+   ],
+   "p_gap": 0.07534924968236913,
+   "recommended": "apamin",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.18494585791624515,
+    "CNQX": 0.24152611926463374,
+    "D-AP5": 0.2426306308472824,
+    "TTX": 0.24935005674198063,
+    "4-aminopyridine": 0.22874669687785737,
+    "apamin": 0.26038705109661786,
+    "baclofen-like drive reduction": 0.23388734449085466,
+    "no follow-up": 0.2574964606751177
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.056160800294954905,
+   "recommended": "apamin",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.28614571703604863,
+    "CNQX": 0.3486938300132376,
+    "D-AP5": 0.2960678530592107,
+    "TTX": 0.19161465388988408,
+    "4-aminopyridine": 0.24000667239587434,
+    "apamin": 0.4227421294692767,
+    "baclofen-like drive reduction": 0.3112291436367629,
+    "no follow-up": 0.21948753693579012
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_ahp",
+    "g_kdr"
+   ],
+   "p_gap": 0.01635840278800188,
+   "recommended": "gabazine",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.49466656499191547,
+    "CNQX": 0.37438541414915655,
+    "D-AP5": 0.23034496884505573,
+    "TTX": 0.19683213234814234,
+    "4-aminopyridine": 0.2326920968810288,
+    "apamin": 0.23507649140128228,
+    "baclofen-like drive reduction": 0.24130970283498485,
+    "no follow-up": 0.19843312347898634
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.0049988425684904525,
+   "recommended": "CNQX",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.2444651173169817,
+    "CNQX": 0.4787391299556357,
+    "D-AP5": 0.32459910418856064,
+    "TTX": 0.21245813720632017,
+    "4-aminopyridine": 0.43790936610798925,
+    "apamin": 0.42969533920499636,
+    "baclofen-like drive reduction": 0.3259077484663432,
+    "no follow-up": 0.2600699105107963
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_tonic_inh",
+   "tied": [
+    "g_na",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.05183796631999299,
+   "recommended": "apamin",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.26628003847103043,
+    "CNQX": 0.28661647290663794,
+    "D-AP5": 0.4286955181520621,
+    "TTX": 0.3078228502643594,
+    "4-aminopyridine": 0.33059963291631095,
+    "apamin": 0.483903201216606,
+    "baclofen-like drive reduction": 0.43418825999393523,
+    "no follow-up": 0.3328177349609835
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_tonic_inh",
+   "tied": [
+    "g_kdr",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.04652337757906658,
+   "recommended": "baclofen-like drive reduction",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.16194167556656394,
+    "CNQX": 0.2853808459489663,
+    "D-AP5": 0.274449825682559,
+    "TTX": 0.2377013373490663,
+    "4-aminopyridine": 0.24223697242252462,
+    "apamin": 0.358001986552829,
+    "baclofen-like drive reduction": 0.42332053843920525,
+    "no follow-up": 0.23486812271402754
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "g_nmda",
+    "u_rel"
+   ],
+   "p_gap": 0.11866759979528818,
+   "recommended": "D-AP5",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.366946274905138,
+    "CNQX": 0.4356857044827004,
+    "D-AP5": 0.45385489402580653,
+    "TTX": 0.28774967320532163,
+    "4-aminopyridine": 0.4411863770819112,
+    "apamin": 0.38172825290733137,
+    "baclofen-like drive reduction": 0.4153402607303596,
+    "no follow-up": 0.4508872993177516
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_na",
+   "tied": [
+    "g_na",
+    "g_ampa"
+   ],
+   "p_gap": 0.04221993177691974,
+   "recommended": "TTX",
+   "random": "CNQX",
+   "separation": {
+    "gabazine": 0.280145765528662,
+    "CNQX": 0.21863556677996943,
+    "D-AP5": 0.33969801546174894,
+    "TTX": 0.42421367180307284,
+    "4-aminopyridine": 0.23099757686265568,
+    "apamin": 0.27064155869749257,
+    "baclofen-like drive reduction": 0.3860705263796542,
+    "no follow-up": 0.28731835877481154
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_gaba",
+   "tied": [
+    "u_rel",
+    "g_gaba"
+   ],
+   "p_gap": 0.04690647371882803,
+   "recommended": "TTX",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.21867887381412354,
+    "CNQX": 0.2036307925695007,
+    "D-AP5": 0.23718654042168089,
+    "TTX": 0.28046552489101045,
+    "4-aminopyridine": 0.24111603568314458,
+    "apamin": 0.24651913573121237,
+    "baclofen-like drive reduction": 0.17656506531256522,
+    "no follow-up": 0.23635169455050548
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.034858072322886416,
+   "recommended": "CNQX",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.2320689225646784,
+    "CNQX": 0.43543217461379186,
+    "D-AP5": 0.27608230885449675,
+    "TTX": 0.22103991266382586,
+    "4-aminopyridine": 0.36698115406028126,
+    "apamin": 0.3510943274939741,
+    "baclofen-like drive reduction": 0.41228251803480803,
+    "no follow-up": 0.33753581097892627
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.05072704036731762,
+   "recommended": "gabazine",
+   "random": "CNQX",
+   "separation": {
+    "gabazine": 0.4654198205926755,
+    "CNQX": 0.20681986451606701,
+    "D-AP5": 0.19597387506818778,
+    "TTX": 0.29317604909283423,
+    "4-aminopyridine": 0.29401236239554085,
+    "apamin": 0.31212119280491335,
+    "baclofen-like drive reduction": 0.3194518360813481,
+    "no follow-up": 0.26140239678765004
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_na",
+   "tied": [
+    "g_na",
+    "g_ahp"
+   ],
+   "p_gap": 0.10608518589602034,
+   "recommended": "TTX",
+   "random": "CNQX",
+   "separation": {
+    "gabazine": 0.3240704872052641,
+    "CNQX": 0.2608957597935459,
+    "D-AP5": 0.3157217506124364,
+    "TTX": 0.78120539853436,
+    "4-aminopyridine": 0.19622567417084555,
+    "apamin": 0.37852498327819445,
+    "baclofen-like drive reduction": 0.3814118708087525,
+    "no follow-up": 0.3042216041199448
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_ahp",
+   "tied": [
+    "g_ahp",
+    "i_drive"
+   ],
+   "p_gap": 0.11660457579036404,
+   "recommended": "gabazine",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.5970176152569808,
+    "CNQX": 0.3097867499124615,
+    "D-AP5": 0.31028595313287577,
+    "TTX": 0.2257426494108481,
+    "4-aminopyridine": 0.299218050521594,
+    "apamin": 0.3738110291801765,
+    "baclofen-like drive reduction": 0.2796332858149025,
+    "no follow-up": 0.23581784219707208
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_nmda",
+   "tied": [
+    "g_nmda",
+    "u_rel"
+   ],
+   "p_gap": 0.05462264441316789,
+   "recommended": "CNQX",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.12587508936898598,
+    "CNQX": 0.3595075544439703,
+    "D-AP5": 0.2142914199543716,
+    "TTX": 0.3128686690178445,
+    "4-aminopyridine": 0.27929750873196346,
+    "apamin": 0.3204836498038873,
+    "baclofen-like drive reduction": 0.30961431920177623,
+    "no follow-up": 0.22838232985535922
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_ahp",
+   "tied": [
+    "g_na",
+    "g_ahp"
+   ],
+   "p_gap": 0.06985410050053917,
+   "recommended": "baclofen-like drive reduction",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.17683175607309295,
+    "CNQX": 0.20445324444743057,
+    "D-AP5": 0.26632572800123855,
+    "TTX": 0.26037639129988827,
+    "4-aminopyridine": 0.2614310679345427,
+    "apamin": 0.3012299106446654,
+    "baclofen-like drive reduction": 0.47211287173263733,
+    "no follow-up": 0.3347785918493041
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_ahp",
+   "tied": [
+    "i_drive",
+    "g_ahp"
+   ],
+   "p_gap": 0.01740031830083033,
+   "recommended": "TTX",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.29713121718670515,
+    "CNQX": 0.3328319383985316,
+    "D-AP5": 0.3088386217177165,
+    "TTX": 0.4017438785630094,
+    "4-aminopyridine": 0.3027234437488983,
+    "apamin": 0.33735213995340396,
+    "baclofen-like drive reduction": 0.3564352927844426,
+    "no follow-up": 0.389355877520616
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "g_nmda",
+    "u_rel"
+   ],
+   "p_gap": 0.11876633722500118,
+   "recommended": "4-aminopyridine",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.39298432991520077,
+    "CNQX": 0.23026481939639679,
+    "D-AP5": 0.23360930060358515,
+    "TTX": 0.21201990631340187,
+    "4-aminopyridine": 0.4450843079940402,
+    "apamin": 0.2780236118820461,
+    "baclofen-like drive reduction": 0.37005555966137976,
+    "no follow-up": 0.1985894642036481
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.0812976863743955,
+   "recommended": "no follow-up",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.17469266792873783,
+    "CNQX": 0.2443546687813654,
+    "D-AP5": 0.30540605185765524,
+    "TTX": 0.27038640400047415,
+    "4-aminopyridine": 0.3403236225638768,
+    "apamin": 0.353117202785286,
+    "baclofen-like drive reduction": 0.2864948536079753,
+    "no follow-up": 0.4393360266923032
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_nmda",
+   "tied": [
+    "g_kdr",
+    "g_nmda"
+   ],
+   "p_gap": 0.09576221042366405,
+   "recommended": "4-aminopyridine",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.33255129426394303,
+    "CNQX": 0.3195632721308046,
+    "D-AP5": 0.21475489592385175,
+    "TTX": 0.2667117039755336,
+    "4-aminopyridine": 0.46332629283943605,
+    "apamin": 0.13222427944699633,
+    "baclofen-like drive reduction": 0.2999229398094553,
+    "no follow-up": 0.27709437926131186
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "i_drive",
+    "g_kdr"
+   ],
+   "p_gap": 0.04754117595602514,
+   "recommended": "D-AP5",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.34404385215666716,
+    "CNQX": 0.3344552821951897,
+    "D-AP5": 0.40776794035272684,
+    "TTX": 0.23101692396706225,
+    "4-aminopyridine": 0.21183404918832677,
+    "apamin": 0.3034993888970095,
+    "baclofen-like drive reduction": 0.2918812561905934,
+    "no follow-up": 0.2313915704796876
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "u_rel",
+    "tau_d"
+   ],
+   "p_gap": 0.08722223873015605,
+   "recommended": "apamin",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.3721327324390883,
+    "CNQX": 0.33428005417160395,
+    "D-AP5": 0.3094545074146116,
+    "TTX": 0.0,
+    "4-aminopyridine": 0.25845367971073957,
+    "apamin": 0.43950151219495315,
+    "baclofen-like drive reduction": 0.22240766190520972,
+    "no follow-up": 0.33462137022035016
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_nmda",
+   "tied": [
+    "g_nmda",
+    "g_gaba"
+   ],
+   "p_gap": 0.04425908648971827,
+   "recommended": "baclofen-like drive reduction",
+   "random": "4-aminopyridine",
+   "separation": {
+    "gabazine": 0.4768049884199154,
+    "CNQX": 0.37344181680246175,
+    "D-AP5": 0.40817264562018357,
+    "TTX": 0.20097762345378517,
+    "4-aminopyridine": 0.3303884780751106,
+    "apamin": 0.26836712519461303,
+    "baclofen-like drive reduction": 0.4797996301536808,
+    "no follow-up": 0.26390950778170236
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "g_nmda",
+    "u_rel"
+   ],
+   "p_gap": 0.13979995383861948,
+   "recommended": "apamin",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.352699425534606,
+    "CNQX": 0.2702093765178645,
+    "D-AP5": 0.42415033732616925,
+    "TTX": 0.15234428980572323,
+    "4-aminopyridine": 0.2722629035642715,
+    "apamin": 0.4448333374357846,
+    "baclofen-like drive reduction": 0.4196414338261218,
+    "no follow-up": 0.25575649471187983
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_tonic_inh",
+   "tied": [
+    "g_kdr",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.07620389118548729,
+   "recommended": "gabazine",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.3606797784317001,
+    "CNQX": 0.23969060298512,
+    "D-AP5": 0.33927461588234603,
+    "TTX": 0.17014164033275636,
+    "4-aminopyridine": 0.27589286458104384,
+    "apamin": 0.2785997960278091,
+    "baclofen-like drive reduction": 0.3365832297904438,
+    "no follow-up": 0.3193372257852591
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_tonic_inh",
+    "g_kdr"
+   ],
+   "p_gap": 0.010573485935613774,
+   "recommended": "no follow-up",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.26373943735972527,
+    "CNQX": 0.3087314855120304,
+    "D-AP5": 0.335498106674278,
+    "TTX": 0.1750610456454252,
+    "4-aminopyridine": 0.20029633235501543,
+    "apamin": 0.2422135943953831,
+    "baclofen-like drive reduction": 0.13491672051451906,
+    "no follow-up": 0.35407376536972224
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "u_rel",
+    "tau_d"
+   ],
+   "p_gap": 0.13268150891506691,
+   "recommended": "CNQX",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.33276063477865453,
+    "CNQX": 0.3771115269718917,
+    "D-AP5": 0.23227951859348875,
+    "TTX": 0.20473970774496458,
+    "4-aminopyridine": 0.3710264492967398,
+    "apamin": 0.30019717594256856,
+    "baclofen-like drive reduction": 0.21138943457078946,
+    "no follow-up": 0.2822036209513763
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_nmda",
+   "tied": [
+    "g_nmda",
+    "u_rel"
+   ],
+   "p_gap": 0.14489500830010466,
+   "recommended": "D-AP5",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.4353557157079736,
+    "CNQX": 0.733492408064311,
+    "D-AP5": 0.9118269439914765,
+    "TTX": 0.19478195175220744,
+    "4-aminopyridine": 0.39886102259315764,
+    "apamin": 0.630354730290643,
+    "baclofen-like drive reduction": 0.6680588251766385,
+    "no follow-up": 0.6471028979805655
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_tonic_inh",
+    "g_kdr"
+   ],
+   "p_gap": 0.05252662107533568,
+   "recommended": "CNQX",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.2149899255503387,
+    "CNQX": 0.4072600657857012,
+    "D-AP5": 0.3363460027527948,
+    "TTX": 0.26227349434151115,
+    "4-aminopyridine": 0.30800805911674006,
+    "apamin": 0.1790837775964554,
+    "baclofen-like drive reduction": 0.3906927565526189,
+    "no follow-up": 0.30738009181188675
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.04182357297083847,
+   "recommended": "CNQX",
+   "random": "CNQX",
+   "separation": {
+    "gabazine": 0.27470003097257784,
+    "CNQX": 0.39507640042961695,
+    "D-AP5": 0.242253491423319,
+    "TTX": 0.22690145397002956,
+    "4-aminopyridine": 0.19101580577758545,
+    "apamin": 0.392758199121841,
+    "baclofen-like drive reduction": 0.31515897662814196,
+    "no follow-up": 0.19012739205368423
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_na",
+   "tied": [
+    "g_na",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.02136020720113585,
+   "recommended": "baclofen-like drive reduction",
+   "random": "4-aminopyridine",
+   "separation": {
+    "gabazine": 0.2873523381648198,
+    "CNQX": 0.2813919524215142,
+    "D-AP5": 0.28880627435529854,
+    "TTX": 0.15790030722081427,
+    "4-aminopyridine": 0.20912114349294064,
+    "apamin": 0.2380901580136162,
+    "baclofen-like drive reduction": 0.3704318522174686,
+    "no follow-up": 0.2886935097957628
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.018948555296190356,
+   "recommended": "baclofen-like drive reduction",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.2601461384931132,
+    "CNQX": 0.2920223366119479,
+    "D-AP5": 0.3024481055332061,
+    "TTX": 0.23139835840502382,
+    "4-aminopyridine": 0.3043588408549722,
+    "apamin": 0.2828696275688337,
+    "baclofen-like drive reduction": 0.6908991111786382,
+    "no follow-up": 0.2548437299046697
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_ahp",
+   "tied": [
+    "g_kdr",
+    "g_ahp"
+   ],
+   "p_gap": 0.056151263582564434,
+   "recommended": "gabazine",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.4198729019642344,
+    "CNQX": 0.1764713018582162,
+    "D-AP5": 0.3403699431233963,
+    "TTX": 0.3564538797210895,
+    "4-aminopyridine": 0.27910203023531666,
+    "apamin": 0.2760810667494713,
+    "baclofen-like drive reduction": 0.2680457164256694,
+    "no follow-up": 0.2452490586457753
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "i_drive",
+    "g_ahp"
+   ],
+   "p_gap": 0.055835490967005186,
+   "recommended": "baclofen-like drive reduction",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.12174874972387939,
+    "CNQX": 0.3708764744526143,
+    "D-AP5": 0.3164524015544351,
+    "TTX": 0.4366196676977321,
+    "4-aminopyridine": 0.3226487315876004,
+    "apamin": 0.39067400469713953,
+    "baclofen-like drive reduction": 0.6051294288902856,
+    "no follow-up": 0.34141749684784767
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "tau_d",
+    "u_rel"
+   ],
+   "p_gap": 0.04696439799250407,
+   "recommended": "gabazine",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.563855003817841,
+    "CNQX": 0.5416044290860262,
+    "D-AP5": 0.3492011734507015,
+    "TTX": 0.2448531850532614,
+    "4-aminopyridine": 0.2433860644772893,
+    "apamin": 0.31195440371999533,
+    "baclofen-like drive reduction": 0.29429659560517435,
+    "no follow-up": 0.4129871333088085
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.052427444929511194,
+   "recommended": "gabazine",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.33454608081786386,
+    "CNQX": 0.23130560021319937,
+    "D-AP5": 0.27305361821205537,
+    "TTX": 0.17898502078774176,
+    "4-aminopyridine": 0.21965582622316118,
+    "apamin": 0.32592600494309804,
+    "baclofen-like drive reduction": 0.21827572730039627,
+    "no follow-up": 0.2899386725470408
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.008947410401459605,
+   "recommended": "CNQX",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.20423132308537392,
+    "CNQX": 0.3924074122608909,
+    "D-AP5": 0.35467585822039205,
+    "TTX": 0.22834227005994032,
+    "4-aminopyridine": 0.3026670601737246,
+    "apamin": 0.2755017409500614,
+    "baclofen-like drive reduction": 0.2229618464415014,
+    "no follow-up": 0.3252044467534435
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.10132307233197595,
+   "recommended": "apamin",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.3068365616910733,
+    "CNQX": 0.3365021498733535,
+    "D-AP5": 0.22948182428402653,
+    "TTX": 0.23939971437650365,
+    "4-aminopyridine": 0.3132044817383301,
+    "apamin": 0.34614349224394925,
+    "baclofen-like drive reduction": 0.22169057873692566,
+    "no follow-up": 0.30222315207419076
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.04750926114018922,
+   "recommended": "gabazine",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.5960209229045343,
+    "CNQX": 0.3628287587973896,
+    "D-AP5": 0.31049219942646783,
+    "TTX": 0.26385272785259073,
+    "4-aminopyridine": 0.2244838109679547,
+    "apamin": 0.1772257172662956,
+    "baclofen-like drive reduction": 0.2074225661398346,
+    "no follow-up": 0.36854587166557506
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_tonic_inh",
+   "tied": [
+    "g_tonic_inh",
+    "i_drive"
+   ],
+   "p_gap": 0.043876181678076304,
+   "recommended": "gabazine",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.4969484322059002,
+    "CNQX": 0.4011929015123734,
+    "D-AP5": 0.25598322454214084,
+    "TTX": 0.3164445152222121,
+    "4-aminopyridine": 0.2179400974883232,
+    "apamin": 0.24481028476305117,
+    "baclofen-like drive reduction": 0.20617697010877548,
+    "no follow-up": 0.25515625372047174
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.038847439883622825,
+   "recommended": "4-aminopyridine",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.27477751011553414,
+    "CNQX": 0.2315266469207615,
+    "D-AP5": 0.283414723748242,
+    "TTX": 0.22470367144854045,
+    "4-aminopyridine": 0.49215264300604145,
+    "apamin": 0.2868188159409745,
+    "baclofen-like drive reduction": 0.2509481111277733,
+    "no follow-up": 0.2414404772455597
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.041633237538814885,
+   "recommended": "apamin",
+   "random": "4-aminopyridine",
+   "separation": {
+    "gabazine": 0.19397989280313852,
+    "CNQX": 0.23357072008906238,
+    "D-AP5": 0.3104447675561586,
+    "TTX": 0.19265041166170746,
+    "4-aminopyridine": 0.315716115706777,
+    "apamin": 0.3164714594332355,
+    "baclofen-like drive reduction": 0.26776050027576165,
+    "no follow-up": 0.1796258118002362
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "i_drive",
+    "g_kdr"
+   ],
+   "p_gap": 0.06402144966517427,
+   "recommended": "D-AP5",
+   "random": "4-aminopyridine",
+   "separation": {
+    "gabazine": 0.23765615204625654,
+    "CNQX": 0.2679122202843243,
+    "D-AP5": 0.32128565091988465,
+    "TTX": 0.23795043568581556,
+    "4-aminopyridine": 0.2129782461213083,
+    "apamin": 0.20985191755593235,
+    "baclofen-like drive reduction": 0.19802018392858187,
+    "no follow-up": 0.30611197694948283
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "u_rel",
+    "g_ampa"
+   ],
+   "p_gap": 0.08046894010802191,
+   "recommended": "4-aminopyridine",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.4123050937514424,
+    "CNQX": 0.297465429781193,
+    "D-AP5": 0.4119702468874421,
+    "TTX": 0.40008631354610713,
+    "4-aminopyridine": 0.5151562287623612,
+    "apamin": 0.3260515660699314,
+    "baclofen-like drive reduction": 0.16280721932846892,
+    "no follow-up": 0.24055922767664126
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.0239397644064218,
+   "recommended": "apamin",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.28880461408484615,
+    "CNQX": 0.21837663516593672,
+    "D-AP5": 0.1772073335596916,
+    "TTX": 0.16000423504544364,
+    "4-aminopyridine": 0.1456208891233461,
+    "apamin": 0.4484259666265831,
+    "baclofen-like drive reduction": 0.3347488809396328,
+    "no follow-up": 0.279242711435606
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.06497353092617716,
+   "recommended": "apamin",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.255771280032124,
+    "CNQX": 0.3777013981847197,
+    "D-AP5": 0.3975018551064389,
+    "TTX": 0.2759888685229568,
+    "4-aminopyridine": 0.13787149421784373,
+    "apamin": 0.41893217270997696,
+    "baclofen-like drive reduction": 0.3676335471879974,
+    "no follow-up": 0.3738002043223851
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "g_na"
+   ],
+   "p_gap": 0.024874362981231024,
+   "recommended": "TTX",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.4331221471832142,
+    "CNQX": 0.30332042509138435,
+    "D-AP5": 0.30716074367448754,
+    "TTX": 0.6903365292072037,
+    "4-aminopyridine": 0.24416479162037247,
+    "apamin": 0.3105573066317729,
+    "baclofen-like drive reduction": 0.15488559044113095,
+    "no follow-up": 0.18530034360581846
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_tonic_inh",
+   "tied": [
+    "g_tonic_inh",
+    "g_nmda"
+   ],
+   "p_gap": 0.10594181007477738,
+   "recommended": "D-AP5",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.2720501756921158,
+    "CNQX": 0.25096740509452575,
+    "D-AP5": 0.5870978456870121,
+    "TTX": 0.34306229387134796,
+    "4-aminopyridine": 0.3342772112955444,
+    "apamin": 0.4933858632333139,
+    "baclofen-like drive reduction": 0.4125124581803503,
+    "no follow-up": 0.4669451385309098
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "i_drive",
+    "tau_d"
+   ],
+   "p_gap": 0.021988350856601446,
+   "recommended": "gabazine",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.42714840080090977,
+    "CNQX": 0.20119953993691383,
+    "D-AP5": 0.25860941675946747,
+    "TTX": 0.24326064486766233,
+    "4-aminopyridine": 0.295036775296181,
+    "apamin": 0.270566777716261,
+    "baclofen-like drive reduction": 0.14822333422585768,
+    "no follow-up": 0.37074846595025923
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "g_gaba",
+    "u_rel"
+   ],
+   "p_gap": 0.03286435627914064,
+   "recommended": "gabazine",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 1.0149755201164548,
+    "CNQX": 0.18081718097763871,
+    "D-AP5": 0.21734985881395616,
+    "TTX": 0.3217547449409394,
+    "4-aminopyridine": 0.5929265515596017,
+    "apamin": 0.34889636112829586,
+    "baclofen-like drive reduction": 0.26269532577050425,
+    "no follow-up": 0.2393730300268978
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "u_rel",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.005435081747367565,
+   "recommended": "4-aminopyridine",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.3711646397813236,
+    "CNQX": 0.2080864774699913,
+    "D-AP5": 0.28958144240592404,
+    "TTX": 0.18327598446016438,
+    "4-aminopyridine": 0.3855352450910793,
+    "apamin": 0.3819397056494828,
+    "baclofen-like drive reduction": 0.3332391850763224,
+    "no follow-up": 0.2917476164555274
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_na",
+   "tied": [
+    "g_na",
+    "g_ahp"
+   ],
+   "p_gap": 0.005406506673393208,
+   "recommended": "gabazine",
+   "random": "4-aminopyridine",
+   "separation": {
+    "gabazine": 0.399411203045337,
+    "CNQX": 0.24345554289905635,
+    "D-AP5": 0.3493986101140348,
+    "TTX": 0.32017847017930307,
+    "4-aminopyridine": 0.2144233708732843,
+    "apamin": 0.23405225830203472,
+    "baclofen-like drive reduction": 0.24180999419959825,
+    "no follow-up": 0.23616724034483222
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.05780399066757361,
+   "recommended": "baclofen-like drive reduction",
+   "random": "4-aminopyridine",
+   "separation": {
+    "gabazine": 0.2700969993205259,
+    "CNQX": 0.3430546070689753,
+    "D-AP5": 0.3015372986886783,
+    "TTX": 0.25713277698885123,
+    "4-aminopyridine": 0.31499690892499593,
+    "apamin": 0.25296215938006433,
+    "baclofen-like drive reduction": 0.40544004180975524,
+    "no follow-up": 0.3873065239150854
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_ahp",
+   "tied": [
+    "g_ahp",
+    "g_nmda"
+   ],
+   "p_gap": 0.03041317566419774,
+   "recommended": "gabazine",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.5146057539108511,
+    "CNQX": 0.33950767476297017,
+    "D-AP5": 0.3518458729072765,
+    "TTX": 0.34853941649518605,
+    "4-aminopyridine": 0.2768507528834361,
+    "apamin": 0.33573921614701835,
+    "baclofen-like drive reduction": 0.22308785118157665,
+    "no follow-up": 0.32191075096908156
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_tonic_inh",
+   "tied": [
+    "g_tonic_inh",
+    "i_drive"
+   ],
+   "p_gap": 0.10079725709713405,
+   "recommended": "D-AP5",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.43463401010001707,
+    "CNQX": 0.4905921151962032,
+    "D-AP5": 0.6286435601357648,
+    "TTX": 0.2981708265885936,
+    "4-aminopyridine": 0.35977442900541823,
+    "apamin": 0.4867156797835426,
+    "baclofen-like drive reduction": 0.15576739893268898,
+    "no follow-up": 0.35216469597184946
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "i_drive",
+    "g_kdr"
+   ],
+   "p_gap": 0.05372757806136144,
+   "recommended": "TTX",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.33045988248281966,
+    "CNQX": 0.2713783109605386,
+    "D-AP5": 0.2053121539209698,
+    "TTX": 0.37436630684391664,
+    "4-aminopyridine": 0.29501431368321035,
+    "apamin": 0.2530349520657572,
+    "baclofen-like drive reduction": 0.20409822512394088,
+    "no follow-up": 0.25113861117374
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_na",
+   "tied": [
+    "g_na",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.01394436768711077,
+   "recommended": "CNQX",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.11439047682463169,
+    "CNQX": 0.804061208725725,
+    "D-AP5": 0.5512831350559676,
+    "TTX": 0.3221744795020116,
+    "4-aminopyridine": 0.3401178172833583,
+    "apamin": 0.507262168744188,
+    "baclofen-like drive reduction": 0.34087166192752194,
+    "no follow-up": 0.32193178323857835
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "u_rel",
+    "g_nmda"
+   ],
+   "p_gap": 0.04057716341079015,
+   "recommended": "D-AP5",
+   "random": "CNQX",
+   "separation": {
+    "gabazine": 0.20954613260284743,
+    "CNQX": 0.26603452730506416,
+    "D-AP5": 0.360980158187451,
+    "TTX": 0.19605363015645202,
+    "4-aminopyridine": 0.22176107227897998,
+    "apamin": 0.246229910590294,
+    "baclofen-like drive reduction": 0.2467172361764373,
+    "no follow-up": 0.27583005318145887
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_gaba",
+   "tied": [
+    "g_gaba",
+    "g_kdr"
+   ],
+   "p_gap": 0.08884957467931814,
+   "recommended": "D-AP5",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.2901179447436368,
+    "CNQX": 0.37784439719982615,
+    "D-AP5": 0.5115463914812858,
+    "TTX": 0.16263132336406136,
+    "4-aminopyridine": 0.3272404313150811,
+    "apamin": 0.30812867122137794,
+    "baclofen-like drive reduction": 0.38845915290314836,
+    "no follow-up": 0.4292836665779124
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "i_drive",
+    "g_kdr"
+   ],
+   "p_gap": 0.02289160405916213,
+   "recommended": "no follow-up",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.15428127765616637,
+    "CNQX": 0.22869707942302006,
+    "D-AP5": 0.3560809278233951,
+    "TTX": 0.21098360914661046,
+    "4-aminopyridine": 0.2308006285445564,
+    "apamin": 0.32563314622449596,
+    "baclofen-like drive reduction": 0.36488682613001033,
+    "no follow-up": 0.40697817106601614
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "g_ahp"
+   ],
+   "p_gap": 0.060058528549053386,
+   "recommended": "D-AP5",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.28724233339018757,
+    "CNQX": 0.2667700107959045,
+    "D-AP5": 0.38505626617904104,
+    "TTX": 0.2780576275485087,
+    "4-aminopyridine": 0.21635250785270202,
+    "apamin": 0.2624174181153173,
+    "baclofen-like drive reduction": 0.3443690927497402,
+    "no follow-up": 0.25107823541384094
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.03291750119324885,
+   "recommended": "4-aminopyridine",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.20243766235136104,
+    "CNQX": 0.2947647334189743,
+    "D-AP5": 0.21725718467024466,
+    "TTX": 0.2654673625342864,
+    "4-aminopyridine": 0.31547943697423897,
+    "apamin": 0.22636532057693673,
+    "baclofen-like drive reduction": 0.1197795248427176,
+    "no follow-up": 0.22140864560026202
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "g_tonic_inh",
+    "i_drive"
+   ],
+   "p_gap": 0.003251169606027171,
+   "recommended": "CNQX",
+   "random": "4-aminopyridine",
+   "separation": {
+    "gabazine": 0.19409460856042599,
+    "CNQX": 0.4553228347150722,
+    "D-AP5": 0.25057876733580237,
+    "TTX": 0.24177200868735244,
+    "4-aminopyridine": 0.28971179419310605,
+    "apamin": 0.26262491333600857,
+    "baclofen-like drive reduction": 0.2198012475901259,
+    "no follow-up": 0.4005473044576872
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "i_drive",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.09160041840421496,
+   "recommended": "CNQX",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.19588627611539355,
+    "CNQX": 0.7405806541857491,
+    "D-AP5": 0.21855569399685124,
+    "TTX": 0.39406405303313724,
+    "4-aminopyridine": 0.18975610285882671,
+    "apamin": 0.3788613840070256,
+    "baclofen-like drive reduction": 0.20592406934644314,
+    "no follow-up": 0.33557969326609377
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.07971509920951302,
+   "recommended": "gabazine",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.28392922950500743,
+    "CNQX": 0.2536721728615036,
+    "D-AP5": 0.25834706559516,
+    "TTX": 0.27361578999751957,
+    "4-aminopyridine": 0.16964825260465977,
+    "apamin": 0.23862653263338832,
+    "baclofen-like drive reduction": 0.22717009460038318,
+    "no follow-up": 0.20360931296731455
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.03833104362959186,
+   "recommended": "D-AP5",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.2867098771163224,
+    "CNQX": 0.21204749851185012,
+    "D-AP5": 0.4216936771708665,
+    "TTX": 0.12609568689396694,
+    "4-aminopyridine": 0.21067888786428582,
+    "apamin": 0.24936652147751565,
+    "baclofen-like drive reduction": 0.16012736646849074,
+    "no follow-up": 0.18619101232956048
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "g_nmda",
+    "u_rel"
+   ],
+   "p_gap": 0.044405204745584514,
+   "recommended": "no follow-up",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.4711877957976369,
+    "CNQX": 0.34108343879767566,
+    "D-AP5": 0.1628129758644456,
+    "TTX": 0.28374761418227973,
+    "4-aminopyridine": 0.28998168399024987,
+    "apamin": 0.20703088932951436,
+    "baclofen-like drive reduction": 0.3414659760534555,
+    "no follow-up": 0.4827674544683267
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_tonic_inh",
+   "tied": [
+    "u_rel",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.045640585332850925,
+   "recommended": "gabazine",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.5456036385543692,
+    "CNQX": 0.3513203302515019,
+    "D-AP5": 0.18967855252194726,
+    "TTX": 0.2781796971452495,
+    "4-aminopyridine": 0.35272487097054134,
+    "apamin": 0.3732446314375526,
+    "baclofen-like drive reduction": 0.536695177514294,
+    "no follow-up": 0.2366700212505867
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_ahp",
+   "tied": [
+    "g_ahp",
+    "g_kdr"
+   ],
+   "p_gap": 0.09680292521731701,
+   "recommended": "4-aminopyridine",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.1616279370866001,
+    "CNQX": 0.33321540483663425,
+    "D-AP5": 0.3329354349020968,
+    "TTX": 0.0646349170966448,
+    "4-aminopyridine": 0.5120514692449757,
+    "apamin": 0.24939998343189204,
+    "baclofen-like drive reduction": 0.21817856315868836,
+    "no follow-up": 0.19728040904628313
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.009151121963798775,
+   "recommended": "CNQX",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.2671326431789491,
+    "CNQX": 0.4311008551393256,
+    "D-AP5": 0.2852732789740335,
+    "TTX": 0.2860499429823635,
+    "4-aminopyridine": 0.258586087822877,
+    "apamin": 0.25288326544820566,
+    "baclofen-like drive reduction": 0.3430275882708693,
+    "no follow-up": 0.1831589580943783
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_nmda",
+   "tied": [
+    "g_nmda",
+    "g_kdr"
+   ],
+   "p_gap": 0.13005421436291212,
+   "recommended": "no follow-up",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.2252302584880673,
+    "CNQX": 0.3299044470025546,
+    "D-AP5": 0.3378442949774776,
+    "TTX": 0.1449118890476456,
+    "4-aminopyridine": 0.1775092480861026,
+    "apamin": 0.2315901250828935,
+    "baclofen-like drive reduction": 0.20463569126321504,
+    "no follow-up": 0.3722901262215192
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_nmda",
+   "tied": [
+    "g_nmda",
+    "u_rel"
+   ],
+   "p_gap": 0.0799296478775412,
+   "recommended": "D-AP5",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.4891833787657883,
+    "CNQX": 0.1932784887465951,
+    "D-AP5": 0.5127524602005396,
+    "TTX": 0.2540703900767388,
+    "4-aminopyridine": 0.2921017799696654,
+    "apamin": 0.3792039493903434,
+    "baclofen-like drive reduction": 0.3843837654667452,
+    "no follow-up": 0.3562822095337298
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_ahp",
+   "tied": [
+    "g_ahp",
+    "i_drive"
+   ],
+   "p_gap": 0.1404180384244299,
+   "recommended": "TTX",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.30248402756616616,
+    "CNQX": 0.4617740014841678,
+    "D-AP5": 0.3019386167847485,
+    "TTX": 0.574986442711485,
+    "4-aminopyridine": 0.231006793679591,
+    "apamin": 0.3377849032064446,
+    "baclofen-like drive reduction": 0.2931010246218023,
+    "no follow-up": 0.2882703177466155
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "g_gaba",
+    "u_rel"
+   ],
+   "p_gap": 0.06828580425521374,
+   "recommended": "no follow-up",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.21160315815714426,
+    "CNQX": 0.256033795876134,
+    "D-AP5": 0.3221703043954811,
+    "TTX": 0.1734314910664532,
+    "4-aminopyridine": 0.2614892791961148,
+    "apamin": 0.30601948781848626,
+    "baclofen-like drive reduction": 0.22257765741259822,
+    "no follow-up": 0.37675029025285006
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_tonic_inh",
+   "tied": [
+    "g_kdr",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.1347669010057716,
+   "recommended": "CNQX",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.2372992809465869,
+    "CNQX": 0.4073668688294031,
+    "D-AP5": 0.26168159144144176,
+    "TTX": 0.23029849523326193,
+    "4-aminopyridine": 0.24791368543409245,
+    "apamin": 0.3313994083008244,
+    "baclofen-like drive reduction": 0.23217669263992308,
+    "no follow-up": 0.23863195170993587
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_gaba",
+   "tied": [
+    "g_gaba",
+    "u_rel"
+   ],
+   "p_gap": 0.04154000523213808,
+   "recommended": "baclofen-like drive reduction",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.293189241832585,
+    "CNQX": 0.34374780870870064,
+    "D-AP5": 0.22192166563787488,
+    "TTX": 0.25716039102558524,
+    "4-aminopyridine": 0.31790428434396506,
+    "apamin": 0.3289103111244626,
+    "baclofen-like drive reduction": 0.40833577898767004,
+    "no follow-up": 0.29868876420839735
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "g_gaba"
+   ],
+   "p_gap": 0.07546367817102811,
+   "recommended": "no follow-up",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.3022609301603639,
+    "CNQX": 0.40013337379814184,
+    "D-AP5": 0.22685837634880007,
+    "TTX": 0.2508049050519137,
+    "4-aminopyridine": 0.1641339312871624,
+    "apamin": 0.39621343376731216,
+    "baclofen-like drive reduction": 0.33757530361576216,
+    "no follow-up": 0.43344898060847037
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_gaba",
+   "tied": [
+    "g_gaba",
+    "g_nmda"
+   ],
+   "p_gap": 0.11147826370684566,
+   "recommended": "apamin",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.39206314414495314,
+    "CNQX": 0.24764373015596056,
+    "D-AP5": 0.26594096388859306,
+    "TTX": 0.2927909382123537,
+    "4-aminopyridine": 0.2667184350282532,
+    "apamin": 0.4275519614101282,
+    "baclofen-like drive reduction": 0.19636033453141405,
+    "no follow-up": 0.2541653361068107
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_nmda",
+   "tied": [
+    "g_nmda",
+    "u_rel"
+   ],
+   "p_gap": 0.05286586277068428,
+   "recommended": "gabazine",
+   "random": "CNQX",
+   "separation": {
+    "gabazine": 0.624249624629998,
+    "CNQX": 0.3024714477596847,
+    "D-AP5": 0.36136388609043674,
+    "TTX": 0.23982600562415218,
+    "4-aminopyridine": 0.2635646448821459,
+    "apamin": 0.23042934211441865,
+    "baclofen-like drive reduction": 0.33267407328521303,
+    "no follow-up": 0.24467383352496014
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "u_rel"
+   ],
+   "p_gap": 0.050116537298323965,
+   "recommended": "gabazine",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.5454912854700952,
+    "CNQX": 0.27036606501644295,
+    "D-AP5": 0.2569707062143153,
+    "TTX": 0.18030299307840206,
+    "4-aminopyridine": 0.43302090992828274,
+    "apamin": 0.3057398195376026,
+    "baclofen-like drive reduction": 0.16180510316118232,
+    "no follow-up": 0.28594775819622403
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "i_drive",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.009784948332172916,
+   "recommended": "CNQX",
+   "random": "CNQX",
+   "separation": {
+    "gabazine": 0.32222886865223965,
+    "CNQX": 0.3391918440830085,
+    "D-AP5": 0.28857479823145776,
+    "TTX": 0.2090854225764524,
+    "4-aminopyridine": 0.2969980039974154,
+    "apamin": 0.3159701018139943,
+    "baclofen-like drive reduction": 0.1714412909602661,
+    "no follow-up": 0.33417387495025985
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "g_ahp",
+    "i_drive"
+   ],
+   "p_gap": 0.06706368427089632,
+   "recommended": "gabazine",
+   "random": "CNQX",
+   "separation": {
+    "gabazine": 0.5010821125271998,
+    "CNQX": 0.3576362718123753,
+    "D-AP5": 0.3030335489312829,
+    "TTX": 0.1459052177681943,
+    "4-aminopyridine": 0.24229415381709934,
+    "apamin": 0.3087600673536649,
+    "baclofen-like drive reduction": 0.13728414747163548,
+    "no follow-up": 0.2937376346779548
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_gaba",
+   "tied": [
+    "g_gaba",
+    "u_rel"
+   ],
+   "p_gap": 0.12333311756725762,
+   "recommended": "TTX",
+   "random": "4-aminopyridine",
+   "separation": {
+    "gabazine": 0.17024562704770704,
+    "CNQX": 0.2122531043054032,
+    "D-AP5": 0.25492583970638283,
+    "TTX": 0.452184063198926,
+    "4-aminopyridine": 0.3061612991349444,
+    "apamin": 0.4204693578625506,
+    "baclofen-like drive reduction": 0.34400451687898703,
+    "no follow-up": 0.22705618422178347
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_na",
+   "tied": [
+    "g_na",
+    "g_ahp"
+   ],
+   "p_gap": 0.12653382954641196,
+   "recommended": "D-AP5",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.46122052995093143,
+    "CNQX": 0.41552293709841825,
+    "D-AP5": 0.5357840942848007,
+    "TTX": 0.3127946831369272,
+    "4-aminopyridine": 0.2670165780590565,
+    "apamin": 0.40886315895542147,
+    "baclofen-like drive reduction": 0.2803850263937938,
+    "no follow-up": 0.41276854807705404
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "tau_d",
+   "tied": [
+    "tau_d",
+    "g_ahp"
+   ],
+   "p_gap": 0.11564235959035468,
+   "recommended": "gabazine",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.5488897627964586,
+    "CNQX": 0.23626523611286712,
+    "D-AP5": 0.3937381479930945,
+    "TTX": 0.36206842689425,
+    "4-aminopyridine": 0.47584018183385907,
+    "apamin": 0.3616923884314946,
+    "baclofen-like drive reduction": 0.4275710299561036,
+    "no follow-up": 0.5316235513415345
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_tonic_inh",
+   "tied": [
+    "g_na",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.12073207316396828,
+   "recommended": "no follow-up",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.3191652422426232,
+    "CNQX": 0.44147896328743474,
+    "D-AP5": 0.3858389228618723,
+    "TTX": 0.24911511799106825,
+    "4-aminopyridine": 0.6451700845789918,
+    "apamin": 0.6097015633931497,
+    "baclofen-like drive reduction": 0.35310119482244456,
+    "no follow-up": 0.8271292768412668
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "tau_d",
+   "tied": [
+    "tau_d",
+    "u_rel"
+   ],
+   "p_gap": 0.14303272960355368,
+   "recommended": "gabazine",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.6277773064068948,
+    "CNQX": 0.31123278337202,
+    "D-AP5": 0.327081098494409,
+    "TTX": 0.18089701653850448,
+    "4-aminopyridine": 0.42521847929716317,
+    "apamin": 0.18714753100849157,
+    "baclofen-like drive reduction": 0.413346399160458,
+    "no follow-up": 0.43216507799911613
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_gaba",
+   "tied": [
+    "g_gaba",
+    "g_kdr"
+   ],
+   "p_gap": 0.03700000597426156,
+   "recommended": "CNQX",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.3306330691284179,
+    "CNQX": 0.46335767401581734,
+    "D-AP5": 0.36729261845363465,
+    "TTX": 0.44344977057881274,
+    "4-aminopyridine": 0.24260938702753282,
+    "apamin": 0.24287028044558853,
+    "baclofen-like drive reduction": 0.24409723659020127,
+    "no follow-up": 0.26939908010453884
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_tonic_inh",
+   "tied": [
+    "g_na",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.10613330988544395,
+   "recommended": "baclofen-like drive reduction",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.21173238793186708,
+    "CNQX": 0.312570826388848,
+    "D-AP5": 0.3161632395381776,
+    "TTX": 0.1630510378132489,
+    "4-aminopyridine": 0.30237940163764543,
+    "apamin": 0.33538687471370393,
+    "baclofen-like drive reduction": 0.5265467544655773,
+    "no follow-up": 0.3168245494369241
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_ahp",
+   "tied": [
+    "g_ahp",
+    "g_na"
+   ],
+   "p_gap": 0.05428495460820704,
+   "recommended": "D-AP5",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.39450913040077495,
+    "CNQX": 0.423439910144166,
+    "D-AP5": 0.46805593159013154,
+    "TTX": 0.26955863066201186,
+    "4-aminopyridine": 0.27835499636664524,
+    "apamin": 0.43613666572643456,
+    "baclofen-like drive reduction": 0.3345827245523554,
+    "no follow-up": 0.27577672814712234
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "i_drive",
+    "g_kdr"
+   ],
+   "p_gap": 0.05748950764478383,
+   "recommended": "D-AP5",
+   "random": "CNQX",
+   "separation": {
+    "gabazine": 0.24792237270429365,
+    "CNQX": 0.2868385244978353,
+    "D-AP5": 0.3550737039150037,
+    "TTX": 0.29141717882275253,
+    "4-aminopyridine": 0.24721680281841973,
+    "apamin": 0.25446828406785904,
+    "baclofen-like drive reduction": 0.14075684573347527,
+    "no follow-up": 0.2868292945671453
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_ahp",
+   "tied": [
+    "g_ahp",
+    "i_drive"
+   ],
+   "p_gap": 0.0684188324898643,
+   "recommended": "gabazine",
+   "random": "4-aminopyridine",
+   "separation": {
+    "gabazine": 0.6170525219421809,
+    "CNQX": 0.3757367770175652,
+    "D-AP5": 0.2080964729952255,
+    "TTX": 0.3645121401916621,
+    "4-aminopyridine": 0.23319691745176244,
+    "apamin": 0.27849328972396165,
+    "baclofen-like drive reduction": 0.3754664763523801,
+    "no follow-up": 0.20912137877759304
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_nmda",
+   "tied": [
+    "g_na",
+    "g_nmda"
+   ],
+   "p_gap": 0.01060039393095083,
+   "recommended": "apamin",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.20010778323832865,
+    "CNQX": 0.3167461334263514,
+    "D-AP5": 0.233832496674107,
+    "TTX": 0.3601570341081907,
+    "4-aminopyridine": 0.29216278934245127,
+    "apamin": 0.4287960030474632,
+    "baclofen-like drive reduction": 0.2502349654326196,
+    "no follow-up": 0.2153263779311243
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "u_rel",
+    "g_nmda"
+   ],
+   "p_gap": 0.11983068143036346,
+   "recommended": "D-AP5",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.49572074422046597,
+    "CNQX": 0.29280991093871456,
+    "D-AP5": 0.8724661891494522,
+    "TTX": 0.14698506220940677,
+    "4-aminopyridine": 0.3786852689603109,
+    "apamin": 0.5132630933544607,
+    "baclofen-like drive reduction": 0.5894386798790795,
+    "no follow-up": 0.43555817488243315
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_na",
+   "tied": [
+    "g_na",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.032674557264655624,
+   "recommended": "D-AP5",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.414587768541035,
+    "CNQX": 0.44274684001311176,
+    "D-AP5": 0.5324331043791299,
+    "TTX": 0.3371582725806369,
+    "4-aminopyridine": 0.4649301778195796,
+    "apamin": 0.3837294843250849,
+    "baclofen-like drive reduction": 0.3483321656921868,
+    "no follow-up": 0.24208407629579579
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.039051557096090594,
+   "recommended": "CNQX",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.37205907941828026,
+    "CNQX": 0.527902271348734,
+    "D-AP5": 0.16835053825345972,
+    "TTX": 0.35270668930983273,
+    "4-aminopyridine": 0.21775085028043256,
+    "apamin": 0.3880768002764318,
+    "baclofen-like drive reduction": 0.37877293576283116,
+    "no follow-up": 0.22120530190363483
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_nmda",
+   "tied": [
+    "g_nmda",
+    "u_rel"
+   ],
+   "p_gap": 0.03457519683803573,
+   "recommended": "gabazine",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.5725578996854088,
+    "CNQX": 0.2792299191229094,
+    "D-AP5": 0.15413926862961133,
+    "TTX": 0.28339863090539186,
+    "4-aminopyridine": 0.29467222949235183,
+    "apamin": 0.3146604248871968,
+    "baclofen-like drive reduction": 0.21597511138192418,
+    "no follow-up": 0.41102433961832885
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_tonic_inh",
+    "g_kdr"
+   ],
+   "p_gap": 0.13404151806557021,
+   "recommended": "no follow-up",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.1509596195107944,
+    "CNQX": 0.24520841580804215,
+    "D-AP5": 0.2061391012726412,
+    "TTX": 0.34577809049457775,
+    "4-aminopyridine": 0.32288297472660193,
+    "apamin": 0.31304651679729933,
+    "baclofen-like drive reduction": 0.3609868562429138,
+    "no follow-up": 0.36941314110420753
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.04361209343076644,
+   "recommended": "CNQX",
+   "random": "4-aminopyridine",
+   "separation": {
+    "gabazine": 0.34274137827414386,
+    "CNQX": 0.632973323469785,
+    "D-AP5": 0.22800943305975907,
+    "TTX": 0.2837806532970298,
+    "4-aminopyridine": 0.2044321012049009,
+    "apamin": 0.2678742503207024,
+    "baclofen-like drive reduction": 0.3360561562300555,
+    "no follow-up": 0.4186842354609825
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "u_rel",
+    "i_drive"
+   ],
+   "p_gap": 0.08663749034734317,
+   "recommended": "TTX",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.3433062951785364,
+    "CNQX": 0.3387944371209332,
+    "D-AP5": 0.4210602794354813,
+    "TTX": 0.4448808683408398,
+    "4-aminopyridine": 0.20522487963212202,
+    "apamin": 0.2774908168467473,
+    "baclofen-like drive reduction": 0.2605449403337363,
+    "no follow-up": 0.3029061138161036
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_nmda",
+   "tied": [
+    "g_nmda",
+    "g_gaba"
+   ],
+   "p_gap": 0.1297052069125072,
+   "recommended": "CNQX",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.4341066024666758,
+    "CNQX": 0.5683022627953238,
+    "D-AP5": 0.27531564667612946,
+    "TTX": 0.21351563035344823,
+    "4-aminopyridine": 0.5429859478096278,
+    "apamin": 0.37269513389706205,
+    "baclofen-like drive reduction": 0.37038884933163924,
+    "no follow-up": 0.15805520200521359
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "u_rel"
+   ],
+   "p_gap": 0.13811984903311258,
+   "recommended": "no follow-up",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.38134548394897677,
+    "CNQX": 0.2597663925434554,
+    "D-AP5": 0.36985231511088823,
+    "TTX": 0.27275560675896743,
+    "4-aminopyridine": 0.24846160753544647,
+    "apamin": 0.27594026994672666,
+    "baclofen-like drive reduction": 0.20435774287263783,
+    "no follow-up": 0.58529519473655
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_ahp",
+   "tied": [
+    "g_ahp",
+    "i_drive"
+   ],
+   "p_gap": 0.14500892910204266,
+   "recommended": "gabazine",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.7333563327802755,
+    "CNQX": 0.570593334407168,
+    "D-AP5": 0.20414085757511016,
+    "TTX": 0.5212718791161846,
+    "4-aminopyridine": 0.270678068002515,
+    "apamin": 0.37495615899491036,
+    "baclofen-like drive reduction": 0.4527173923835202,
+    "no follow-up": 0.32119934000614675
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "g_ahp",
+    "i_drive"
+   ],
+   "p_gap": 0.00783046753021116,
+   "recommended": "no follow-up",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.3991233022841551,
+    "CNQX": 0.5572205075860143,
+    "D-AP5": 0.6263906083536309,
+    "TTX": 0.38207894083252936,
+    "4-aminopyridine": 0.397404644334905,
+    "apamin": 0.3929467484402488,
+    "baclofen-like drive reduction": 0.30272382076865556,
+    "no follow-up": 0.7315815624661107
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.06513596906199734,
+   "recommended": "gabazine",
+   "random": "gabazine",
+   "separation": {
+    "gabazine": 0.4559150787980356,
+    "CNQX": 0.2555156363121782,
+    "D-AP5": 0.28387919142709706,
+    "TTX": 0.18663942531660935,
+    "4-aminopyridine": 0.28632568705813566,
+    "apamin": 0.3024659941384438,
+    "baclofen-like drive reduction": 0.2345864196075725,
+    "no follow-up": 0.3311658343960323
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_ahp",
+   "tied": [
+    "g_ahp",
+    "i_drive"
+   ],
+   "p_gap": 0.062380015525873744,
+   "recommended": "gabazine",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.650403104725829,
+    "CNQX": 0.28332496396354984,
+    "D-AP5": 0.20165456202602572,
+    "TTX": 0.1864053521938223,
+    "4-aminopyridine": 0.3339889585232241,
+    "apamin": 0.4884393852393206,
+    "baclofen-like drive reduction": 0.3427625359634872,
+    "no follow-up": 0.4790536447355158
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_nmda",
+   "tied": [
+    "g_nmda",
+    "g_gaba"
+   ],
+   "p_gap": 0.03947186518927448,
+   "recommended": "gabazine",
+   "random": "CNQX",
+   "separation": {
+    "gabazine": 0.47587590884833303,
+    "CNQX": 0.3679110009229735,
+    "D-AP5": 0.3815913885335667,
+    "TTX": 0.21299053856290895,
+    "4-aminopyridine": 0.2894761713276292,
+    "apamin": 0.32191629208958844,
+    "baclofen-like drive reduction": 0.1549937238118339,
+    "no follow-up": 0.3251538589802049
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_ahp",
+   "tied": [
+    "g_ahp",
+    "g_kdr"
+   ],
+   "p_gap": 0.0067408894608587955,
+   "recommended": "baclofen-like drive reduction",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.21081353136160816,
+    "CNQX": 0.266854431674164,
+    "D-AP5": 0.23954910153645312,
+    "TTX": 0.2881465994981747,
+    "4-aminopyridine": 0.2987846011884958,
+    "apamin": 0.3422909068983084,
+    "baclofen-like drive reduction": 0.36952157879466413,
+    "no follow-up": 0.14497183488735238
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_tonic_inh",
+   "tied": [
+    "g_kdr",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.011301450010389652,
+   "recommended": "CNQX",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.3179378551719919,
+    "CNQX": 0.4456529684044217,
+    "D-AP5": 0.2395567159770694,
+    "TTX": 0.2978588939452692,
+    "4-aminopyridine": 0.3517000310269299,
+    "apamin": 0.270894263073376,
+    "baclofen-like drive reduction": 0.23339073291157755,
+    "no follow-up": 0.2907713474055405
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "u_rel"
+   ],
+   "p_gap": 0.05673761658787141,
+   "recommended": "baclofen-like drive reduction",
+   "random": "4-aminopyridine",
+   "separation": {
+    "gabazine": 0.23086399143424702,
+    "CNQX": 0.24507212234128822,
+    "D-AP5": 0.22435457622691496,
+    "TTX": 0.26449712474676795,
+    "4-aminopyridine": 0.27112934094764507,
+    "apamin": 0.30576999420435824,
+    "baclofen-like drive reduction": 0.43404756275988826,
+    "no follow-up": 0.24008741114571208
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_ahp",
+   "tied": [
+    "g_ahp",
+    "g_na"
+   ],
+   "p_gap": 0.06210710969277078,
+   "recommended": "baclofen-like drive reduction",
+   "random": "CNQX",
+   "separation": {
+    "gabazine": 0.38818729549568515,
+    "CNQX": 0.2181841403344043,
+    "D-AP5": 0.34987673409804065,
+    "TTX": 0.3653767276845653,
+    "4-aminopyridine": 0.2636685586469692,
+    "apamin": 0.14917075557033216,
+    "baclofen-like drive reduction": 0.6693120347025031,
+    "no follow-up": 0.5577927537954764
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "i_drive",
+    "g_kdr"
+   ],
+   "p_gap": 0.009968258815832187,
+   "recommended": "apamin",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.3328762350786654,
+    "CNQX": 0.20989487318934516,
+    "D-AP5": 0.2866992946249511,
+    "TTX": 0.15847680410109838,
+    "4-aminopyridine": 0.22028223331433913,
+    "apamin": 0.39467874096569305,
+    "baclofen-like drive reduction": 0.16010240397027067,
+    "no follow-up": 0.22667996091723938
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "i_drive"
+   ],
+   "p_gap": 0.1187741705962467,
+   "recommended": "4-aminopyridine",
+   "random": "D-AP5",
+   "separation": {
+    "gabazine": 0.4587857951943807,
+    "CNQX": 0.25647427057284106,
+    "D-AP5": 0.33554466434959357,
+    "TTX": 0.25609956077065305,
+    "4-aminopyridine": 0.5055566483214554,
+    "apamin": 0.4300919987706792,
+    "baclofen-like drive reduction": 0.33096715669034166,
+    "no follow-up": 0.1849233278621246
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_na",
+   "tied": [
+    "g_tonic_inh",
+    "g_na"
+   ],
+   "p_gap": 0.0758575561670547,
+   "recommended": "D-AP5",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.17700473826630608,
+    "CNQX": 0.32804464590643084,
+    "D-AP5": 0.4523704644731518,
+    "TTX": 0.3708957122278055,
+    "4-aminopyridine": 0.3516530349089744,
+    "apamin": 0.30427218422638586,
+    "baclofen-like drive reduction": 0.23854468728436104,
+    "no follow-up": 0.1982283243483448
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": true,
+    "baclofen-like drive reduction": false,
+    "no follow-up": false
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "u_rel",
+    "g_kdr"
+   ],
+   "p_gap": 0.14828751242467336,
+   "recommended": "CNQX",
+   "random": "baclofen-like drive reduction",
+   "separation": {
+    "gabazine": 0.3425271911895476,
+    "CNQX": 0.4165045771094,
+    "D-AP5": 0.35240369890854106,
+    "TTX": 0.3130361761702685,
+    "4-aminopyridine": 0.37425715797317766,
+    "apamin": 0.20334708514701233,
+    "baclofen-like drive reduction": 0.18836375409423806,
+    "no follow-up": 0.3905136585706345
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": false,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "g_na",
+   "tied": [
+    "g_tonic_inh",
+    "g_na"
+   ],
+   "p_gap": 0.05200865732664883,
+   "recommended": "D-AP5",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.26214905701073304,
+    "CNQX": 0.3044891033769524,
+    "D-AP5": 0.36616104404608824,
+    "TTX": 0.14320397050300626,
+    "4-aminopyridine": 0.2579652179231056,
+    "apamin": 0.2658244571637535,
+    "baclofen-like drive reduction": 0.24075961890162526,
+    "no follow-up": 0.2054658506643664
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": false,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_nmda",
+   "tied": [
+    "g_kdr",
+    "g_nmda"
+   ],
+   "p_gap": 0.0064262711765233765,
+   "recommended": "D-AP5",
+   "random": "CNQX",
+   "separation": {
+    "gabazine": 0.40355311550566203,
+    "CNQX": 0.2950412684798577,
+    "D-AP5": 0.4086306559069241,
+    "TTX": 0.21050295172569966,
+    "4-aminopyridine": 0.27497850294620596,
+    "apamin": 0.2154094805728484,
+    "baclofen-like drive reduction": 0.24395804297548154,
+    "no follow-up": 0.21988579640587316
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": true,
+    "TTX": true,
+    "4-aminopyridine": false,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": false,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": true
+  },
+  {
+   "truth": "g_kdr",
+   "tied": [
+    "g_kdr",
+    "g_tonic_inh"
+   ],
+   "p_gap": 0.051030426362142806,
+   "recommended": "apamin",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.20658958508869402,
+    "CNQX": 0.3839810391065775,
+    "D-AP5": 0.1895274147716735,
+    "TTX": 0.16002862089400638,
+    "4-aminopyridine": 0.31712705554685555,
+    "apamin": 0.41486659206729826,
+    "baclofen-like drive reduction": 0.2971071989666992,
+    "no follow-up": 0.23119344552446003
+   },
+   "correct_by_candidate": {
+    "gabazine": false,
+    "CNQX": true,
+    "D-AP5": true,
+    "TTX": false,
+    "4-aminopyridine": true,
+    "apamin": false,
+    "baclofen-like drive reduction": true,
+    "no follow-up": false
+   },
+   "correct_recommended": false,
+   "correct_random": false,
+   "correct_repeat": false,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "i_drive",
+   "tied": [
+    "g_ahp",
+    "i_drive"
+   ],
+   "p_gap": 0.08083364468511434,
+   "recommended": "TTX",
+   "random": "apamin",
+   "separation": {
+    "gabazine": 0.46055397900732,
+    "CNQX": 0.33918541086973625,
+    "D-AP5": 0.34821028930822767,
+    "TTX": 0.7068617453537003,
+    "4-aminopyridine": 0.39458591074905364,
+    "apamin": 0.41916347739304227,
+    "baclofen-like drive reduction": 0.34296706327416654,
+    "no follow-up": 0.38960172265006404
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": true,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": true,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "D-AP5",
+   "correct_fixed_best": false
+  },
+  {
+   "truth": "u_rel",
+   "tied": [
+    "u_rel",
+    "g_nmda"
+   ],
+   "p_gap": 0.12115048574927534,
+   "recommended": "D-AP5",
+   "random": "TTX",
+   "separation": {
+    "gabazine": 0.2869005749346072,
+    "CNQX": 0.29996337417530144,
+    "D-AP5": 0.44456087859152493,
+    "TTX": 0.35800786452067934,
+    "4-aminopyridine": 0.18076674632145173,
+    "apamin": 0.19109303109474285,
+    "baclofen-like drive reduction": 0.3074505008843272,
+    "no follow-up": 0.31702678579208626
+   },
+   "correct_by_candidate": {
+    "gabazine": true,
+    "CNQX": false,
+    "D-AP5": false,
+    "TTX": true,
+    "4-aminopyridine": true,
+    "apamin": true,
+    "baclofen-like drive reduction": true,
+    "no follow-up": true
+   },
+   "correct_recommended": false,
+   "correct_random": true,
+   "correct_repeat": true,
+   "correct_oracle": true,
+   "fixed_best": "gabazine",
+   "correct_fixed_best": true
+  }
+ ]
+}

@@ -216,6 +216,7 @@ def chip_design() -> str:
         "**Which follow-up resolves a tie between two mechanisms** "
         "(`scripts/design_study.py`, held-out simulations with known answers):",
         R3.design_table(),
+        design_reading(),
         "**Reproducing the sponsor laboratory's cortico-striatal chip** (Lassus et al. "
         "2018; predictions in `docs/LASSUS_PREDICTION.md` and `docs/LASSUS_PREDICTION_2.md`, "
         "each committed before its run):",
@@ -236,6 +237,25 @@ def appendix(r2, ph) -> str:
         "### A.3 Pharmacology check", pharmacology(ph),
         "### A.4 Every version 3 outcome", "`results/v3/RESULTS.md` holds every table this "
         "report draws on, generated from `results/v3/results.json` by `scripts/render_v3.py`."])
+
+
+def design_reading() -> str:
+    d = load("results/design_study_grid16.json")
+    if not d:
+        return ""
+    s = d["summary"]
+    fx = d["mcnemar_recommended_over_fixed_best"]
+    rp = d["mcnemar_recommended_over_repeat"]
+    return (f"The recommendation resolves {f2(s['recommended']['rate'])} of ties. That beats "
+            f"recording the same well again ({f2(s['repeat']['rate'])}, one-sided p = {rp['p']:.2g}). "
+            f"It does not significantly beat a fixed protocol ({f2(s['fixed_best']['rate'])}, "
+            f"p = {fx['p']:.2g}) or a random compound (mean over all compounds "
+            f"{f2(s['random_expected']['rate'])}). The oracle's "
+            f"{f2(s['oracle']['rate'])} mostly reflects chance: with seven compounds, each "
+            "resolving about half the ties, at least one usually does. The recommender ranks "
+            "compounds by how far apart the two hypotheses predict the follow-up to land. On "
+            "this evidence, that ranking is not yet a reliable guide. The chip readout and "
+            "sample-size outputs above are the planning outputs that the results support.")
 
 
 def limitations(r3, r2) -> str:
@@ -264,6 +284,9 @@ def limitations(r3, r2) -> str:
         "2D cultures on arrays; the one set of recorded chips (17 chips) is underpowered "
         "for the question asked of it. The chip twin's claims rest on simulations, one "
         "underpowered recorded test, and a reproduction attempt (section 8).",
+        "**The next-experiment recommender is not yet better than a fixed protocol** "
+        "(section 8). It beats recording the same well again, but not a fixed choice of "
+        "follow-up compound.",
         "**The drift between recordings is one number per design.** It was measured on "
         "untreated pairs, but a real culture may drift more along some parameters than "
         "others.",
@@ -283,8 +306,9 @@ def impact() -> str:
         "that says how much to trust it. It also says in advance how many chips and "
         "which electrodes an experiment needs. CellShells' stated aim is organ-on-chip "
         "digital twins that move the field from experimental description toward "
-        "predictive simulation. The chip twin, the sample-size output and the "
-        "follow-up recommender are that, in code that runs on public data.",
+        "predictive simulation. The chip twin's readout analysis and its sample-size "
+        "output are that, in code that runs on public data. The follow-up recommender "
+        "is the next piece, and section 8 shows it is not there yet.",
         "**For safety pharmacology**, a mechanism reading distinguishes a compound that "
         "silences a network through sodium channels from one that acts on excitatory "
         "transmission. Rate plots cannot. Every call is scored against vehicle and "

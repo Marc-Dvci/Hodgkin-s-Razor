@@ -19,3 +19,9 @@ results/film/
 
 # Superseded before the v3 freeze (unpaired baseline trained on the first bank only).
 models/twin_v3_unpaired_mcs60q_bank1/
+
+# Film intermediates (rebuilt by film/narrate.py and film/record.py).
+film/speech/
+film/narration.wav
+film/stills/
+film/preview.mp4

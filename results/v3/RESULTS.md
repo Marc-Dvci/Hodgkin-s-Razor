@@ -150,4 +150,15 @@ Channel statistic, simulated AUROC 0.77. Chips per design for 80% power: **20** 
 
 ## Next-experiment recommendation, on simulations
 
-_Not run yet._
+| Follow-up policy | Ties resolved | 95% CI |
+|---|---|---|
+| Recommended by the twin | 65/120 = 0.54 | [0.45, 0.63] |
+| Fixed best compound (cross-fitted) | 56/120 = 0.47 | [0.38, 0.56] |
+| Random compound | 59/120 = 0.49 | [0.40, 0.58] |
+| Record the same well again | 51/120 = 0.42 | [0.34, 0.51] |
+| Oracle (best compound per case, known only in hindsight) | 120/120 = 1.00 | [0.97, 1.00] |
+| Mean over every compound | 0.53 | - |
+
+Recommended against fixed best: 26 ties only the recommendation resolved, 17 only the other; one-sided exact p = 0.11.
+
+Recommended against random: 30 ties only the recommendation resolved, 24 only the other; one-sided exact p = 0.25.

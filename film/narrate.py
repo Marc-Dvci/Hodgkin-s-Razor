@@ -7,8 +7,8 @@ padded by a short gap. Writes film/speech/*.mp3, film/narration.wav (all beats
 back to back), film/timing.json (per-beat durations, read by record.py) and
 three subtitle files from the same timings: English, Chinese, and both.
 
-Every number spoken is checked against results/v2/RESULTS.md and
-results/chip_study.json first; a figure that appears in neither is refused, so
+Every number spoken is checked against results/v3/RESULTS.md,
+results/LASSUS_RESULT.md, results/v2/RESULTS.md and results/chip_study.json first; a figure that appears in neither is refused, so
 the film cannot say a number the results do not contain.
 """
 from __future__ import annotations
@@ -42,7 +42,8 @@ def duration_ms(path: pathlib.Path) -> int:
 
 def allowed_numbers() -> str:
     text = ""
-    for p in (ROOT / "results" / "v2" / "RESULTS.md", ROOT / "results" / "chip_study.json",
+    for p in (ROOT / "results" / "v3" / "RESULTS.md", ROOT / "results" / "LASSUS_RESULT.md",
+              ROOT / "results" / "v2" / "RESULTS.md", ROOT / "results" / "chip_study.json",
               ROOT / "results" / "v2" / "results.json", HERE / "allowed_numbers.txt"):
         if p.exists():
             text += p.read_text(encoding="utf-8")

@@ -1,0 +1,188 @@
+bank: 100 shards, 240000 pairs, 43629 cultures, view grid16
+  1/120 (seen 3)  truth g_gaba       tied g_gaba/g_na  rec gabazine                     recommended=+ random=+ repeat=.
+  2/120 (seen 8)  truth g_kdr        tied g_kdr/u_rel  rec apamin                       recommended=+ random=. repeat=.
+  3/120 (seen 12)  truth i_drive      tied g_kdr/i_drive  rec apamin                       recommended=. random=+ repeat=.
+  4/120 (seen 16)  truth g_kdr        tied g_ahp/g_kdr  rec gabazine                     recommended=. random=+ repeat=.
+  5/120 (seen 18)  truth i_drive      tied g_kdr/i_drive  rec CNQX                         recommended=+ random=+ repeat=.
+  6/120 (seen 21)  truth g_tonic_inh  tied g_na/g_tonic_inh  rec apamin                       recommended=+ random=. repeat=+
+  7/120 (seen 22)  truth g_tonic_inh  tied g_kdr/g_tonic_inh  rec baclofen-like drive reduction recommended=+ random=+ repeat=+
+  8/120 (seen 24)  truth u_rel        tied g_nmda/u_rel  rec D-AP5                        recommended=+ random=+ repeat=.
+  9/120 (seen 28)  truth g_na         tied g_na/g_ampa  rec TTX                          recommended=+ random=+ repeat=.
+ 10/120 (seen 32)  truth g_gaba       tied u_rel/g_gaba  rec TTX                          recommended=. random=. repeat=.
+ 11/120 (seen 38)  truth i_drive      tied g_kdr/i_drive  rec CNQX                         recommended=. random=+ repeat=+
+ 12/120 (seen 44)  truth g_kdr        tied g_kdr/i_drive  rec gabazine                     recommended=. random=+ repeat=+
+ 13/120 (seen 45)  truth g_na         tied g_na/g_ahp  rec TTX                          recommended=+ random=+ repeat=.
+ 14/120 (seen 50)  truth g_ahp        tied g_ahp/i_drive  rec gabazine                     recommended=+ random=+ repeat=.
+ 15/120 (seen 52)  truth g_nmda       tied g_nmda/u_rel  rec CNQX                         recommended=+ random=. repeat=.
+ 16/120 (seen 54)  truth g_ahp        tied g_na/g_ahp  rec baclofen-like drive reduction recommended=. random=. repeat=.
+ 17/120 (seen 58)  truth g_ahp        tied i_drive/g_ahp  rec TTX                          recommended=. random=+ repeat=+
+ 18/120 (seen 61)  truth u_rel        tied g_nmda/u_rel  rec 4-aminopyridine              recommended=. random=+ repeat=+
+ 19/120 (seen 64)  truth g_kdr        tied g_kdr/i_drive  rec no follow-up                 recommended=+ random=+ repeat=+
+ 20/120 (seen 65)  truth g_nmda       tied g_kdr/g_nmda  rec 4-aminopyridine              recommended=+ random=. repeat=.
+ 21/120 (seen 73)  truth i_drive      tied i_drive/g_kdr  rec D-AP5                        recommended=. random=. repeat=+
+ 22/120 (seen 76)  truth u_rel        tied u_rel/tau_d  rec apamin                       recommended=. random=+ repeat=+
+ 23/120 (seen 82)  truth g_nmda       tied g_nmda/g_gaba  rec baclofen-like drive reduction recommended=+ random=. repeat=+
+ 24/120 (seen 84)  truth u_rel        tied g_nmda/u_rel  rec apamin                       recommended=. random=+ repeat=+
+ 25/120 (seen 85)  truth g_tonic_inh  tied g_kdr/g_tonic_inh  rec gabazine                     recommended=+ random=. repeat=.
+ 26/120 (seen 87)  truth g_kdr        tied g_tonic_inh/g_kdr  rec no follow-up                 recommended=+ random=+ repeat=+
+ 27/120 (seen 96)  truth u_rel        tied u_rel/tau_d  rec CNQX                         recommended=+ random=. repeat=.
+ 28/120 (seen 99)  truth g_nmda       tied g_nmda/u_rel  rec D-AP5                        recommended=+ random=. repeat=.
+ 29/120 (seen 102)  truth g_kdr        tied g_tonic_inh/g_kdr  rec CNQX                         recommended=+ random=+ repeat=+
+ 30/120 (seen 108)  truth g_kdr        tied g_kdr/i_drive  rec CNQX                         recommended=+ random=+ repeat=+
+ 31/120 (seen 109)  truth g_na         tied g_na/g_tonic_inh  rec baclofen-like drive reduction recommended=+ random=+ repeat=.
+ 32/120 (seen 113)  truth g_kdr        tied g_kdr/i_drive  rec baclofen-like drive reduction recommended=. random=. repeat=.
+ 33/120 (seen 115)  truth g_ahp        tied g_kdr/g_ahp  rec gabazine                     recommended=+ random=. repeat=+
+ 34/120 (seen 122)  truth i_drive      tied i_drive/g_ahp  rec baclofen-like drive reduction recommended=+ random=+ repeat=.
+ 35/120 (seen 123)  truth u_rel        tied tau_d/u_rel  rec gabazine                     recommended=. random=. repeat=.
+ 36/120 (seen 127)  truth g_kdr        tied g_kdr/i_drive  rec gabazine                     recommended=. random=+ repeat=+
+ 37/120 (seen 128)  truth g_kdr        tied g_kdr/g_tonic_inh  rec CNQX                         recommended=. random=+ repeat=+
+ 38/120 (seen 132)  truth g_kdr        tied g_kdr/i_drive  rec apamin                       recommended=+ random=+ repeat=.
+ 39/120 (seen 133)  truth g_kdr        tied g_kdr/i_drive  rec gabazine                     recommended=. random=. repeat=+
+ 40/120 (seen 136)  truth g_tonic_inh  tied g_tonic_inh/i_drive  rec gabazine                     recommended=+ random=+ repeat=.
+ 41/120 (seen 140)  truth g_kdr        tied g_kdr/i_drive  rec 4-aminopyridine              recommended=+ random=. repeat=.
+ 42/120 (seen 141)  truth i_drive      tied g_kdr/i_drive  rec apamin                       recommended=. random=. repeat=.
+ 43/120 (seen 144)  truth g_kdr        tied i_drive/g_kdr  rec D-AP5                        recommended=+ random=+ repeat=.
+ 44/120 (seen 148)  truth u_rel        tied u_rel/g_ampa  rec 4-aminopyridine              recommended=. random=. repeat=+
+ 45/120 (seen 155)  truth g_kdr        tied g_kdr/i_drive  rec apamin                       recommended=. random=. repeat=.
+ 46/120 (seen 161)  truth i_drive      tied g_kdr/i_drive  rec apamin                       recommended=. random=. repeat=.
+ 47/120 (seen 164)  truth g_kdr        tied g_kdr/g_na  rec TTX                          recommended=+ random=+ repeat=.
+ 48/120 (seen 167)  truth g_tonic_inh  tied g_tonic_inh/g_nmda  rec D-AP5                        recommended=+ random=. repeat=+
+ 49/120 (seen 169)  truth i_drive      tied i_drive/tau_d  rec gabazine                     recommended=. random=. repeat=+
+ 50/120 (seen 171)  truth u_rel        tied g_gaba/u_rel  rec gabazine                     recommended=+ random=. repeat=+
+ 51/120 (seen 185)  truth u_rel        tied u_rel/g_tonic_inh  rec 4-aminopyridine              recommended=+ random=. repeat=+
+ 52/120 (seen 190)  truth g_na         tied g_na/g_ahp  rec gabazine                     recommended=+ random=. repeat=+
+ 53/120 (seen 192)  truth g_kdr        tied g_kdr/i_drive  rec baclofen-like drive reduction recommended=. random=+ repeat=.
+ 54/120 (seen 193)  truth g_ahp        tied g_ahp/g_nmda  rec gabazine                     recommended=+ random=. repeat=+
+ 55/120 (seen 200)  truth g_tonic_inh  tied g_tonic_inh/i_drive  rec D-AP5                        recommended=. random=. repeat=.
+ 56/120 (seen 205)  truth i_drive      tied i_drive/g_kdr  rec TTX                          recommended=+ random=+ repeat=.
+ 57/120 (seen 209)  truth g_na         tied g_na/g_tonic_inh  rec CNQX                         recommended=+ random=+ repeat=+
+ 58/120 (seen 210)  truth u_rel        tied u_rel/g_nmda  rec D-AP5                        recommended=. random=+ repeat=.
+ 59/120 (seen 216)  truth g_gaba       tied g_gaba/g_kdr  rec D-AP5                        recommended=. random=. repeat=.
+ 60/120 (seen 221)  truth g_kdr        tied i_drive/g_kdr  rec no follow-up                 recommended=+ random=. repeat=+
+ 61/120 (seen 225)  truth g_kdr        tied g_kdr/g_ahp  rec D-AP5                        recommended=+ random=+ repeat=+
+ 62/120 (seen 226)  truth i_drive      tied g_kdr/i_drive  rec 4-aminopyridine              recommended=. random=+ repeat=+
+ 63/120 (seen 227)  truth i_drive      tied g_tonic_inh/i_drive  rec CNQX                         recommended=. random=. repeat=+
+ 64/120 (seen 235)  truth i_drive      tied i_drive/g_tonic_inh  rec CNQX                         recommended=+ random=+ repeat=+
+ 65/120 (seen 237)  truth i_drive      tied g_kdr/i_drive  rec gabazine                     recommended=+ random=+ repeat=.
+ 66/120 (seen 238)  truth g_kdr        tied g_kdr/i_drive  rec D-AP5                        recommended=+ random=+ repeat=.
+ 67/120 (seen 240)  truth u_rel        tied g_nmda/u_rel  rec no follow-up                 recommended=. random=. repeat=.
+ 68/120 (seen 248)  truth g_tonic_inh  tied u_rel/g_tonic_inh  rec gabazine                     recommended=+ random=+ repeat=+
+ 69/120 (seen 250)  truth g_ahp        tied g_ahp/g_kdr  rec 4-aminopyridine              recommended=. random=. repeat=+
+ 70/120 (seen 251)  truth g_kdr        tied g_kdr/i_drive  rec CNQX                         recommended=+ random=+ repeat=+
+ 71/120 (seen 252)  truth g_nmda       tied g_nmda/g_kdr  rec no follow-up                 recommended=+ random=. repeat=+
+ 72/120 (seen 254)  truth g_nmda       tied g_nmda/u_rel  rec D-AP5                        recommended=. random=+ repeat=+
+ 73/120 (seen 255)  truth g_ahp        tied g_ahp/i_drive  rec TTX                          recommended=+ random=+ repeat=+
+ 74/120 (seen 258)  truth u_rel        tied g_gaba/u_rel  rec no follow-up                 recommended=. random=+ repeat=.
+ 75/120 (seen 265)  truth g_tonic_inh  tied g_kdr/g_tonic_inh  rec CNQX                         recommended=+ random=+ repeat=.
+ 76/120 (seen 276)  truth g_gaba       tied g_gaba/u_rel  rec baclofen-like drive reduction recommended=. random=. repeat=.
+ 77/120 (seen 279)  truth g_kdr        tied g_kdr/g_gaba  rec no follow-up                 recommended=. random=. repeat=.
+ 78/120 (seen 280)  truth g_gaba       tied g_gaba/g_nmda  rec apamin                       recommended=+ random=+ repeat=+
+ 79/120 (seen 282)  truth g_nmda       tied g_nmda/u_rel  rec gabazine                     recommended=. random=+ repeat=+
+ 80/120 (seen 287)  truth g_kdr        tied g_kdr/u_rel  rec gabazine                     recommended=. random=. repeat=.
+ 81/120 (seen 295)  truth i_drive      tied i_drive/g_tonic_inh  rec CNQX                         recommended=+ random=+ repeat=.
+ 82/120 (seen 297)  truth i_drive      tied g_ahp/i_drive  rec gabazine                     recommended=. random=. repeat=.
+ 83/120 (seen 303)  truth g_gaba       tied g_gaba/u_rel  rec TTX                          recommended=+ random=+ repeat=.
+ 84/120 (seen 306)  truth g_na         tied g_na/g_ahp  rec D-AP5                        recommended=+ random=+ repeat=+
+ 85/120 (seen 312)  truth tau_d        tied tau_d/g_ahp  rec gabazine                     recommended=+ random=. repeat=.
+ 86/120 (seen 315)  truth g_tonic_inh  tied g_na/g_tonic_inh  rec no follow-up                 recommended=. random=+ repeat=.
+ 87/120 (seen 319)  truth tau_d        tied tau_d/u_rel  rec gabazine                     recommended=+ random=. repeat=+
+ 88/120 (seen 325)  truth g_gaba       tied g_gaba/g_kdr  rec CNQX                         recommended=. random=. repeat=.
+ 89/120 (seen 329)  truth g_tonic_inh  tied g_na/g_tonic_inh  rec baclofen-like drive reduction recommended=. random=. repeat=.
+ 90/120 (seen 330)  truth g_ahp        tied g_ahp/g_na  rec D-AP5                        recommended=. random=. repeat=.
+ 91/120 (seen 338)  truth i_drive      tied i_drive/g_kdr  rec D-AP5                        recommended=. random=. repeat=+
+ 92/120 (seen 342)  truth g_ahp        tied g_ahp/i_drive  rec gabazine                     recommended=+ random=. repeat=+
+ 93/120 (seen 345)  truth g_nmda       tied g_na/g_nmda  rec apamin                       recommended=. random=+ repeat=.
+ 94/120 (seen 349)  truth u_rel        tied u_rel/g_nmda  rec D-AP5                        recommended=+ random=. repeat=+
+ 95/120 (seen 354)  truth g_na         tied g_na/g_tonic_inh  rec D-AP5                        recommended=+ random=+ repeat=.
+ 96/120 (seen 358)  truth g_kdr        tied g_kdr/i_drive  rec CNQX                         recommended=+ random=. repeat=.
+ 97/120 (seen 361)  truth g_nmda       tied g_nmda/u_rel  rec gabazine                     recommended=+ random=. repeat=.
+ 98/120 (seen 362)  truth g_kdr        tied g_tonic_inh/g_kdr  rec no follow-up                 recommended=. random=+ repeat=.
+ 99/120 (seen 363)  truth g_kdr        tied g_kdr/i_drive  rec CNQX                         recommended=+ random=+ repeat=+
+100/120 (seen 366)  truth i_drive      tied u_rel/i_drive  rec TTX                          recommended=. random=+ repeat=.
+101/120 (seen 367)  truth g_nmda       tied g_nmda/g_gaba  rec CNQX                         recommended=+ random=. repeat=.
+102/120 (seen 374)  truth g_kdr        tied g_kdr/u_rel  rec no follow-up                 recommended=. random=+ repeat=.
+103/120 (seen 375)  truth g_ahp        tied g_ahp/i_drive  rec gabazine                     recommended=. random=. repeat=.
+104/120 (seen 377)  truth i_drive      tied g_ahp/i_drive  rec no follow-up                 recommended=. random=. repeat=.
+105/120 (seen 378)  truth g_kdr        tied g_kdr/i_drive  rec gabazine                     recommended=. random=. repeat=.
+106/120 (seen 379)  truth g_ahp        tied g_ahp/i_drive  rec gabazine                     recommended=. random=+ repeat=+
+107/120 (seen 381)  truth g_nmda       tied g_nmda/g_gaba  rec gabazine                     recommended=+ random=. repeat=.
+108/120 (seen 383)  truth g_ahp        tied g_ahp/g_kdr  rec baclofen-like drive reduction recommended=. random=. repeat=.
+109/120 (seen 389)  truth g_tonic_inh  tied g_kdr/g_tonic_inh  rec CNQX                         recommended=+ random=+ repeat=.
+110/120 (seen 390)  truth g_kdr        tied g_kdr/u_rel  rec baclofen-like drive reduction recommended=+ random=. repeat=.
+111/120 (seen 391)  truth g_ahp        tied g_ahp/g_na  rec baclofen-like drive reduction recommended=+ random=. repeat=.
+112/120 (seen 394)  truth g_kdr        tied i_drive/g_kdr  rec apamin                       recommended=. random=+ repeat=.
+113/120 (seen 395)  truth g_kdr        tied g_kdr/i_drive  rec 4-aminopyridine              recommended=. random=. repeat=.
+114/120 (seen 396)  truth g_na         tied g_tonic_inh/g_na  rec D-AP5                        recommended=+ random=. repeat=.
+115/120 (seen 402)  truth u_rel        tied u_rel/g_kdr  rec CNQX                         recommended=. random=. repeat=+
+116/120 (seen 406)  truth g_na         tied g_tonic_inh/g_na  rec D-AP5                        recommended=+ random=. repeat=+
+117/120 (seen 407)  truth g_nmda       tied g_kdr/g_nmda  rec D-AP5                        recommended=+ random=. repeat=+
+118/120 (seen 408)  truth g_kdr        tied g_kdr/g_tonic_inh  rec apamin                       recommended=. random=. repeat=.
+119/120 (seen 409)  truth i_drive      tied g_ahp/i_drive  rec TTX                          recommended=+ random=+ repeat=+
+120/120 (seen 416)  truth u_rel        tied u_rel/g_nmda  rec D-AP5                        recommended=. random=+ repeat=+
+{
+ "summary": {
+  "recommended": {
+   "correct": 65,
+   "n": 120,
+   "rate": 0.5416666666666666,
+   "ci95": [
+    0.4526096906236998,
+    0.6281387121747415
+   ]
+  },
+  "fixed_best": {
+   "correct": 56,
+   "n": 120,
+   "rate": 0.4666666666666667,
+   "ci95": [
+    0.3798291704579899,
+    0.555572107303257
+   ]
+  },
+  "random": {
+   "correct": 59,
+   "n": 120,
+   "rate": 0.49166666666666664,
+   "ci95": [
+    0.4038757172769723,
+    0.5799746021633394
+   ]
+  },
+  "repeat": {
+   "correct": 51,
+   "n": 120,
+   "rate": 0.425,
+   "ci95": [
+    0.3402303921927357,
+    0.5144224827700697
+   ]
+  },
+  "oracle": {
+   "correct": 120,
+   "n": 120,
+   "rate": 1.0,
+   "ci95": [
+    0.9689808335812965,
+    1.0
+   ]
+  },
+  "random_expected": {
+   "rate": 0.530952380952381,
+   "note": "mean over every active candidate, per case"
+  }
+ },
+ "fixed_best": {
+  "0": "D-AP5",
+  "1": "gabazine"
+ },
+ "vs_random": {
+  "b": 30,
+  "c": 24,
+  "p": 0.24830871765896673
+ },
+ "vs_fixed_best": {
+  "b": 26,
+  "c": 17,
+  "p": 0.1110264100780114
+ }
+}

@@ -592,7 +592,20 @@ Channel statistic, simulated AUROC 0.77. Chips per design for 80% power: **20** 
 
 **Which follow-up resolves a tie between two mechanisms** (`scripts/design_study.py`, held-out simulations with known answers):
 
-_Not run yet._
+| Follow-up policy | Ties resolved | 95% CI |
+|---|---|---|
+| Recommended by the twin | 65/120 = 0.54 | [0.45, 0.63] |
+| Fixed best compound (cross-fitted) | 56/120 = 0.47 | [0.38, 0.56] |
+| Random compound | 59/120 = 0.49 | [0.40, 0.58] |
+| Record the same well again | 51/120 = 0.42 | [0.34, 0.51] |
+| Oracle (best compound per case, known only in hindsight) | 120/120 = 1.00 | [0.97, 1.00] |
+| Mean over every compound | 0.53 | - |
+
+Recommended against fixed best: 26 ties only the recommendation resolved, 17 only the other; one-sided exact p = 0.11.
+
+Recommended against random: 30 ties only the recommendation resolved, 24 only the other; one-sided exact p = 0.25.
+
+The recommendation resolves 0.54 of ties. That beats recording the same well again (0.42, one-sided p = 0.041). It does not significantly beat a fixed protocol (0.47, p = 0.11) or a random compound (mean over all compounds 0.53). The oracle's 1.00 mostly reflects chance: with seven compounds, each resolving about half the ties, at least one usually does. The recommender ranks compounds by how far apart the two hypotheses predict the follow-up to land. On this evidence, that ranking is not yet a reliable guide. The chip readout and sample-size outputs above are the planning outputs that the results support.
 
 **Reproducing the sponsor laboratory's cortico-striatal chip** (Lassus et al. 2018; predictions in `docs/LASSUS_PREDICTION.md` and `docs/LASSUS_PREDICTION_2.md`, each committed before its run):
 
@@ -619,13 +632,14 @@ _Not run yet._
 3. **Human cultures are outside the model.** 27 of 28 human Tampere wells were flagged, and none was named correctly. A human-only domain is the next step.
 4. **A silenced culture cannot be read.** Saturating inhibition and a sodium block leave the same silent recording (section 7.7).
 5. **Most real data are conventional MEA cultures, not chips.** The blind tests are 2D cultures on arrays; the one set of recorded chips (17 chips) is underpowered for the question asked of it. The chip twin's claims rest on simulations, one underpowered recorded test, and a reproduction attempt (section 8).
-6. **The drift between recordings is one number per design.** It was measured on untreated pairs, but a real culture may drift more along some parameters than others.
-7. **The stop rule needed two attempts.** The first twin missed the simulated bar by 0.008. More simulations were added, the bars were not moved, and both attempts are in the pre-registration.
-8. **The Tampere plates are a development set.** They have been scored five times, and no blind claim rests on them.
+6. **The next-experiment recommender is not yet better than a fixed protocol** (section 8). It beats recording the same well again, but not a fixed choice of follow-up compound.
+7. **The drift between recordings is one number per design.** It was measured on untreated pairs, but a real culture may drift more along some parameters than others.
+8. **The stop rule needed two attempts.** The first twin missed the simulated bar by 0.008. More simulations were added, the bars were not moved, and both attempts are in the pre-registration.
+9. **The Tampere plates are a development set.** They have been scored five times, and no blind claim rests on them.
 
 ## 10. Impact
 
-**For a neural organ-on-chip laboratory**, the twin turns a recording into a mechanism hypothesis with an interval, together with the untreated comparison that says how much to trust it. It also says in advance how many chips and which electrodes an experiment needs. CellShells' stated aim is organ-on-chip digital twins that move the field from experimental description toward predictive simulation. The chip twin, the sample-size output and the follow-up recommender are that, in code that runs on public data.
+**For a neural organ-on-chip laboratory**, the twin turns a recording into a mechanism hypothesis with an interval, together with the untreated comparison that says how much to trust it. It also says in advance how many chips and which electrodes an experiment needs. CellShells' stated aim is organ-on-chip digital twins that move the field from experimental description toward predictive simulation. The chip twin's readout analysis and its sample-size output are that, in code that runs on public data. The follow-up recommender is the next piece, and section 8 shows it is not there yet.
 
 **For safety pharmacology**, a mechanism reading distinguishes a compound that silences a network through sodium channels from one that acts on excitatory transmission. Rate plots cannot. Every call is scored against vehicle and sister controls read the same way, which is what a regulatory reader will ask for.
 

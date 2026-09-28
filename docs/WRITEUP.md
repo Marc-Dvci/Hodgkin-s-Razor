@@ -92,7 +92,10 @@ measured next?
    mechanism is named.
 7. **Chip twin.** Two chambers joined by directional channels, four readouts,
    and a striatal target. It answers which readout resolves which property,
-   how many chips are needed, and which follow-up compound resolves a tie.
+   and how many chips are needed. A follow-up recommender, for when two
+   mechanisms tie, is tested on simulations: it beats repeating the recording
+   (0.54 against 0.42 of ties, p = 0.04), but not a fixed protocol (0.47,
+   p = 0.11).
 
 **Evaluation discipline.** There were three pre-registrations, each hashed
 before its blind data was read, and the readers refuse to return blind
@@ -189,6 +192,7 @@ It uses no paid API, cloud service or proprietary model.
 - The guard is weaker on sister pairs than within a well.
 - Human cultures are outside the current domain.
 - A silenced culture cannot be read.
+- The next-experiment recommender does not yet beat a fixed follow-up protocol.
 - The blind tests are on conventional MEA cultures. The one recorded chip set
   is underpowered for the question asked of it.
 

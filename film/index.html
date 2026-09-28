@@ -12,7 +12,7 @@
   html, body { width: 1600px; height: 900px; background: var(--bg); color: var(--ink);
     font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; overflow: hidden; }
   .scene { position: absolute; inset: 0; opacity: 0; transition: opacity 600ms ease;
-    display: flex; flex-direction: column; padding: 56px 72px 120px; }
+    display: flex; flex-direction: column; padding: 56px 72px 215px; }
   .scene.on { opacity: 1; }
   .kicker { font-size: 18px; letter-spacing: .14em; text-transform: uppercase; color: var(--blue);
     font-weight: 700; margin-bottom: 14px; }
@@ -34,7 +34,7 @@
   .num small { font-size: 60px; color: var(--ink2); font-weight: 600; }
   .scene.reveal .num { opacity: 1; transform: none; }
   .numcap { font-size: 24px; color: var(--ink2); margin-top: 12px; max-width: 520px; }
-  .pill { display: inline-block; padding: 8px 18px; border-radius: 999px; font-size: 22px; font-weight: 650;
+  .pill { align-self: flex-start; display: inline-block; padding: 8px 18px; border-radius: 999px; font-size: 22px; font-weight: 650;
     margin-right: 12px; margin-top: 22px; }
   .pill.ok { background: rgba(27,175,122,.18); color: #52d7a4; }
   .pill.no { background: rgba(235,104,52,.18); color: #ff9a6e; }
@@ -50,6 +50,9 @@
   #subs span { display: inline-block; max-width: 1360px; font-size: 27px; line-height: 1.35; padding: 8px 18px;
     background: rgba(8,9,12,.78); border-radius: 10px; color: #fff; }
   #subs .zh { display: block; font-size: 25px; margin-top: 6px; color: #e8e7e1; background: transparent; padding: 0; }
+  pre.term { margin-top: 24px; flex: 1; min-height: 0; overflow: hidden; background: #07080b;
+    border: 1px solid var(--line); border-radius: 12px; padding: 22px 26px; font-family: ui-monospace, Consolas, monospace;
+    font-size: 17px; line-height: 1.45; color: #d9d8d2; white-space: pre; }
   #brand { position: absolute; right: 36px; top: 26px; font-size: 16px; color: var(--muted); letter-spacing: .08em; }
 </style>
 </head>
@@ -86,6 +89,8 @@ function sceneHTML(s) {
         ${(s.pills || []).map(p => `<span class="pill ${p[0]}">${p[1]}</span>`).join("")}</section>`;
     case "quote":
       return `<section class="scene">${k}<div class="quote">${s.text}</div><div class="src">${s.source}</div></section>`;
+    case "terminal":
+      return `<section class="scene">${k}${s.title ? `<h2>${s.title}</h2>` : ""}<pre class="term">${s.text}</pre></section>`;
     case "steps":
       return `<section class="scene">${k}<h2>${s.title}</h2><ul class="steps">
         ${s.items.map(x => `<li>${x}</li>`).join("")}</ul></section>`;

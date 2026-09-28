@@ -284,7 +284,7 @@ def design_table() -> str:
     for k, name in (("recommended", "Recommended by the twin"),
                     ("fixed_best", "Fixed best compound (cross-fitted)"),
                     ("random", "Random compound"), ("repeat", "Record the same well again"),
-                    ("oracle", "Oracle (best per case, unreachable by any policy)")):
+                    ("oracle", "Oracle (best compound per case, known only in hindsight)")):
         if k in s:
             out.append(f"| {name} | {s[k]['correct']}/{s[k]['n']} = {f2(s[k]['rate'])} | {ci(s[k]['ci95'])} |")
     out.append(f"| Mean over every compound | {f2(s['random_expected']['rate'])} | - |")
