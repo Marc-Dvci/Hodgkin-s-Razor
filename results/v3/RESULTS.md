@@ -55,11 +55,25 @@ The top-1 counts show why the co-primary failed while the primary passed: the mo
 
 ## B. Comparators on the same preparations
 
-_Not run yet._
+| Contrast | Treated / null preparations | AUROC of p(`g_nmda`) [95% CI] | Top-1 `g_nmda` | Median p(`g_nmda`) | Detection AUROC |
+|---|---|---|---|---|---|
+| Hodgkin's Razor (paired twin) | 29 / 23 | **0.86** [0.74, 0.96] | 2/29 vs 1/23 (p 0.59) | 0.12 vs 0.10 | 0.62 |
+| Same twin, pairing removed (unpaired) | 29 / 23 | **0.66** [0.51, 0.81] | 1/29 vs 5/23 (p 1) | 0.31 vs 0.26 | 0.72 |
+| Doorn et al. 2025 estimator (score: standardised g_NMDA shift, downward) | 29 / 23 | **0.49** [0.33, 0.65] | 2/29 vs 5/23 (p 0.98) | -0.10 vs -0.01 | 0.54 |
+
+For the unpaired twin and the Doorn estimator, the "median p" column is their own score, not a probability.
 
 ## C. The guard
 
-_Not run yet._
+| Test | Bar | Fire rate | Outcome |
+|---|---|---|---|
+| Held-out simulated sister pairs | ≤ 0.10 | 0.02 (n 60) | met |
+| Simulated pairs with unmodelled receptor kinetics | ≥ 0.80 | 0.58 (n 60) | not met |
+| Recorded pairs, electrodes circularly shifted | ≥ 0.80 | 0.63 (n 60) | not met |
+
+On the recorded windows it fires on 0.35 of treated and 0.46 of null windows.
+Preparations outside the model (most windows fire): 37 of 107.
+Primary contrast restricted to preparations the guard passes: AUROC 0.89 [0.75, 0.98] (24 treated, 16 null).
 
 ## D. Simulations
 
@@ -70,16 +84,16 @@ _Not run yet._
 
 | Mechanism | Presence AUROC | 90% coverage | Effect r |
 |---|---|---|---|
-| `g_na` | 0.71 | 0.89 | 0.68 |
-| `g_kdr` | 0.54 | 0.86 | 0.30 |
-| `g_ahp` | 0.71 | 0.90 | 0.59 |
-| `g_ampa` | 0.80 | 0.87 | 0.37 |
-| `g_nmda` | 0.67 | 0.88 | 0.56 |
-| `g_gaba` | 0.60 | 0.85 | 0.36 |
-| `g_tonic_inh` | 0.58 | 0.91 | 0.47 |
-| `tau_d` | 0.74 | 0.89 | 0.71 |
-| `u_rel` | 0.72 | 0.91 | 0.52 |
-| `i_drive` | 0.56 | 0.84 | 0.73 |
+| `g_na` | 0.71 | 0.89 | 0.76 |
+| `g_kdr` | 0.54 | 0.85 | 0.21 |
+| `g_ahp` | 0.71 | 0.88 | 0.63 |
+| `g_ampa` | 0.80 | 0.89 | 0.73 |
+| `g_nmda` | 0.67 | 0.88 | 0.68 |
+| `g_gaba` | 0.60 | 0.87 | 0.53 |
+| `g_tonic_inh` | 0.58 | 0.87 | 0.44 |
+| `tau_d` | 0.74 | 0.89 | 0.54 |
+| `u_rel` | 0.72 | 0.89 | 0.74 |
+| `i_drive` | 0.56 | 0.88 | 0.41 |
 
 ## Version 2 blind test, re-read with null pairs (post hoc)
 
