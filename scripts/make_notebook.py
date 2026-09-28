@@ -35,9 +35,13 @@ simulations. From a baseline and a treated recording of one well it returns the
 probability that each of ten mechanisms moved, the size of the shift if it did,
 and a guard that refuses when no fitted model reproduces the recording.
 
+Every result is scored against untreated recordings read the same way: a
+method's chance level is its own hit rate when nothing was applied.
+
 This notebook runs on a CPU. It uses the trained twins in `models/`, the
 recording pairs bundled in `data/examples/`, and the pre-registered results in
-`results/v2/`. Rebuilding the simulation bank needs a CUDA device.
+`results/v3/` and `results/v2/`. Rebuilding the simulation banks needs a CUDA
+device.
 """),
     code("""
 import sys, json, pathlib, subprocess
@@ -48,7 +52,7 @@ for cand in (ROOT, ROOT.parent, pathlib.Path('/kaggle/working/hodgkins-razor')):
         break
 else:
     subprocess.run(['git', 'clone', '--depth', '1',
-                    'https://github.com/Marc-Dvci/hodgkins-razor', '/kaggle/working/hodgkins-razor'], check=True)
+                    'https://github.com/Marc-Dvci/Hodgkin-s-Razor', '/kaggle/working/hodgkins-razor'], check=True)
     subprocess.run([sys.executable, '-m', 'pip', 'install', '-q', 'zuko', 'numba'], check=True)
     ROOT = pathlib.Path('/kaggle/working/hodgkins-razor')
 sys.path.insert(0, str(ROOT))
@@ -57,7 +61,35 @@ from hodgkins_razor import features as F, nde, params as P, ppc, report
 print('statistics:', F.N_FEATURE, ' parameters:', P.N_PARAM, ' mechanisms a compound can move:', P.N_SHIFT)
 """),
     md("""
-## 1. The pre-registered blind test
+## 1. Blind test, version 3: chronic NMDA blockade on sister cultures
+
+Charlesworth et al. (2015) plated each preparation of mouse hippocampal neurons
+on two sister arrays and kept an NMDA antagonist (APV) on one of them. The twin
+reads the untreated sister as baseline and the other as treated, and reads
+untreated sister pairs of the same genotypes the same way. The primary: the
+AUROC of the twin's probability that NMDA moved, treated against untreated
+preparations, with a pre-registered bar of 0.70.
+"""),
+    code("""
+import hashlib
+md3 = (ROOT / 'PREREGISTRATION_v3.md').read_bytes()
+print('pre-registration v3 hash matches:',
+      hashlib.sha256(md3).hexdigest() == (ROOT / 'PREREGISTRATION_v3.sha256').read_text().split()[0])
+r3 = json.loads((ROOT / 'results' / 'v3' / 'results.json').read_text())
+A = r3['A_blind']; m = A['early']['metrics']
+print(f"p(g_nmda), {m['n_treated']} treated vs {m['n_null']} untreated preparations: "
+      f"AUROC {m['auroc_key']:.3f} [{m['auroc_key_ci95'][0]:.2f}, {m['auroc_key_ci95'][1]:.2f}]")
+for name, key in (('unpaired twin', 'unpaired'), ('Doorn et al. estimator', 'prior_art')):
+    mb = r3['B_comparators'][key]['metrics']
+    print(f"  {name:24s} AUROC {mb['auroc_key']:.3f}")
+print(f"co-primary, g_nmda top-1: {m['top1_treated_hits']}/{m['n_treated']} vs "
+      f"{m['top1_null_hits']}/{m['n_null']} (Fisher p {m['top1_fisher_p']:.2g})")
+c = A['canalization']
+print(f"canalization: median p(g_nmda) {c['median_early']:.3f} early -> {c['median_late']:.3f} late, "
+      f"Wilcoxon p {c['wilcoxon_p_early_gt_late']:.1g}")
+"""),
+    md("""
+## 2. Blind test, version 2: Dynasore
 
 Version 2 was frozen on simulation evidence, its answer key and success bar were
 hashed in `PREREGISTRATION_v2.md`, and only then was it run on the Dynasore
@@ -78,7 +110,7 @@ for w in sorted(r['A_doorn']['wells'], key=lambda w: w['well']):
     print(f"  {w['well']:9s} top call {w['top1']:12s} p={max(w['p_active']):.2f}")
 """),
     md("""
-## 2. One pair, end to end
+## 3. One pair, end to end
 
 Pick any bundled pair. The same function computes the statistics of a recording
 and of a simulation; the recording system (electrode layout, detection dead
@@ -110,7 +142,11 @@ print(report.to_markdown(body).split('## Mechanism class')[0])
 The predictive check, the second guard test, re-simulates the twin and needs a
 CUDA device; `python demo.py --live` runs it. Typicality needs no simulation.
 
-## 3. Every bundled pair
+## 4. Every bundled pair
+
+One 60 s window of each pair, read by the version 2 twins. A single window is
+noisy: the rat vehicle window below is flagged, while the vehicle wells scored
+on all their windows are not (0 of 11, `results/v2/RESULTS.md`).
 """),
     code("""
 KEY = {'CNQX': {'g_ampa'}, 'D-AP5': {'g_nmda'}, 'GABA': {'g_gaba', 'g_tonic_inh'},
@@ -128,7 +164,7 @@ for p in sorted((ROOT / 'data' / 'examples').glob('*.json')):
     print(f"{e['label']:52s} top {top['key']:12s} p={top['p_active']:.2f}  {mark}")
 """),
     md("""
-## 4. The chip readout prediction
+## 5. The chip twin
 
 The same kernel simulates a two-compartment chip with directional microchannels.
 In simulation, electrodes under the chambers cannot resolve a chip's
@@ -145,11 +181,20 @@ if b:
         s = b[stat]
         print(f"recorded chips, {stat}: AUROC {s['auroc']:.2f} "
               f"(predicted: {s['prediction']}) -> {'met' if s['met'] else 'not met'}")
+cp = json.loads((ROOT / 'results' / 'chip_power.json').read_text())['readouts']['channel_dominant_share']
+print(f"chips per design for 80% power: {cp['twin']['chips_needed']} if the twin is right, "
+      f"{cp['observed']['chips_needed']} at the recorded separation")
+l2 = ROOT / 'results' / 'lassus_study_v2.json'
+if l2.exists():
+    h = json.loads(l2.read_text())['striatal_target']['nmda']['0.3']
+    for k in ('tgt_freq', 'striato_striatal_sync', 'cortico_striatal_sync'):
+        print(f"Lassus, second prediction, {k:22s} lower in {h[k]['fraction_lower']:.2f} of chips, "
+              f"p {h[k]['wilcoxon_p_lower']:.2g}")
 """),
     md("""
-## 5. Where to go next
+## 6. Where to go next
 
-* `results/v2/RESULTS.md`: every pre-registered number, including what failed.
+* `results/v3/RESULTS.md` and `results/v2/RESULTS.md`: every pre-registered number, including what failed.
 * `docs/TECHNICAL_REPORT.md`: the full report.
 * `python demo.py --serve`: the web application.
 * `python scripts/run_all.py`: the whole pipeline on a CUDA device.
