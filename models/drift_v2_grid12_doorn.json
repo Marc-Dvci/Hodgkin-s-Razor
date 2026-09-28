@@ -1,0 +1,50 @@
+{
+ "view": "grid12",
+ "chosen": 0.03,
+ "table": [
+  {
+   "drift": 0.0,
+   "n_sim": 543,
+   "log_ratio": 0.9181799127270125,
+   "recorded_outside_95": 0.22833333333333333
+  },
+  {
+   "drift": 0.01,
+   "n_sim": 543,
+   "log_ratio": 0.40755509412130264,
+   "recorded_outside_95": 0.14333333333333334
+  },
+  {
+   "drift": 0.02,
+   "n_sim": 541,
+   "log_ratio": 0.10083481423276264,
+   "recorded_outside_95": 0.08916666666666667
+  },
+  {
+   "drift": 0.03,
+   "n_sim": 541,
+   "log_ratio": -0.058899279506925487,
+   "recorded_outside_95": 0.051666666666666666
+  },
+  {
+   "drift": 0.04,
+   "n_sim": 540,
+   "log_ratio": -0.21897303513616848,
+   "recorded_outside_95": 0.030833333333333334
+  },
+  {
+   "drift": 0.06,
+   "n_sim": 530,
+   "log_ratio": -0.5600337362684191,
+   "recorded_outside_95": 0.020833333333333332
+  }
+ ],
+ "kind": "doorn-null",
+ "paired": true,
+ "divs": [
+  0.0,
+  99.0
+ ],
+ "n_recorded": 30,
+ "source": "Doorn et al. Dynasore wells, two pre-drug stretches"
+}

@@ -1,0 +1,16 @@
+recorded doorn-null sister windows inside the domain: 30
+drift 0.000: simulated pairs 543, median log(recorded/simulated) +0.918, recorded outside the simulated 95% band 0.228
+drift 0.010: simulated pairs 543, median log(recorded/simulated) +0.408, recorded outside the simulated 95% band 0.143
+drift 0.020: simulated pairs 541, median log(recorded/simulated) +0.101, recorded outside the simulated 95% band 0.089
+drift 0.030: simulated pairs 541, median log(recorded/simulated) -0.059, recorded outside the simulated 95% band 0.052
+drift 0.040: simulated pairs 540, median log(recorded/simulated) -0.219, recorded outside the simulated 95% band 0.031
+drift 0.060: simulated pairs 530, median log(recorded/simulated) -0.560, recorded outside the simulated 95% band 0.021
+chosen drift 0.03 -> models/drift_v2_grid12_doorn.json
+recorded tampere-vehicle sister windows inside the domain: 27
+drift 0.000: simulated pairs 381, median log(recorded/simulated) +0.679, recorded outside the simulated 95% band 0.193
+drift 0.020: simulated pairs 381, median log(recorded/simulated) +0.275, recorded outside the simulated 95% band 0.100
+drift 0.040: simulated pairs 380, median log(recorded/simulated) +0.025, recorded outside the simulated 95% band 0.056
+drift 0.060: simulated pairs 377, median log(recorded/simulated) -0.223, recorded outside the simulated 95% band 0.041
+drift 0.080: simulated pairs 376, median log(recorded/simulated) -0.357, recorded outside the simulated 95% band 0.033
+drift 0.120: simulated pairs 373, median log(recorded/simulated) -0.706, recorded outside the simulated 95% band 0.026
+chosen drift 0.04 -> models/drift_v2_grid16_tampere.json

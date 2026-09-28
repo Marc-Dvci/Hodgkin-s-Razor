@@ -1,0 +1,50 @@
+{
+ "view": "grid16",
+ "chosen": 0.04,
+ "table": [
+  {
+   "drift": 0.0,
+   "n_sim": 381,
+   "log_ratio": 0.6788131905859658,
+   "recorded_outside_95": 0.1925925925925926
+  },
+  {
+   "drift": 0.02,
+   "n_sim": 381,
+   "log_ratio": 0.27515879835250956,
+   "recorded_outside_95": 0.1
+  },
+  {
+   "drift": 0.04,
+   "n_sim": 380,
+   "log_ratio": 0.024554157698991563,
+   "recorded_outside_95": 0.05555555555555555
+  },
+  {
+   "drift": 0.06,
+   "n_sim": 377,
+   "log_ratio": -0.22341174463508714,
+   "recorded_outside_95": 0.040740740740740744
+  },
+  {
+   "drift": 0.08,
+   "n_sim": 376,
+   "log_ratio": -0.3573300613282681,
+   "recorded_outside_95": 0.03333333333333333
+  },
+  {
+   "drift": 0.12,
+   "n_sim": 373,
+   "log_ratio": -0.7058863086275284,
+   "recorded_outside_95": 0.025925925925925925
+  }
+ ],
+ "kind": "tampere-vehicle",
+ "paired": true,
+ "divs": [
+  0.0,
+  99.0
+ ],
+ "n_recorded": 27,
+ "source": "Tampere vehicle wells, one well before and after vehicle"
+}
