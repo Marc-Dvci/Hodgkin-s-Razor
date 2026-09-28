@@ -60,6 +60,33 @@ def evidence() -> int:
     print("Hodgkin's Razor: what a compound did to a neural culture, and when to say nothing")
     line("=")
 
+    v3 = _load("results/v3/results.json")
+    if v3 and "A_blind" in v3:
+        A3 = v3["A_blind"]
+        m3 = A3["early"]["metrics"]
+        print("0. Blind test (pre-registration v3): chronic NMDA blockade on sister cultures,")
+        print("   Charlesworth et al. 2015. One sister of each preparation kept on APV; the")
+        print("   twin reads the untreated sister as baseline and the other as treated, and")
+        print("   reads untreated sister pairs of the same genotypes the same way.")
+        line()
+        print(f"   p(g_nmda), {m3['n_treated']} treated against {m3['n_null']} untreated "
+              f"preparations: AUROC {m3['auroc_key']:.2f} "
+              f"[{m3['auroc_key_ci95'][0]:.2f}, {m3['auroc_key_ci95'][1]:.2f}]  (bar 0.70): "
+              + ("MET" if m3["auroc_key"] >= 0.70 and m3["auroc_key_ci95"][0] > 0.5 else "NOT MET"))
+        B3 = v3.get("B_comparators", {})
+        for name, key in (("same twin, pairing removed", "unpaired"),
+                          ("Doorn et al. 2025 estimator", "prior_art")):
+            if key in B3:
+                mb = B3[key]["metrics"]
+                print(f"   {name:31s} AUROC {mb['auroc_key']:.2f} "
+                      f"[{mb['auroc_key_ci95'][0]:.2f}, {mb['auroc_key_ci95'][1]:.2f}]")
+        c3 = A3["canalization"]
+        print(f"   The reading fades as the cultures compensate: early > late, "
+              f"p = {c3['wilcoxon_p_early_gt_late']:.1g}.")
+        print(f"   NMDA as the single top mechanism: {m3['top1_treated_hits']}/{m3['n_treated']} "
+              f"treated, {m3['top1_null_hits']}/{m3['n_null']} untreated (p {m3['top1_fisher_p']:.2g}): "
+              + ("MET." if m3["top1_fisher_p"] < 0.05 else "NOT MET."))
+        print()
     # 1. Detection and class on the blind Dynasore wells, beside pre-drug null pairs.
     A = v2["A_doorn"]
     wells = A["wells"]
@@ -150,17 +177,6 @@ def evidence() -> int:
               f"random {s['random_expected']['rate']:.2f}, repeat {s['repeat']['rate']:.2f}.")
     print()
 
-    v3 = _load("results/v3/results.json")
-    if v3 and "A_blind" in v3:
-        m3 = v3["A_blind"]["early"]["metrics"]
-        print("5. Blind test (pre-registration v3): chronic APV on sister arrays, Charlesworth et al.")
-        line()
-        print(f"   p(g_nmda), {m3['n_treated']} treated against {m3['n_null']} genotype-matched "
-              f"null preparations: AUROC {m3['auroc_key']:.2f} "
-              f"[{m3['auroc_key_ci95'][0]:.2f}, {m3['auroc_key_ci95'][1]:.2f}] (bar 0.70, lower > 0.5).")
-        print(f"   Top-1 g_nmda: {m3['top1_treated_hits']}/{m3['n_treated']} treated, "
-              f"{m3['top1_null_hits']}/{m3['n_null']} null (Fisher p {m3['top1_fisher_p']:.3g}).")
-        print()
     print("Every outcome, including what failed: results/v2/RESULTS.md"
           + (" and results/v3/RESULTS.md" if v3 else ""))
     print("Single windows of the bundled recordings: python demo.py --windows")
