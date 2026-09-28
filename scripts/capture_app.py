@@ -19,12 +19,12 @@ import time
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
 SHOTS = [
-    ("rat_gabazine", "gabazine", "GABA-A antagonist; the twin names it at 0.81"),
-    ("rat_ttx", "ttx", "sodium channel block; named correctly"),
-    ("human_kainicacid", "kainate", "AMPA agonist; named correctly"),
-    ("rat_control", "control", "vehicle control; nothing is named"),
-    ("rat_cnqx", "cnqx", "AMPA antagonist; this window is called wrongly"),
-    ("human_gaba", "gaba_human", "GABA-A agonist on human neurons"),
+    ("rat_gabazine", "gabazine", "GABA-A antagonist; g_gaba ranked first, the guard says outside"),
+    ("rat_ttx", "ttx", "sodium channel block; g_na named at 0.65"),
+    ("human_kainicacid", "kainate", "human culture; outside the model"),
+    ("rat_control", "control", "vehicle window; this single window is called, the well is not"),
+    ("rat_cnqx", "cnqx", "AMPA antagonist; this window is read wrongly, no call"),
+    ("human_gaba", "gaba_human", "GABA-A agonist on human neurons; outside the model"),
 ]
 
 

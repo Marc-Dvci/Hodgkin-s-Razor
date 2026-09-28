@@ -45,7 +45,7 @@ function drawRaster(canvas, data, duration, nElec, colour) {
   g.fillText(`${data.n} events`, w - 78, 13);
 }
 
-const UNIT = {g_tonic_inh: " nS", i_drive: " pA"};
+const UNIT = {i_drive: " pA"};
 function fmtEffect(m) {
   if (m.kind === "fold") return `${m.effect.toFixed(2)}x`;
   return (m.effect >= 0 ? "+" : "") + m.effect.toFixed(2) + (UNIT[m.key] || "");
@@ -88,6 +88,17 @@ function render(d) {
     tb.appendChild(tr);
   }
   $("mechpanel").hidden = false;
+  const nx = rep.next_experiment;
+  const nxel = $("nextexp");
+  if (nxel) {
+    if (nx && nx.needed && nx.recommended) {
+      nxel.hidden = false;
+      $("nexttext").textContent = nx.sentence + " (ranked by simulation; " +
+        nx.candidates.slice(0, 3).map(c => `${c.name} ${c.separation.toFixed(2)}`).join(", ") + ")";
+    } else if (nx && !nx.needed) {
+      nxel.hidden = false; $("nexttext").textContent = "No follow-up needed: " + nx.reason + ".";
+    } else { nxel.hidden = true; }
+  }
 
   const kb = $("klass").querySelector("tbody");
   kb.innerHTML = "";
