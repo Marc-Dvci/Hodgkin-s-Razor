@@ -1,0 +1,10 @@
+grid16: box from 72 baseline windows, 0.97 of them inside
+  grid16 round 0: inside 0.009, median violation 12.41
+  grid16 round 1: inside 0.017, median violation 11.07
+  grid16 round 2: inside 0.033, median violation 10.72
+  grid16 round 3: inside 0.064, median violation 10.63
+  grid16 round 4: inside 0.094, median violation 10.59
+  grid16 round 5: inside 0.112, median violation 10.59
+  grid16: {'screened': 12288, 'admissible': 502, 'centres': 141, 'admissible_rate': 0.040852864583333336}
+  grid16: 251 simulated cultures inside (545s)
+wrote models/domain_human.json
