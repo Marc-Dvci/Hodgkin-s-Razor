@@ -522,67 +522,13 @@ The channel statistic's interval spans 0.28 to 0.88. With about 8 chips per desi
 | `u_rel` | 0.72 | 0.89 | 0.74 |
 | `i_drive` | 0.56 | 0.88 | 0.41 |
 
-**Version 2: one well recorded twice.**
-
-**grid16**
-
-| Case | n | Top-1 | Top-2 | Class |
-|---|---|---|---|---|
-| all single mechanism | 3356 | 0.57 | 0.75 | 0.65 |
-| saturating | 536 | 0.77 | 0.90 | 0.80 |
-| chance | | 0.10 | | 0.25 |
-
-| Mechanism | Presence AUROC | ECE | Coverage 50/80/90 | Effect r (given active) |
-|---|---|---|---|---|
-| `g_na` | 0.90 | 0.012 | 0.41 / 0.75 / 0.88 | 0.84 (128) |
-| `g_kdr` | 0.56 | 0.019 | 0.49 / 0.80 / 0.87 | 0.30 (112) |
-| `g_ahp` | 0.77 | 0.004 | 0.41 / 0.75 / 0.86 | 0.71 (116) |
-| `g_ampa` | 0.95 | 0.010 | 0.44 / 0.75 / 0.89 | 0.50 (120) |
-| `g_nmda` | 0.85 | 0.008 | 0.43 / 0.77 / 0.88 | 0.78 (115) |
-| `g_gaba` | 0.86 | 0.010 | 0.38 / 0.73 / 0.86 | 0.73 (150) |
-| `g_tonic_inh` | 0.72 | 0.009 | 0.44 / 0.77 / 0.89 | 0.68 (117) |
-| `tau_d` | 0.83 | 0.006 | 0.45 / 0.76 / 0.86 | 0.68 (103) |
-| `u_rel` | 0.77 | 0.010 | 0.46 / 0.77 / 0.89 | 0.71 (98) |
-| `i_drive` | 0.66 | 0.011 | 0.45 / 0.79 / 0.89 | 0.57 (95) |
-
-**grid12**
-
-| Case | n | Top-1 | Top-2 | Class |
-|---|---|---|---|---|
-| all single mechanism | 3161 | 0.75 | 0.88 | 0.82 |
-| saturating | 614 | 0.77 | 0.90 | 0.82 |
-| chance | | 0.10 | | 0.25 |
-
-| Mechanism | Presence AUROC | ECE | Coverage 50/80/90 | Effect r (given active) |
-|---|---|---|---|---|
-| `g_na` | 0.95 | 0.008 | 0.42 / 0.74 / 0.89 | 0.93 (120) |
-| `g_kdr` | 0.66 | 0.016 | 0.44 / 0.76 / 0.86 | 0.41 (124) |
-| `g_ahp` | 0.95 | 0.003 | 0.43 / 0.76 / 0.88 | 0.73 (77) |
-| `g_ampa` | 0.96 | 0.006 | 0.45 / 0.76 / 0.89 | 0.74 (109) |
-| `g_nmda` | 0.92 | 0.011 | 0.44 / 0.76 / 0.89 | 0.74 (84) |
-| `g_gaba` | 0.88 | 0.007 | 0.43 / 0.78 / 0.89 | 0.76 (120) |
-| `g_tonic_inh` | 0.70 | 0.009 | 0.42 / 0.74 / 0.86 | 0.48 (100) |
-| `tau_d` | 0.94 | 0.008 | 0.49 / 0.78 / 0.87 | 0.84 (130) |
-| `u_rel` | 0.91 | 0.008 | 0.45 / 0.78 / 0.89 | 0.86 (111) |
-| `i_drive` | 0.74 | 0.008 | 0.45 / 0.79 / 0.89 | 0.70 (96) |
+The version 2 twins (one well recorded twice) are in Appendix A.
 
 ![Figure 10. Held-out simulations.](../results/v2/figures/simulation.png)
 
 ### 7.6 The guard
 
-**Version 2, one well recorded twice.**
-
-| System | Case | Must | n | Fired | Typicality fired | Check fired | Outcome |
-|---|---|---|---|---|---|---|---|
-| grid16 | bank holdout | pass, at most 0.10 | 60 | 0.03 | 0.00 | 0.03 | **met** |
-| grid16 | variant kinetics | fire, at least 0.80 | 60 | 0.53 | 0.30 | 0.43 | **not met** |
-| grid16 | shuffled real | fire, at least 0.80 | 60 | 0.45 | 0.20 | 0.32 | **not met** |
-| grid12 | bank holdout | pass, at most 0.10 | 60 | 0.02 | 0.02 | 0.02 | **met** |
-| grid12 | variant kinetics | fire, at least 0.80 | 60 | 0.95 | 0.92 | 0.83 | **met** |
-| grid12 | shuffled real | fire, at least 0.80 | 50 | 1.00 | 1.00 | 1.00 | **met** |
-
-Thresholds: grid16: typicality 10.04, predictive check 5.03; grid12: typicality 9.54, predictive check 4.03.
-
+**Version 2, one well recorded twice** (full table in Appendix A). On the MCS 24-well plate the guard met all three bars: it fired on 0.02 of held-out simulations, 0.95 of simulations with unmodelled kinetics and 1.00 of shuffled recordings. On the Axion plate it missed both must-fire bars.
 
 **Version 3, sister pairs.**
 
@@ -604,22 +550,7 @@ A twin that cannot represent a compound cannot attribute a recording to it.
 Saturating blocks and agonists are applied to cultures the bank admitted, and
 the change in firing is compared with the published direction and rough size.
 
-| System | Compound | Parameter | Rate after / before (median, IQR) | Published range | Outcome |
-|---|---|---|---|---|---|
-| grid16 | TTX | `g_na` | 0.00 (0.00 to 0.00) | 0 to 0.1 | pass |
-| grid16 | CNQX or NBQX | `g_ampa` | 0.16 (0.09 to 0.23) | 0 to 0.35 | pass |
-| grid16 | D-AP5 | `g_nmda` | 0.53 (0.32 to 0.68) | 0.15 to 0.9 | pass |
-| grid16 | gabazine or picrotoxin | `g_gaba` | 3.87 (1.91 to 10.50) | 1.02 to 100 | pass |
-| grid16 | GABA or muscimol | `g_tonic_inh` | 0.00 (0.00 to 0.00) | 0 to 0.6 | pass |
-| grid16 | 4-aminopyridine | `g_kdr` | 1.03 (0.99 to 1.15) | 1 to 100 | pass |
-| grid16 | bath GABA, graded | `g_tonic_inh` | 0.92, 0.84, 0.69, 0.32, 0.02 | falls with dose | monotone |
-| grid12 | TTX | `g_na` | 0.00 (0.00 to 0.01) | 0 to 0.1 | pass |
-| grid12 | CNQX or NBQX | `g_ampa` | 0.12 (0.07 to 0.23) | 0 to 0.35 | pass |
-| grid12 | D-AP5 | `g_nmda` | 0.37 (0.18 to 0.71) | 0.15 to 0.9 | pass |
-| grid12 | gabazine or picrotoxin | `g_gaba` | 1.16 (1.07 to 1.35) | 1.02 to 100 | pass |
-| grid12 | GABA or muscimol | `g_tonic_inh` | 0.00 (0.00 to 0.00) | 0 to 0.6 | pass |
-| grid12 | 4-aminopyridine | `g_kdr` | 1.00 (0.98 to 1.04) | 1 to 100 | pass |
-| grid12 | bath GABA, graded | `g_tonic_inh` | 0.98, 0.97, 0.81, 0.67, 0.17 | falls with dose | monotone |
+On cultures the banks admitted, 12 of 12 saturating blocks and agonists change firing in the published direction and rough size (full table in Appendix A).
 
 **Bath GABA, read by the twin on simulations** (`scripts/gaba_check.py`):
 
@@ -756,3 +687,90 @@ service is part of the system.
 9. Cranmer K., Brehmer J., Louppe G. The frontier of simulation-based inference. *PNAS* 117:30055, 2020.
 10. Tsodyks M., Markram H. The neural code between neocortical pyramidal neurons depends on neurotransmitter release probability. *PNAS* 94:719, 1997.
 11. Cutts C., Eglen S. Detecting pairwise correlations in spike trains: an objective comparison of methods. *J Neurosci* 34:14288, 2014.
+
+---
+
+## Appendix A. Full tables
+
+### A.1 Version 2 simulations (one well recorded twice)
+
+**grid16**
+
+| Case | n | Top-1 | Top-2 | Class |
+|---|---|---|---|---|
+| all single mechanism | 3356 | 0.57 | 0.75 | 0.65 |
+| saturating | 536 | 0.77 | 0.90 | 0.80 |
+| chance | | 0.10 | | 0.25 |
+
+| Mechanism | Presence AUROC | ECE | Coverage 50/80/90 | Effect r (given active) |
+|---|---|---|---|---|
+| `g_na` | 0.90 | 0.012 | 0.41 / 0.75 / 0.88 | 0.84 (128) |
+| `g_kdr` | 0.56 | 0.019 | 0.49 / 0.80 / 0.87 | 0.30 (112) |
+| `g_ahp` | 0.77 | 0.004 | 0.41 / 0.75 / 0.86 | 0.71 (116) |
+| `g_ampa` | 0.95 | 0.010 | 0.44 / 0.75 / 0.89 | 0.50 (120) |
+| `g_nmda` | 0.85 | 0.008 | 0.43 / 0.77 / 0.88 | 0.78 (115) |
+| `g_gaba` | 0.86 | 0.010 | 0.38 / 0.73 / 0.86 | 0.73 (150) |
+| `g_tonic_inh` | 0.72 | 0.009 | 0.44 / 0.77 / 0.89 | 0.68 (117) |
+| `tau_d` | 0.83 | 0.006 | 0.45 / 0.76 / 0.86 | 0.68 (103) |
+| `u_rel` | 0.77 | 0.010 | 0.46 / 0.77 / 0.89 | 0.71 (98) |
+| `i_drive` | 0.66 | 0.011 | 0.45 / 0.79 / 0.89 | 0.57 (95) |
+
+**grid12**
+
+| Case | n | Top-1 | Top-2 | Class |
+|---|---|---|---|---|
+| all single mechanism | 3161 | 0.75 | 0.88 | 0.82 |
+| saturating | 614 | 0.77 | 0.90 | 0.82 |
+| chance | | 0.10 | | 0.25 |
+
+| Mechanism | Presence AUROC | ECE | Coverage 50/80/90 | Effect r (given active) |
+|---|---|---|---|---|
+| `g_na` | 0.95 | 0.008 | 0.42 / 0.74 / 0.89 | 0.93 (120) |
+| `g_kdr` | 0.66 | 0.016 | 0.44 / 0.76 / 0.86 | 0.41 (124) |
+| `g_ahp` | 0.95 | 0.003 | 0.43 / 0.76 / 0.88 | 0.73 (77) |
+| `g_ampa` | 0.96 | 0.006 | 0.45 / 0.76 / 0.89 | 0.74 (109) |
+| `g_nmda` | 0.92 | 0.011 | 0.44 / 0.76 / 0.89 | 0.74 (84) |
+| `g_gaba` | 0.88 | 0.007 | 0.43 / 0.78 / 0.89 | 0.76 (120) |
+| `g_tonic_inh` | 0.70 | 0.009 | 0.42 / 0.74 / 0.86 | 0.48 (100) |
+| `tau_d` | 0.94 | 0.008 | 0.49 / 0.78 / 0.87 | 0.84 (130) |
+| `u_rel` | 0.91 | 0.008 | 0.45 / 0.78 / 0.89 | 0.86 (111) |
+| `i_drive` | 0.74 | 0.008 | 0.45 / 0.79 / 0.89 | 0.70 (96) |
+
+
+
+### A.2 Version 2 guard
+
+| System | Case | Must | n | Fired | Typicality fired | Check fired | Outcome |
+|---|---|---|---|---|---|---|---|
+| grid16 | bank holdout | pass, at most 0.10 | 60 | 0.03 | 0.00 | 0.03 | **met** |
+| grid16 | variant kinetics | fire, at least 0.80 | 60 | 0.53 | 0.30 | 0.43 | **not met** |
+| grid16 | shuffled real | fire, at least 0.80 | 60 | 0.45 | 0.20 | 0.32 | **not met** |
+| grid12 | bank holdout | pass, at most 0.10 | 60 | 0.02 | 0.02 | 0.02 | **met** |
+| grid12 | variant kinetics | fire, at least 0.80 | 60 | 0.95 | 0.92 | 0.83 | **met** |
+| grid12 | shuffled real | fire, at least 0.80 | 50 | 1.00 | 1.00 | 1.00 | **met** |
+
+Thresholds: grid16: typicality 10.04, predictive check 5.03; grid12: typicality 9.54, predictive check 4.03.
+
+
+### A.3 Pharmacology check
+
+| System | Compound | Parameter | Rate after / before (median, IQR) | Published range | Outcome |
+|---|---|---|---|---|---|
+| grid16 | TTX | `g_na` | 0.00 (0.00 to 0.00) | 0 to 0.1 | pass |
+| grid16 | CNQX or NBQX | `g_ampa` | 0.16 (0.09 to 0.23) | 0 to 0.35 | pass |
+| grid16 | D-AP5 | `g_nmda` | 0.53 (0.32 to 0.68) | 0.15 to 0.9 | pass |
+| grid16 | gabazine or picrotoxin | `g_gaba` | 3.87 (1.91 to 10.50) | 1.02 to 100 | pass |
+| grid16 | GABA or muscimol | `g_tonic_inh` | 0.00 (0.00 to 0.00) | 0 to 0.6 | pass |
+| grid16 | 4-aminopyridine | `g_kdr` | 1.03 (0.99 to 1.15) | 1 to 100 | pass |
+| grid16 | bath GABA, graded | `g_tonic_inh` | 0.92, 0.84, 0.69, 0.32, 0.02 | falls with dose | monotone |
+| grid12 | TTX | `g_na` | 0.00 (0.00 to 0.01) | 0 to 0.1 | pass |
+| grid12 | CNQX or NBQX | `g_ampa` | 0.12 (0.07 to 0.23) | 0 to 0.35 | pass |
+| grid12 | D-AP5 | `g_nmda` | 0.37 (0.18 to 0.71) | 0.15 to 0.9 | pass |
+| grid12 | gabazine or picrotoxin | `g_gaba` | 1.16 (1.07 to 1.35) | 1.02 to 100 | pass |
+| grid12 | GABA or muscimol | `g_tonic_inh` | 0.00 (0.00 to 0.00) | 0 to 0.6 | pass |
+| grid12 | 4-aminopyridine | `g_kdr` | 1.00 (0.98 to 1.04) | 1 to 100 | pass |
+| grid12 | bath GABA, graded | `g_tonic_inh` | 0.98, 0.97, 0.81, 0.67, 0.17 | falls with dose | monotone |
+
+### A.4 Every version 3 outcome
+
+`results/v3/RESULTS.md` holds every table this report draws on, generated from `results/v3/results.json` by `scripts/render_v3.py`.

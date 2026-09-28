@@ -170,18 +170,28 @@ def simulation(r2, r3) -> str:
         "Two sisters differ in wiring and electrode pickup, not only in the compound, so "
         "every number here is lower than for one well recorded twice.",
         R3.simulation_v3(r3),
-        "**Version 2: one well recorded twice.**",
-        R2.simulation_tables(r2)])
+        "The version 2 twins (one well recorded twice) are in Appendix A."])
 
 
 def guard(r2, r3) -> str:
-    return "\n\n".join(["**Version 2, one well recorded twice.**", R2.guard_tables(r2),
-                        "**Version 3, sister pairs.**", R3.guard_v3(r3)])
+    g12 = r2["E_guard"]["grid12"]
+    return "\n\n".join([
+        f"**Version 2, one well recorded twice** (full table in Appendix A). On the MCS "
+        f"24-well plate the guard met all three bars: it fired on "
+        f"{f2(g12['bank_holdout']['fire_rate'])} of held-out simulations, "
+        f"{f2(g12['variant_kinetics']['fire_rate'])} of simulations with unmodelled kinetics "
+        f"and {f2(g12['shuffled_real']['fire_rate'])} of shuffled recordings. On the Axion "
+        "plate it missed both must-fire bars.",
+        "**Version 3, sister pairs.**", R3.guard_v3(r3)])
 
 
 def pharmacology_all(ph) -> str:
+    n_fail = sum(v["n_failed"] for v in ph["views"].values()) if ph else 0
+    n_all = sum(sum(1 for c in v["checks"] if "passes" in c) for v in ph["views"].values()) if ph else 0
     return "\n\n".join([
-        pharmacology(ph),
+        f"On cultures the banks admitted, {n_all - n_fail} of {n_all} saturating blocks and "
+        "agonists change firing in the published direction and rough size (full table in "
+        "Appendix A).",
         "**Bath GABA, read by the twin on simulations** (`scripts/gaba_check.py`):",
         R3.gaba_table(),
         "As bath GABA rises towards saturation, the culture falls silent and the twin's "
@@ -217,6 +227,15 @@ def chip_design() -> str:
                      "state set from the paper's statement that isolated striatal neurons "
                      "are silent, is committed but not yet run.")
     return "\n\n".join(parts)
+
+
+def appendix(r2, ph) -> str:
+    return "\n\n".join([
+        "### A.1 Version 2 simulations (one well recorded twice)", R2.simulation_tables(r2),
+        "### A.2 Version 2 guard", R2.guard_tables(r2),
+        "### A.3 Pharmacology check", pharmacology(ph),
+        "### A.4 Every version 3 outcome", "`results/v3/RESULTS.md` holds every table this "
+        "report draws on, generated from `results/v3/results.json` by `scripts/render_v3.py`."])
 
 
 def limitations(r3, r2) -> str:
@@ -322,6 +341,7 @@ def main() -> None:
         "LIMITATIONS": limitations(r3, r2),
         "IMPACT": impact(),
         "TEAM": team(),
+        "APPENDIX": appendix(r2, ph),
         "N_TESTS": str(n_tests),
     }
     text = (ROOT / "docs" / "TECHNICAL_REPORT.v3.template.md").read_text(encoding="utf-8")
