@@ -258,7 +258,8 @@ def main() -> None:
             DM.append(np.full(int(ok.sum()), VIEWS.index(domain), dtype=np.int8))
             have += int(ok.sum())
 
-        fx = np.concatenate([np.stack(list(f)) for f in PENDING])
+        # A batch in which every pair was truncated contributes no features.
+        fx = np.concatenate([np.stack(x) for x in (list(f) for f in PENDING) if x])
         XB, XT = [fx[0::2]], [fx[1::2]]
         np.savez_compressed(
             path,
