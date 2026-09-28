@@ -1,0 +1,24 @@
+  1/362
+  21/362
+  41/362
+  61/362
+  81/362
+  101/362
+  121/362
+  141/362
+  161/362
+  181/362
+  201/362
+WARNING:root:Only 0.550% proposal samples are
+                    accepted. It may take a long time to collect the remaining
+                    1989 samples. Consider interrupting (Ctrl-C) and switching to
+                    `build_posterior(..., sample_with='mcmc')`.
+  221/362
+  241/362
+  261/362
+  281/362
+  301/362
+  321/362
+  341/362
+  361/362
+wrote D:\Boulot temp\AI4S Open Innovation\hodgkins-razor\results\prior_art_doorn_charlesworth.json
