@@ -145,6 +145,50 @@ def main() -> None:
     else:
         c.add("results/v2/results.json present", False, "run scripts/evaluate_v2.py")
 
+    print("pre-registration, version 3")
+    md3 = ROOT / "PREREGISTRATION_v3.md"
+    digest3 = ""
+    if md3.exists():
+        rec3 = (ROOT / "PREREGISTRATION_v3.sha256").read_text().split()[0]
+        digest3 = hashlib.sha256(md3.read_bytes()).hexdigest()
+        c.add("PREREGISTRATION_v3.md matches its recorded hash", digest3 == rec3, digest3[:16])
+        spec3 = json.loads(re.search(r"```json\n(.*?)\n```", md3.read_text(encoding="utf-8"),
+                                     re.S).group(1))
+        sys.path.insert(0, str(ROOT / "scripts"))
+        from evaluate_v2 import model_digest
+        for name, want in spec3["frozen_models"].items():
+            c.add(f"{name} is the model that was frozen",
+                  (ROOT / name).exists() and model_digest(ROOT / name) == want, want[:12])
+        for name, want in spec3["frozen_files"].items():
+            p = ROOT / name
+            c.add(f"{name} is the file that was frozen",
+                  p.exists() and hashlib.sha256(p.read_bytes()).hexdigest() == want, want[:12])
+        stop = ROOT / "docs" / "STOP_RULE_v3.md"
+        c.add("stop rule committed", stop.exists())
+    else:
+        c.add("PREREGISTRATION_v3.md present", False, "run scripts/freeze_v3.py")
+
+    print("results, version 3")
+    rj3 = ROOT / "results" / "v3" / "results.json"
+    if rj3.exists():
+        r3 = json.loads(rj3.read_text())
+        c.add("v3 results were produced against the third pre-registration",
+              bool(digest3) and r3.get("prereg_sha256") == digest3)
+        rm3 = ROOT / "results" / "v3" / "RESULTS.md"
+        text3 = rm3.read_text(encoding="utf-8") if rm3.exists() else ""
+        m3 = r3.get("A_blind", {}).get("early", {}).get("metrics", {})
+        if m3:
+            want = f"{m3['auroc_key']:.3f}"
+            c.add("written v3 primary matches the JSON", want in text3, want)
+            want = f"{m3['top1_treated_hits']}/{m3['n_treated']} against {m3['top1_null_hits']}/{m3['n_null']}"
+            c.add("written v3 co-primary matches the JSON", want in text3, want)
+        wu = ROOT / "docs" / "WRITEUP.md"
+        if wu.exists() and m3:
+            want = f"{m3['auroc_key']:.2f}"
+            c.add("writeup quotes the v3 primary as scored", want in wu.read_text(encoding="utf-8"), want)
+    else:
+        c.add("results/v3/results.json present", False, "run scripts/evaluate_v3_lowmem.py")
+
     if not args.skip_tests:
         print("tests")
         out = subprocess.run([sys.executable, "-m", "pytest", "-q", str(ROOT / "tests")],
