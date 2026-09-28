@@ -180,7 +180,7 @@ One CUDA block simulates one network and one thread simulates one neuron, with
 the whole time loop in shared memory. Spiking neurons are collected with a warp
 ballot and read back in neuron order, so floating-point sums never reorder and a
 run is bit-reproducible (`test_simulator_is_deterministic`). On one RTX 4070,
-the kernel simulates about  networks of 65 simulated seconds per
+the kernel simulates about 151 networks of 65 simulated seconds per
 second.
 
 ### 5.3 Recording systems

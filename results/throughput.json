@@ -1,0 +1,8 @@
+{
+ "networks_per_s": 151,
+ "batch": 384,
+ "repeats": 3,
+ "simulated_seconds_per_network": 65,
+ "gpu": "NVIDIA GeForce RTX 4070",
+ "python": "3.12.13"
+}
