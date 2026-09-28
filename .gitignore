@@ -16,3 +16,6 @@ data/screen_domain.npz
 # Generated locally for the film, not part of the deliverable.
 results/capture/
 results/film/
+
+# Superseded before the v3 freeze (unpaired baseline trained on the first bank only).
+models/twin_v3_unpaired_mcs60q_bank1/
