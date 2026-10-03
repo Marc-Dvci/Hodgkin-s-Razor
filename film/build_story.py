@@ -140,8 +140,8 @@ def beats() -> list[dict]:
                      {"cue": 2, "delay": 0, "do": "scroll", "sel": "#dyn", "offset": 60},
                      {"cue": 2, "delay": 1500, "do": "point", "sel": "#dynkpis .kpi:nth-child(3)"},
                      {"cue": 2, "delay": 4200, "do": "point", "sel": "#dynkpis .kpi:nth-child(1)"}],
-         "say": "What failed is reported with the same weight. NMDA was the single top mechanism in "
-                "only 2 of 29 treated cultures. On an earlier Dynasore test, the exact mechanism was "
+         "say": "What failed is reported with the same weight. Only 2 of 29 treated cultures had "
+                "NMDA as the single top mechanism. On an earlier Dynasore test, the exact mechanism was "
                 "right in 2 of 10 wells, though the drug was detected in 9 of 10, and in none of the "
                 "untreated pairs.",
          "zh": "失败的结果同样如实报告。只有 29 份处理过的培养物中的 2 份把 NMDA 列为首位机制。在此前的 Dynasore 测试中，精确机制只在 10 个孔中对了 2 个，但药物效应在 10 个孔中检出 9 个，在未处理样本中一个也没有误报。"},

@@ -89,7 +89,7 @@ simplification.
 - Checksums on every downloaded file.
 - `verify.py` re-checks every pre-registration hash, every frozen model and
   file, the agreement between the written numbers and the JSON, and 43 tests
-  (61 checks pass).
+  (66 checks pass).
 - Docker images for CPU and GPU.
 
 **Against it.** The simulation banks are not distributed; they take about 80
@@ -100,13 +100,14 @@ minutes each to rebuild. The v3 evaluation needs the low-memory runner on a
 
 ## Presentation quality (10 percent)
 
-- A film rendered frame by frame from the results and captures of the running
-  application.
-- Narration measured and cued, and checked against the results files.
+- A film rendered frame by frame, in which the running application is driven
+  live: an analysis, the refusal, the blind-test explorer and the chip planner.
+- Narration in the author's own voice, each scene cued to the measured start of
+  its sentence, every spoken number checked against the results files.
 - English and Chinese subtitles.
 - The writeup summary in both languages.
-
-**Against it.** Not yet published on YouTube and Bilibili.
+- A public static demo with three views, including the blind test re-read
+  preparation by preparation, usable on a phone.
 
 **Score: 8 of 10.**
 
@@ -114,9 +115,9 @@ minutes each to rebuild. The v3 evaluation needs the low-memory runner on a
 
 ## Open items
 
-1. **Publishing.** The repository, the video (YouTube and Bilibili), the
-   Pages site, the Kaggle Notebook and Dataset, and the Writeup. The
-   placeholders in `docs/WRITEUP.md` are marked `<...>`.
+1. **Publishing.** The repository and the Pages site are public. The video
+   (YouTube and Bilibili) and the Kaggle Writeup are uploaded by the author;
+   their two links are the only placeholders left in `docs/WRITEUP.md`.
 2. **HESI multi-laboratory dataset.** It needs a free EDAP login. It would add
    acute drugs across several mechanisms, drugs the model cannot represent (a
    real-data guard test), true negatives, dose-response and seven

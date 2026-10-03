@@ -1,75 +1,79 @@
 1
-00:00:00,000 --> 00:00:11,466
+00:00:00,000 --> 00:00:12,410
 A microelectrode array under a neural organ-on-chip records every burst of a living network. Then the analysis ends in a description: firing fell, bursts shortened.
 
 2
-00:00:11,666 --> 00:00:22,148
+00:00:12,610 --> 00:00:23,225
 It does not say what the compound did. Blocking AMPA receptors, opening chloride channels or shutting sodium channels can all silence a network the same way.
 
 3
-00:00:22,348 --> 00:00:34,462
+00:00:23,425 --> 00:00:35,007
 Hodgkin's Razor fits a biophysical network, simulated on a GPU, to the recording itself. It is trained only on simulations, and has never seen a compound label.
 
 4
-00:00:34,662 --> 00:00:48,672
+00:00:35,207 --> 00:00:49,263
 For ten mechanisms it returns the probability that each one moved, the size of the shift, and an interval. Here, a rat culture after TTX: sodium channels, down, probability 0.65.
 
 5
-00:00:48,872 --> 00:00:57,146
+00:00:49,463 --> 00:00:58,243
 Before it names anything, it re-simulates the network at the parameters it inferred, and checks that the twin reproduces what was measured.
 
 6
-00:00:57,346 --> 00:01:04,948
+00:00:58,443 --> 00:01:05,410
 When it cannot, it says so. This human culture is outside the model, and no mechanism is named.
 
 7
-00:01:05,148 --> 00:01:25,326
+00:01:05,610 --> 00:01:26,111
 The refusal is tested. On one recording system it fired on 0.95 of simulated cultures with receptor kinetics it cannot represent, on every shuffled recording, and on only 0.02 of held-out simulations. On the other two systems it is weaker, and the report says so.
 
 8
-00:01:25,526 --> 00:01:35,576
+00:01:26,311 --> 00:01:36,241
 Every result is scored against untreated recordings, read in exactly the same way. A method's chance level is its own hit rate when nothing was applied.
 
 9
-00:01:35,776 --> 00:01:46,522
+00:01:36,441 --> 00:01:48,602
 That rule caught a comparator. It scored 8 of 10 on a blind test, and named the same mechanisms on 6 of 10 untreated pairs. A preference, not a detection.
 
 10
-00:01:46,722 --> 00:01:59,484
+00:01:48,802 --> 00:02:02,014
 The blind test. Charlesworth and colleagues kept one sister culture of each preparation on an NMDA blocker for days. The pre-registration was hashed before a single treated recording was read.
 
 11
-00:01:59,684 --> 00:02:20,222
-The twin's NMDA reading separates 29 treated preparations from 23 untreated sisters of the same genotypes. AUROC 0.86, against a pre-registered bar of 0.70. The published estimator it builds on scores 0.49 on the same cultures.
+00:02:02,214 --> 00:02:26,551
+The twin's NMDA reading separates 29 treated preparations from 23 untreated sisters of the same genotypes. AUROC 0.86, against a pre-registered bar of 0.70. Remove the pairing, and it falls to 0.66. The published estimator it builds on scores 0.49 on the same cultures.
 
 12
-00:02:20,422 --> 00:02:26,728
-The cultures compensate as they mature, as the authors reported. The twin's reading fades with them.
+00:02:26,751 --> 00:02:37,142
+It was never told which drug was applied. Of all ten mechanisms it reads, NMDA is the one that separates treated from untreated best.
 
 13
-00:02:26,928 --> 00:02:45,282
-What failed is reported with the same weight. NMDA was the single top mechanism in only 2 of 29 treated cultures. On an earlier Dynasore test, the exact mechanism was right in 2 of 10 wells, though the drug was detected in 9 of 10, and in none of the untreated pairs.
+00:02:37,342 --> 00:02:44,149
+The cultures compensate as they mature, as the authors reported. The twin's reading fades with them.
 
 14
-00:02:45,482 --> 00:02:58,052
-The same simulator runs a two-compartment chip with one-way microchannels, the geometry of the sponsor's own devices. It says, before the experiment, which readout resolves which property.
+00:02:44,349 --> 00:03:04,245
+What failed is reported with the same weight. Only 2 of 29 treated cultures had NMDA as the single top mechanism. On an earlier Dynasore test, the exact mechanism was right in 2 of 10 wells, though the drug was detected in 9 of 10, and in none of the untreated pairs.
 
 15
-00:02:58,252 --> 00:03:05,158
-The one public test of chip directionality used about 8 chips per design. The twin says it needed 20.
+00:03:04,445 --> 00:03:17,563
+The same simulator runs a two-compartment chip with one-way microchannels, the geometry of the sponsor's own devices. It says, before the experiment, which readout resolves which property.
 
 16
-00:03:05,358 --> 00:03:23,112
-On the sponsor laboratory's cortico-striatal result, the first committed prediction failed. The revision imposed only the paper's own finding, that an isolated striatum is silent. Both synchrony effects then appeared, in the published direction. Event frequency did not.
+00:03:17,763 --> 00:03:25,031
+The one public test of chip directionality used about 8 chips per design. The twin says it needed 20.
 
 17
-00:03:23,312 --> 00:03:42,386
-For a neural organ-on-chip laboratory, a recording becomes a mechanism hypothesis, with the untreated comparison that says how far to trust it. And before the experiment, the twin says which electrodes to use and how many chips to run. That is the step from describing an experiment to predicting one.
+00:03:25,231 --> 00:03:43,582
+On the sponsor laboratory's cortico-striatal result, the first committed prediction failed. The revision imposed only the paper's own finding, that an isolated striatum is silent. Both synchrony effects then appeared, in the published direction. Event frequency did not.
 
 18
-00:03:42,586 --> 00:03:54,196
-Everything runs from public data on one desktop GPU. The demo runs on a CPU, and one script checks every hash, every frozen model, and every written number.
+00:03:43,782 --> 00:04:04,245
+For a neural organ-on-chip laboratory, a recording becomes a mechanism hypothesis, with the untreated comparison that says how far to trust it. And before the experiment, the twin says which electrodes to use and how many chips to run. That is the step from describing an experiment to predicting one.
 
 19
-00:03:54,396 --> 00:04:00,978
+00:04:04,445 --> 00:04:16,646
+Everything runs from public data on one desktop GPU. The demo runs on a CPU, and one script checks every hash, every frozen model, and every written number.
+
+20
+00:04:16,846 --> 00:04:23,347
 From describing an experiment, to predicting it. And knowing when not to.
