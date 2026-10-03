@@ -1,0 +1,635 @@
+{
+ "note": "Post hoc. Four rules compared on data already seen; all four reported. Controls are left out of their own reference.",
+ "v3_charlesworth": {
+  "raw": {
+   "treated_hits": 2,
+   "n_treated": 29,
+   "control_hits": 1,
+   "n_control": 23,
+   "fisher_p": 0.5878733031674208,
+   "treated_top1": [
+    "g_kdr",
+    "g_kdr",
+    "g_kdr",
+    "g_gaba",
+    "g_gaba",
+    "g_na",
+    "tau_d",
+    "tau_d",
+    "g_kdr",
+    "tau_d",
+    "g_kdr",
+    "g_kdr",
+    "tau_d",
+    "g_nmda",
+    "tau_d",
+    "tau_d",
+    "g_gaba",
+    "g_gaba",
+    "g_ampa",
+    "tau_d",
+    "g_gaba",
+    "g_gaba",
+    "g_na",
+    "g_gaba",
+    "g_gaba",
+    "g_nmda",
+    "g_kdr",
+    "g_gaba",
+    "g_gaba"
+   ],
+   "control_top1": [
+    "g_kdr",
+    "g_kdr",
+    "g_kdr",
+    "g_kdr",
+    "g_gaba",
+    "g_kdr",
+    "g_gaba",
+    "g_kdr",
+    "g_gaba",
+    "tau_d",
+    "g_nmda",
+    "g_kdr",
+    "g_kdr",
+    "g_kdr",
+    "g_gaba",
+    "g_kdr",
+    "g_ahp",
+    "u_rel",
+    "g_kdr",
+    "g_kdr",
+    "g_kdr",
+    "u_rel",
+    "g_gaba"
+   ]
+  },
+  "logratio": {
+   "treated_hits": 6,
+   "n_treated": 29,
+   "control_hits": 1,
+   "n_control": 23,
+   "fisher_p": 0.09333094940103702,
+   "treated_top1": [
+    "g_nmda",
+    "g_nmda",
+    "g_nmda",
+    "g_ampa",
+    "g_ampa",
+    "g_na",
+    "g_ampa",
+    "g_na",
+    "g_nmda",
+    "tau_d",
+    "g_ahp",
+    "tau_d",
+    "tau_d",
+    "g_nmda",
+    "tau_d",
+    "tau_d",
+    "g_ampa",
+    "g_ampa",
+    "g_ampa",
+    "g_ampa",
+    "g_gaba",
+    "g_ampa",
+    "g_na",
+    "g_ampa",
+    "g_ampa",
+    "g_nmda",
+    "tau_d",
+    "u_rel",
+    "g_gaba"
+   ],
+   "control_top1": [
+    "g_na",
+    "g_na",
+    "g_na",
+    "g_tonic_inh",
+    "g_gaba",
+    "g_na",
+    "g_gaba",
+    "g_ampa",
+    "g_gaba",
+    "tau_d",
+    "g_nmda",
+    "g_ahp",
+    "g_ahp",
+    "i_drive",
+    "g_na",
+    "g_tonic_inh",
+    "g_ahp",
+    "u_rel",
+    "u_rel",
+    "u_rel",
+    "g_ahp",
+    "u_rel",
+    "g_ampa"
+   ]
+  },
+  "z": {
+   "treated_hits": 8,
+   "n_treated": 29,
+   "control_hits": 2,
+   "n_control": 23,
+   "fisher_p": 0.08446812668659745,
+   "treated_top1": [
+    "g_nmda",
+    "g_kdr",
+    "g_nmda",
+    "g_na",
+    "g_na",
+    "g_na",
+    "g_na",
+    "g_na",
+    "g_nmda",
+    "g_kdr",
+    "g_nmda",
+    "g_nmda",
+    "g_na",
+    "g_nmda",
+    "g_nmda",
+    "tau_d",
+    "g_ampa",
+    "g_ampa",
+    "g_ampa",
+    "g_ampa",
+    "g_gaba",
+    "g_ampa",
+    "g_na",
+    "g_ampa",
+    "g_ampa",
+    "g_nmda",
+    "g_kdr",
+    "g_gaba",
+    "g_kdr"
+   ],
+   "control_top1": [
+    "g_na",
+    "g_na",
+    "i_drive",
+    "g_tonic_inh",
+    "g_gaba",
+    "g_na",
+    "g_gaba",
+    "g_nmda",
+    "g_gaba",
+    "tau_d",
+    "g_nmda",
+    "i_drive",
+    "g_kdr",
+    "i_drive",
+    "g_na",
+    "i_drive",
+    "g_ahp",
+    "u_rel",
+    "u_rel",
+    "u_rel",
+    "g_kdr",
+    "u_rel",
+    "g_kdr"
+   ]
+  },
+  "pct": {
+   "treated_hits": 7,
+   "n_treated": 29,
+   "control_hits": 2,
+   "n_control": 23,
+   "fisher_p": 0.1368853924548543,
+   "treated_top1": [
+    "g_nmda",
+    "g_kdr",
+    "g_nmda",
+    "g_na",
+    "g_na",
+    "g_na",
+    "g_na",
+    "g_na",
+    "g_nmda",
+    "g_kdr",
+    "g_nmda",
+    "tau_d",
+    "tau_d",
+    "g_nmda",
+    "g_nmda",
+    "tau_d",
+    "g_ampa",
+    "g_ampa",
+    "g_ampa",
+    "g_ampa",
+    "g_gaba",
+    "g_ahp",
+    "g_na",
+    "g_ampa",
+    "g_ampa",
+    "g_nmda",
+    "g_kdr",
+    "g_gaba",
+    "g_kdr"
+   ],
+   "control_top1": [
+    "g_na",
+    "g_na",
+    "i_drive",
+    "g_tonic_inh",
+    "g_gaba",
+    "g_na",
+    "g_gaba",
+    "g_nmda",
+    "g_gaba",
+    "tau_d",
+    "g_nmda",
+    "i_drive",
+    "g_kdr",
+    "i_drive",
+    "g_na",
+    "i_drive",
+    "g_ahp",
+    "g_ahp",
+    "u_rel",
+    "g_ahp",
+    "tau_d",
+    "u_rel",
+    "g_ampa"
+   ]
+  }
+ },
+ "v2_doorn": {
+  "raw": {
+   "treated_hits": 2,
+   "n_treated": 10,
+   "control_hits": 2,
+   "n_control": 10,
+   "fisher_p": 0.7089783281733746,
+   "treated_top1": [
+    "g_ampa",
+    "tau_d",
+    "g_ahp",
+    "tau_d",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_gaba"
+   ],
+   "control_top1": [
+    "g_tonic_inh",
+    "g_kdr",
+    "i_drive",
+    "tau_d",
+    "tau_d",
+    "g_ampa",
+    "g_ampa",
+    "i_drive",
+    "g_kdr",
+    "g_kdr"
+   ]
+  },
+  "logratio": {
+   "treated_hits": 1,
+   "n_treated": 10,
+   "control_hits": 4,
+   "n_control": 10,
+   "fisher_p": 0.9837461300309598,
+   "treated_top1": [
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "tau_d",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp"
+   ],
+   "control_top1": [
+    "g_nmda",
+    "g_na",
+    "i_drive",
+    "tau_d",
+    "tau_d",
+    "tau_d",
+    "tau_d",
+    "g_gaba",
+    "i_drive",
+    "g_gaba"
+   ]
+  },
+  "z": {
+   "treated_hits": 0,
+   "n_treated": 10,
+   "control_hits": 0,
+   "n_control": 10,
+   "fisher_p": 1.0,
+   "treated_top1": [
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp"
+   ],
+   "control_top1": [
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp"
+   ]
+  },
+  "pct": {
+   "treated_hits": 2,
+   "n_treated": 10,
+   "control_hits": 2,
+   "n_control": 10,
+   "fisher_p": 0.7089783281733746,
+   "treated_top1": [
+    "g_ampa",
+    "tau_d",
+    "g_ahp",
+    "tau_d",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_ahp",
+    "g_gaba"
+   ],
+   "control_top1": [
+    "g_tonic_inh",
+    "g_na",
+    "i_drive",
+    "tau_d",
+    "g_gaba",
+    "g_ampa",
+    "u_rel",
+    "i_drive",
+    "g_kdr",
+    "g_gaba"
+   ]
+  }
+ },
+ "tampere_rat": {
+  "raw": {
+   "treated_hits": 16,
+   "n_treated": 42,
+   "per_compound": {
+    "Kainic acid": [
+     5,
+     7
+    ],
+    "GABA": [
+     0,
+     7
+    ],
+    "CNQX": [
+     4,
+     7
+    ],
+    "D-AP5": [
+     1,
+     7
+    ],
+    "Gabazine": [
+     2,
+     7
+    ],
+    "TTX": [
+     4,
+     7
+    ]
+   },
+   "n_control": 7
+  },
+  "logratio": {
+   "treated_hits": 19,
+   "n_treated": 42,
+   "per_compound": {
+    "Kainic acid": [
+     6,
+     7
+    ],
+    "GABA": [
+     0,
+     7
+    ],
+    "CNQX": [
+     4,
+     7
+    ],
+    "D-AP5": [
+     5,
+     7
+    ],
+    "Gabazine": [
+     0,
+     7
+    ],
+    "TTX": [
+     4,
+     7
+    ]
+   },
+   "n_control": 7
+  },
+  "z": {
+   "treated_hits": 6,
+   "n_treated": 42,
+   "per_compound": {
+    "Kainic acid": [
+     0,
+     7
+    ],
+    "GABA": [
+     0,
+     7
+    ],
+    "CNQX": [
+     0,
+     7
+    ],
+    "D-AP5": [
+     0,
+     7
+    ],
+    "Gabazine": [
+     2,
+     7
+    ],
+    "TTX": [
+     4,
+     7
+    ]
+   },
+   "n_control": 7
+  },
+  "pct": {
+   "treated_hits": 17,
+   "n_treated": 42,
+   "per_compound": {
+    "Kainic acid": [
+     5,
+     7
+    ],
+    "GABA": [
+     0,
+     7
+    ],
+    "CNQX": [
+     5,
+     7
+    ],
+    "D-AP5": [
+     1,
+     7
+    ],
+    "Gabazine": [
+     2,
+     7
+    ],
+    "TTX": [
+     4,
+     7
+    ]
+   },
+   "n_control": 7
+  }
+ },
+ "tampere_human": {
+  "raw": {
+   "treated_hits": 0,
+   "n_treated": 24,
+   "per_compound": {
+    "Gabazine": [
+     0,
+     4
+    ],
+    "Kainic acid": [
+     0,
+     4
+    ],
+    "GABA": [
+     0,
+     4
+    ],
+    "CNQX": [
+     0,
+     4
+    ],
+    "D-AP5": [
+     0,
+     4
+    ],
+    "TTX": [
+     0,
+     4
+    ]
+   },
+   "n_control": 4
+  },
+  "logratio": {
+   "treated_hits": 5,
+   "n_treated": 24,
+   "per_compound": {
+    "Gabazine": [
+     1,
+     4
+    ],
+    "Kainic acid": [
+     0,
+     4
+    ],
+    "GABA": [
+     0,
+     4
+    ],
+    "CNQX": [
+     0,
+     4
+    ],
+    "D-AP5": [
+     4,
+     4
+    ],
+    "TTX": [
+     0,
+     4
+    ]
+   },
+   "n_control": 4
+  },
+  "z": {
+   "treated_hits": 5,
+   "n_treated": 24,
+   "per_compound": {
+    "Gabazine": [
+     2,
+     4
+    ],
+    "Kainic acid": [
+     0,
+     4
+    ],
+    "GABA": [
+     1,
+     4
+    ],
+    "CNQX": [
+     0,
+     4
+    ],
+    "D-AP5": [
+     0,
+     4
+    ],
+    "TTX": [
+     2,
+     4
+    ]
+   },
+   "n_control": 4
+  },
+  "pct": {
+   "treated_hits": 1,
+   "n_treated": 24,
+   "per_compound": {
+    "Gabazine": [
+     1,
+     4
+    ],
+    "Kainic acid": [
+     0,
+     4
+    ],
+    "GABA": [
+     0,
+     4
+    ],
+    "CNQX": [
+     0,
+     4
+    ],
+    "D-AP5": [
+     0,
+     4
+    ],
+    "TTX": [
+     0,
+     4
+    ]
+   },
+   "n_control": 4
+  }
+ }
+}

@@ -52,7 +52,7 @@ def main() -> None:
         json.dumps({"examples": items, "gpu": False}))
 
     html = (STATIC / "index.html").read_text()
-    html = html.replace("/static/app.js", "app.js")
+    html = html.replace("/static/app.js", "app.js").replace("/static/evidence.js", "evidence.js")
     # The upload path needs a server, so it is removed rather than left broken.
     start = html.find('    <details style="margin-top:14px">')
     end = html.find("</details>", start)
@@ -72,6 +72,11 @@ def main() -> None:
     js = js.replace('const fb = $("fb").files[0], ft = $("ft").files[0];',
                     'const fb = null, ft = null;')
     (out / "app.js").write_text(js)
+    # The evidence views fetch evidence.json relative to their own script.
+    for name in ("evidence.js", "evidence.json"):
+        if not (STATIC / name).exists():
+            raise SystemExit(f"app/static/{name} missing; run scripts/export_evidence.py")
+        shutil.copy(STATIC / name, out / name)
     (out / ".nojekyll").write_text("")
 
     readme = [

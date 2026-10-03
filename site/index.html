@@ -54,14 +54,133 @@ details summary{cursor:pointer;color:var(--dim);font-size:13px}
 pre{background:#0b0e13;border:1px solid var(--line);border-radius:7px;padding:12px;
   overflow:auto;font-family:var(--mono);font-size:12px;color:var(--dim)}
 @media(max-width:760px){.grid2{grid-template-columns:1fr}}
+nav.tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav.tabs a{color:var(--dim);text-decoration:none;padding:7px 13px;border-radius:7px;
+  font-size:14px;border:1px solid transparent}
+nav.tabs a:hover{color:var(--ink)}
+nav.tabs a.on{color:var(--ink);background:#1d2530;border-color:var(--line)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-top:6px}
+.kpi{background:#11161d;border:1px solid var(--line);border-radius:9px;padding:13px 15px}
+.kpi b{display:block;font-size:30px;line-height:1.1;font-weight:700;letter-spacing:-.5px}
+.kpi span{color:var(--dim);font-size:13px}
+.kpi.good b{color:var(--ok)} .kpi.miss b{color:var(--up)}
+.lede{font-size:16px;margin:0 0 10px;max-width:900px}
+.hashline{font-family:var(--mono);font-size:12px;color:var(--down);margin-top:10px;word-break:break-all}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;flex-wrap:wrap}
+.seg button{border:0;border-radius:0;background:transparent;color:var(--dim);padding:7px 12px}
+.seg button.on{background:#243041;color:var(--ink)}
+.chart{width:100%;display:block}
+.chart text{fill:var(--dim);font:12px -apple-system,"Segoe UI",Roboto,sans-serif}
+.chart .lab{fill:var(--ink)}
+.chart .axis{stroke:var(--line)}
+.chart .grid{stroke:#1c232d}
+.chart .hit{cursor:pointer}
+.chart .sel{fill:var(--ink);font-weight:600}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--dim);margin-top:6px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.tip{position:fixed;pointer-events:none;background:#0b0e13;border:1px solid var(--line);border-radius:6px;
+  padding:6px 9px;font-size:12px;color:var(--ink);display:none;z-index:9}
+.note{border-left:3px solid var(--up);padding:4px 0 4px 12px;color:var(--dim);font-size:14px;margin:12px 0 0}
+.note.ok{border-color:var(--ok)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.heat td{text-align:center;font-family:var(--mono);font-size:13px}
+.heat td:first-child{text-align:left;font-family:inherit}
+.scrollx{overflow-x:auto;max-width:100%}
+header .sub{flex:1 1 260px}
 </style>
 </head>
 <body>
 <header>
   <h1>Hodgkin's Razor</h1>
-  <span class="sub">Name the mechanism a compound moved, from two recordings of one well</span>
+  <span class="sub">From a baseline and a treated recording: the mechanism a compound moved, or a refusal</span>
+  <nav class="tabs">
+    <a href="#analyse" data-view="analyse">Analyse a recording pair</a>
+    <a href="#blind" data-view="blind">Blind test</a>
+    <a href="#chips" data-view="chips">Chip planner</a>
+  </nav>
 </header>
-<main>
+<div class="tip" id="tip"></div>
+
+<main id="view-blind" hidden>
+  <section class="panel">
+    <h2>Pre-registered blind test · Charlesworth et al. 2015</h2>
+    <p class="lede">Sister cultures from one preparation: one kept on the NMDA blocker APV for
+      days, its sister untreated. The twin reads each pair and gives the probability that each
+      of ten mechanisms moved. The test was frozen and hashed before a single treated recording
+      was read, and the reader refuses to return one until the hash matches.</p>
+    <div class="kpis" id="v3kpis"></div>
+    <div class="hashline" id="v3hash"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Which mechanism separates treated from untreated?</h2>
+    <div class="row" style="margin-bottom:10px">
+      <span class="sub">Method</span>
+      <div class="seg" id="v3method">
+        <button data-m="twin" class="on">Hodgkin's Razor</button>
+        <button data-m="unpaired">same twin, pairing removed</button>
+        <button data-m="prior_art">Doorn et al. 2025 estimator</button>
+      </div>
+      <span class="sub">Untreated group</span>
+      <div class="seg" id="v3null">
+        <button data-n="matched" class="on">same genotypes</button>
+        <button data-n="pooled">all genotypes</button>
+      </div>
+    </div>
+    <div class="grid2">
+      <div><p class="cap" id="profcap"></p><svg class="chart" id="v3profile"></svg></div>
+      <div><p class="cap" id="stripcap"></p><svg class="chart" id="v3strip"></svg>
+        <div class="legend"><span><i style="background:#8b98a8"></i>untreated sister</span>
+          <span><i style="background:var(--accent)"></i>kept on APV</span></div></div>
+    </div>
+    <p class="note" id="v3fail"></p>
+  </section>
+
+  <section class="panel">
+    <h2>The reading fades as the cultures compensate</h2>
+    <div class="grid2">
+      <div><svg class="chart" id="v3canal"></svg></div>
+      <div><p class="sub" id="v3canaltext" style="margin-top:0"></p></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Earlier blind test · Dynasore on human iPSC networks (Doorn et al. 2024)</h2>
+    <div class="grid2">
+      <div><p class="cap">Largest mechanism probability per well: the well's own pre-drug pair, then after the drug</p>
+        <svg class="chart" id="dyn"></svg>
+        <div class="legend"><span><i style="background:#8b98a8"></i>pre-drug pair (nothing applied)</span>
+          <span><i style="background:var(--up)"></i>after Dynasore</span></div></div>
+      <div><div class="kpis" id="dynkpis"></div>
+        <p class="note" id="dynfail"></p></div>
+    </div>
+  </section>
+</main>
+
+<main id="view-chips" hidden>
+  <section class="panel">
+    <h2>Before the experiment: which readout resolves which chip property?</h2>
+    <p class="lede">The same simulator runs a two-chamber chip joined by directional
+      microchannels, the geometry of axon-diode neural chips, and reads it four ways.
+      A twin trained per readout on 30,000 simulated chips says how well each property can be
+      recovered from it: the correlation between the true and the inferred value on held-out chips.</p>
+    <table class="heat" id="heat"></table>
+    <p class="note ok" id="heatnote"></p>
+  </section>
+  <section class="panel">
+    <h2>How many chips does a directionality claim need?</h2>
+    <div class="grid2">
+      <div>
+        <p class="cap">Chips per design: <b id="nchips"></b></p>
+        <input type="range" id="chipslider" min="0" max="13" step="1" value="6">
+        <svg class="chart" id="power"></svg>
+      </div>
+      <div><div class="kpis" id="powkpis"></div><p class="sub" id="powtext"></p></div>
+    </div>
+  </section>
+</main>
+
+<main id="view-analyse">
   <section class="panel">
     <h2>Recording pair</h2>
     <div class="row">
@@ -134,5 +253,6 @@ pre{background:#0b0e13;border:1px solid var(--line);border-radius:7px;padding:12
   </section>
 </main>
 <script type="module" src="app.js"></script>
+<script type="module" src="evidence.js"></script>
 </body>
 </html>
