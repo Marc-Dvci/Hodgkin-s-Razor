@@ -12,46 +12,60 @@ https://github.com/Marc-Dvci/Hodgkin-s-Razor (Apache-2.0)
 
 ## Live demo
 
-<PAGES_URL> (static site, no login) · Kaggle Notebook: <KAGGLE_NOTEBOOK_URL>
+<PAGES_URL> (static site, no login, works on a phone) · Kaggle Notebook: <KAGGLE_NOTEBOOK_URL>
+
+The page has three views: **Analyse a recording pair** (the full mechanism
+report on bundled recordings, with the measured raster beside the re-simulated
+twin), **Blind test** (every preparation of the pre-registered test, with the
+method, the untreated group and the mechanism switchable, each AUROC recomputed
+in the browser from the scored values) and **Chip planner** (which readout
+resolves which chip property, and the power for a given number of chips).
+
+![Blind test: the twin's NMDA reading against untreated sisters, and the same preparations read by two comparators](https://raw.githubusercontent.com/Marc-Dvci/Hodgkin-s-Razor/main/results/v3/figures/charlesworth_primary.png)
 
 ## Project summary
 
-A microelectrode array under a neural organ-on-chip records every network burst
-of a living culture. Analysis then reduces it to a description: firing fell,
-bursts shortened. It does not say which molecular mechanism a compound moved.
-Hodgkin's Razor fits a GPU-simulated biophysical network to the recording. For
-ten mechanisms it returns the probability that each moved, the size of the
-shift, and an interval, or it refuses when no fitted model reproduces the data.
-It is trained only on simulations and has never seen a compound label.
+Neural organ-on-chip platforms record every network burst of a living culture
+on a microelectrode array, but the analysis ends in a description: firing
+fell, bursts shortened. It cannot tell an AMPA-receptor blocker from a
+sodium-channel blocker. Hodgkin's Razor turns the recording into a mechanism
+hypothesis. It fits a GPU-simulated biophysical network to a baseline and a
+treated recording and returns, for ten molecular mechanisms, the probability
+that each moved, the size of the shift and an interval. When no fitted model
+reproduces the data, it refuses. It is trained only on simulated culture pairs
+and has never seen a compound label.
 
-Every test is scored against untreated recordings read the same way, because a
-method's chance level is its own hit rate when nothing was applied. That rule
-exposed a comparator whose 8/10 blind score was a preference: it gave the same
-answer on 6 of 10 untreated pairs.
+Every test was pre-registered, its hash committed before the blind data was
+read, and scored against untreated recordings read the same way.
 
-On a pre-registered blind test from another laboratory (Charlesworth et al.
-2015), the twin's probability that NMDA moved separates cultures kept on an
-NMDA blocker from untreated sister cultures of the same genotypes: AUROC 0.86
-[0.74, 0.96], against a bar of 0.70. The published estimator it builds on
-scores 0.49 on the same cultures. The reading fades as the cultures compensate,
-as the authors reported (p = 3e-5). Naming NMDA as the single top mechanism
-failed (2/29), and so did the exact-mechanism primary of an earlier Dynasore
-test (2/10). There, the twin still detected the drug in 9/10 wells, with 0/10
-false calls, and got the mechanism class in 8/10.
+On a blind test from another laboratory (Charlesworth et al. 2015: mouse
+cultures kept on the NMDA blocker APV, against untreated sisters), the twin's
+NMDA probability separates 29 treated from 23 untreated preparations: AUROC
+0.86 [0.74, 0.96], against a pre-registered bar of 0.70. The published
+estimator it builds on scores 0.49 on the same preparations. Of the ten
+mechanisms, NMDA separates best, and the reading fades as the cultures
+compensate, as the authors reported (p = 3e-5). On an earlier blind test
+(Dynasore, human iPSC networks), it detected the drug in 9 of 10 wells with no
+false call on the untreated pairs, and named the right mechanism class in 8.
 
-For chips, it says before the experiment which electrodes resolve
-directionality and how many chips a claim needs: about 20 per design, against
-8 in the only public test.
+Naming the single exact mechanism is the weak link (2/29, 2/10); both failures
+are reported in full.
+
+For chip design, the same simulator says before the experiment which readout
+resolves which chip property and how many chips a claim needs: about 20 per
+design, against 8 in the only public test.
 
 ### 项目摘要（中文）
 
-神经器官芯片下的微电极阵列记录下活体培养物的每一次网络爆发，但常规分析只能给出描述：放电减少、爆发变短。它无法说明化合物作用于哪一种分子机制。Hodgkin's Razor 将 GPU 模拟的生物物理神经网络拟合到记录本身：对十种机制，给出每种机制发生变化的概率、变化幅度及区间；当没有任何拟合模型能再现数据时，它拒绝给出结论。模型只用模拟数据训练，从未见过任何化合物标签。
+神经器官芯片通过微电极阵列记录活体培养物的每一次网络爆发，但分析最终只停留在描述：放电减少、爆发变短。它无法区分 AMPA 受体阻断剂与钠通道阻断剂。Hodgkin's Razor 把记录变成机制假设：它将 GPU 模拟的生物物理神经网络拟合到一段基线记录和一段处理后记录上，对十种分子机制给出每种机制发生变化的概率、变化幅度及区间；当没有任何拟合模型能再现数据时，它拒绝给出结论。模型只用模拟的培养物配对训练，从未见过任何化合物标签。
 
-每项测试都与以同样方式读取的未处理记录对照评分，因为一种方法的机会水平就是在未施药时它自身的命中率。这一规则揭示了一个对照方法的 8/10 盲测成绩其实是一种偏好：它在 10 对未处理样本中有 6 对给出了同样的答案。
+每项测试都经过预注册，在读取盲测数据之前提交哈希，并与以同样方式读取的未处理记录对照评分。
 
-在一项来自另一实验室的预注册盲测中（Charlesworth 等，2015），孪生模型对"NMDA 发生变化"给出的概率，能够把长期施加 NMDA 阻断剂的培养物与同基因型、未处理的姊妹培养物区分开：AUROC 0.86 [0.74, 0.96]，预设门槛为 0.70。它所基于的已发表估计器在同一批培养物上仅得 0.49。随着培养物发生代偿，这一读数逐渐减弱，与原作者的报告一致（p = 3e-5）。将 NMDA 列为唯一首位机制未达标（2/29），此前 Dynasore 盲测的精确机制主终点也未达标（2/10）。但在那项测试中，模型在 10 个孔中检出 9 个药物效应，10 对未处理样本中误报为 0，机制类别正确 8/10。
+在一项来自另一实验室的盲测中（Charlesworth 等，2015：长期施加 NMDA 阻断剂 APV 的小鼠培养物与未处理的姊妹培养物），孪生模型的 NMDA 概率把 29 份处理过的制备与 23 份未处理制备区分开：AUROC 0.86 [0.74, 0.96]，预设门槛为 0.70。它所基于的已发表估计器在同一批制备上仅得 0.49。在十种机制中，NMDA 的区分能力最强；随着培养物发生代偿，这一读数逐渐减弱，与原作者的报告一致（p = 3e-5）。在此前的盲测中（Dynasore，人源 iPSC 网络），模型在 10 个孔中检出 9 个药物效应，未处理配对中没有误报，机制类别正确 8 个。
 
-对于芯片，它在实验之前就能指出哪些电极可以分辨方向性，以及一个结论需要多少块芯片：每种设计约 20 块，而唯一的公开测试只有 8 块。
+精确命名单一机制是薄弱环节（2/29，2/10），两项失败均完整报告。
+
+在芯片设计方面，同一个模拟器在实验之前就能指出哪种读数可以分辨哪种芯片性质，以及一个结论需要多少块芯片：每种设计约 20 块，而唯一的公开测试只有 8 块。
 
 ## Technical report
 
@@ -64,11 +78,29 @@ neurotoxicity and neuropharmacology. Their richest readout is extracellular
 electrophysiology, and its analysis stops at description. In safety
 pharmacology, a compound that silences a network through sodium channels
 carries a different liability from one that acts on excitatory transmission,
-and a rate plot cannot tell them apart. The supporting organisation's stated
-aim is organ-on-chip digital twins that move the field from experimental
-description toward predictive simulation. This project builds that for the two
-questions a laboratory asks: what did the compound do, and what should be
-measured next?
+and a rate plot cannot tell them apart.
+
+The regulatory door is open. The US FDA Modernization Act 2.0 (December 2022)
+removed the statutory requirement for animal testing before human trials and
+named cell-based assays, microphysiological systems and computer models among
+the alternatives. The OECD in vitro battery for developmental neurotoxicity
+already includes a microelectrode-array network-formation assay. What such an
+assay still lacks is a readout a reviewer can weigh: a named mechanism, with
+the rate at which the same reading appears when nothing was applied.
+
+In practice, for a laboratory screening compounds on neural chips:
+
+1. **Before plating:** the chip planner says which electrodes resolve the
+   property under test and how many chips per design reach 80% power.
+2. **After recording:** each compound gets a ranked mechanism profile against
+   the plate's own untreated chips, or a refusal that flags it for follow-up.
+3. **When two mechanisms tie:** the twin ranks follow-up recordings by
+   simulation (tested, and reported as not yet better than a fixed protocol).
+
+The supporting organisation's stated aim is organ-on-chip digital twins that
+move the field from experimental description toward predictive simulation.
+This project builds that for the two questions a laboratory asks: what did the
+compound do, and what should be measured next?
 
 ### Method
 

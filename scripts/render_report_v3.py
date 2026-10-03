@@ -350,7 +350,12 @@ def impact() -> str:
         "**For safety pharmacology**, a mechanism reading distinguishes a compound that "
         "silences a network through sodium channels from one that acts on excitatory "
         "transmission. Rate plots cannot. Every call is scored against vehicle and "
-        "sister controls read the same way, which is what a regulatory reader will ask for.",
+        "sister controls read the same way, which is what a regulatory reader will ask for. "
+        "The door is open: the US FDA Modernization Act 2.0 (December 2022) removed the "
+        "statutory requirement for animal testing before human trials and named cell-based "
+        "assays, microphysiological systems and computer models among the alternatives, and "
+        "the OECD in vitro battery for developmental neurotoxicity already includes a "
+        "microelectrode-array network-formation assay.",
         "**For the method**, scoring every test against untreated pairs changed a "
         "conclusion in this project. A comparator's 8/10 blind score turned out to be a "
         "preference it shows on untreated pairs too. That rule, with pre-registration "

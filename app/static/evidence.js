@@ -239,8 +239,8 @@ function drawChips() {
 function drawPower() {
   const ch = EV.chips, curve = ch.power.twin, cur = curve[+$("chipslider").value];
   $("nchips").textContent = cur.n;
-  const el = $("power"), W = 520, H = 240; svg(el, W, H);
-  const x0 = 46, x1 = W - 16, y0 = H - 30, y1 = 12;
+  const el = $("power"), W = 520, H = 256; svg(el, W, H);
+  const x0 = 46, x1 = W - 16, y0 = H - 46, y1 = 12;
   const nmax = curve[curve.length - 1].n, sx = n => x0 + (n / nmax) * (x1 - x0), sy = p => y0 - p * (y0 - y1);
   for (const g of [0, 0.2, 0.4, 0.6, 0.8, 1]) {
     add(el, "line", { x1: x0, x2: x1, y1: sy(g), y2: sy(g), class: "grid" });
@@ -255,8 +255,8 @@ function drawPower() {
     add(el, "line", { x1: sx(8), x2: sx(8), y1: y1, y2: y0, stroke: C.up, "stroke-dasharray": "3 3" });
     add(el, "text", { x: sx(8) + 4, y: y1 + 10 }, "public test");
   }
-  for (let n = 20; n <= nmax; n += 20) add(el, "text", { x: sx(n), y: H - 10, "text-anchor": "middle" }, n);
-  add(el, "text", { x: x1, y: H - 0, "text-anchor": "end" }, "chips per design");
+  for (let n = 20; n <= nmax; n += 20) add(el, "text", { x: sx(n), y: y0 + 18, "text-anchor": "middle" }, n);
+  add(el, "text", { x: (x0 + x1) / 2, y: H - 4, "text-anchor": "middle" }, "chips per design");
   const ok = cur.power >= ch.power.target;
   $("powkpis").innerHTML = kpi(ok ? "good" : "miss", `${Math.round(cur.power * 100)}%`, `chance that the channel statistic's 95% interval clears 0.5 with ${cur.n} chips per design`) +
     kpi("", `${cur.lo.toFixed(2)} to ${cur.hi.toFixed(2)}`, "90% range of the AUROC such an experiment would report");

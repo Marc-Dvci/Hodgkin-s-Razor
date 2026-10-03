@@ -327,6 +327,32 @@ the change in firing is compared with the published direction and rough size.
 
 ![Figure 12. Pharmacology check.](../results/v2/figures/pharmacology.png)
 
+### 7.8 Exploratory, post hoc: reading each mechanism against untreated controls
+
+Why did the top-1 co-primary fail while the NMDA ranking passed? The presence
+heads give each mechanism a different probability when nothing was applied: on
+the untreated v3 sisters, `g_kdr` has a median of 0.15 and `g_ampa` 0.04. The
+largest raw probability therefore tends to name the mechanism with the highest
+base rate. Every plate carries untreated or vehicle wells, so each mechanism
+can instead be read against its own untreated distribution.
+`scripts/control_referenced.py` compares four rules, all after every
+pre-registration was scored, on data already seen; all four are reported.
+Controls are left out of their own reference. Cells give top-1 hits on treated
+recordings, with the rate on the controls in brackets where the set has them.
+
+| Rule | v3 Charlesworth (29 / 23) | v2 Dynasore (10 / 10) | Tampere rat (42) | Tampere human (24) |
+|---|---|---|---|---|
+| raw probability (frozen) | 2 (1) | 2 (2) | 16 | 0 |
+| log ratio to the control median | 6 (1) | 1 (4) | 19 | 5 |
+| z-score against controls | 8 (2) | 0 (0) | 6 | 5 |
+| percentile among controls | 7 (2) | 2 (2) | 17 | 1 |
+
+No rule improves all four sets. Reading against controls helps the slow,
+compensated chronic effect (v3: 6 to 8 of 29 against 2, one-sided Fisher
+p = 0.08 to 0.14 against the controls) and the human plate, and does not help
+the Dynasore wells, where the untreated reference is ten pre-drug pairs. It is
+not adopted. The log-ratio rule is the one to pre-register on the next blind set.
+
 ## 8. From description to predictive simulation: the planning tool
 
 ![Figure 13. How many chips a directionality claim needs.](../results/v3/figures/chip_power.png)
@@ -350,6 +376,14 @@ python demo.py --serve               # web application on 127.0.0.1:8000
 python -m pytest tests/ -q           # {{N_TESTS}} tests
 python scripts/verify.py             # hashes, checksums, tests, written numbers
 ```
+
+The same page is published as a static site (`site/`, no server, no login).
+Besides the mechanism report on bundled recordings, it has a **Blind test**
+view, where every preparation of the version 3 test can be re-read with the
+method, the untreated group and the mechanism switched, each AUROC recomputed
+in the browser from the scored values, and a **Chip planner** view (Figure 13
+made interactive). `scripts/export_evidence.py` writes its data from the frozen
+results and refuses to write if its recomputed primary differs from the scored one.
 
 Full rebuild on a CUDA device, with each step skipped when its output exists:
 

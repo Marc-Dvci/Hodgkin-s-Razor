@@ -53,8 +53,13 @@ python scripts/verify.py                 # hashes, checksums, frozen models, wri
 ```
 
 A static version of the application, with no server, is in `site/` and is
-published by `.github/workflows/pages.yml`. A CPU notebook is in
-`notebooks/hodgkins_razor_demo.ipynb`.
+published by `.github/workflows/pages.yml`. It has three views: **Analyse a
+recording pair** (the mechanism report on bundled recordings), **Blind test**
+(every preparation of the pre-registered test, with method, untreated group
+and mechanism switchable; each AUROC is recomputed in the browser from the
+scored values, written by `scripts/export_evidence.py`) and **Chip planner**
+(which readout resolves which chip property, and power against chips per
+design). A CPU notebook is in `notebooks/hodgkins_razor_demo.ipynb`.
 
 With a CUDA device, the whole pipeline rebuilds from public data:
 
@@ -196,7 +201,8 @@ scripts/
   freeze_v2.py evaluate_v2.py mateus_check.py prior_art_doorn.py
   freeze_v3.py evaluate_v3.py evaluate_v3_lowmem.py
   render_v2.py render_v3.py figures_v2.py render_report_v3.py make_examples.py
-  export_static.py make_notebook.py verify.py run_all.py
+  export_evidence.py export_static.py make_notebook.py verify.py run_all.py
+  control_referenced.py   post hoc: each mechanism read against untreated controls
 app/        FastAPI service and the single-page interface
 site/       the same page as a static site
 film/       the demo film, rendered from the running page and the results

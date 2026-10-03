@@ -571,6 +571,32 @@ As bath GABA rises towards saturation, the culture falls silent and the twin's r
 
 ![Figure 12. Pharmacology check.](../results/v2/figures/pharmacology.png)
 
+### 7.8 Exploratory, post hoc: reading each mechanism against untreated controls
+
+Why did the top-1 co-primary fail while the NMDA ranking passed? The presence
+heads give each mechanism a different probability when nothing was applied: on
+the untreated v3 sisters, `g_kdr` has a median of 0.15 and `g_ampa` 0.04. The
+largest raw probability therefore tends to name the mechanism with the highest
+base rate. Every plate carries untreated or vehicle wells, so each mechanism
+can instead be read against its own untreated distribution.
+`scripts/control_referenced.py` compares four rules, all after every
+pre-registration was scored, on data already seen; all four are reported.
+Controls are left out of their own reference. Cells give top-1 hits on treated
+recordings, with the rate on the controls in brackets where the set has them.
+
+| Rule | v3 Charlesworth (29 / 23) | v2 Dynasore (10 / 10) | Tampere rat (42) | Tampere human (24) |
+|---|---|---|---|---|
+| raw probability (frozen) | 2 (1) | 2 (2) | 16 | 0 |
+| log ratio to the control median | 6 (1) | 1 (4) | 19 | 5 |
+| z-score against controls | 8 (2) | 0 (0) | 6 | 5 |
+| percentile among controls | 7 (2) | 2 (2) | 17 | 1 |
+
+No rule improves all four sets. Reading against controls helps the slow,
+compensated chronic effect (v3: 6 to 8 of 29 against 2, one-sided Fisher
+p = 0.08 to 0.14 against the controls) and the human plate, and does not help
+the Dynasore wells, where the untreated reference is ten pre-drug pairs. It is
+not adopted. The log-ratio rule is the one to pre-register on the next blind set.
+
 ## 8. From description to predictive simulation: the planning tool
 
 ![Figure 13. How many chips a directionality claim needs.](../results/v3/figures/chip_power.png)
@@ -645,7 +671,7 @@ The recommendation resolves 0.54 of ties. That beats recording the same well aga
 
 **For a neural organ-on-chip laboratory**, the twin turns a recording into a mechanism hypothesis with an interval, together with the untreated comparison that says how much to trust it. It also says in advance how many chips and which electrodes an experiment needs. CellShells' stated aim is organ-on-chip digital twins that move the field from experimental description toward predictive simulation. The chip twin's readout analysis and its sample-size output are that, in code that runs on public data. The follow-up recommender is the next piece, and section 8 shows it is not there yet.
 
-**For safety pharmacology**, a mechanism reading distinguishes a compound that silences a network through sodium channels from one that acts on excitatory transmission. Rate plots cannot. Every call is scored against vehicle and sister controls read the same way, which is what a regulatory reader will ask for.
+**For safety pharmacology**, a mechanism reading distinguishes a compound that silences a network through sodium channels from one that acts on excitatory transmission. Rate plots cannot. Every call is scored against vehicle and sister controls read the same way, which is what a regulatory reader will ask for. The door is open: the US FDA Modernization Act 2.0 (December 2022) removed the statutory requirement for animal testing before human trials and named cell-based assays, microphysiological systems and computer models among the alternatives, and the OECD in vitro battery for developmental neurotoxicity already includes a microelectrode-array network-formation assay.
 
 **For the method**, scoring every test against untreated pairs changed a conclusion in this project. A comparator's 8/10 blind score turned out to be a preference it shows on untreated pairs too. That rule, with pre-registration enforced in code and a stop rule that forbids freezing a test the model fails on its own simulations, carries over to any simulation-based inference on biological recordings.
 
@@ -660,6 +686,14 @@ python demo.py --serve               # web application on 127.0.0.1:8000
 python -m pytest tests/ -q           # 43 tests
 python scripts/verify.py             # hashes, checksums, tests, written numbers
 ```
+
+The same page is published as a static site (`site/`, no server, no login).
+Besides the mechanism report on bundled recordings, it has a **Blind test**
+view, where every preparation of the version 3 test can be re-read with the
+method, the untreated group and the mechanism switched, each AUROC recomputed
+in the browser from the scored values, and a **Chip planner** view (Figure 13
+made interactive). `scripts/export_evidence.py` writes its data from the frozen
+results and refuses to write if its recomputed primary differs from the scored one.
 
 Full rebuild on a CUDA device, with each step skipped when its output exists:
 

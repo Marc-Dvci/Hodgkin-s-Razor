@@ -182,6 +182,15 @@ def main() -> None:
             c.add("written v3 primary matches the JSON", want in text3, want)
             want = f"{m3['top1_treated_hits']}/{m3['n_treated']} against {m3['top1_null_hits']}/{m3['n_null']}"
             c.add("written v3 co-primary matches the JSON", want in text3, want)
+        ev = ROOT / "app" / "static" / "evidence.json"
+        if ev.exists() and m3:
+            e = json.loads(ev.read_text(encoding="utf-8"))
+            c.add("evidence views show the scored v3 primary",
+                  abs(e["v3"]["primary"]["auroc"] - m3["auroc_key"]) < 1e-3,
+                  f'{e["v3"]["primary"]["auroc"]:.3f}')
+            st = ROOT / "site" / "evidence.json"
+            c.add("static site carries the same evidence file",
+                  st.exists() and st.read_bytes() == ev.read_bytes())
         wu = ROOT / "docs" / "WRITEUP.md"
         if wu.exists() and m3:
             want = f"{m3['auroc_key']:.2f}"
