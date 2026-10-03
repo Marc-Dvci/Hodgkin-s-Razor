@@ -25,3 +25,6 @@ film/speech/
 film/narration.wav
 film/stills/
 film/preview.mp4
+
+# Local film build logs.
+results/film_*.log
