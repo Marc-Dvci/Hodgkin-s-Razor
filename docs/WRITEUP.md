@@ -12,7 +12,7 @@ https://github.com/Marc-Dvci/Hodgkin-s-Razor (Apache-2.0)
 
 ## Live demo
 
-<PAGES_URL> (static site, no login, works on a phone) · Kaggle Notebook: <KAGGLE_NOTEBOOK_URL>
+https://marc-dvci.github.io/Hodgkin-s-Razor/ (static site, no login, works on a phone) · Notebook: [open in Colab](https://colab.research.google.com/github/Marc-Dvci/Hodgkin-s-Razor/blob/main/notebooks/hodgkins_razor_demo.ipynb) (CPU only; it clones the repository and re-checks the pre-registration hashes and scored results)
 
 The page has three views: **Analyse a recording pair** (the full mechanism
 report on bundled recordings, with the measured raster beside the re-simulated
@@ -69,7 +69,7 @@ design, against 8 in the only public test.
 
 ## Technical report
 
-Full report (PDF): <REPORT_PDF_URL> · Markdown: `docs/TECHNICAL_REPORT.md` in the repository. Every number below is read from `results/v3/RESULTS.md` and `results/v2/RESULTS.md`.
+Full report (PDF): https://github.com/Marc-Dvci/Hodgkin-s-Razor/blob/main/docs/TECHNICAL_REPORT.pdf · Markdown: `docs/TECHNICAL_REPORT.md` in the repository. Every number below is read from `results/v3/RESULTS.md` and `results/v2/RESULTS.md`.
 
 ### Problem and application
 

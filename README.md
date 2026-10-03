@@ -5,6 +5,10 @@
 AI4S Open Innovation: AI for Life Science, 5th Pazhou Algorithm Competition.
 Category: **End-to-End System**. Apache-2.0.
 
+**Live demo (no login, no install):** https://marc-dvci.github.io/Hodgkin-s-Razor/ ·
+**Technical report:** [`docs/TECHNICAL_REPORT.pdf`](docs/TECHNICAL_REPORT.pdf) ·
+**Demo film:** [`film/hodgkins-razor.mp4`](film/hodgkins-razor.mp4)
+
 A microelectrode array under a neural organ-on-chip produces a rich recording
 and a thin answer: firing fell, bursts shortened, synchrony dropped. It does not
 say whether the compound blocked AMPA receptors, opened chloride channels or
