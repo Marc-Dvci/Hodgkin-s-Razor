@@ -22,6 +22,7 @@ ROOT = HERE.parent
 CAP = "../results/capture/"
 V3 = "../results/v3/figures/"
 V2 = "../results/v2/figures/"
+SITE = "../site/index.html"
 
 
 def demo_output() -> str:
@@ -57,19 +58,28 @@ def beats() -> list[dict]:
          "say": "Hodgkin's Razor fits a biophysical network, simulated on a GPU, to the recording "
                 "itself. It is trained only on simulations, and has never seen a compound label.",
          "zh": "Hodgkin's Razor 把在 GPU 上模拟的生物物理神经网络直接拟合到记录本身。它只用模拟数据训练，从未见过任何化合物标签。"},
-        {"scene": {"type": "image", "kicker": "The running application",
-                   "title": "Rat cortical culture, after TTX", "src": CAP + "12_ttx_mech.png", "dark": True},
+        {"scene": {"type": "live", "kicker": "The running application · rat cortical culture, after TTX",
+                   "src": SITE + "#analyse"},
+         "actions": [{"cue": 0, "delay": 200, "do": "select", "sel": "#example", "value": "rat_ttx"},
+                     {"cue": 0, "delay": 1400, "do": "click", "sel": "#run"},
+                     {"cue": 0, "delay": 2600, "do": "scroll", "sel": "#mechpanel"},
+                     {"cue": 1, "delay": 400, "do": "point", "sel": "#mech tbody tr"}],
          "say": "For ten mechanisms it returns the probability that each one moved, the size of the "
                 "shift, and an interval. Here, a rat culture after TTX: sodium channels, down, "
                 "probability 0.65.",
          "zh": "对十种机制，它给出每种机制发生变化的概率、变化幅度和区间。这里是施加 TTX 后的大鼠培养物：钠通道下降，概率 0.65。"},
-        {"scene": {"type": "image", "kicker": "Not a lookup", "title": "Measured, against the twin re-simulated",
-                   "src": CAP + "13_ttx_raster.png", "dark": True},
+        {"scene": {"type": "live", "continue": True,
+                   "kicker": "Not a lookup · measured, against the twin re-simulated"},
+         "actions": [{"cue": 0, "delay": 0, "do": "scroll", "sel": "#rasterpanel"}],
          "say": "Before it names anything, it re-simulates the network at the parameters it inferred, "
                 "and checks that the twin reproduces what was measured.",
          "zh": "在给出任何结论之前，它会在推断出的参数下重新模拟网络，检查孪生模型能否再现测量结果。"},
-        {"scene": {"type": "image", "kicker": "The refusal", "title": "Human culture: outside the model",
-                   "src": CAP + "11_gaba_human_verdict.png", "dark": True},
+        {"scene": {"type": "live", "continue": True,
+                   "kicker": "The refusal · human culture, outside the model"},
+         "actions": [{"cue": 0, "delay": 0, "do": "scroll", "sel": "body", "top": True},
+                     {"cue": 0, "delay": 500, "do": "select", "sel": "#example", "value": "human_gaba"},
+                     {"cue": 0, "delay": 1300, "do": "click", "sel": "#run"},
+                     {"cue": 1, "delay": 1000, "do": "point", "sel": "#verdict"}],
          "say": "When it cannot, it says so. This human culture is outside the model, and no "
                 "mechanism is named.",
          "zh": "如果不能再现，它会明确说出来。这个人源培养物超出了模型范围，因此不给出任何机制。"},
@@ -101,35 +111,50 @@ def beats() -> list[dict]:
                 "preparation on an NMDA blocker for days. The pre-registration was hashed before a "
                 "single treated recording was read.",
          "zh": "盲测。Charlesworth 等人让每份制备中的一个姊妹培养物持续数天处于 NMDA 阻断剂中。在读取任何一个处理后的记录之前，预注册就已经生成哈希并锁定。"},
-        {"scene": {"type": "image", "kicker": "Result", "title": "AUROC 0.86 against a bar of 0.70",
-                   "src": V3 + "charlesworth_primary.png"},
+        {"scene": {"type": "live", "kicker": "Result · the blind test, in the application",
+                   "src": SITE + "#blind"},
+         "actions": [{"cue": 0, "delay": 600, "do": "point", "sel": "#v3kpis .kpi"},
+                     {"cue": 1, "delay": 300, "do": "scroll", "sel": "#v3method", "offset": 70},
+                     {"cue": 2, "delay": 0, "do": "click", "sel": "#v3method button[data-m=unpaired]"},
+                     {"cue": 3, "delay": 0, "do": "click", "sel": "#v3method button[data-m=prior_art]"}],
          "say": "The twin's NMDA reading separates 29 treated preparations from 23 untreated sisters "
-                "of the same genotypes. AUROC 0.86, against a pre-registered bar of 0.70. The "
-                "published estimator it builds on scores 0.49 on the same cultures.",
-         "zh": "孪生模型的 NMDA 读数把 29 份处理过的制备与 23 份同基因型的未处理姊妹培养物区分开：AUROC 0.86，预设门槛 0.70。它所基于的已发表估计器在同一批培养物上只得 0.49。"},
-        {"scene": {"type": "image", "kicker": "Result", "title": "The reading fades as the cultures compensate",
-                   "src": V3 + "canalization.png"},
+                "of the same genotypes. AUROC 0.86, against a pre-registered bar of 0.70. "
+                "Remove the pairing, and it falls to 0.66. The published estimator it builds on "
+                "scores 0.49 on the same cultures.",
+         "zh": "孪生模型的 NMDA 读数把 29 份处理过的制备与 23 份同基因型的未处理姊妹培养物区分开：AUROC 0.86，预设门槛 0.70。去掉配对后降到 0.66。它所基于的已发表估计器在同一批培养物上只得 0.49。"},
+        {"scene": {"type": "live", "continue": True, "kicker": "Result · ten mechanisms, no drug label"},
+         "actions": [{"cue": 0, "delay": 0, "do": "click", "sel": "#v3method button[data-m=twin]"},
+                     {"cue": 1, "delay": 200, "do": "click", "sel": "#v3profile g.hit:nth-of-type(2)"},
+                     {"cue": 1, "delay": 2600, "do": "click", "sel": "#v3profile g.hit:nth-of-type(1)"}],
+         "say": "It was never told which drug was applied. Of all ten mechanisms it reads, "
+                "NMDA is the one that separates treated from untreated best.",
+         "zh": "它从未被告知施加了哪种药物。在它读取的全部十种机制中，NMDA 是区分处理组与未处理组最好的一个。"},
+        {"scene": {"type": "live", "continue": True,
+                   "kicker": "Result · the reading fades as the cultures compensate"},
+         "actions": [{"cue": 0, "delay": 0, "do": "scroll", "sel": "#v3canal", "offset": 60}],
          "say": "The cultures compensate as they mature, as the authors reported. The twin's reading "
                 "fades with them.",
          "zh": "正如原作者所报告的，培养物在成熟过程中发生代偿。孪生模型的读数也随之减弱。"},
-        {"scene": {"type": "numbers", "kicker": "What failed, reported with the same weight",
-                   "title": "Naming the exact mechanism",
-                   "items": [{"value": "2", "of": "/29", "cap": "treated cultures with NMDA as the top mechanism"},
-                             {"value": "2", "of": "/10", "cap": "Dynasore wells with the exact mechanism named"}],
-                   "pills": [["ok", "drug detected in 9/10 wells, 0/10 untreated pairs"]]},
+        {"scene": {"type": "live", "continue": True, "kicker": "What failed, reported with the same weight"},
+         "actions": [{"cue": 0, "delay": 0, "do": "scroll", "sel": "#v3fail", "offset": 160},
+                     {"cue": 2, "delay": 0, "do": "scroll", "sel": "#dyn", "offset": 60},
+                     {"cue": 2, "delay": 1500, "do": "point", "sel": "#dynkpis .kpi:nth-child(3)"},
+                     {"cue": 2, "delay": 4200, "do": "point", "sel": "#dynkpis .kpi:nth-child(1)"}],
          "say": "What failed is reported with the same weight. NMDA was the single top mechanism in "
                 "only 2 of 29 treated cultures. On an earlier Dynasore test, the exact mechanism was "
                 "right in 2 of 10 wells, though the drug was detected in 9 of 10, and in none of the "
                 "untreated pairs.",
          "zh": "失败的结果同样如实报告。只有 29 份处理过的培养物中的 2 份把 NMDA 列为首位机制。在此前的 Dynasore 测试中，精确机制只在 10 个孔中对了 2 个，但药物效应在 10 个孔中检出 9 个，在未处理样本中一个也没有误报。"},
-        {"scene": {"type": "image", "kicker": "The chip twin", "title": "Which readout resolves which property",
-                   "src": V2 + "chip_readouts.png"},
+        {"scene": {"type": "live", "kicker": "The chip twin · chip planner, in the application",
+                   "src": SITE + "#chips"},
+         "actions": [{"cue": 1, "delay": 0, "do": "point", "sel": "#heat tbody tr:nth-child(3) td:nth-child(3)"}],
          "say": "The same simulator runs a two-compartment chip with one-way microchannels, the "
                 "geometry of the sponsor's own devices. It says, before the experiment, which readout "
                 "resolves which property.",
          "zh": "同一个模拟器还能运行带单向微通道的双腔芯片，这正是赞助方自己器件的结构。它在实验之前就能指出，哪种读数可以分辨哪种性质。"},
-        {"scene": {"type": "image", "kicker": "The chip twin", "title": "How many chips a claim needs",
-                   "src": V3 + "chip_power.png"},
+        {"scene": {"type": "live", "continue": True, "kicker": "The chip twin · how many chips a claim needs"},
+         "actions": [{"cue": 0, "delay": 0, "do": "scroll", "sel": "#chipslider", "offset": 90},
+                     {"cue": 0, "delay": 900, "do": "slide", "sel": "#chipslider", "from": 2, "to": 6}],
          "say": "The one public test of chip directionality used about 8 chips per design. The twin "
                 "says it needed 20.",
          "zh": "唯一公开的芯片方向性测试每种设计只用了约 8 块芯片。孪生模型指出需要 20 块。"},

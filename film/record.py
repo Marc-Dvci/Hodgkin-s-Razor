@@ -89,7 +89,8 @@ def main() -> None:
         expired = threading.Event()
         cdp.on("Emulation.virtualTimeBudgetExpired", lambda _e: expired.set())
         ticks = float(cdp.send("Emulation.setVirtualTimePolicy", {"policy": "pause"})["virtualTimeTicksBase"])
-        page.evaluate("(d) => { window.__FILM_TIMING = d; window.Film.start(); }", durations)
+        page.evaluate("(a) => { window.__FILM_TIMING = a[0]; window.__FILM_CUES = a[1]; window.Film.start(); }",
+                      [durations, timing.get("cues")])
         last = None
         t0 = time.time()
         for n in range(frames):
@@ -111,8 +112,11 @@ def main() -> None:
                 (HERE / "stills" / f"beat{stills[n]:02d}.png").write_bytes(last)
             if n % 600 == 0:
                 print(f"  {n / FPS:6.1f}s  {(time.time() - t0) / max(n, 1) * 1000:4.0f} ms/frame", flush=True)
+        missed = page.evaluate("() => window.Film.missed")
         browser.close()
     ff.stdin.close()
+    if missed:
+        print(f"WARNING: {len(missed)} live-scene selectors matched nothing: {sorted(set(missed))}")
     ff.wait()
     httpd.shutdown()
     if ff.returncode:

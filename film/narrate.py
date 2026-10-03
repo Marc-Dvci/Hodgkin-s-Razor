@@ -1,9 +1,16 @@
 """Synthesise the film narration from film/story.json and measure it.
 
-    python film/narrate.py
+    python film/narrate.py                 # the author's cloned voice (default)
+    python film/narrate.py --engine edge   # Edge TTS fallback
 
-Each beat's `say` text is synthesised with Edge TTS, measured with ffprobe and
-padded by a short gap. Writes film/speech/*.mp3, film/narration.wav (all beats
+Default engine: the author's own voice, cloned with Qwen3-TTS from his
+recordings (VoiceClone/narrate.py, outside this repository; set VOICECLONE to
+its folder). Every beat is one paragraph, one sentence per line; the
+synthesiser returns each sentence's measured start, and those starts become the
+beat durations and the cues the live scenes act on.
+
+Edge engine: each beat's `say` text is synthesised with Edge TTS, measured with
+ffprobe and padded by a short gap. Writes film/speech/*.mp3, film/narration.wav (all beats
 back to back), film/timing.json (per-beat durations, read by record.py) and
 three subtitle files from the same timings: English, Chinese, and both.
 
@@ -20,7 +27,8 @@ import re
 import subprocess
 import sys
 
-import edge_tts
+import os
+import shutil
 
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -69,7 +77,82 @@ def srt_time(ms: int) -> str:
 
 
 async def synth(text: str, out: pathlib.Path) -> None:
+    import edge_tts
     await edge_tts.Communicate(text, VOICE, rate=RATE).save(str(out))
+
+
+VOICECLONE = pathlib.Path(os.environ.get("VOICECLONE", "D:/VoiceClone"))
+LEXICON = {"AUROC": "aw-rock", "APV": "A P V", "TTX": "T T X", "NMDA": "N M D A",
+           "iPSC": "i P S C", "GPU": "G P U", "CPU": "C P U"}
+TAIL_MS = 900
+
+
+def sentences(text: str) -> list[str]:
+    return [x for x in re.split(r"(?<=[.!?])\s+", text.strip()) if x]
+
+
+def write_subtitles(beats: list[dict], durations: list[int]) -> None:
+    for name, key in (("en", "show"), ("zh", "zh")):
+        lines, t = [], 0
+        for i, (b, d) in enumerate(zip(beats, durations)):
+            txt = b.get(key) or (b["say"] if key == "show" else "")
+            if txt:
+                lines += [str(i + 1), f"{srt_time(t)} --> {srt_time(t + d - 200)}", txt, ""]
+            t += d
+        (HERE / f"hodgkins-razor.{name}.srt").write_text("\n".join(lines), encoding="utf-8")
+
+
+def clone(beats: list[dict]) -> None:
+    py = VOICECLONE / ".venv-qwen" / "Scripts" / "python.exe"
+    if not py.exists():
+        raise SystemExit(f"cloned voice not found at {VOICECLONE}; use --engine edge")
+    SPEECH.mkdir(exist_ok=True)
+    script = SPEECH / "script.txt"
+    script.write_text("\n\n".join("\n".join(sentences(b["say"])) for b in beats) + "\n",
+                      encoding="utf-8")
+    lex = SPEECH / "lexicon.json"
+    lex.write_text(json.dumps(LEXICON), encoding="utf-8")
+    out = SPEECH / "clone"
+    if out.exists() and "--reuse" not in sys.argv:
+        shutil.rmtree(out)
+    if not (out / "narration.json").exists():
+        subprocess.run([str(py), str(VOICECLONE / "narrate.py"), str(script), str(out),
+                        "--lexicon", str(lex), "--para-gap", "0.9"], check=True, cwd=VOICECLONE)
+    nar = json.loads((out / "narration.json").read_text(encoding="utf-8"))
+    sents = nar["sentences"]
+    per = [[s for s in sents if s["paragraph"] == i] for i in range(len(beats))]
+    for i, (b, p) in enumerate(zip(beats, per)):
+        if len(p) != len(sentences(b["say"])):
+            raise SystemExit(f"beat {i}: {len(p)} sentences synthesised, "
+                             f"{len(sentences(b['say']))} written")
+    # A beat runs from its first sentence to the next beat's first sentence.
+    starts = [0.0] + [p[0]["start"] for p in per[1:]]
+    ends = starts[1:] + [nar["duration"]]
+    durations, cues = [], []
+    for i, p in enumerate(per):
+        speech = (ends[i] - starts[i]) * 1000 + (TAIL_MS if i == len(per) - 1 else 0)
+        durations.append(int(round(speech)) + int(beats[i].get("hold_ms", 0)))
+        cues.append([int(round((s["start"] - starts[i]) * 1000)) for s in p])
+    # Holds lengthen a beat beyond its speech, so the audio is re-laid beat by beat.
+    filt = [f"[0:a]atrim={starts[i]:.3f}:{ends[i]:.3f},asetpts=PTS-STARTPTS,aresample=48000,"
+            f"apad,atrim=0:{d / 1000:.3f}[a{i}]" for i, d in enumerate(durations)]
+    filt.append("".join(f"[a{i}]" for i in range(len(durations)))
+                + f"concat=n={len(durations)}:v=0:a=1[out]")
+    subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(out / "narration.wav"),
+                    "-filter_complex", ";".join(filt), "-map", "[out]", "-ac", "2",
+                    str(HERE / "narration.wav")], check=True)
+    total = sum(durations)
+    (HERE / "timing.json").write_text(json.dumps({"durations": durations, "totalMs": total,
+                                                  "cues": cues, "voice": nar.get("voice", "")}))
+    write_subtitles(beats, durations)
+    for i, (b, d) in enumerate(zip(beats, durations)):
+        print(f"  {i:02d}  {d / 1000:5.1f}s  {b['say'][:70]}")
+    redo = [s["text"][:60] for s in sents if s.get("wer", 0) > 0.10]
+    if redo:
+        print("transcript still differs on:", redo)
+    print(f"total {total / 1000:.1f}s over {len(beats)} beats")
+    if total > 295_000:
+        print("WARNING: longer than 4:55")
 
 
 def main() -> None:
@@ -78,8 +161,10 @@ def main() -> None:
     bad = check_numbers(beats)
     if bad and "--force" not in sys.argv:
         raise SystemExit("numbers not found in the results:\n  " + "\n  ".join(bad))
+    if "edge" not in sys.argv:
+        return clone(beats)
     SPEECH.mkdir(exist_ok=True)
-    for old in SPEECH.glob("*"):
+    for old in SPEECH.glob("*.mp3"):
         old.unlink()
     durations = []
     clips = []

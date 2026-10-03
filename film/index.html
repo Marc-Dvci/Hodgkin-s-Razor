@@ -53,6 +53,19 @@
   pre.term { margin-top: 24px; flex: 1; min-height: 0; overflow: hidden; background: #07080b;
     border: 1px solid var(--line); border-radius: 12px; padding: 22px 26px; font-family: ui-monospace, Consolas, monospace;
     font-size: 17px; line-height: 1.45; color: #d9d8d2; white-space: pre; }
+  .scene.live { padding: 46px 56px 205px; }
+  .scene.live .kicker { margin-bottom: 12px; transition: opacity 300ms ease; }
+  .livebox { position: relative; flex: 1; min-height: 0; border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--line); box-shadow: 0 18px 60px rgba(0,0,0,.45); background: #0e1116; }
+  .livebox iframe { position: absolute; left: 0; top: 0; border: 0; transform-origin: 0 0; }
+  .cursor { position: absolute; left: 50%; top: 40%; width: 26px; height: 26px; pointer-events: none; z-index: 5;
+    transition: left 650ms cubic-bezier(.3,.7,.2,1), top 650ms cubic-bezier(.3,.7,.2,1); opacity: 0; }
+  .cursor svg { filter: drop-shadow(0 2px 4px rgba(0,0,0,.6)); }
+  .ripple { position: absolute; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%;
+    border: 3px solid #5eb0ff; pointer-events: none; z-index: 4; animation: rip 600ms ease-out forwards; }
+  @keyframes rip { from { transform: scale(.3); opacity: 1; } to { transform: scale(1.4); opacity: 0; } }
+  .halo { position: absolute; border: 2px solid #5eb0ff; border-radius: 8px; pointer-events: none; z-index: 4;
+    box-shadow: 0 0 0 4px rgba(94,176,255,.18); transition: opacity 400ms ease; }
   #brand { position: absolute; right: 36px; top: 26px; font-size: 16px; color: var(--muted); letter-spacing: .08em; }
 </style>
 </head>
@@ -70,6 +83,8 @@ window.Film = Film;
 function el(html) { const d = document.createElement("div"); d.innerHTML = html.trim(); return d.firstChild; }
 
 function sceneHTML(s) {
+  // A continued scene keeps the previous node on screen; it needs none of its own.
+  if (s.continue) return `<section class="scene"></section>`;
   const k = s.kicker ? `<div class="kicker">${s.kicker}</div>` : "";
   switch (s.type) {
     case "title":
@@ -91,6 +106,10 @@ function sceneHTML(s) {
       return `<section class="scene">${k}<div class="quote">${s.text}</div><div class="src">${s.source}</div></section>`;
     case "terminal":
       return `<section class="scene">${k}${s.title ? `<h2>${s.title}</h2>` : ""}<pre class="term">${s.text}</pre></section>`;
+    case "live":
+      return `<section class="scene live">${k}<div class="livebox"><iframe src="${s.src}" scrolling="no"></iframe>
+        <div class="cursor"><svg width="26" height="26" viewBox="0 0 26 26"><path d="M3 2 L3 21 L8.5 16 L12 24 L15.5 22.5 L12 15 L19.5 15 Z"
+        fill="#fff" stroke="#0b0e13" stroke-width="1.5"/></svg></div></div></section>`;
     case "steps":
       return `<section class="scene">${k}<h2>${s.title}</h2><ul class="steps">
         ${s.items.map(x => `<li>${x}</li>`).join("")}</ul></section>`;
@@ -109,10 +128,105 @@ async function load() {
   Film.nodes = story.beats.map(b => { const n = el(sceneHTML(b.scene)); stage.appendChild(n); return n; });
   // Preload every image so a scene never paints half-loaded.
   await Promise.all([...document.images].map(i => i.complete ? 0 : new Promise(r => { i.onload = i.onerror = r; })));
+  // Size each live frame at a zoom so the application reads at film scale.
+  const frames = [...document.querySelectorAll(".livebox iframe")];
+  for (const f of frames) {
+    const box = f.parentElement;
+    box.closest(".scene").style.opacity = 0;
+    box.closest(".scene").style.display = "flex";
+  }
+  await new Promise(r => setTimeout(r, 50));
+  await Promise.all(frames.map(f => {
+    const box = f.parentElement, w = box.clientWidth, h = box.clientHeight;
+    f.style.width = (w / ZOOM) + "px"; f.style.height = (h / ZOOM) + "px";
+    f.style.transform = `scale(${ZOOM})`;
+    return new Promise(r => {
+      const ok = () => { try { const d = f.contentDocument; return d && d.readyState === "complete" && d.getElementById("example") && d.getElementById("example").options.length; } catch (e) { return false; } };
+      const poll = () => ok() ? setTimeout(r, 300) : setTimeout(poll, 100);
+      poll();
+    });
+  }));
+  for (const f of frames) f.closest(".scene").style.opacity = "";
   Film.ready = true;
 }
 
 function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ---- live scenes: drive the real application inside its frame ----
+const ZOOM = 1.18;
+Film.missed = [];
+function frameOf(node) { return node.querySelector(".livebox iframe"); }
+function target(node, sel) {
+  const f = frameOf(node), d = f.contentDocument, el = d.querySelector(sel);
+  if (!el) Film.missed.push(sel);
+  return { f, d, el };
+}
+function boxPos(node, el) {
+  // Element centre in livebox pixels.
+  const r = el.getBoundingClientRect();
+  return { x: (r.left + r.width / 2) * ZOOM, y: (r.top + r.height / 2) * ZOOM, r };
+}
+function moveCursor(node, el) {
+  // Wide blocks (rows, panels, paragraphs) are pointed at near their left edge.
+  const c = node.querySelector(".cursor"), p = boxPos(node, el);
+  const wide = ["TR", "DIV", "P"].includes(el.tagName);
+  c.style.opacity = 1; c.style.left = (wide ? p.r.left * ZOOM + 60 : p.x) + "px";
+  c.style.top = p.y + "px";
+  return p;
+}
+function halo(node, el) {
+  const box = node.querySelector(".livebox"), r = el.getBoundingClientRect();
+  const h = document.createElement("div"); h.className = "halo";
+  h.style.left = (r.left * ZOOM - 6) + "px"; h.style.top = (r.top * ZOOM - 6) + "px";
+  h.style.width = (r.width * ZOOM + 12) + "px"; h.style.height = (r.height * ZOOM + 12) + "px";
+  box.appendChild(h);
+  setTimeout(() => { h.style.opacity = 0; }, 2600);
+  setTimeout(() => h.remove(), 3100);
+}
+function ripple(node, p) {
+  const box = node.querySelector(".livebox"), d = document.createElement("div");
+  d.className = "ripple"; d.style.left = p.x + "px"; d.style.top = p.y + "px";
+  box.appendChild(d); setTimeout(() => d.remove(), 700);
+}
+function scrollFrame(node, sel, offset, top) {
+  const { f, el } = target(node, sel);
+  if (!el && !top) return;
+  const w = f.contentWindow, from = w.scrollY;
+  const to = top ? 0 : Math.max(0, from + el.getBoundingClientRect().top - (offset || 20));
+  const steps = 28;
+  for (let k = 1; k <= steps; k++) setTimeout(() => {
+    const t = k / steps, e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    w.scrollTo(0, from + (to - from) * e);
+  }, k * 32);
+}
+function act(node, a) {
+  if (a.do === "scroll") return scrollFrame(node, a.sel, a.offset, a.top);
+  const { d, el } = target(node, a.sel);
+  if (!el) return;
+  if (a.do === "point") { moveCursor(node, el); setTimeout(() => halo(node, el), 500); return; }
+  const p = moveCursor(node, el);
+  if (a.do === "click") {
+    setTimeout(() => { ripple(node, boxPos(node, el)); el.dispatchEvent(new MouseEvent("click", { bubbles: true })); }, 700);
+  } else if (a.do === "select") {
+    setTimeout(() => { ripple(node, p); el.value = a.value; el.dispatchEvent(new Event("change", { bubbles: true })); halo(node, el); }, 700);
+  } else if (a.do === "slide") {
+    const n = a.to - a.from;
+    el.value = a.from; el.dispatchEvent(new Event("input", { bubbles: true }));
+    for (let k = 1; k <= n; k++) setTimeout(() => {
+      el.value = a.from + k; el.dispatchEvent(new Event("input", { bubbles: true }));
+      const r = el.getBoundingClientRect(), frac = (el.value - el.min) / (el.max - el.min);
+      const c = node.querySelector(".cursor");
+      c.style.left = ((r.left + frac * r.width) * ZOOM) + "px"; c.style.top = ((r.top + r.height / 2) * ZOOM) + "px";
+    }, 700 + k * 650);
+  }
+}
+function runActions(node, b, cues, T) {
+  const n = Math.max(1, (cues || []).length);
+  for (const a of (b.actions || [])) {
+    const at = cues && cues[a.cue] !== undefined ? cues[a.cue] : (a.cue / n) * T;
+    setTimeout(() => act(node, a), Math.max(0, at - 250) + (a.delay || 0));
+  }
+}
 
 Film.start = async function () {
   const T = window.__FILM_TIMING || Film.story.beats.map(() => 4000);
@@ -123,6 +237,8 @@ Film.start = async function () {
     const same = b.scene.continue && prev;
     const cur = same ? prev : node;
     if (!same) { if (prev) prev.classList.remove("on"); node.classList.add("on"); }
+    else if (b.scene.kicker && cur.querySelector(".kicker")) cur.querySelector(".kicker").textContent = b.scene.kicker;
+    if (cur.querySelector(".livebox")) runActions(cur, b, (window.__FILM_CUES || [])[i], T[i]);
     document.getElementById("subtext").innerHTML =
       (b.show || b.say) + (b.zh ? `<span class="zh">${b.zh}</span>` : "");
     if (cur.querySelector(".num")) setTimeout(() => cur.classList.add("reveal"), b.reveal_ms || 700);
