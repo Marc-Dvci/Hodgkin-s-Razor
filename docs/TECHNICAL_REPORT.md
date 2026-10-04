@@ -764,9 +764,8 @@ competences named for the cross-disciplinary bonus, and I cover both.
   screening on the WHO IMNCI protocol, with breathing-rate thresholds and
   camera-guided examination.
 - **Medical imaging.** Dopamine-transporter SPECT classification for
-  Parkinsonian syndromes (DrivenData DaT challenge, first on the public
-  leaderboard of 469), with the acquisition protocols of 1,362 scans measured
-  across centres.
+  Parkinsonian syndromes (DrivenData DaT challenge), with the acquisition
+  protocols of 1,362 scans measured across centres.
 - **Bioengineering.** Vitrify: inverse design of nanowarming for cryopreserved
   organs, coupling heat transfer with thermomechanical fracture under safe
   warming-rate windows (honorable mention, Pasteur Labs Tesseract Hackathon
