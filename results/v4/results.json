@@ -1,0 +1,2289 @@
+{
+ "preregistration": "6f7ac1d7887d3f53e060d953122f7fc9b04e635990f1d9e03107515a52cd5abc",
+ "primary": {
+  "condition": "nostim",
+  "cultures": 9,
+  "boundary_units": 36,
+  "boundary_units_scored": 33,
+  "home_units_scored": 60,
+  "asym_vs_traffic_ff": {
+   "spearman": -0.29971614154336856,
+   "ci95_by_culture": [
+    -0.49944460306206484,
+    -0.053570173200821546
+   ],
+   "permutation_p": 0.09189540522973852,
+   "twin_pi90": [
+    -0.1647393291948816,
+    0.4054059691764207
+   ],
+   "inside": false
+  },
+  "asym_vs_axons_ff": {
+   "spearman": -0.2662100651357324,
+   "ci95_by_culture": [
+    -0.528583207675129,
+    0.035244952942830574
+   ],
+   "permutation_p": 0.13349332533373331,
+   "twin_pi90": [
+    -0.14594234988905072,
+    0.4306274234526228
+   ],
+   "inside": false
+  },
+  "home": {
+   "share_positive": 0.8166666666666667,
+   "k": 49,
+   "n": 60,
+   "median_home_index": 0.24279204968312637,
+   "ci95_by_culture": [
+    0.7272360703812317,
+    0.9137931034482759
+   ],
+   "sign_test_p_vs_half": 3.7806404911983754e-07,
+   "twin_pi90": [
+    0.7333333333333333,
+    0.9
+   ],
+   "at_or_above_lower_bound": true
+  },
+  "units": [
+   {
+    "culture": 1,
+    "boundary": "EC-DG",
+    "axons": 5,
+    "axons_ff_n": 4,
+    "spikes_ff": 1549,
+    "spikes_fb": 115,
+    "well_spikes_up": 7342,
+    "well_spikes_down": 12410,
+    "included": true,
+    "asym": 0.054367961970114724,
+    "traffic_ff": 0.9308894230769231,
+    "axons_ff": 0.8
+   },
+   {
+    "culture": 1,
+    "boundary": "DG-CA3",
+    "axons": 5,
+    "axons_ff_n": 2,
+    "spikes_ff": 2582,
+    "spikes_fb": 1373,
+    "well_spikes_up": 12410,
+    "well_spikes_down": 21184,
+    "included": true,
+    "asym": -0.35648890327816785,
+    "traffic_ff": 0.6528445006321113,
+    "axons_ff": 0.4
+   },
+   {
+    "culture": 1,
+    "boundary": "CA3-CA1",
+    "axons": 8,
+    "axons_ff_n": 7,
+    "spikes_ff": 4411,
+    "spikes_fb": 409,
+    "well_spikes_up": 21184,
+    "well_spikes_down": 13366,
+    "included": true,
+    "asym": 0.35709465992035816,
+    "traffic_ff": 0.9151452282157676,
+    "axons_ff": 0.875
+   },
+   {
+    "culture": 1,
+    "boundary": "CA1-EC",
+    "axons": 4,
+    "axons_ff_n": 3,
+    "spikes_ff": 1633,
+    "spikes_fb": 492,
+    "well_spikes_up": 13366,
+    "well_spikes_down": 7342,
+    "included": true,
+    "asym": -0.15740388632856395,
+    "traffic_ff": 0.7684705882352941,
+    "axons_ff": 0.75
+   },
+   {
+    "culture": 2,
+    "boundary": "EC-DG",
+    "axons": 3,
+    "axons_ff_n": 2,
+    "spikes_ff": 2485,
+    "spikes_fb": 1445,
+    "well_spikes_up": 4723,
+    "well_spikes_down": 8187,
+    "included": true,
+    "asym": 0.2440320754139032,
+    "traffic_ff": 0.6323155216284987,
+    "axons_ff": 0.6666666666666666
+   },
+   {
+    "culture": 2,
+    "boundary": "DG-CA3",
+    "axons": 9,
+    "axons_ff_n": 3,
+    "spikes_ff": 611,
+    "spikes_fb": 2831,
+    "well_spikes_up": 8187,
+    "well_spikes_down": 8298,
+    "included": true,
+    "asym": -0.06862783729679689,
+    "traffic_ff": 0.17751307379430564,
+    "axons_ff": 0.3333333333333333
+   },
+   {
+    "culture": 2,
+    "boundary": "CA3-CA1",
+    "axons": 11,
+    "axons_ff_n": 6,
+    "spikes_ff": 2255,
+    "spikes_fb": 2617,
+    "well_spikes_up": 8298,
+    "well_spikes_down": 2155,
+    "included": true,
+    "asym": -0.041411561231699735,
+    "traffic_ff": 0.4628489326765189,
+    "axons_ff": 0.5454545454545454
+   },
+   {
+    "culture": 2,
+    "boundary": "CA1-EC",
+    "axons": 6,
+    "axons_ff_n": 3,
+    "spikes_ff": 3503,
+    "spikes_fb": 5469,
+    "well_spikes_up": 2155,
+    "well_spikes_down": 4723,
+    "included": true,
+    "asym": 0.5374530696366392,
+    "traffic_ff": 0.39043691484618814,
+    "axons_ff": 0.5
+   },
+   {
+    "culture": 3,
+    "boundary": "EC-DG",
+    "axons": 11,
+    "axons_ff_n": 4,
+    "spikes_ff": 2198,
+    "spikes_fb": 5851,
+    "well_spikes_up": 4117,
+    "well_spikes_down": 17162,
+    "included": true,
+    "asym": -0.10157108202872814,
+    "traffic_ff": 0.2730774009193689,
+    "axons_ff": 0.36363636363636365
+   },
+   {
+    "culture": 3,
+    "boundary": "DG-CA3",
+    "axons": 8,
+    "axons_ff_n": 3,
+    "spikes_ff": 1819,
+    "spikes_fb": 3829,
+    "well_spikes_up": 17162,
+    "well_spikes_down": 15744,
+    "included": true,
+    "asym": -0.04203764793346226,
+    "traffic_ff": 0.3220609065155807,
+    "axons_ff": 0.375
+   },
+   {
+    "culture": 3,
+    "boundary": "CA3-CA1",
+    "axons": 7,
+    "axons_ff_n": 6,
+    "spikes_ff": 3602,
+    "spikes_fb": 333,
+    "well_spikes_up": 15744,
+    "well_spikes_down": 52,
+    "included": true,
+    "asym": -0.27960519098769016,
+    "traffic_ff": 0.9153748411689961,
+    "axons_ff": 0.8571428571428571
+   },
+   {
+    "culture": 3,
+    "boundary": "CA1-EC",
+    "axons": 8,
+    "axons_ff_n": 2,
+    "spikes_ff": 1512,
+    "spikes_fb": 10412,
+    "well_spikes_up": 52,
+    "well_spikes_down": 4117,
+    "included": true,
+    "asym": -0.00020119143519941088,
+    "traffic_ff": 0.1268030862126803,
+    "axons_ff": 0.25
+   },
+   {
+    "culture": 4,
+    "boundary": "EC-DG",
+    "axons": 1,
+    "axons_ff_n": 0,
+    "spikes_ff": 0,
+    "spikes_fb": 815,
+    "well_spikes_up": 55168,
+    "well_spikes_down": 65377,
+    "included": false
+   },
+   {
+    "culture": 4,
+    "boundary": "DG-CA3",
+    "axons": 3,
+    "axons_ff_n": 3,
+    "spikes_ff": 6729,
+    "spikes_fb": 0,
+    "well_spikes_up": 65377,
+    "well_spikes_down": 33791,
+    "included": true,
+    "asym": -0.16118582823968183,
+    "traffic_ff": 1.0,
+    "axons_ff": 1.0
+   },
+   {
+    "culture": 4,
+    "boundary": "CA3-CA1",
+    "axons": 3,
+    "axons_ff_n": 0,
+    "spikes_ff": 0,
+    "spikes_fb": 12466,
+    "well_spikes_up": 33791,
+    "well_spikes_down": 50920,
+    "included": true,
+    "asym": 0.42954452333134313,
+    "traffic_ff": 0.0,
+    "axons_ff": 0.0
+   },
+   {
+    "culture": 4,
+    "boundary": "CA1-EC",
+    "axons": 4,
+    "axons_ff_n": 1,
+    "spikes_ff": 6881,
+    "spikes_fb": 9329,
+    "well_spikes_up": 50920,
+    "well_spikes_down": 55168,
+    "included": true,
+    "asym": 0.28437915356563137,
+    "traffic_ff": 0.42449105490438,
+    "axons_ff": 0.25
+   },
+   {
+    "culture": 5,
+    "boundary": "EC-DG",
+    "axons": 1,
+    "axons_ff_n": 1,
+    "spikes_ff": 905,
+    "spikes_fb": 0,
+    "well_spikes_up": 20136,
+    "well_spikes_down": 10748,
+    "included": false
+   },
+   {
+    "culture": 5,
+    "boundary": "DG-CA3",
+    "axons": 5,
+    "axons_ff_n": 0,
+    "spikes_ff": 0,
+    "spikes_fb": 6060,
+    "well_spikes_up": 10748,
+    "well_spikes_down": 23487,
+    "included": true,
+    "asym": -0.23845515418653723,
+    "traffic_ff": 0.0,
+    "axons_ff": 0.0
+   },
+   {
+    "culture": 5,
+    "boundary": "CA3-CA1",
+    "axons": 5,
+    "axons_ff_n": 0,
+    "spikes_ff": 0,
+    "spikes_fb": 17031,
+    "well_spikes_up": 23487,
+    "well_spikes_down": 20152,
+    "included": true,
+    "asym": 0.6850017221152953,
+    "traffic_ff": 0.0,
+    "axons_ff": 0.0
+   },
+   {
+    "culture": 5,
+    "boundary": "CA1-EC",
+    "axons": 7,
+    "axons_ff_n": 2,
+    "spikes_ff": 4504,
+    "spikes_fb": 13753,
+    "well_spikes_up": 20152,
+    "well_spikes_down": 20136,
+    "included": true,
+    "asym": 0.4036016410512777,
+    "traffic_ff": 0.2466998959303281,
+    "axons_ff": 0.2857142857142857
+   },
+   {
+    "culture": 6,
+    "boundary": "EC-DG",
+    "axons": 1,
+    "axons_ff_n": 1,
+    "spikes_ff": 2042,
+    "spikes_fb": 0,
+    "well_spikes_up": 25808,
+    "well_spikes_down": 3905,
+    "included": false
+   },
+   {
+    "culture": 6,
+    "boundary": "DG-CA3",
+    "axons": 5,
+    "axons_ff_n": 0,
+    "spikes_ff": 0,
+    "spikes_fb": 3246,
+    "well_spikes_up": 3905,
+    "well_spikes_down": 25932,
+    "included": true,
+    "asym": 0.004854168942957903,
+    "traffic_ff": 0.0,
+    "axons_ff": 0.0
+   },
+   {
+    "culture": 6,
+    "boundary": "CA3-CA1",
+    "axons": 9,
+    "axons_ff_n": 1,
+    "spikes_ff": 2099,
+    "spikes_fb": 30968,
+    "well_spikes_up": 25932,
+    "well_spikes_down": 52850,
+    "included": true,
+    "asym": 0.09797748660607934,
+    "traffic_ff": 0.06347718268969063,
+    "axons_ff": 0.1111111111111111
+   },
+   {
+    "culture": 6,
+    "boundary": "CA1-EC",
+    "axons": 7,
+    "axons_ff_n": 6,
+    "spikes_ff": 13325,
+    "spikes_fb": 3744,
+    "well_spikes_up": 52850,
+    "well_spikes_down": 25808,
+    "included": true,
+    "asym": -0.0016233186668410983,
+    "traffic_ff": 0.7806549885757806,
+    "axons_ff": 0.8571428571428571
+   },
+   {
+    "culture": 7,
+    "boundary": "EC-DG",
+    "axons": 3,
+    "axons_ff_n": 3,
+    "spikes_ff": 18893,
+    "spikes_fb": 0,
+    "well_spikes_up": 90709,
+    "well_spikes_down": 38664,
+    "included": true,
+    "asym": -0.06814552569811749,
+    "traffic_ff": 1.0,
+    "axons_ff": 1.0
+   },
+   {
+    "culture": 7,
+    "boundary": "DG-CA3",
+    "axons": 2,
+    "axons_ff_n": 1,
+    "spikes_ff": 835,
+    "spikes_fb": 4762,
+    "well_spikes_up": 38664,
+    "well_spikes_down": 55936,
+    "included": true,
+    "asym": 0.02028714782767128,
+    "traffic_ff": 0.14918706449883867,
+    "axons_ff": 0.5
+   },
+   {
+    "culture": 7,
+    "boundary": "CA3-CA1",
+    "axons": 3,
+    "axons_ff_n": 0,
+    "spikes_ff": 0,
+    "spikes_fb": 9213,
+    "well_spikes_up": 55936,
+    "well_spikes_down": 44768,
+    "included": true,
+    "asym": -0.07402548464754184,
+    "traffic_ff": 0.0,
+    "axons_ff": 0.0
+   },
+   {
+    "culture": 7,
+    "boundary": "CA1-EC",
+    "axons": 7,
+    "axons_ff_n": 5,
+    "spikes_ff": 11886,
+    "spikes_fb": 7465,
+    "well_spikes_up": 44768,
+    "well_spikes_down": 90709,
+    "included": true,
+    "asym": -0.009990134849307513,
+    "traffic_ff": 0.6142318226448246,
+    "axons_ff": 0.7142857142857143
+   },
+   {
+    "culture": 8,
+    "boundary": "EC-DG",
+    "axons": 2,
+    "axons_ff_n": 2,
+    "spikes_ff": 2725,
+    "spikes_fb": 0,
+    "well_spikes_up": 60990,
+    "well_spikes_down": 67387,
+    "included": true,
+    "asym": -0.0945519308073252,
+    "traffic_ff": 1.0,
+    "axons_ff": 1.0
+   },
+   {
+    "culture": 8,
+    "boundary": "DG-CA3",
+    "axons": 9,
+    "axons_ff_n": 2,
+    "spikes_ff": 5565,
+    "spikes_fb": 23648,
+    "well_spikes_up": 67387,
+    "well_spikes_down": 49784,
+    "included": true,
+    "asym": 0.02624807632055951,
+    "traffic_ff": 0.19049738130284463,
+    "axons_ff": 0.2222222222222222
+   },
+   {
+    "culture": 8,
+    "boundary": "CA3-CA1",
+    "axons": 4,
+    "axons_ff_n": 2,
+    "spikes_ff": 900,
+    "spikes_fb": 1120,
+    "well_spikes_up": 49784,
+    "well_spikes_down": 120617,
+    "included": true,
+    "asym": 0.10457680835910184,
+    "traffic_ff": 0.44554455445544555,
+    "axons_ff": 0.5
+   },
+   {
+    "culture": 8,
+    "boundary": "CA1-EC",
+    "axons": 8,
+    "axons_ff_n": 4,
+    "spikes_ff": 3721,
+    "spikes_fb": 5823,
+    "well_spikes_up": 120617,
+    "well_spikes_down": 60990,
+    "included": true,
+    "asym": -0.0021194926119317706,
+    "traffic_ff": 0.38987845766974016,
+    "axons_ff": 0.5
+   },
+   {
+    "culture": 9,
+    "boundary": "EC-DG",
+    "axons": 4,
+    "axons_ff_n": 4,
+    "spikes_ff": 3230,
+    "spikes_fb": 0,
+    "well_spikes_up": 4093,
+    "well_spikes_down": 7549,
+    "included": true,
+    "asym": -0.4633261049886361,
+    "traffic_ff": 1.0,
+    "axons_ff": 1.0
+   },
+   {
+    "culture": 9,
+    "boundary": "DG-CA3",
+    "axons": 5,
+    "axons_ff_n": 1,
+    "spikes_ff": 399,
+    "spikes_fb": 1081,
+    "well_spikes_up": 7549,
+    "well_spikes_down": 933,
+    "included": true,
+    "asym": -0.6637343553164943,
+    "traffic_ff": 0.2695945945945946,
+    "axons_ff": 0.2
+   },
+   {
+    "culture": 9,
+    "boundary": "CA3-CA1",
+    "axons": 4,
+    "axons_ff_n": 1,
+    "spikes_ff": 794,
+    "spikes_fb": 2040,
+    "well_spikes_up": 933,
+    "well_spikes_down": 9381,
+    "included": true,
+    "asym": 0.71538862753992,
+    "traffic_ff": 0.2801693719124912,
+    "axons_ff": 0.25
+   },
+   {
+    "culture": 9,
+    "boundary": "CA1-EC",
+    "axons": 9,
+    "axons_ff_n": 4,
+    "spikes_ff": 1033,
+    "spikes_fb": 2370,
+    "well_spikes_up": 9381,
+    "well_spikes_down": 4093,
+    "included": true,
+    "asym": 0.3099113835282769,
+    "traffic_ff": 0.30355568615927125,
+    "axons_ff": 0.4444444444444444
+   }
+  ],
+  "home_units": [
+   {
+    "culture": 1,
+    "boundary": "EC-DG",
+    "direction": "ff",
+    "spikes": 1549,
+    "home": 0.20296682862565357
+   },
+   {
+    "culture": 1,
+    "boundary": "EC-DG",
+    "direction": "fb",
+    "spikes": 115,
+    "home": 0.10467850742042481
+   },
+   {
+    "culture": 1,
+    "boundary": "DG-CA3",
+    "direction": "ff",
+    "spikes": 2582,
+    "home": 0.2713281720474886
+   },
+   {
+    "culture": 1,
+    "boundary": "DG-CA3",
+    "direction": "fb",
+    "spikes": 1373,
+    "home": 0.31479621185483675
+   },
+   {
+    "culture": 1,
+    "boundary": "CA3-CA1",
+    "direction": "ff",
+    "spikes": 4411,
+    "home": 0.4123531792177251
+   },
+   {
+    "culture": 1,
+    "boundary": "CA3-CA1",
+    "direction": "fb",
+    "spikes": 409,
+    "home": -0.1241992154521187
+   },
+   {
+    "culture": 1,
+    "boundary": "CA1-EC",
+    "direction": "ff",
+    "spikes": 1633,
+    "home": 0.2011961310793039
+   },
+   {
+    "culture": 1,
+    "boundary": "CA1-EC",
+    "direction": "fb",
+    "spikes": 492,
+    "home": 0.40268628227899184
+   },
+   {
+    "culture": 2,
+    "boundary": "EC-DG",
+    "direction": "ff",
+    "spikes": 2485,
+    "home": 0.23230994652312312
+   },
+   {
+    "culture": 2,
+    "boundary": "EC-DG",
+    "direction": "fb",
+    "spikes": 1445,
+    "home": -0.06408014420328845
+   },
+   {
+    "culture": 2,
+    "boundary": "DG-CA3",
+    "direction": "ff",
+    "spikes": 611,
+    "home": -0.02319342683590414
+   },
+   {
+    "culture": 2,
+    "boundary": "DG-CA3",
+    "direction": "fb",
+    "spikes": 2831,
+    "home": 0.03582184215681494
+   },
+   {
+    "culture": 2,
+    "boundary": "CA3-CA1",
+    "direction": "ff",
+    "spikes": 2255,
+    "home": 0.3108590443997807
+   },
+   {
+    "culture": 2,
+    "boundary": "CA3-CA1",
+    "direction": "fb",
+    "spikes": 2617,
+    "home": -0.029059496384721384
+   },
+   {
+    "culture": 2,
+    "boundary": "CA1-EC",
+    "direction": "ff",
+    "spikes": 3503,
+    "home": 0.24518994345067563
+   },
+   {
+    "culture": 2,
+    "boundary": "CA1-EC",
+    "direction": "fb",
+    "spikes": 5469,
+    "home": 0.2970912107141418
+   },
+   {
+    "culture": 3,
+    "boundary": "EC-DG",
+    "direction": "ff",
+    "spikes": 2198,
+    "home": -0.1013517697695609
+   },
+   {
+    "culture": 3,
+    "boundary": "EC-DG",
+    "direction": "fb",
+    "spikes": 5851,
+    "home": 0.3303181041425308
+   },
+   {
+    "culture": 3,
+    "boundary": "DG-CA3",
+    "direction": "ff",
+    "spikes": 1819,
+    "home": 0.17957082556793452
+   },
+   {
+    "culture": 3,
+    "boundary": "DG-CA3",
+    "direction": "fb",
+    "spikes": 3829,
+    "home": 0.12667604234706342
+   },
+   {
+    "culture": 3,
+    "boundary": "CA3-CA1",
+    "direction": "ff",
+    "spikes": 3602,
+    "home": 0.6594788267488624
+   },
+   {
+    "culture": 3,
+    "boundary": "CA3-CA1",
+    "direction": "fb",
+    "spikes": 333,
+    "home": -0.13409588348046936
+   },
+   {
+    "culture": 3,
+    "boundary": "CA1-EC",
+    "direction": "ff",
+    "spikes": 1512,
+    "home": -0.34291898723666936
+   },
+   {
+    "culture": 3,
+    "boundary": "CA1-EC",
+    "direction": "fb",
+    "spikes": 10412,
+    "home": 0.6086619523079699
+   },
+   {
+    "culture": 4,
+    "boundary": "EC-DG",
+    "direction": "fb",
+    "spikes": 815,
+    "home": -0.010680318869561417
+   },
+   {
+    "culture": 4,
+    "boundary": "DG-CA3",
+    "direction": "ff",
+    "spikes": 6729,
+    "home": 0.4770503500392414
+   },
+   {
+    "culture": 4,
+    "boundary": "CA3-CA1",
+    "direction": "fb",
+    "spikes": 12466,
+    "home": 0.4357222500025703
+   },
+   {
+    "culture": 4,
+    "boundary": "CA1-EC",
+    "direction": "ff",
+    "spikes": 6881,
+    "home": 0.35186780372244797
+   },
+   {
+    "culture": 4,
+    "boundary": "CA1-EC",
+    "direction": "fb",
+    "spikes": 9329,
+    "home": 0.5250792279703455
+   },
+   {
+    "culture": 5,
+    "boundary": "EC-DG",
+    "direction": "ff",
+    "spikes": 905,
+    "home": 0.02915633077644343
+   },
+   {
+    "culture": 5,
+    "boundary": "DG-CA3",
+    "direction": "fb",
+    "spikes": 6060,
+    "home": 0.46700248575104586
+   },
+   {
+    "culture": 5,
+    "boundary": "CA3-CA1",
+    "direction": "fb",
+    "spikes": 17031,
+    "home": 0.47516427636375336
+   },
+   {
+    "culture": 5,
+    "boundary": "CA1-EC",
+    "direction": "ff",
+    "spikes": 4504,
+    "home": 0.2538425365549249
+   },
+   {
+    "culture": 5,
+    "boundary": "CA1-EC",
+    "direction": "fb",
+    "spikes": 13753,
+    "home": 0.27816977916549657
+   },
+   {
+    "culture": 6,
+    "boundary": "EC-DG",
+    "direction": "ff",
+    "spikes": 2042,
+    "home": 0.3844063844765799
+   },
+   {
+    "culture": 6,
+    "boundary": "DG-CA3",
+    "direction": "fb",
+    "spikes": 3246,
+    "home": 0.42037698761898046
+   },
+   {
+    "culture": 6,
+    "boundary": "CA3-CA1",
+    "direction": "ff",
+    "spikes": 2099,
+    "home": 0.15797854787604554
+   },
+   {
+    "culture": 6,
+    "boundary": "CA3-CA1",
+    "direction": "fb",
+    "spikes": 30968,
+    "home": 0.45013449360492347
+   },
+   {
+    "culture": 6,
+    "boundary": "CA1-EC",
+    "direction": "ff",
+    "spikes": 13325,
+    "home": 0.35166375325715166
+   },
+   {
+    "culture": 6,
+    "boundary": "CA1-EC",
+    "direction": "fb",
+    "spikes": 3744,
+    "home": 0.056113788073824944
+   },
+   {
+    "culture": 7,
+    "boundary": "EC-DG",
+    "direction": "ff",
+    "spikes": 18893,
+    "home": 0.3995193417949273
+   },
+   {
+    "culture": 7,
+    "boundary": "DG-CA3",
+    "direction": "ff",
+    "spikes": 835,
+    "home": 0.10345451169717201
+   },
+   {
+    "culture": 7,
+    "boundary": "DG-CA3",
+    "direction": "fb",
+    "spikes": 4762,
+    "home": 0.35584260669166445
+   },
+   {
+    "culture": 7,
+    "boundary": "CA3-CA1",
+    "direction": "fb",
+    "spikes": 9213,
+    "home": 0.5432858355705685
+   },
+   {
+    "culture": 7,
+    "boundary": "CA1-EC",
+    "direction": "ff",
+    "spikes": 11886,
+    "home": 0.4107390380334306
+   },
+   {
+    "culture": 7,
+    "boundary": "CA1-EC",
+    "direction": "fb",
+    "spikes": 7465,
+    "home": 0.4228049307306201
+   },
+   {
+    "culture": 8,
+    "boundary": "EC-DG",
+    "direction": "ff",
+    "spikes": 2725,
+    "home": 0.38605308936163363
+   },
+   {
+    "culture": 8,
+    "boundary": "DG-CA3",
+    "direction": "ff",
+    "spikes": 5565,
+    "home": 0.10109342054012987
+   },
+   {
+    "culture": 8,
+    "boundary": "DG-CA3",
+    "direction": "fb",
+    "spikes": 23648,
+    "home": 0.03772965765076586
+   },
+   {
+    "culture": 8,
+    "boundary": "CA3-CA1",
+    "direction": "ff",
+    "spikes": 900,
+    "home": 0.1622700110145428
+   },
+   {
+    "culture": 8,
+    "boundary": "CA3-CA1",
+    "direction": "fb",
+    "spikes": 1120,
+    "home": -0.1827842173166641
+   },
+   {
+    "culture": 8,
+    "boundary": "CA1-EC",
+    "direction": "ff",
+    "spikes": 3721,
+    "home": 0.18339185157522525
+   },
+   {
+    "culture": 8,
+    "boundary": "CA1-EC",
+    "direction": "fb",
+    "spikes": 5823,
+    "home": -0.08013898790857077
+   },
+   {
+    "culture": 9,
+    "boundary": "EC-DG",
+    "direction": "ff",
+    "spikes": 3230,
+    "home": 0.5074070003112398
+   },
+   {
+    "culture": 9,
+    "boundary": "DG-CA3",
+    "direction": "ff",
+    "spikes": 399,
+    "home": 0.0005290959471750262
+   },
+   {
+    "culture": 9,
+    "boundary": "DG-CA3",
+    "direction": "fb",
+    "spikes": 1081,
+    "home": 0.10789016250219391
+   },
+   {
+    "culture": 9,
+    "boundary": "CA3-CA1",
+    "direction": "ff",
+    "spikes": 794,
+    "home": -0.14683279223461632
+   },
+   {
+    "culture": 9,
+    "boundary": "CA3-CA1",
+    "direction": "fb",
+    "spikes": 2040,
+    "home": 0.33894423485027214
+   },
+   {
+    "culture": 9,
+    "boundary": "CA1-EC",
+    "direction": "ff",
+    "spikes": 1033,
+    "home": 0.10450481166185982
+   },
+   {
+    "culture": 9,
+    "boundary": "CA1-EC",
+    "direction": "fb",
+    "spikes": 2370,
+    "home": 0.2403941559155771
+   }
+  ]
+ },
+ "verdicts": {
+  "P1_home_share": {
+   "observed": 0.8166666666666667,
+   "bar": ">= 0.733 (twin 90% lower bound)",
+   "met": true
+  },
+  "P2_asym_vs_traffic": {
+   "observed": -0.29971614154336856,
+   "bar": "inside the twin's 90% interval [-0.165, 0.405]",
+   "met": false
+  }
+ },
+ "secondary": {
+  "hfs5": {
+   "condition": "hfs5",
+   "cultures": 6,
+   "boundary_units": 24,
+   "boundary_units_scored": 23,
+   "home_units_scored": 39,
+   "asym_vs_traffic_ff": {
+    "spearman": 0.0854032374639175,
+    "ci95_by_culture": [
+     -0.29578198238567943,
+     0.36211892387414935
+    ],
+    "permutation_p": 0.6952652367381631,
+    "twin_pi90": [
+     -0.2303068696014653,
+     0.4569991957435077
+    ],
+    "inside": true
+   },
+   "asym_vs_axons_ff": {
+    "spearman": 0.058766805851928484,
+    "ci95_by_culture": [
+     -0.34736814443639985,
+     0.38088610373915255
+    ],
+    "permutation_p": 0.7857107144642768,
+    "twin_pi90": [
+     -0.20237782031078727,
+     0.49032756747095524
+    ],
+    "inside": true
+   },
+   "home": {
+    "share_positive": 0.7948717948717948,
+    "k": 31,
+    "n": 39,
+    "median_home_index": 0.21189782575360103,
+    "ci95_by_culture": [
+     0.7317073170731707,
+     0.8857142857142857
+    ],
+    "sign_test_p_vs_half": 0.00014703843771712855,
+    "twin_pi90": [
+     0.6923076923076923,
+     0.8974358974358975
+    ],
+    "at_or_above_lower_bound": true
+   },
+   "units": [
+    {
+     "culture": 1,
+     "boundary": "EC-DG",
+     "axons": 2,
+     "axons_ff_n": 2,
+     "spikes_ff": 1437,
+     "spikes_fb": 0,
+     "well_spikes_up": 8896,
+     "well_spikes_down": 16142,
+     "included": true,
+     "asym": -0.10252448799723218,
+     "traffic_ff": 1.0,
+     "axons_ff": 1.0
+    },
+    {
+     "culture": 1,
+     "boundary": "DG-CA3",
+     "axons": 6,
+     "axons_ff_n": 3,
+     "spikes_ff": 2713,
+     "spikes_fb": 1601,
+     "well_spikes_up": 16142,
+     "well_spikes_down": 19939,
+     "included": true,
+     "asym": 0.003143901123943242,
+     "traffic_ff": 0.6288827074640705,
+     "axons_ff": 0.5
+    },
+    {
+     "culture": 1,
+     "boundary": "CA3-CA1",
+     "axons": 10,
+     "axons_ff_n": 8,
+     "spikes_ff": 4448,
+     "spikes_fb": 618,
+     "well_spikes_up": 19939,
+     "well_spikes_down": 12963,
+     "included": true,
+     "asym": 0.18261816902130193,
+     "traffic_ff": 0.878010264508488,
+     "axons_ff": 0.8
+    },
+    {
+     "culture": 1,
+     "boundary": "CA1-EC",
+     "axons": 5,
+     "axons_ff_n": 5,
+     "spikes_ff": 1571,
+     "spikes_fb": 0,
+     "well_spikes_up": 12963,
+     "well_spikes_down": 8896,
+     "included": true,
+     "asym": 0.004600266193403285,
+     "traffic_ff": 1.0,
+     "axons_ff": 1.0
+    },
+    {
+     "culture": 2,
+     "boundary": "EC-DG",
+     "axons": 3,
+     "axons_ff_n": 2,
+     "spikes_ff": 1547,
+     "spikes_fb": 1243,
+     "well_spikes_up": 3442,
+     "well_spikes_down": 4500,
+     "included": true,
+     "asym": 0.503692116474039,
+     "traffic_ff": 0.5544802867383513,
+     "axons_ff": 0.6666666666666666
+    },
+    {
+     "culture": 2,
+     "boundary": "DG-CA3",
+     "axons": 15,
+     "axons_ff_n": 5,
+     "spikes_ff": 308,
+     "spikes_fb": 1222,
+     "well_spikes_up": 4500,
+     "well_spikes_down": 2046,
+     "included": true,
+     "asym": -0.3723265745374622,
+     "traffic_ff": 0.20130718954248367,
+     "axons_ff": 0.3333333333333333
+    },
+    {
+     "culture": 2,
+     "boundary": "CA3-CA1",
+     "axons": 10,
+     "axons_ff_n": 5,
+     "spikes_ff": 895,
+     "spikes_fb": 1928,
+     "well_spikes_up": 2046,
+     "well_spikes_down": 1179,
+     "included": true,
+     "asym": 0.07440122385693025,
+     "traffic_ff": 0.31703861140630535,
+     "axons_ff": 0.5
+    },
+    {
+     "culture": 2,
+     "boundary": "CA1-EC",
+     "axons": 5,
+     "axons_ff_n": 2,
+     "spikes_ff": 1230,
+     "spikes_fb": 4222,
+     "well_spikes_up": 1179,
+     "well_spikes_down": 3442,
+     "included": true,
+     "asym": 0.3731407736266864,
+     "traffic_ff": 0.2256052824651504,
+     "axons_ff": 0.4
+    },
+    {
+     "culture": 3,
+     "boundary": "EC-DG",
+     "axons": 7,
+     "axons_ff_n": 1,
+     "spikes_ff": 215,
+     "spikes_fb": 2131,
+     "well_spikes_up": 1091,
+     "well_spikes_down": 5517,
+     "included": true,
+     "asym": -0.11447724436432742,
+     "traffic_ff": 0.09164535379369139,
+     "axons_ff": 0.14285714285714285
+    },
+    {
+     "culture": 3,
+     "boundary": "DG-CA3",
+     "axons": 3,
+     "axons_ff_n": 2,
+     "spikes_ff": 367,
+     "spikes_fb": 101,
+     "well_spikes_up": 5517,
+     "well_spikes_down": 9669,
+     "included": true,
+     "asym": 0.29377459968237407,
+     "traffic_ff": 0.7841880341880342,
+     "axons_ff": 0.6666666666666666
+    },
+    {
+     "culture": 3,
+     "boundary": "CA3-CA1",
+     "axons": 2,
+     "axons_ff_n": 1,
+     "spikes_ff": 60,
+     "spikes_fb": 75,
+     "well_spikes_up": 9669,
+     "well_spikes_down": 42,
+     "included": true,
+     "asym": -0.6184368717419231,
+     "traffic_ff": 0.4444444444444444,
+     "axons_ff": 0.5
+    },
+    {
+     "culture": 3,
+     "boundary": "CA1-EC",
+     "axons": 7,
+     "axons_ff_n": 0,
+     "spikes_ff": 0,
+     "spikes_fb": 1856,
+     "well_spikes_up": 42,
+     "well_spikes_down": 1091,
+     "included": true,
+     "asym": -0.02106994917188481,
+     "traffic_ff": 0.0,
+     "axons_ff": 0.0
+    },
+    {
+     "culture": 4,
+     "boundary": "EC-DG",
+     "axons": 1,
+     "axons_ff_n": 1,
+     "spikes_ff": 1219,
+     "spikes_fb": 0,
+     "well_spikes_up": 10873,
+     "well_spikes_down": 18083,
+     "included": false
+    },
+    {
+     "culture": 4,
+     "boundary": "DG-CA3",
+     "axons": 2,
+     "axons_ff_n": 0,
+     "spikes_ff": 0,
+     "spikes_fb": 1532,
+     "well_spikes_up": 18083,
+     "well_spikes_down": 23435,
+     "included": true,
+     "asym": -0.726888119202433,
+     "traffic_ff": 0.0,
+     "axons_ff": 0.0
+    },
+    {
+     "culture": 4,
+     "boundary": "CA3-CA1",
+     "axons": 3,
+     "axons_ff_n": 0,
+     "spikes_ff": 0,
+     "spikes_fb": 6683,
+     "well_spikes_up": 23435,
+     "well_spikes_down": 37660,
+     "included": true,
+     "asym": 0.5596140421406353,
+     "traffic_ff": 0.0,
+     "axons_ff": 0.0
+    },
+    {
+     "culture": 4,
+     "boundary": "CA1-EC",
+     "axons": 7,
+     "axons_ff_n": 4,
+     "spikes_ff": 2956,
+     "spikes_fb": 873,
+     "well_spikes_up": 37660,
+     "well_spikes_down": 10873,
+     "included": true,
+     "asym": 0.3564912629930301,
+     "traffic_ff": 0.7720031339775398,
+     "axons_ff": 0.5714285714285714
+    },
+    {
+     "culture": 5,
+     "boundary": "EC-DG",
+     "axons": 2,
+     "axons_ff_n": 2,
+     "spikes_ff": 1789,
+     "spikes_fb": 0,
+     "well_spikes_up": 31233,
+     "well_spikes_down": 6693,
+     "included": true,
+     "asym": -0.07254228493015948,
+     "traffic_ff": 1.0,
+     "axons_ff": 1.0
+    },
+    {
+     "culture": 5,
+     "boundary": "DG-CA3",
+     "axons": 4,
+     "axons_ff_n": 0,
+     "spikes_ff": 0,
+     "spikes_fb": 12175,
+     "well_spikes_up": 6693,
+     "well_spikes_down": 48480,
+     "included": true,
+     "asym": -0.1840099018350539,
+     "traffic_ff": 0.0,
+     "axons_ff": 0.0
+    },
+    {
+     "culture": 5,
+     "boundary": "CA3-CA1",
+     "axons": 7,
+     "axons_ff_n": 2,
+     "spikes_ff": 3961,
+     "spikes_fb": 19125,
+     "well_spikes_up": 48480,
+     "well_spikes_down": 29405,
+     "included": true,
+     "asym": 0.0,
+     "traffic_ff": 0.1715758468335788,
+     "axons_ff": 0.2857142857142857
+    },
+    {
+     "culture": 5,
+     "boundary": "CA1-EC",
+     "axons": 6,
+     "axons_ff_n": 2,
+     "spikes_ff": 5010,
+     "spikes_fb": 19022,
+     "well_spikes_up": 29405,
+     "well_spikes_down": 31233,
+     "included": true,
+     "asym": 0.031740663990401104,
+     "traffic_ff": 0.20847203728362185,
+     "axons_ff": 0.3333333333333333
+    },
+    {
+     "culture": 6,
+     "boundary": "EC-DG",
+     "axons": 3,
+     "axons_ff_n": 3,
+     "spikes_ff": 2364,
+     "spikes_fb": 0,
+     "well_spikes_up": 2830,
+     "well_spikes_down": 3318,
+     "included": true,
+     "asym": -0.6147269071271013,
+     "traffic_ff": 1.0,
+     "axons_ff": 1.0
+    },
+    {
+     "culture": 6,
+     "boundary": "DG-CA3",
+     "axons": 7,
+     "axons_ff_n": 3,
+     "spikes_ff": 343,
+     "spikes_fb": 554,
+     "well_spikes_up": 3318,
+     "well_spikes_down": 883,
+     "included": true,
+     "asym": -0.5939126673253201,
+     "traffic_ff": 0.38238573021181715,
+     "axons_ff": 0.42857142857142855
+    },
+    {
+     "culture": 6,
+     "boundary": "CA3-CA1",
+     "axons": 4,
+     "axons_ff_n": 1,
+     "spikes_ff": 499,
+     "spikes_fb": 1254,
+     "well_spikes_up": 883,
+     "well_spikes_down": 5679,
+     "included": true,
+     "asym": 0.7616757046832604,
+     "traffic_ff": 0.28465487735310896,
+     "axons_ff": 0.25
+    },
+    {
+     "culture": 6,
+     "boundary": "CA1-EC",
+     "axons": 10,
+     "axons_ff_n": 5,
+     "spikes_ff": 1001,
+     "spikes_fb": 1000,
+     "well_spikes_up": 5679,
+     "well_spikes_down": 2830,
+     "included": true,
+     "asym": 0.46615815155222734,
+     "traffic_ff": 0.5002498750624688,
+     "axons_ff": 0.5
+    }
+   ],
+   "home_units": [
+    {
+     "culture": 1,
+     "boundary": "EC-DG",
+     "direction": "ff",
+     "spikes": 1437,
+     "home": 0.39032196355674675
+    },
+    {
+     "culture": 1,
+     "boundary": "DG-CA3",
+     "direction": "ff",
+     "spikes": 2713,
+     "home": 0.13990150189928355
+    },
+    {
+     "culture": 1,
+     "boundary": "DG-CA3",
+     "direction": "fb",
+     "spikes": 1601,
+     "home": 0.22151405888948023
+    },
+    {
+     "culture": 1,
+     "boundary": "CA3-CA1",
+     "direction": "ff",
+     "spikes": 4448,
+     "home": 0.369394421885608
+    },
+    {
+     "culture": 1,
+     "boundary": "CA3-CA1",
+     "direction": "fb",
+     "spikes": 618,
+     "home": -0.17285139916414904
+    },
+    {
+     "culture": 1,
+     "boundary": "CA1-EC",
+     "direction": "ff",
+     "spikes": 1571,
+     "home": 0.20466270163902406
+    },
+    {
+     "culture": 2,
+     "boundary": "EC-DG",
+     "direction": "ff",
+     "spikes": 1547,
+     "home": 0.3272825905923622
+    },
+    {
+     "culture": 2,
+     "boundary": "EC-DG",
+     "direction": "fb",
+     "spikes": 1243,
+     "home": -0.18592550987244919
+    },
+    {
+     "culture": 2,
+     "boundary": "DG-CA3",
+     "direction": "ff",
+     "spikes": 308,
+     "home": -0.06940397278586752
+    },
+    {
+     "culture": 2,
+     "boundary": "DG-CA3",
+     "direction": "fb",
+     "spikes": 1222,
+     "home": 0.13666307548906947
+    },
+    {
+     "culture": 2,
+     "boundary": "CA3-CA1",
+     "direction": "ff",
+     "spikes": 895,
+     "home": 0.14911482196177228
+    },
+    {
+     "culture": 2,
+     "boundary": "CA3-CA1",
+     "direction": "fb",
+     "spikes": 1928,
+     "home": 0.22603888969686387
+    },
+    {
+     "culture": 2,
+     "boundary": "CA1-EC",
+     "direction": "ff",
+     "spikes": 1230,
+     "home": 0.20034581407858332
+    },
+    {
+     "culture": 2,
+     "boundary": "CA1-EC",
+     "direction": "fb",
+     "spikes": 4222,
+     "home": 0.26290209874854437
+    },
+    {
+     "culture": 3,
+     "boundary": "EC-DG",
+     "direction": "ff",
+     "spikes": 215,
+     "home": 0.1268846162895545
+    },
+    {
+     "culture": 3,
+     "boundary": "EC-DG",
+     "direction": "fb",
+     "spikes": 2131,
+     "home": 0.30352981255053224
+    },
+    {
+     "culture": 3,
+     "boundary": "DG-CA3",
+     "direction": "ff",
+     "spikes": 367,
+     "home": 0.2473205469819736
+    },
+    {
+     "culture": 3,
+     "boundary": "DG-CA3",
+     "direction": "fb",
+     "spikes": 101,
+     "home": -0.10379470301446606
+    },
+    {
+     "culture": 3,
+     "boundary": "CA3-CA1",
+     "direction": "ff",
+     "spikes": 60,
+     "home": 0.2242205609186333
+    },
+    {
+     "culture": 3,
+     "boundary": "CA3-CA1",
+     "direction": "fb",
+     "spikes": 75,
+     "home": -0.05858997512751066
+    },
+    {
+     "culture": 3,
+     "boundary": "CA1-EC",
+     "direction": "fb",
+     "spikes": 1856,
+     "home": 0.6543618186265096
+    },
+    {
+     "culture": 4,
+     "boundary": "EC-DG",
+     "direction": "ff",
+     "spikes": 1219,
+     "home": -0.02090017593570412
+    },
+    {
+     "culture": 4,
+     "boundary": "DG-CA3",
+     "direction": "fb",
+     "spikes": 1532,
+     "home": 0.11033440887989562
+    },
+    {
+     "culture": 4,
+     "boundary": "CA3-CA1",
+     "direction": "fb",
+     "spikes": 6683,
+     "home": 0.5236896105463341
+    },
+    {
+     "culture": 4,
+     "boundary": "CA1-EC",
+     "direction": "ff",
+     "spikes": 2956,
+     "home": 0.3289226476840546
+    },
+    {
+     "culture": 4,
+     "boundary": "CA1-EC",
+     "direction": "fb",
+     "spikes": 873,
+     "home": 0.3312241768957886
+    },
+    {
+     "culture": 5,
+     "boundary": "EC-DG",
+     "direction": "ff",
+     "spikes": 1789,
+     "home": 0.16634178378659067
+    },
+    {
+     "culture": 5,
+     "boundary": "DG-CA3",
+     "direction": "fb",
+     "spikes": 12175,
+     "home": 0.5764142143605853
+    },
+    {
+     "culture": 5,
+     "boundary": "CA3-CA1",
+     "direction": "ff",
+     "spikes": 3961,
+     "home": 0.5770086685391506
+    },
+    {
+     "culture": 5,
+     "boundary": "CA3-CA1",
+     "direction": "fb",
+     "spikes": 19125,
+     "home": 0.6399720974813307
+    },
+    {
+     "culture": 5,
+     "boundary": "CA1-EC",
+     "direction": "ff",
+     "spikes": 5010,
+     "home": 0.21189782575360103
+    },
+    {
+     "culture": 5,
+     "boundary": "CA1-EC",
+     "direction": "fb",
+     "spikes": 19022,
+     "home": 0.3281739476649147
+    },
+    {
+     "culture": 6,
+     "boundary": "EC-DG",
+     "direction": "ff",
+     "spikes": 2364,
+     "home": 0.4032483080034023
+    },
+    {
+     "culture": 6,
+     "boundary": "DG-CA3",
+     "direction": "ff",
+     "spikes": 343,
+     "home": -0.13274672270967827
+    },
+    {
+     "culture": 6,
+     "boundary": "DG-CA3",
+     "direction": "fb",
+     "spikes": 554,
+     "home": 0.09172357278536514
+    },
+    {
+     "culture": 6,
+     "boundary": "CA3-CA1",
+     "direction": "ff",
+     "spikes": 499,
+     "home": -0.2345107933591952
+    },
+    {
+     "culture": 6,
+     "boundary": "CA3-CA1",
+     "direction": "fb",
+     "spikes": 1254,
+     "home": 0.37997492099838714
+    },
+    {
+     "culture": 6,
+     "boundary": "CA1-EC",
+     "direction": "ff",
+     "spikes": 1001,
+     "home": 0.06658796139890999
+    },
+    {
+     "culture": 6,
+     "boundary": "CA1-EC",
+     "direction": "fb",
+     "spikes": 1000,
+     "home": 0.18269145775431803
+    }
+   ]
+  },
+  "hfs40": {
+   "condition": "hfs40",
+   "cultures": 6,
+   "boundary_units": 24,
+   "boundary_units_scored": 23,
+   "home_units_scored": 37,
+   "asym_vs_traffic_ff": {
+    "spearman": 0.0858997679142891,
+    "ci95_by_culture": [
+     -0.1331433048485525,
+     0.47256415386537
+    ],
+    "permutation_p": 0.6941152942352883,
+    "twin_pi90": [
+     -0.2303068696014653,
+     0.4569991957435077
+    ],
+    "inside": true
+   },
+   "asym_vs_axons_ff": {
+    "spearman": 0.01392022901090069,
+    "ci95_by_culture": [
+     -0.1274670742209944,
+     0.418489232630116
+    ],
+    "permutation_p": 0.9493525323733814,
+    "twin_pi90": [
+     -0.20237782031078727,
+     0.49032756747095524
+    ],
+    "inside": true
+   },
+   "home": {
+    "share_positive": 0.8648648648648649,
+    "k": 32,
+    "n": 37,
+    "median_home_index": 0.19457474257177826,
+    "ci95_by_culture": [
+     0.7777777777777778,
+     0.96875
+    ],
+    "sign_test_p_vs_half": 3.7137651816010475e-06,
+    "twin_pi90": [
+     0.7027027027027027,
+     0.918918918918919
+    ],
+    "at_or_above_lower_bound": true
+   },
+   "units": [
+    {
+     "culture": 1,
+     "boundary": "EC-DG",
+     "axons": 4,
+     "axons_ff_n": 4,
+     "spikes_ff": 1425,
+     "spikes_fb": 0,
+     "well_spikes_up": 9628,
+     "well_spikes_down": 17754,
+     "included": true,
+     "asym": -0.07248152377584798,
+     "traffic_ff": 1.0,
+     "axons_ff": 1.0
+    },
+    {
+     "culture": 1,
+     "boundary": "DG-CA3",
+     "axons": 6,
+     "axons_ff_n": 2,
+     "spikes_ff": 1963,
+     "spikes_fb": 1988,
+     "well_spikes_up": 17754,
+     "well_spikes_down": 16618,
+     "included": true,
+     "asym": -0.26476725155985814,
+     "traffic_ff": 0.49683624398886356,
+     "axons_ff": 0.3333333333333333
+    },
+    {
+     "culture": 1,
+     "boundary": "CA3-CA1",
+     "axons": 8,
+     "axons_ff_n": 7,
+     "spikes_ff": 3439,
+     "spikes_fb": 301,
+     "well_spikes_up": 16618,
+     "well_spikes_down": 9723,
+     "included": true,
+     "asym": -0.3240936813162762,
+     "traffic_ff": 0.9195187165775401,
+     "axons_ff": 0.875
+    },
+    {
+     "culture": 1,
+     "boundary": "CA1-EC",
+     "axons": 4,
+     "axons_ff_n": 3,
+     "spikes_ff": 1168,
+     "spikes_fb": 466,
+     "well_spikes_up": 9723,
+     "well_spikes_down": 9628,
+     "included": true,
+     "asym": -0.10212111153608605,
+     "traffic_ff": 0.7148102815177478,
+     "axons_ff": 0.75
+    },
+    {
+     "culture": 2,
+     "boundary": "EC-DG",
+     "axons": 2,
+     "axons_ff_n": 1,
+     "spikes_ff": 720,
+     "spikes_fb": 870,
+     "well_spikes_up": 2742,
+     "well_spikes_down": 3288,
+     "included": true,
+     "asym": 0.5080437050274963,
+     "traffic_ff": 0.4528301886792453,
+     "axons_ff": 0.5
+    },
+    {
+     "culture": 2,
+     "boundary": "DG-CA3",
+     "axons": 7,
+     "axons_ff_n": 2,
+     "spikes_ff": 93,
+     "spikes_fb": 545,
+     "well_spikes_up": 3288,
+     "well_spikes_down": 1595,
+     "included": true,
+     "asym": -0.2831336156193804,
+     "traffic_ff": 0.14576802507836992,
+     "axons_ff": 0.2857142857142857
+    },
+    {
+     "culture": 2,
+     "boundary": "CA3-CA1",
+     "axons": 10,
+     "axons_ff_n": 6,
+     "spikes_ff": 939,
+     "spikes_fb": 1220,
+     "well_spikes_up": 1595,
+     "well_spikes_down": 1089,
+     "included": true,
+     "asym": -0.42734097353660616,
+     "traffic_ff": 0.4349235757295044,
+     "axons_ff": 0.6
+    },
+    {
+     "culture": 2,
+     "boundary": "CA1-EC",
+     "axons": 4,
+     "axons_ff_n": 1,
+     "spikes_ff": 589,
+     "spikes_fb": 3791,
+     "well_spikes_up": 1089,
+     "well_spikes_down": 2742,
+     "included": true,
+     "asym": -0.12130594535949138,
+     "traffic_ff": 0.13447488584474887,
+     "axons_ff": 0.25
+    },
+    {
+     "culture": 3,
+     "boundary": "EC-DG",
+     "axons": 6,
+     "axons_ff_n": 5,
+     "spikes_ff": 662,
+     "spikes_fb": 83,
+     "well_spikes_up": 733,
+     "well_spikes_down": 1564,
+     "included": true,
+     "asym": -0.015276148712733651,
+     "traffic_ff": 0.8885906040268456,
+     "axons_ff": 0.8333333333333334
+    },
+    {
+     "culture": 3,
+     "boundary": "DG-CA3",
+     "axons": 5,
+     "axons_ff_n": 4,
+     "spikes_ff": 65,
+     "spikes_fb": 39,
+     "well_spikes_up": 1564,
+     "well_spikes_down": 81,
+     "included": true,
+     "asym": 0.2824891212941689,
+     "traffic_ff": 0.625,
+     "axons_ff": 0.8
+    },
+    {
+     "culture": 3,
+     "boundary": "CA3-CA1",
+     "axons": 1,
+     "axons_ff_n": 0,
+     "spikes_ff": 0,
+     "spikes_fb": 8,
+     "well_spikes_up": 81,
+     "well_spikes_down": 44,
+     "included": false
+    },
+    {
+     "culture": 3,
+     "boundary": "CA1-EC",
+     "axons": 5,
+     "axons_ff_n": 0,
+     "spikes_ff": 0,
+     "spikes_fb": 1368,
+     "well_spikes_up": 44,
+     "well_spikes_down": 733,
+     "included": true,
+     "asym": -0.08063096806271829,
+     "traffic_ff": 0.0,
+     "axons_ff": 0.0
+    },
+    {
+     "culture": 4,
+     "boundary": "EC-DG",
+     "axons": 2,
+     "axons_ff_n": 2,
+     "spikes_ff": 2541,
+     "spikes_fb": 0,
+     "well_spikes_up": 11525,
+     "well_spikes_down": 18155,
+     "included": true,
+     "asym": -0.021158874411321634,
+     "traffic_ff": 1.0,
+     "axons_ff": 1.0
+    },
+    {
+     "culture": 4,
+     "boundary": "DG-CA3",
+     "axons": 2,
+     "axons_ff_n": 0,
+     "spikes_ff": 0,
+     "spikes_fb": 984,
+     "well_spikes_up": 18155,
+     "well_spikes_down": 12938,
+     "included": true,
+     "asym": -0.13415431086740293,
+     "traffic_ff": 0.0,
+     "axons_ff": 0.0
+    },
+    {
+     "culture": 4,
+     "boundary": "CA3-CA1",
+     "axons": 3,
+     "axons_ff_n": 0,
+     "spikes_ff": 0,
+     "spikes_fb": 4293,
+     "well_spikes_up": 12938,
+     "well_spikes_down": 15349,
+     "included": true,
+     "asym": 0.4293821146959773,
+     "traffic_ff": 0.0,
+     "axons_ff": 0.0
+    },
+    {
+     "culture": 4,
+     "boundary": "CA1-EC",
+     "axons": 4,
+     "axons_ff_n": 1,
+     "spikes_ff": 169,
+     "spikes_fb": 775,
+     "well_spikes_up": 15349,
+     "well_spikes_down": 11525,
+     "included": true,
+     "asym": 0.3901658958477597,
+     "traffic_ff": 0.17902542372881355,
+     "axons_ff": 0.25
+    },
+    {
+     "culture": 5,
+     "boundary": "EC-DG",
+     "axons": 2,
+     "axons_ff_n": 2,
+     "spikes_ff": 1480,
+     "spikes_fb": 0,
+     "well_spikes_up": 26755,
+     "well_spikes_down": 4500,
+     "included": true,
+     "asym": 0.35609199426706417,
+     "traffic_ff": 1.0,
+     "axons_ff": 1.0
+    },
+    {
+     "culture": 5,
+     "boundary": "DG-CA3",
+     "axons": 4,
+     "axons_ff_n": 0,
+     "spikes_ff": 0,
+     "spikes_fb": 10335,
+     "well_spikes_up": 4500,
+     "well_spikes_down": 49092,
+     "included": true,
+     "asym": -0.16555225402148901,
+     "traffic_ff": 0.0,
+     "axons_ff": 0.0
+    },
+    {
+     "culture": 5,
+     "boundary": "CA3-CA1",
+     "axons": 7,
+     "axons_ff_n": 2,
+     "spikes_ff": 5236,
+     "spikes_fb": 19950,
+     "well_spikes_up": 49092,
+     "well_spikes_down": 30598,
+     "included": true,
+     "asym": 0.0,
+     "traffic_ff": 0.20789327404113397,
+     "axons_ff": 0.2857142857142857
+    },
+    {
+     "culture": 5,
+     "boundary": "CA1-EC",
+     "axons": 5,
+     "axons_ff_n": 2,
+     "spikes_ff": 4592,
+     "spikes_fb": 9649,
+     "well_spikes_up": 30598,
+     "well_spikes_down": 26755,
+     "included": true,
+     "asym": 0.028794906581949758,
+     "traffic_ff": 0.32244926620321607,
+     "axons_ff": 0.4
+    },
+    {
+     "culture": 6,
+     "boundary": "EC-DG",
+     "axons": 3,
+     "axons_ff_n": 3,
+     "spikes_ff": 2724,
+     "spikes_fb": 0,
+     "well_spikes_up": 2480,
+     "well_spikes_down": 2491,
+     "included": true,
+     "asym": -0.2532047128379473,
+     "traffic_ff": 1.0,
+     "axons_ff": 1.0
+    },
+    {
+     "culture": 6,
+     "boundary": "DG-CA3",
+     "axons": 6,
+     "axons_ff_n": 1,
+     "spikes_ff": 94,
+     "spikes_fb": 852,
+     "well_spikes_up": 2491,
+     "well_spikes_down": 1542,
+     "included": true,
+     "asym": -0.6628370428583619,
+     "traffic_ff": 0.09936575052854123,
+     "axons_ff": 0.16666666666666666
+    },
+    {
+     "culture": 6,
+     "boundary": "CA3-CA1",
+     "axons": 4,
+     "axons_ff_n": 1,
+     "spikes_ff": 629,
+     "spikes_fb": 1869,
+     "well_spikes_up": 1542,
+     "well_spikes_down": 6727,
+     "included": true,
+     "asym": 0.5639605621738465,
+     "traffic_ff": 0.25180144115292236,
+     "axons_ff": 0.25
+    },
+    {
+     "culture": 6,
+     "boundary": "CA1-EC",
+     "axons": 9,
+     "axons_ff_n": 5,
+     "spikes_ff": 1269,
+     "spikes_fb": 570,
+     "well_spikes_up": 6727,
+     "well_spikes_down": 2480,
+     "included": true,
+     "asym": 0.4961062542371052,
+     "traffic_ff": 0.6900489396411092,
+     "axons_ff": 0.5555555555555556
+    }
+   ],
+   "home_units": [
+    {
+     "culture": 1,
+     "boundary": "EC-DG",
+     "direction": "ff",
+     "spikes": 1425,
+     "home": 0.38155473117464356
+    },
+    {
+     "culture": 1,
+     "boundary": "DG-CA3",
+     "direction": "ff",
+     "spikes": 1963,
+     "home": 0.17644888022671673
+    },
+    {
+     "culture": 1,
+     "boundary": "DG-CA3",
+     "direction": "fb",
+     "spikes": 1988,
+     "home": 0.30790655108087545
+    },
+    {
+     "culture": 1,
+     "boundary": "CA3-CA1",
+     "direction": "ff",
+     "spikes": 3439,
+     "home": 0.362547606859351
+    },
+    {
+     "culture": 1,
+     "boundary": "CA3-CA1",
+     "direction": "fb",
+     "spikes": 301,
+     "home": -0.19129099732047722
+    },
+    {
+     "culture": 1,
+     "boundary": "CA1-EC",
+     "direction": "ff",
+     "spikes": 1168,
+     "home": 0.2200900192278708
+    },
+    {
+     "culture": 1,
+     "boundary": "CA1-EC",
+     "direction": "fb",
+     "spikes": 466,
+     "home": 0.3248765562206154
+    },
+    {
+     "culture": 2,
+     "boundary": "EC-DG",
+     "direction": "ff",
+     "spikes": 720,
+     "home": 0.17414560671077262
+    },
+    {
+     "culture": 2,
+     "boundary": "EC-DG",
+     "direction": "fb",
+     "spikes": 870,
+     "home": -0.06648329020679894
+    },
+    {
+     "culture": 2,
+     "boundary": "DG-CA3",
+     "direction": "ff",
+     "spikes": 93,
+     "home": -0.07537904448988655
+    },
+    {
+     "culture": 2,
+     "boundary": "DG-CA3",
+     "direction": "fb",
+     "spikes": 545,
+     "home": 0.1143624482966984
+    },
+    {
+     "culture": 2,
+     "boundary": "CA3-CA1",
+     "direction": "ff",
+     "spikes": 939,
+     "home": 0.18916431112907683
+    },
+    {
+     "culture": 2,
+     "boundary": "CA3-CA1",
+     "direction": "fb",
+     "spikes": 1220,
+     "home": 0.15912301259433684
+    },
+    {
+     "culture": 2,
+     "boundary": "CA1-EC",
+     "direction": "ff",
+     "spikes": 589,
+     "home": 0.18190446818276335
+    },
+    {
+     "culture": 2,
+     "boundary": "CA1-EC",
+     "direction": "fb",
+     "spikes": 3791,
+     "home": 0.2601331213585253
+    },
+    {
+     "culture": 3,
+     "boundary": "EC-DG",
+     "direction": "ff",
+     "spikes": 662,
+     "home": 0.14211502996030878
+    },
+    {
+     "culture": 3,
+     "boundary": "EC-DG",
+     "direction": "fb",
+     "spikes": 83,
+     "home": 0.2148153326532679
+    },
+    {
+     "culture": 3,
+     "boundary": "DG-CA3",
+     "direction": "ff",
+     "spikes": 65,
+     "home": 0.2575065239054491
+    },
+    {
+     "culture": 3,
+     "boundary": "CA1-EC",
+     "direction": "fb",
+     "spikes": 1368,
+     "home": 0.6180220673778417
+    },
+    {
+     "culture": 4,
+     "boundary": "EC-DG",
+     "direction": "ff",
+     "spikes": 2541,
+     "home": 0.01526478948744428
+    },
+    {
+     "culture": 4,
+     "boundary": "DG-CA3",
+     "direction": "fb",
+     "spikes": 984,
+     "home": 0.19457474257177826
+    },
+    {
+     "culture": 4,
+     "boundary": "CA3-CA1",
+     "direction": "fb",
+     "spikes": 4293,
+     "home": 0.5845501061719011
+    },
+    {
+     "culture": 4,
+     "boundary": "CA1-EC",
+     "direction": "ff",
+     "spikes": 169,
+     "home": 0.17402473390376147
+    },
+    {
+     "culture": 4,
+     "boundary": "CA1-EC",
+     "direction": "fb",
+     "spikes": 775,
+     "home": 0.4398368428446955
+    },
+    {
+     "culture": 5,
+     "boundary": "EC-DG",
+     "direction": "ff",
+     "spikes": 1480,
+     "home": 0.1747124480034491
+    },
+    {
+     "culture": 5,
+     "boundary": "DG-CA3",
+     "direction": "fb",
+     "spikes": 10335,
+     "home": 0.48560091285563767
+    },
+    {
+     "culture": 5,
+     "boundary": "CA3-CA1",
+     "direction": "ff",
+     "spikes": 5236,
+     "home": 0.6770255162556905
+    },
+    {
+     "culture": 5,
+     "boundary": "CA3-CA1",
+     "direction": "fb",
+     "spikes": 19950,
+     "home": 0.6494416830329669
+    },
+    {
+     "culture": 5,
+     "boundary": "CA1-EC",
+     "direction": "ff",
+     "spikes": 4592,
+     "home": 0.17909056640343854
+    },
+    {
+     "culture": 5,
+     "boundary": "CA1-EC",
+     "direction": "fb",
+     "spikes": 9649,
+     "home": 0.2364852463046595
+    },
+    {
+     "culture": 6,
+     "boundary": "EC-DG",
+     "direction": "ff",
+     "spikes": 2724,
+     "home": 0.2794029695225273
+    },
+    {
+     "culture": 6,
+     "boundary": "DG-CA3",
+     "direction": "ff",
+     "spikes": 94,
+     "home": -0.1333845748716485
+    },
+    {
+     "culture": 6,
+     "boundary": "DG-CA3",
+     "direction": "fb",
+     "spikes": 852,
+     "home": 0.17278000753252343
+    },
+    {
+     "culture": 6,
+     "boundary": "CA3-CA1",
+     "direction": "ff",
+     "spikes": 629,
+     "home": -0.11547682293336842
+    },
+    {
+     "culture": 6,
+     "boundary": "CA3-CA1",
+     "direction": "fb",
+     "spikes": 1869,
+     "home": 0.2895502484333361
+    },
+    {
+     "culture": 6,
+     "boundary": "CA1-EC",
+     "direction": "ff",
+     "spikes": 1269,
+     "home": 0.2037203581668821
+    },
+    {
+     "culture": 6,
+     "boundary": "CA1-EC",
+     "direction": "fb",
+     "spikes": 570,
+     "home": 0.10759787776265006
+    }
+   ]
+  }
+ }
+}
