@@ -1,0 +1,58 @@
+  155/3000 usable of 256 (21 truncated, 13s)
+  301/3000 usable of 512 (44 truncated, 26s)
+  453/3000 usable of 768 (62 truncated, 39s)
+  610/3000 usable of 1024 (80 truncated, 52s)
+  748/3000 usable of 1280 (98 truncated, 65s)
+  903/3000 usable of 1536 (115 truncated, 79s)
+  1050/3000 usable of 1792 (135 truncated, 92s)
+  1194/3000 usable of 2048 (161 truncated, 103s)
+  1340/3000 usable of 2304 (181 truncated, 114s)
+  1487/3000 usable of 2560 (203 truncated, 126s)
+  1627/3000 usable of 2816 (229 truncated, 138s)
+  1775/3000 usable of 3072 (249 truncated, 151s)
+  1915/3000 usable of 3328 (270 truncated, 164s)
+  2056/3000 usable of 3584 (288 truncated, 179s)
+  2203/3000 usable of 3840 (306 truncated, 191s)
+  2346/3000 usable of 4096 (327 truncated, 203s)
+  2493/3000 usable of 4352 (355 truncated, 217s)
+  2633/3000 usable of 4608 (374 truncated, 229s)
+  2768/3000 usable of 4864 (396 truncated, 243s)
+  2919/3000 usable of 5120 (415 truncated, 256s)
+  3077/3000 usable of 5376 (441 truncated, 271s)
+{
+ "simulated_boundaries": 3077,
+ "tried": 5376,
+ "truncated": 441,
+ "whole_bank_spearman": {
+  "asym_vs_traffic_ff": 0.12401143222492868,
+  "asym_vs_axons_ff": 0.1519881987016621,
+  "asym_vs_true_ff": 0.15964814576408204
+ }
+}
+{
+ "asym_vs_traffic_ff": {
+  "median": 0.1253202695734273,
+  "pi90": [
+   -0.1523246972839188,
+   0.3908148316355209
+  ],
+  "pi95": [
+   -0.20713946385336035,
+   0.4393700323641503
+  ],
+  "p_positive": 0.76425
+ },
+ "asym_vs_axons_ff": {
+  "median": 0.1552753773006505,
+  "pi90": [
+   -0.13456279841478677,
+   0.4157720542134408
+  ],
+  "pi95": [
+   -0.1820463045509435,
+   0.46116498101597947
+  ],
+  "p_positive": 0.815
+ }
+}
+{"units": 3506, "share_positive": 0.8134626354820308, "median": 0.009472871268528561} {"median": 0.8166666666666667, "pi90": [0.7333333333333333, 0.9], "pi95": [0.7166666666666667, 0.9]}

@@ -10,6 +10,10 @@
   in place; nothing derived from it is written except summary statistics.
 * Charlesworth et al. (2015) sister-culture recordings, Zenodo record 31085,
   CC0 (public domain). The blind test of the third pre-registration.
+* Lassers et al. (2023) four-compartment hippocampal chips, Zenodo record
+  10257483 (Dryad 10.5061/dryad.7h44j1013), CC0. The processed spike tables
+  only (130 MB); the raw tunnel archives are not needed. The test of the
+  fourth pre-registration.
 
 Every file the results depend on is checked against the SHA-256 it had when
 the results were produced, so a changed upstream file is reported instead of
@@ -40,6 +44,15 @@ ARCHIVES = {
         "https://zenodo.org/records/31085/files/g2c-1.zip?download=1",
 }
 
+FILES = {f"brewer2023/{name}": f"https://zenodo.org/api/records/10257483/files/{name}/content"
+         for name in ("NoStimSortedAxons.mat", "NoStimWellSpikes.mat",
+                      "HFS5SortedAxons.mat", "HFS5WellSpikes.mat",
+                      "HFS40SortedAxons.mat", "HFS40WellSpikes.mat",
+                      "NoStimTunnelSpikeDynamics.mat", "NoStimWellSpikeDynamics.mat",
+                      "HFS5TunnelSpikeDynamics.mat", "HFS5WellSpikeDynamics.mat",
+                      "HFS40TunnelSpikeDynamics.mat", "HFS40WellSpikeDynamics.mat",
+                      "README.md")}
+
 SHA256 = {
     "doorn_fb_model/Experimental_peaktrains/APS_FB2_B6.mat": "020a0bb40403c262282cc204b43c7aab4dae454b430633e659e08d489c799996",
     "doorn_fb_model/Experimental_peaktrains/APS_FB2_C6.mat": "5375269e65a99605270d451537061867356d564e3848744d185f60d69a5a2891",
@@ -55,6 +68,18 @@ SHA256 = {
     "doorn_sbi/FeatureExtraction.py": "d7c367ae6aa0056bf50245d559c6d4b3cdd1b2bd7e63913729917ef2752e1a68",
     "mateus2024/1_MEA_Recordings.zip": "f70d42656a9e0d4bd7c65b33b9b535b90401139b91def8262098d0449bb71371",
     "charlesworth2015/g2c-1.zip": "bbac9851229c7768d2099594a241433fc00b0edb385fed860c0bbb464d946239",
+    "brewer2023/HFS40SortedAxons.mat": "69712f88dd7343315f35aafa5b0138f10fc3c3320498e992da6bd7404931d5d5",
+    "brewer2023/HFS40TunnelSpikeDynamics.mat": "e89929ce39007ffe56ea7c0281fd5d8617da590b7a3fb0061c9224a119ea41b8",
+    "brewer2023/HFS40WellSpikeDynamics.mat": "f1f1769d2753150d8bea788c97ab57bca5f815fed473e815eb438b63d1bacd36",
+    "brewer2023/HFS40WellSpikes.mat": "7455cd60f6e09e3140c0b769acef625b40035dfa6676fb588cdc6917f7a5dbe0",
+    "brewer2023/HFS5SortedAxons.mat": "293005fb831956a19733a548c51e0e24d0e89f7fce0b7625205b4db74fbaca23",
+    "brewer2023/HFS5TunnelSpikeDynamics.mat": "c50ca05e9d5ad9b636bc6ba511f6542597abadd57e5c76bd5ab26db3cf2d1edf",
+    "brewer2023/HFS5WellSpikeDynamics.mat": "a005bb8485c9f7d4df11c70906fd7bacfd1325d8cb3ea3f504bf753f3d870d9e",
+    "brewer2023/HFS5WellSpikes.mat": "45e667739b8b280d727bce5779a55b65118941271b5ee22c1cd698a2f56bac83",
+    "brewer2023/NoStimSortedAxons.mat": "0a946cf542b58e2d9c3815c8998ee17e8a5f8a5652279a99681f7edbc257888f",
+    "brewer2023/NoStimTunnelSpikeDynamics.mat": "4d38e0f75430575ba704aa014e0a5bc6fd578157a378d9934d5d431418b20a9b",
+    "brewer2023/NoStimWellSpikeDynamics.mat": "5e9496778758fe6a865eff04d886d801208ac71618948cc2d50264e7e95bc1c5",
+    "brewer2023/NoStimWellSpikes.mat": "14d1d83824e50d619050143c6d138d939a2df3585dcc7143c0188baedbd19cbe",
 }
 
 
@@ -81,6 +106,13 @@ def main() -> None:
             top = z.namelist()[0].split("/")[0]
             if not (out.parent / top).exists():
                 z.extractall(out.parent)
+    for rel, url in FILES.items():
+        out = RAW / rel
+        if not out.exists():
+            out.parent.mkdir(parents=True, exist_ok=True)
+            with urllib.request.urlopen(url, timeout=900) as r, open(out, "wb") as f:
+                while chunk := r.read(1 << 20):
+                    f.write(chunk)
     bad = []
     for rel, want in SHA256.items():
         p = RAW / rel

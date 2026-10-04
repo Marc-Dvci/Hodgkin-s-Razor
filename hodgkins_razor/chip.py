@@ -109,7 +109,7 @@ RSCALE_KEYS = ("g_ampa", "g_nmda", "g_gaba", "g_kdr")   # order of the kernel's 
 def wiring(theta: np.ndarray, chip: np.ndarray, rng: np.random.Generator,
            pair: bool = False, silence: np.ndarray | None = None,
            striatal: bool = False, perfuse: dict | None = None,
-           down_state_pa: float = 0.0) -> dict:
+           down_state_pa: float = 0.0, monitor: int | None = None) -> dict:
     """Wiring, drive and electrode maps for a batch of chips.
 
     Within a chamber the network is wired as usual. `p_cross` is the fraction
@@ -131,6 +131,11 @@ def wiring(theta: np.ndarray, chip: np.ndarray, rng: np.random.Generator,
     `down_state_pa` (striatal only, default 0) adds a hyperpolarising bias to
     every target neuron: the down state in which medium spiny neurons rest
     until convergent cortical input lifts them.
+    `monitor` (default: every projecting axon) records only that many
+    projecting axons, drawn at random among both directions, on the channel
+    electrodes: a chip whose channel electrodes sit in a few of its tunnels,
+    each holding one axon. The drawn axons' directions are returned as
+    `monitored_fwd` (one count per chip).
     `perfuse` maps a chamber (0 source, 1 target) to conductance factors,
     for example {1: {"g_nmda": 0.3}}, applied to that chamber's neurons
     only: a drug perfused into one compartment of a fluidically isolated
@@ -155,6 +160,8 @@ def wiring(theta: np.ndarray, chip: np.ndarray, rng: np.random.Generator,
     w = np.zeros((n_struct, NN, NN), dtype=np.float32)
     isinh = np.zeros((n_struct, NN), dtype=np.uint8)
     elec = np.zeros((n_struct, NN), dtype=np.int32)
+    monitored_fwd = np.zeros(n_struct, dtype=int)
+    monitored_n = np.zeros(n_struct, dtype=int)
     for b in range(n_struct):
         weight = np.clip(1.0 + 0.7 * rng.standard_normal((NN, NN)), 0.0, 2.0)
         u = rng.random((NN, NN))
@@ -176,8 +183,17 @@ def wiring(theta: np.ndarray, chip: np.ndarray, rng: np.random.Generator,
         if striatal:
             isinh[b, comp == 1] = 1
         e = GEOMETRY.elec.copy()
-        e[fwd] = ELEC_FWD
-        e[bwd] = ELEC_BWD
+        if monitor is None:
+            e[fwd] = ELEC_FWD
+            e[bwd] = ELEC_BWD
+        else:
+            axons = np.concatenate([fwd, bwd])
+            pick = rng.choice(axons.size, size=min(monitor, axons.size), replace=False)
+            is_fwd = pick < fwd.size
+            e[axons[pick[is_fwd]]] = ELEC_FWD
+            e[axons[pick[~is_fwd]]] = ELEC_BWD
+            monitored_fwd[b] = int(is_fwd.sum())
+            monitored_n[b] = int(pick.size)
         elec[b] = e
     shape = rng.random((n_struct, NN)) - 0.5
     if pair:
@@ -199,6 +215,9 @@ def wiring(theta: np.ndarray, chip: np.ndarray, rng: np.random.Generator,
             ibias[np.ix_(rows, comp == c)] = SILENCE_PA
     out = {"w": w, "isinh": isinh, "delay": GEOMETRY.delay,
            "elec": elec, "ibias": ibias}
+    if monitor is not None:
+        out["monitored_fwd"] = monitored_fwd
+        out["monitored_n"] = monitored_n
     if perfuse:
         rscale = np.ones((B, NN, len(RSCALE_KEYS)), dtype=np.float32)
         for c, factors in perfuse.items():
@@ -219,15 +238,19 @@ def run_chip(sim: S.Simulator, theta: np.ndarray, chip: np.ndarray,
              duration_s: float = 60.0, transient_s: float = 5.0,
              seed: int = 0, pair: bool = False,
              silence: np.ndarray | None = None, striatal: bool = False,
-             perfuse: dict | None = None, down_state_pa: float = 0.0) -> S.SimResult:
+             perfuse: dict | None = None, down_state_pa: float = 0.0,
+             monitor: int | None = None):
     """Simulate chips. The wiring depends only on `seed`, so the same seed
     with a different `silence` or `perfuse` is the same device under another
-    perfusion."""
+    perfusion. With `monitor`, returns (result, monitored_fwd, monitored_n)."""
     rng = np.random.default_rng(seed * 104729 + 7)
     struct = wiring(theta, chip, rng, pair=pair, silence=silence,
-                    striatal=striatal, perfuse=perfuse, down_state_pa=down_state_pa)
-    return sim.run(theta, duration_s=duration_s, transient_s=transient_s,
-                   seed=seed, pair=pair, structure=struct)
+                    striatal=striatal, perfuse=perfuse, down_state_pa=down_state_pa,
+                    monitor=monitor)
+    mon = (struct.pop("monitored_fwd", None), struct.pop("monitored_n", None))
+    res = sim.run(theta, duration_s=duration_s, transient_s=transient_s,
+                  seed=seed, pair=pair, structure=struct)
+    return res if monitor is None else (res, mon[0], mon[1])
 
 
 # ---------------------------------------------------------------- readouts
@@ -248,9 +271,19 @@ def cross_stats(events: np.ndarray, duration: float) -> np.ndarray:
     rates at 5 ms resolution, its asymmetry (how much of the correlation mass
     sits at positive lags, source leading), and the rate ratio.
     """
-    out = np.zeros(4)
     a = chamber_events(events, 0)[:, 1]
     b = chamber_events(events, 1)[:, 1]
+    return rate_xcorr(a, b, duration)
+
+
+def rate_xcorr(a: np.ndarray, b: np.ndarray, duration: float) -> np.ndarray:
+    """`cross_stats` from two chambers' pooled spike times (seconds).
+
+    Returns peak correlation, lag of the peak (positive: `a` leads), the
+    asymmetry of the correlation mass in (-1, 1), positive when `a` leads,
+    and log rate ratio of `b` over `a`.
+    """
+    out = np.zeros(4)
     if a.size > 5 and b.size > 5:
         bins = np.arange(0, duration + 0.005, 0.005)
         ha, _ = np.histogram(a, bins)

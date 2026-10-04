@@ -14,3 +14,4 @@ tqdm>=4.66
 numba>=0.59
 h5py>=3.10
 openpyxl>=3.1
+mat-io>=1.0          # reads the MATLAB tables of Lassers et al. (2023)
