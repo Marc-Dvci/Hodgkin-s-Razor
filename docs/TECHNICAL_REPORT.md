@@ -3,7 +3,7 @@
 **AI4S Open Innovation: AI for Life Science**, 5th Pazhou Algorithm Competition
 **Category: End-to-End System**
 Marc Donovici · Apache-2.0 · `github.com/Marc-Dvci/Hodgkin-s-Razor`
-Pre-registrations: v1 `c40708bb19668164` (Tampere), v2 `5dc7a927085f8e46` (Dynasore, chips), v3 `2e1e630e6bffbecf` (chronic APV)
+Pre-registrations: v1 `c40708bb19668164` (Tampere), v2 `5dc7a927085f8e46` (Dynasore, chips), v3 `2e1e630e6bffbecf` (chronic APV), v4 `6f7ac1d7887d3f53` (four-compartment chip)
 
 ---
 
@@ -28,14 +28,16 @@ vehicle wells. A method's chance level is its own hit rate when nothing was
 applied. That rule exposed a comparator whose 8/10 blind score was a fixed
 preference: it named the same mechanisms on 6 of 10 untreated pairs.
 
-**Blind test, version 3.** Charlesworth et al. (2015) plated mouse hippocampal cultures on sister arrays and kept an NMDA-receptor antagonist on one sister for days. The twin's probability that NMDA moved separates the 29 treated preparations from 23 untreated preparations of the same genotypes with an AUROC of **0.86** (95% CI 0.74 to 0.96), against a pre-registered bar of 0.70. On the same preparations, the published estimator of Doorn et al. scores 0.49, and the same twin with its pairing removed scores 0.66. The cultures compensate as they mature, as the original authors report. The twin's reading of NMDA fades with them (one-sided Wilcoxon p = 3e-05). The co-primary, NMDA as the single most probable mechanism, was not met (2/29 against 1/23), and no preparation's probability reached 0.5. The twin ranks the treated cultures above the untreated ones, but is not confident about any one of them.
+**Blind test, version 3.** Charlesworth et al. (2015) plated mouse hippocampal cultures on sister arrays and kept an NMDA-receptor antagonist on one sister for days. The twin's probability that NMDA moved separates the 29 treated preparations from 23 untreated preparations of the same genotypes with an AUROC of **0.86** (95% CI 0.74 to 0.96), against a pre-registered bar of 0.70. On the preparations its guard accepts, it is 0.89 (24 treated, 16 untreated). On the same preparations, the published estimator of Doorn et al. scores 0.49, and the same twin with its pairing removed scores 0.66. The cultures compensate as they mature, as the original authors report. The twin's reading of NMDA fades with them (one-sided Wilcoxon p = 3e-05). The co-primary, NMDA as the single most probable mechanism, was not met (2/29 against 1/23), and no preparation's probability reached 0.5. The median probability is 0.125 for treated and 0.103 for untreated preparations; in the simulations the twin was trained on, NMDA moved in 0.14 of pairs. The twin ranks the treated cultures above the untreated ones, but is not confident about any one of them.
 
-**Blind test, version 2.** On human iPSC networks from another laboratory treated with Dynasore (Doorn et al. 2024), the twin failed its primary: it named the accepted mechanism in 2 of 10 wells, against a bar of 5. It detected the drug in 9 of 10 wells and in 0 of 10 untreated pairs of the same wells. It placed it in the right mechanism class in 8 of 10 (p = 0.0016).
+**Blind test, version 2.** On human iPSC networks from another laboratory treated with Dynasore (Doorn et al. 2024), the twin failed its primary: it named the accepted mechanism in 2 of 10 wells, against a bar of 5. It detected the drug in 9 of 10 wells and in 0 of 10 untreated pairs of the same wells, and placed it in the right mechanism class in 8 of 10 (p = 0.0016). These counts score every well: the guard put 7 of the 10 outside the model, where the product names nothing.
 
 The same simulator runs a two-compartment chip with directional microchannels,
 the geometry of the supporting organisation. It computes, before an experiment
 is run, which readout can resolve which property of a device and how many chips
-a claim needs. For directional channels it gives the number of chips a claim needs: about 20 per design. The one public test available had about 8, which gives power 0.48. It also reproduces part of the sponsor laboratory's cortico-striatal result. The first committed prediction failed. The revision imposed only the paper's own statement that an isolated striatum is silent, and it moved both synchrony readouts in the published direction (p = 0.002 and 0.008). Calcium-event frequency did not follow.
+a claim needs. For directional channels it gives the number of chips a claim needs: about 20 per design. The one public test available had about 8, which gives power 0.48. It also reproduces part of the sponsor laboratory's cortico-striatal result. The first committed prediction failed. The revision imposed only the paper's own statement that an isolated striatum is silent, and it moved both synchrony readouts in the published direction (p = 0.002 and 0.008). Calcium-event frequency did not follow. 
+
+**Recorded four-compartment chip, version 4.** On hippocampal cultures grown in four compartments joined by axon tunnels (Lassers et al. 2023), the twin's predictions were pre-registered before a spike was counted. Met: an axon's spikes follow the compartment it grows from more than the one it grows into, in 49 of 60 axon pools (0.82, bar 0.73), and again after both stimulation patterns (0.79 and 0.86). Not met: the twin expected the compartments' timing to say little about which way axonal traffic runs; the recorded relation was negative (-0.30, interval -0.16 to 0.41). Either way, compartment electrodes do not give the direction; electrodes in the tunnels do.
 
 Everything runs from public data on one desktop GPU. The demo, the web
 application and the notebook run on a CPU.
@@ -120,10 +122,6 @@ What is new in method, beyond the table:
   before training, forbids freezing a test the twin fails on its own
   simulations.
 
-Other entries to this challenge that work on neural MEA data describe
-recordings (quality control, feature fingerprints, forecasts). None infers a
-mechanism with a model that can be re-simulated.
-
 ## 4. Data
 
 | Dataset | What it is | Role | Licence |
@@ -133,6 +131,7 @@ mechanism with a model that can be re-simulated.
 | Mateus et al., bioRxiv 2024 | rat hippocampal neurons in two-compartment chips with straight, Tesla, Tesla v2, Rams and Arrows microchannels; MCS 256-electrode | **blind test** of the chip readout prediction | CC BY-NC-ND (research use; read in place, not redistributed) |
 | Tampere comparative MEA (Hyvärinen et al., *Sci Data* 2022) | rat cortical DIV 22 and hPSC-derived DIV 29 plates; CNQX, D-AP5, GABA, gabazine, kainic acid, TTX, vehicle; 16 electrodes | development set (scored in version 1) | CC BY 4.0 |
 | Doorn et al., *Commun Biol* 2025 | trained estimator and feature code | prior art, scored beside the twin | Apache-2.0 |
+| Lassers et al., Dryad/Zenodo 2023 | rat hippocampal EC, DG, CA3 and CA1 in four compartments of one device joined by axon tunnels; MCS 120-electrode, 19 per compartment, electrode pairs across 20 tunnels; 9 cultures, 6 also after two stimulation patterns | **test** of the chip twin, version 4 | CC0 1.0 |
 | Lassus et al., *Sci Rep* 2018 | published directions of NMDA (GluN2B) block in cortico-striatal chips | a reproduction target for the chip twin | cited, no data used |
 
 No restricted, clinical or personal data is used. Every file the results depend
@@ -261,7 +260,7 @@ outside the model, and no mechanism is named.
 
 ## 6. How it was evaluated, and what was scored more than once
 
-There were three pre-registrations, each hashed before the model it covers saw
+There were four pre-registrations, each hashed before the model it covers saw
 its blind data. The code enforces the order: the Doorn and Charlesworth readers
 refuse to return a blind recording, and the evaluations refuse to run, unless
 the pre-registration matches its recorded hash and every frozen model matches
@@ -277,6 +276,9 @@ the digest it lists.
   group is matched on genotype. A stop rule, committed before the version 3 twin
   was trained, required the twin to pass the test on its own simulations before
   the pre-registration could be hashed.
+* **Version 4** tested the chip twin on a recorded four-compartment chip
+  (section 7.4). Its predictions were simulated, hashed and pushed before a
+  spike of that dataset was counted. One was met and one was not.
 
 The stop rule required an AUROC of at least 0.80 on simulated sister pairs with NMDA blocked alone, and 0.70 with a second mechanism moving. The first twin missed the first bar. A second simulation bank was added and the twin retrained. The bars did not move:
 
@@ -464,7 +466,7 @@ Bath GABA was read wrongly in every well. On simulations (section 7.7) this is a
 
 ![Figure 7. Tampere development set.](../results/v2/figures/tampere_confusion.png)
 
-### 7.4 The chip readout prediction, on recorded microchannel chips
+### 7.4 The chip twin on recorded chips (versions 2 and 4)
 
 Simulated chips: recovery r and 90% interval coverage of each chip parameter, by readout (held-out chips).
 
@@ -504,6 +506,22 @@ The channel statistic's interval spans 0.28 to 0.88. With about 8 chips per desi
 
 ![Figure 9. The prediction tested on recorded chips.](../results/v2/figures/mateus_chips.png)
 
+**Version 4: a recorded four-compartment chip** (`PREREGISTRATION_v4.md`, sha256 `6f7ac1d7887d3f53`, frozen and pushed before a spike was counted). Lassers et al. (2023) grew hippocampal EC, DG, CA3 and CA1 in four compartments of one device, joined in a loop by tunnels, on a 120-electrode array: 19 electrodes under each compartment, and an electrode pair across five tunnels of each boundary that gives every axon's direction. Like the Mateus chips, it carries both readouts the twin compares, compartment and channel electrodes, on one device. The twin, never fitted to it, simulated 3,077 boundaries as two-chamber chips with five monitored axons and made two predictions (`scripts/brewer_prediction.py`): an axon's spikes follow the compartment it grows from more closely than the one it grows into (P1), and the compartments' timing says little about which way axonal traffic runs (P2).
+
+![Figure 10. Version 4: the twin's predictions (grey, 90% intervals fixed before scoring) and the recorded chips.](../results/v4/figures/brewer_chip.png)
+
+| Condition | Boundaries / axon pools | P1: share of pools following home (bar) | P2: Spearman, compartment lead vs feed-forward traffic (twin 90%) |
+|---|---|---|---|
+| unstimulated (primary) | 33 / 60 | 0.82 (0.73) | -0.30 ([-0.16, 0.41]) |
+| after HFS 5 | 23 / 39 | 0.79 (0.69) | 0.09 ([-0.23, 0.46]) |
+| after HFS 40 | 23 / 37 | 0.86 (0.70) | 0.09 ([-0.23, 0.46]) |
+
+- **P1 met.** 49 of 60 axon pools follow their home compartment (0.82; cultures resampled 0.73 to 0.91; sign test p = 4e-07), and again after both stimulation patterns. The effect is much larger on the device than in the twin (median index 0.24 against 0.009).
+
+- **P2 not met.** The recorded relation is negative, -0.30 (cultures resampled -0.50 to -0.05; permutation p = 0.09), below the twin's interval. The compartment that leads tends to be the one receiving more axonal traffic, which the twin has no mechanism for. After stimulation, the relation is near zero and inside the interval.
+
+- **For chip design**, compartment timing gave the direction of axonal traffic neither in the twin nor on the device. The direction comes from electrodes in the tunnels. That is the planner's advice, now on a recorded chip as well as the Mateus chips. Full tables: `results/v4/RESULTS.md`.
+
 ### 7.5 Simulations and calibration
 
 **Version 3: sister pairs on the MCS 60-electrode array (quadrants).** Two sisters differ in wiring and electrode pickup, not only in the compound, so every number here is lower than for one well recorded twice.
@@ -528,7 +546,7 @@ The channel statistic's interval spans 0.28 to 0.88. With about 8 chips per desi
 
 The version 2 twins (one well recorded twice) are in Appendix A.
 
-![Figure 10. Held-out simulations.](../results/v2/figures/simulation.png)
+![Figure 11. Held-out simulations.](../results/v2/figures/simulation.png)
 
 ### 7.6 The guard
 
@@ -546,7 +564,7 @@ On the recorded windows it fires on 0.35 of treated and 0.46 of null windows.
 Preparations outside the model (most windows fire): 37 of 107.
 Primary contrast restricted to preparations the guard passes: AUROC 0.89 [0.75, 0.98] (24 treated, 16 null).
 
-![Figure 11. The guard.](../results/v2/figures/guard.png)
+![Figure 12. The guard.](../results/v2/figures/guard.png)
 
 ### 7.7 Does the twin reproduce known pharmacology?
 
@@ -569,7 +587,7 @@ On cultures the banks admitted, 12 of 12 saturating blocks and agonists change f
 
 As bath GABA rises towards saturation, the culture falls silent and the twin's reading moves from inhibition to the sodium channel. Both silence the culture, and nothing in a silent recording separates them. A partial concentration, or a follow-up with a GABA-A antagonist, would.
 
-![Figure 12. Pharmacology check.](../results/v2/figures/pharmacology.png)
+![Figure 13. Pharmacology check.](../results/v2/figures/pharmacology.png)
 
 ### 7.8 Exploratory, post hoc: reading each mechanism against untreated controls
 
@@ -599,11 +617,11 @@ not adopted. The log-ratio rule is the one to pre-register on the next blind set
 
 ## 8. From description to predictive simulation: the planning tool
 
-![Figure 13. How many chips a directionality claim needs.](../results/v3/figures/chip_power.png)
+![Figure 14. How many chips a directionality claim needs.](../results/v3/figures/chip_power.png)
 
 The sponsor's stated goal is to move neural organ-on-chip work from experimental description to predictive simulation. This section is that step: before any experiment is run, the twin says what to measure, how many chips to use, and which follow-up resolves an ambiguity.
 
-**Which readout resolves which property of a chip** (simulations, held-out chips): channel electrodes recover direction selectivity; chamber electrodes and 2 Hz calcium do not (section 7.4, Figure 5). A laboratory that wants to show its diodes work should put electrodes in the channels.
+**Which readout resolves which property of a chip** (simulations, held-out chips): channel electrodes recover direction selectivity; chamber electrodes and 2 Hz calcium do not (section 7.4, Figure 8). A laboratory that wants to show its diodes work should put electrodes in the channels. On a recorded four-compartment chip (version 4, section 7.4), compartment timing did not give the direction of axonal traffic either, although its relation was negative rather than the weak positive the twin expected.
 
 **How many chips a claim needs** (`scripts/chip_power.py`):
 
@@ -661,7 +679,7 @@ The recommendation resolves 0.54 of ties. That beats recording the same well aga
 2. **The guard is weaker on sister pairs.** It fires on 0.58 of simulated unmodelled kinetics and 0.63 of shuffled recordings, against bars of 0.80. It met all three bars within wells.
 3. **Human cultures are outside the model.** 27 of 28 human Tampere wells were flagged, and none was named correctly. A human-only twin (post hoc) names 6 of 24, but its guard still flags 27 of 28 (section 7.3).
 4. **A silenced culture cannot be read.** Saturating inhibition and a sodium block leave the same silent recording (section 7.7).
-5. **Most real data are conventional MEA cultures, not chips.** The blind tests are 2D cultures on arrays; the one set of recorded chips (17 chips) is underpowered for the question asked of it. The chip twin's claims rest on simulations, one underpowered recorded test, and a reproduction attempt (section 8).
+5. **The mechanism tests are on conventional MEA cultures, not chips.** The chip twin is tested on two recorded chip sets: the Mateus chips (17, underpowered) and nine four-compartment hippocampal cultures (version 4), where one of its two predictions held and the other fell outside its interval with the opposite sign. The twin reads a four-compartment loop one boundary at a time, and was never fitted to hippocampal cultures.
 6. **The next-experiment recommender is not yet better than a fixed protocol** (section 8). It beats recording the same well again, but not a fixed choice of follow-up compound.
 7. **The drift between recordings is one number per design.** It was measured on untreated pairs, but a real culture may drift more along some parameters than others.
 8. **The stop rule needed two attempts.** The first twin missed the simulated bar by 0.008. More simulations were added, the bars were not moved, and both attempts are in the pre-registration.
@@ -691,7 +709,7 @@ The same page is published as a static site (`site/`, no server, no login).
 Besides the mechanism report on bundled recordings, it has a **Blind test**
 view, where every preparation of the version 3 test can be re-read with the
 method, the untreated group and the mechanism switched, each AUROC recomputed
-in the browser from the scored values, and a **Chip planner** view (Figure 13
+in the browser from the scored values, and a **Chip planner** view (Figure 14
 made interactive). `scripts/export_evidence.py` writes its data from the frozen
 results and refuses to write if its recomputed primary differs from the scored one.
 
@@ -701,6 +719,15 @@ Full rebuild on a CUDA device, with each step skipped when its output exists:
 pip install -r requirements-gpu.txt
 python scripts/fetch_tampere.py && python scripts/fetch_external.py
 python scripts/run_all.py
+```
+
+The four-compartment chip test (version 4) runs on its own: the twin's
+prediction from simulation, the freeze, then the scoring.
+
+```bash
+python scripts/brewer_prediction.py     # GPU, about 5 minutes; results/v4/brewer_prediction.json
+python scripts/freeze_v4.py             # writes PREREGISTRATION_v4.md once
+python scripts/evaluate_v4.py && python scripts/render_v4.py
 ```
 
 The prior-art estimator runs in its own environment (`requirements-doorn.txt`).
@@ -717,6 +744,7 @@ Marc Donovici, solo entrant: audit, and applied machine learning, including earl
 - Doorn et al. peak trains and estimator: Apache-2.0.
 - Mateus et al. chip recordings: CC BY-NC-ND. Used for research, read in place
   and not redistributed.
+- Lassers et al. four-compartment chip recordings: CC0 1.0.
 
 **Software.** Python, NumPy, SciPy, pandas, PyTorch, zuko, CuPy, numba, h5py,
 scikit-learn, FastAPI, Matplotlib, Playwright and pytest; sbi 0.21 and brian2
@@ -739,6 +767,8 @@ service is part of the system.
 9. Cranmer K., Brehmer J., Louppe G. The frontier of simulation-based inference. *PNAS* 117:30055, 2020.
 10. Tsodyks M., Markram H. The neural code between neocortical pyramidal neurons depends on neurotransmitter release probability. *PNAS* 94:719, 1997.
 11. Cutts C., Eglen S. Detecting pairwise correlations in spike trains: an objective comparison of methods. *J Neurosci* 34:14288, 2014.
+12. Lassers S., Vakilna Y.S., Tang W., Brewer G.J. The flow of axonal information among hippocampal subregions: 2. Patterned stimulation sharpens routing of information transmission. Dataset, Dryad, doi:10.5061/dryad.7h44j1013, 2023.
+13. Vakilna Y.S., Tang W.C., Wheeler B.C., Brewer G.J. The flow of axonal information among hippocampal subregions: 1. Feed-forward and feedback network spatial dynamics underpinning emergent information processing. *Front Neural Circuits* 15:660837, 2021.
 
 ---
 

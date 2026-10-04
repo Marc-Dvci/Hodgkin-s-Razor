@@ -132,6 +132,10 @@ def results_md(r: dict, pred: dict) -> str:
           "direction is weak and, unstimulated, of the opposite sign. Direction has to be read "
           "from electrodes in the channels, which is the planner's advice. The twin's predicted "
           "relation fell outside its interval, and that is reported as a failed prediction.", "",
+          "Erratum to section 1 of the pre-registration, which calls this the one public "
+          "neural chip with both readouts on the same device: the Mateus et al. chips "
+          "(version 2) also carry compartment and channel electrodes. Nothing scored depends "
+          "on that sentence.", "",
           "Known mismatches, fixed in the pre-registration and not tuned: a loop of four "
           "compartments read one boundary at a time as two-chamber chips; tunnels 400 um against "
           "500 um; cortical against hippocampal cultures; detection pipelines differ."]

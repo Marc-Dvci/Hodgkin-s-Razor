@@ -3,7 +3,7 @@
 **AI4S Open Innovation: AI for Life Science**, 5th Pazhou Algorithm Competition
 **Category: End-to-End System**
 Marc Donovici · Apache-2.0 · `github.com/Marc-Dvci/Hodgkin-s-Razor`
-Pre-registrations: v1 `c40708bb19668164` (Tampere), v2 `{{PREREG2}}` (Dynasore, chips), v3 `{{PREREG3}}` (chronic APV)
+Pre-registrations: v1 `c40708bb19668164` (Tampere), v2 `{{PREREG2}}` (Dynasore, chips), v3 `{{PREREG3}}` (chronic APV), v4 `{{PREREG4}}` (four-compartment chip)
 
 ---
 
@@ -127,6 +127,7 @@ What is new in method, beyond the table:
 | Mateus et al., bioRxiv 2024 | rat hippocampal neurons in two-compartment chips with straight, Tesla, Tesla v2, Rams and Arrows microchannels; MCS 256-electrode | **blind test** of the chip readout prediction | CC BY-NC-ND (research use; read in place, not redistributed) |
 | Tampere comparative MEA (Hyvärinen et al., *Sci Data* 2022) | rat cortical DIV 22 and hPSC-derived DIV 29 plates; CNQX, D-AP5, GABA, gabazine, kainic acid, TTX, vehicle; 16 electrodes | development set (scored in version 1) | CC BY 4.0 |
 | Doorn et al., *Commun Biol* 2025 | trained estimator and feature code | prior art, scored beside the twin | Apache-2.0 |
+| Lassers et al., Dryad/Zenodo 2023 | rat hippocampal EC, DG, CA3 and CA1 in four compartments of one device joined by axon tunnels; MCS 120-electrode, 19 per compartment, electrode pairs across 20 tunnels; 9 cultures, 6 also after two stimulation patterns | **test** of the chip twin, version 4 | CC0 1.0 |
 | Lassus et al., *Sci Rep* 2018 | published directions of NMDA (GluN2B) block in cortico-striatal chips | a reproduction target for the chip twin | cited, no data used |
 
 No restricted, clinical or personal data is used. Every file the results depend
@@ -238,7 +239,7 @@ outside the model, and no mechanism is named.
 
 ## 6. How it was evaluated, and what was scored more than once
 
-There were three pre-registrations, each hashed before the model it covers saw
+There were four pre-registrations, each hashed before the model it covers saw
 its blind data. The code enforces the order: the Doorn and Charlesworth readers
 refuse to return a blind recording, and the evaluations refuse to run, unless
 the pre-registration matches its recorded hash and every frozen model matches
@@ -254,6 +255,9 @@ the digest it lists.
   group is matched on genotype. A stop rule, committed before the version 3 twin
   was trained, required the twin to pass the test on its own simulations before
   the pre-registration could be hashed.
+* **Version 4** tested the chip twin on a recorded four-compartment chip
+  (section 7.4). Its predictions were simulated, hashed and pushed before a
+  spike of that dataset was counted. One was met and one was not.
 
 {{STOP_RULE}}
 
@@ -293,7 +297,7 @@ Both `u_rel` (U) and `tau_d` (vesicle recovery) are accepted, direction up.
 
 ![Figure 7. Tampere development set.](../results/v2/figures/tampere_confusion.png)
 
-### 7.4 The chip readout prediction, on recorded microchannel chips
+### 7.4 The chip twin on recorded chips (versions 2 and 4)
 
 {{CHIPS}}
 
@@ -301,17 +305,19 @@ Both `u_rel` (U) and `tau_d` (vesicle recovery) are accepted, direction up.
 
 ![Figure 9. The prediction tested on recorded chips.](../results/v2/figures/mateus_chips.png)
 
+{{CHIPS_V4}}
+
 ### 7.5 Simulations and calibration
 
 {{SIMULATION}}
 
-![Figure 10. Held-out simulations.](../results/v2/figures/simulation.png)
+![Figure 11. Held-out simulations.](../results/v2/figures/simulation.png)
 
 ### 7.6 The guard
 
 {{GUARD}}
 
-![Figure 11. The guard.](../results/v2/figures/guard.png)
+![Figure 12. The guard.](../results/v2/figures/guard.png)
 
 ### 7.7 Does the twin reproduce known pharmacology?
 
@@ -321,7 +327,7 @@ the change in firing is compared with the published direction and rough size.
 
 {{PHARMACOLOGY}}
 
-![Figure 12. Pharmacology check.](../results/v2/figures/pharmacology.png)
+![Figure 13. Pharmacology check.](../results/v2/figures/pharmacology.png)
 
 ### 7.8 Exploratory, post hoc: reading each mechanism against untreated controls
 
@@ -351,7 +357,7 @@ not adopted. The log-ratio rule is the one to pre-register on the next blind set
 
 ## 8. From description to predictive simulation: the planning tool
 
-![Figure 13. How many chips a directionality claim needs.](../results/v3/figures/chip_power.png)
+![Figure 14. How many chips a directionality claim needs.](../results/v3/figures/chip_power.png)
 
 {{CHIP_DESIGN}}
 
@@ -377,7 +383,7 @@ The same page is published as a static site (`site/`, no server, no login).
 Besides the mechanism report on bundled recordings, it has a **Blind test**
 view, where every preparation of the version 3 test can be re-read with the
 method, the untreated group and the mechanism switched, each AUROC recomputed
-in the browser from the scored values, and a **Chip planner** view (Figure 13
+in the browser from the scored values, and a **Chip planner** view (Figure 14
 made interactive). `scripts/export_evidence.py` writes its data from the frozen
 results and refuses to write if its recomputed primary differs from the scored one.
 
@@ -387,6 +393,15 @@ Full rebuild on a CUDA device, with each step skipped when its output exists:
 pip install -r requirements-gpu.txt
 python scripts/fetch_tampere.py && python scripts/fetch_external.py
 python scripts/run_all.py
+```
+
+The four-compartment chip test (version 4) runs on its own: the twin's
+prediction from simulation, the freeze, then the scoring.
+
+```bash
+python scripts/brewer_prediction.py     # GPU, about 5 minutes; results/v4/brewer_prediction.json
+python scripts/freeze_v4.py             # writes PREREGISTRATION_v4.md once
+python scripts/evaluate_v4.py && python scripts/render_v4.py
 ```
 
 The prior-art estimator runs in its own environment (`requirements-doorn.txt`).
@@ -403,6 +418,7 @@ service, paid API or proprietary model is required.
 - Doorn et al. peak trains and estimator: Apache-2.0.
 - Mateus et al. chip recordings: CC BY-NC-ND. Used for research, read in place
   and not redistributed.
+- Lassers et al. four-compartment chip recordings: CC0 1.0.
 
 **Software.** Python, NumPy, SciPy, pandas, PyTorch, zuko, CuPy, numba, h5py,
 scikit-learn, FastAPI, Matplotlib, Playwright and pytest; sbi 0.21 and brian2
@@ -425,6 +441,8 @@ service is part of the system.
 9. Cranmer K., Brehmer J., Louppe G. The frontier of simulation-based inference. *PNAS* 117:30055, 2020.
 10. Tsodyks M., Markram H. The neural code between neocortical pyramidal neurons depends on neurotransmitter release probability. *PNAS* 94:719, 1997.
 11. Cutts C., Eglen S. Detecting pairwise correlations in spike trains: an objective comparison of methods. *J Neurosci* 34:14288, 2014.
+12. Lassers S., Vakilna Y.S., Tang W., Brewer G.J. The flow of axonal information among hippocampal subregions: 2. Patterned stimulation sharpens routing of information transmission. Dataset, Dryad, doi:10.5061/dryad.7h44j1013, 2023.
+13. Vakilna Y.S., Tang W.C., Wheeler B.C., Brewer G.J. The flow of axonal information among hippocampal subregions: 1. Feed-forward and feedback network spatial dynamics underpinning emergent information processing. *Front Neural Circuits* 15:660837, 2021.
 
 ---
 

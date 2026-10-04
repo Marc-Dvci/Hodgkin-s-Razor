@@ -198,6 +198,33 @@ def main() -> None:
     else:
         c.add("results/v3/results.json present", False, "run scripts/evaluate_v3_lowmem.py")
 
+    print("version 4 (four-compartment chip)")
+    md4, sha4 = ROOT / "PREREGISTRATION_v4.md", ROOT / "PREREGISTRATION_v4.sha256"
+    r4p = ROOT / "results" / "v4" / "results.json"
+    if md4.exists() and sha4.exists() and r4p.exists():
+        h4 = hashlib.sha256(md4.read_bytes()).hexdigest()
+        c.add("PREREGISTRATION_v4.md matches its hash", h4 == sha4.read_text().split()[0], h4[:16])
+        r4 = json.loads(r4p.read_text())
+        c.add("v4 results were scored under that hash", r4["preregistration"] == h4)
+        spec4 = json.loads(re.search(r"```json\n(.*?)\n```", md4.read_text(encoding="utf-8"),
+                                     re.S).group(1))
+        pf = ROOT / spec4["prediction_file"]
+        c.add("v4 prediction file unchanged since the freeze",
+              hashlib.sha256(pf.read_bytes()).hexdigest() == spec4["prediction_sha256"])
+        h = r4["primary"]["home"]
+        t = r4["primary"]["asym_vs_traffic_ff"]
+        written = {"results/v4/RESULTS.md": [f"{h['k']}/{h['n']}", f"{t['spearman']:.2f}"],
+                   "docs/TECHNICAL_REPORT.md": [f"{h['k']} of {h['n']}", f"{t['spearman']:.2f}"],
+                   "docs/WRITEUP.md": [f"{h['k']} of {h['n']}", f"{t['spearman']:.2f}"]}
+        for rel, wants in written.items():
+            p = ROOT / rel
+            text = p.read_text(encoding="utf-8") if p.exists() else ""
+            c.add(f"{rel} quotes the v4 outcomes as scored", all(w in text for w in wants),
+                  ", ".join(wants))
+    else:
+        c.add("version 4 pre-registration and results present", False,
+              "run scripts/freeze_v4.py then scripts/evaluate_v4.py")
+
     if not args.skip_tests:
         print("tests")
         out = subprocess.run([sys.executable, "-m", "pytest", "-q", str(ROOT / "tests")],

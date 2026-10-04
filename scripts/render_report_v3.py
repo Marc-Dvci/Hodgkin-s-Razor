@@ -41,16 +41,21 @@ def summary_results(r3, r2, nul) -> str:
     unp = B.get("unpaired", {}).get("metrics", {})
     pa = B.get("prior_art", {}).get("metrics", {})
     c = A["canalization"]
+    ins = r3["C_guard"]["inside_metrics"]
+    base = load("results/v3/base_rate.json")["rate"]["g_nmda"]
     d2 = r2["A_doorn"]["metrics"]
     k_cls = round(d2["class_accuracy"] * d2["n_wells"])
     called_t = sum(max(w["p_active"]) > 0.5 for w in r2["A_doorn"]["wells"])
-    parts = [
+    outside = sum(bool(w["outside_model"]) for w in r2["A_doorn"]["wells"])
+    v3 = " ".join([
         f"**Blind test, version 3.** Charlesworth et al. (2015) plated mouse hippocampal "
         f"cultures on sister arrays and kept an NMDA-receptor antagonist on one sister for days. "
         f"The twin's probability that NMDA moved separates the {m['n_treated']} treated "
         f"preparations from {m['n_null']} untreated preparations of the same genotypes with "
         f"an AUROC of **{f2(m['auroc_key'])}** (95% CI {f2(m['auroc_key_ci95'][0])} to "
-        f"{f2(m['auroc_key_ci95'][1])}), against a pre-registered bar of 0.70.",
+        f"{f2(m['auroc_key_ci95'][1])}), against a pre-registered bar of 0.70. On the "
+        f"preparations its guard accepts, it is {f2(ins['auroc_key'])} ({ins['n_treated']} "
+        f"treated, {ins['n_null']} untreated).",
         f"On the same preparations, the published estimator of Doorn et al. scores "
         f"{f2(pa.get('auroc_key'))}, and the same twin with its pairing removed scores "
         f"{f2(unp.get('auroc_key'))}.",
@@ -59,18 +64,21 @@ def summary_results(r3, r2, nul) -> str:
         f"{c['wilcoxon_p_early_gt_late']:.1g}).",
         f"The co-primary, NMDA as the single most probable mechanism, was not met "
         f"({m['top1_treated_hits']}/{m['n_treated']} against {m['top1_null_hits']}/{m['n_null']}), "
-        "and no preparation's probability reached 0.5. The twin ranks the treated cultures "
-        "above the untreated ones, but is not confident about any one of them.",
-        "",
-        f"**Blind test, version 2.** On human iPSC networks from another laboratory "
-        f"treated with Dynasore (Doorn et al. 2024), the twin failed its primary: it named "
-        f"the accepted mechanism in {d2['top1_hits']} of {d2['n_wells']} wells, against a "
-        f"bar of 5. It detected the drug in {called_t} of {d2['n_wells']} wells and in "
-        f"{nul['paired']['null_called']} of {nul['paired']['n']} untreated pairs of the "
-        f"same wells. It placed it in the right mechanism class in {k_cls} of "
-        f"{d2['n_wells']} (p = {binom_p(k_cls, d2['n_wells'], 0.30):.2g}).",
-    ]
-    return " ".join(parts[:4]) + "\n\n" + parts[5]
+        f"and no preparation's probability reached 0.5. The median probability is "
+        f"{m['median_p_key_treated']:.3f} for treated and {m['median_p_key_null']:.3f} for "
+        f"untreated preparations; in the simulations the twin was trained on, NMDA moved in "
+        f"{f2(base)} of pairs. The twin ranks the treated cultures above the untreated ones, "
+        "but is not confident about any one of them."])
+    v2 = (f"**Blind test, version 2.** On human iPSC networks from another laboratory "
+          f"treated with Dynasore (Doorn et al. 2024), the twin failed its primary: it named "
+          f"the accepted mechanism in {d2['top1_hits']} of {d2['n_wells']} wells, against a "
+          f"bar of 5. It detected the drug in {called_t} of {d2['n_wells']} wells and in "
+          f"{nul['paired']['null_called']} of {nul['paired']['n']} untreated pairs of the "
+          f"same wells, and placed it in the right mechanism class in {k_cls} of "
+          f"{d2['n_wells']} (p = {binom_p(k_cls, d2['n_wells'], 0.30):.2g}). These counts "
+          f"score every well: the guard put {outside} of the {d2['n_wells']} outside the "
+          "model, where the product names nothing.")
+    return v3 + "\n\n" + v2
 
 
 def summary_chip() -> str:
@@ -95,6 +103,23 @@ def summary_chip() -> str:
     else:
         out.append("A reproduction of the sponsor laboratory's cortico-striatal NMDA result "
                    "failed on its first committed prediction; a revision is committed.")
+    v4 = load("results/v4/results.json")
+    if v4:
+        h = v4["primary"]["home"]
+        t = v4["primary"]["asym_vs_traffic_ff"]
+        out.append(
+            "\n\n**Recorded four-compartment chip, version 4.** On hippocampal cultures grown "
+            "in four compartments joined by axon tunnels (Lassers et al. 2023), the twin's "
+            "predictions were pre-registered before a spike was counted. Met: an axon's spikes "
+            f"follow the compartment it grows from more than the one it grows into, in "
+            f"{h['k']} of {h['n']} axon pools ({f2(h['share_positive'])}, bar "
+            f"{f2(h['twin_pi90'][0])}), and again after both stimulation patterns "
+            f"({f2(v4['secondary']['hfs5']['home']['share_positive'])} and "
+            f"{f2(v4['secondary']['hfs40']['home']['share_positive'])}). Not met: the twin expected the "
+            "compartments' timing to say little about which way axonal traffic runs; the "
+            f"recorded relation was negative ({f2(t['spearman'])}, interval "
+            f"{f2(t['twin_pi90'][0])} to {f2(t['twin_pi90'][1])}). Either way, compartment "
+            "electrodes do not give the direction; electrodes in the tunnels do.")
     return " ".join(out)
 
 
@@ -201,6 +226,56 @@ def chips(r2, chip) -> str:
         "design output: how many chips the claim needs."])
 
 
+def chips_v4() -> str:
+    v4 = load("results/v4/results.json")
+    pred = load("results/v4/brewer_prediction.json")
+    if not v4:
+        return ""
+    p, h, t = v4["primary"], v4["primary"]["home"], v4["primary"]["asym_vs_traffic_ff"]
+    rows = ["| Condition | Boundaries / axon pools | P1: share of pools following home (bar) | "
+            "P2: Spearman, compartment lead vs feed-forward traffic (twin 90%) |",
+            "|---|---|---|---|"]
+    for c, name in (("nostim", "unstimulated (primary)"), ("hfs5", "after HFS 5"),
+                    ("hfs40", "after HFS 40")):
+        s = p if c == "nostim" else v4["secondary"][c]
+        rows.append(f"| {name} | {s['boundary_units_scored']} / {s['home']['n']} | "
+                    f"{f2(s['home']['share_positive'])} ({f2(s['home']['twin_pi90'][0])}) | "
+                    f"{f2(s['asym_vs_traffic_ff']['spearman'])} "
+                    f"([{f2(s['asym_vs_traffic_ff']['twin_pi90'][0])}, "
+                    f"{f2(s['asym_vs_traffic_ff']['twin_pi90'][1])}]) |")
+    return "\n\n".join([
+        "**Version 4: a recorded four-compartment chip** (`PREREGISTRATION_v4.md`, "
+        f"sha256 `{v4['preregistration'][:16]}`, frozen and pushed before a spike was counted). "
+        "Lassers et al. (2023) grew hippocampal EC, DG, CA3 and CA1 in four compartments of "
+        "one device, joined in a loop by tunnels, on a 120-electrode array: 19 electrodes "
+        "under each compartment, and an electrode pair across five tunnels of each boundary "
+        "that gives every axon's direction. Like the Mateus chips, it carries both readouts "
+        "the twin compares, compartment and channel electrodes, on one device. The twin, "
+        "never fitted to it, simulated "
+        f"{pred['simulated_boundaries']:,} boundaries as two-chamber chips with five monitored "
+        "axons and made two predictions (`scripts/brewer_prediction.py`): an axon's spikes "
+        "follow the compartment it grows from more closely than the one it grows into (P1), "
+        "and the compartments' timing says little about which way axonal traffic runs (P2).",
+        "![Figure 10. Version 4: the twin's predictions (grey, 90% intervals fixed before "
+        "scoring) and the recorded chips.](../results/v4/figures/brewer_chip.png)",
+        "\n".join(rows),
+        f"- **P1 met.** {h['k']} of {h['n']} axon pools follow their home compartment "
+        f"({f2(h['share_positive'])}; cultures resampled {f2(h['ci95_by_culture'][0])} to "
+        f"{f2(h['ci95_by_culture'][1])}; sign test p = {h['sign_test_p_vs_half']:.0e}), and again "
+        "after both stimulation patterns. The effect is much larger on the device than in the "
+        f"twin (median index {f2(h['median_home_index'])} against "
+        f"{pred['home']['median']:.3f}).",
+        f"- **P2 not met.** The recorded relation is negative, {f2(t['spearman'])} (cultures "
+        f"resampled {f2(t['ci95_by_culture'][0])} to {f2(t['ci95_by_culture'][1])}; permutation "
+        f"p = {f2(t['permutation_p'])}), below the twin's interval. The compartment that leads "
+        "tends to be the one receiving more axonal traffic, which the twin has no mechanism "
+        "for. After stimulation, the relation is near zero and inside the interval.",
+        "- **For chip design**, compartment timing gave the direction of axonal traffic "
+        "neither in the twin nor on the device. The direction comes from electrodes in the "
+        "tunnels. That is the planner's advice, now on a recorded chip as well as the "
+        "Mateus chips. Full tables: `results/v4/RESULTS.md`."])
+
+
 def simulation(r2, r3) -> str:
     return "\n\n".join([
         "**Version 3: sister pairs on the MCS 60-electrode array (quadrants).** "
@@ -246,8 +321,11 @@ def chip_design() -> str:
         "use, and which follow-up resolves an ambiguity.",
         "**Which readout resolves which property of a chip** (simulations, held-out chips): "
         "channel electrodes recover direction selectivity; chamber electrodes and 2 Hz "
-        "calcium do not (section 7.4, Figure 5). A laboratory that wants to show its "
-        "diodes work should put electrodes in the channels.",
+        "calcium do not (section 7.4, Figure 8). A laboratory that wants to show its "
+        "diodes work should put electrodes in the channels. On a recorded four-compartment "
+        "chip (version 4, section 7.4), compartment timing did not give the direction of "
+        "axonal traffic either, although its relation was negative rather than the weak "
+        "positive the twin expected.",
         "**How many chips a claim needs** (`scripts/chip_power.py`):",
         R3.chip_power_table(),
         "**Which follow-up resolves a tie between two mechanisms** "
@@ -318,10 +396,12 @@ def limitations(r3, r2) -> str:
         "but its guard still flags 27 of 28 (section 7.3).",
         "**A silenced culture cannot be read.** Saturating inhibition and a sodium block "
         "leave the same silent recording (section 7.7).",
-        "**Most real data are conventional MEA cultures, not chips.** The blind tests are "
-        "2D cultures on arrays; the one set of recorded chips (17 chips) is underpowered "
-        "for the question asked of it. The chip twin's claims rest on simulations, one "
-        "underpowered recorded test, and a reproduction attempt (section 8).",
+        "**The mechanism tests are on conventional MEA cultures, not chips.** The chip "
+        "twin is tested on two recorded chip sets: the Mateus chips (17, underpowered) "
+        "and nine four-compartment hippocampal cultures (version 4), where one of its two "
+        "predictions held and the other fell outside its interval with the opposite sign. "
+        "The twin reads a four-compartment loop one boundary at a time, and was never "
+        "fitted to hippocampal cultures.",
         "**The next-experiment recommender is not yet better than a fixed protocol** "
         "(section 8). It beats recording the same well again, but not a fixed choice of "
         "follow-up compound.",
@@ -389,6 +469,7 @@ def main() -> None:
     fill = {
         "PREREG2": r2.get("prereg_sha256", "")[:16],
         "PREREG3": r3.get("prereg_sha256", "")[:16],
+        "PREREG4": (load("results/v4/results.json") or {}).get("preregistration", "")[:16],
         "SUMMARY_RESULTS": summary_results(r3, r2, nul),
         "SUMMARY_CHIP": summary_chip(),
         "PARAM_TABLE": param_table(),
@@ -401,6 +482,7 @@ def main() -> None:
         "DOORN": doorn(r2, nul),
         "TAMPERE": tampere(r2),
         "CHIPS": chips(r2, chip),
+        "CHIPS_V4": chips_v4(),
         "SIMULATION": simulation(r2, r3),
         "GUARD": guard(r2, r3),
         "PHARMACOLOGY": pharmacology_all(ph),
