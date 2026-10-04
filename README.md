@@ -3,7 +3,7 @@
 [![tests](https://github.com/Marc-Dvci/Hodgkin-s-Razor/actions/workflows/tests.yml/badge.svg)](https://github.com/Marc-Dvci/Hodgkin-s-Razor/actions/workflows/tests.yml)
 [![live demo](https://github.com/Marc-Dvci/Hodgkin-s-Razor/actions/workflows/pages.yml/badge.svg)](https://marc-dvci.github.io/Hodgkin-s-Razor/)
 
-**A mechanistic digital twin for neural organ-on-chip recordings: from a baseline and a treated recording, the molecular mechanism a compound moved, or a refusal.**
+**A mechanistic digital twin for neural organ-on-chip recordings: from a baseline and a treated recording, the probability that each of ten molecular mechanisms moved, read against untreated cultures, or a refusal.**
 
 AI4S Open Innovation: AI for Life Science, 5th Pazhou Algorithm Competition.
 Category: **End-to-End System**. Apache-2.0.

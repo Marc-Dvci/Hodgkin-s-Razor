@@ -675,7 +675,7 @@ The recommendation resolves 0.54 of ties. That beats recording the same well aga
 
 ## 9. Reliability and limitations
 
-1. **Naming the exact mechanism is the weak link.** Both blind tests show it. On version 3, NMDA was the top-ranked mechanism in 2 of 29 treated preparations, and no probability reached 0.5. On version 2, the named member was right in 2 of 10 wells. On simulated sister pairs, single-mechanism top-1 is 0.31. What holds up blind is detection, mechanism class, and the ranking of one mechanism against untreated cultures.
+1. **Naming the exact mechanism is the weak link.** Both blind tests show it. On version 3, NMDA was the top-ranked mechanism in 2 of 29 treated preparations, and no probability reached 0.5. On version 2, the named member was right in 2 of 10 wells. On simulated sister pairs, single-mechanism top-1 is 0.31. For one well recorded twice it is 0.75 (Appendix A.1): comparing a well with itself removes the differences between cultures that sister designs add. The experimental design therefore sets how far exact naming can go. A laboratory that needs a named mechanism should record the same well before and after the compound; a sister-culture design supports the ranking against untreated cultures. The within-well advantage is not yet shown blind: the one within-well blind test was on human cultures, 7 of 10 of them outside the model. What holds up blind is detection, mechanism class, and the ranking of one mechanism against untreated cultures.
 2. **The guard is weaker on sister pairs.** It fires on 0.58 of simulated unmodelled kinetics and 0.63 of shuffled recordings, against bars of 0.80. It met all three bars within wells.
 3. **Human cultures are outside the model.** 27 of 28 human Tampere wells were flagged, and none was named correctly. A human-only twin (post hoc) names 6 of 24, but its guard still flags 27 of 28 (section 7.3).
 4. **A silenced culture cannot be read.** Saturating inhibition and a sodium block leave the same silent recording (section 7.7).
@@ -736,7 +736,41 @@ service, paid API or proprietary model is required.
 
 ## 12. Team, sources and licences
 
-Marc Donovici, solo entrant: audit, and applied machine learning, including earlier competition work on brain-imaging and brain-decoding data. I designed the simulator, the inference, the pre-registrations and the evaluations.
+Marc Donovici, solo entrant. I designed and built the simulator, the inference,
+the pre-registrations and the evaluations. The project draws on both
+competences named for the cross-disciplinary bonus, and I cover both.
+
+**AI and computer science.**
+- AI lead for the Internal Audit function of Crédit Mutuel Alliance Fédérale
+  (2025 to present), alongside technology audit work that included the group's
+  own AI architecture.
+- 3rd of 850+ teams, Google MedGemma Impact Challenge 2026 (FieldScreen AI).
+- Finalist (1 of 6), European Patent Office CodeFest 2026: explainable machine
+  learning on patent data.
+- 2nd place, Pro category, Euro-Information programming contest 2025 (Python
+  and C++).
+- Scientific and low-level computing: the CUDA network simulator here, an
+  `smmla` matrix kernel for 4-bit inference in llama.cpp on Arm, and an exact
+  adjoint through a 3D FEniCSx thermomechanics solver (Vitrify, below).
+
+**Biology, bioengineering and clinical knowledge.**
+- **Neurophysiology.** This project: conductance-based network biophysics,
+  receptor and channel pharmacology, microelectrode-array and calcium readouts,
+  compartmentalised microfluidic chips. Earlier: zero-shot decoding of imagined
+  visual objects from 306-channel MEG (IMAGINE challenge, 2026).
+- **Clinical screening.** FieldScreen AI: offline tuberculosis screening for
+  community health workers on a WHO-aligned symptom protocol, with chest X-ray
+  and cough-audio models (3rd of 850+). VIGIL and LUMEN: neonatal danger-sign
+  screening on the WHO IMNCI protocol, with breathing-rate thresholds and
+  camera-guided examination.
+- **Medical imaging.** Dopamine-transporter SPECT classification for
+  Parkinsonian syndromes (DrivenData DaT challenge, first on the public
+  leaderboard of 469), with the acquisition protocols of 1,362 scans measured
+  across centres.
+- **Bioengineering.** Vitrify: inverse design of nanowarming for cryopreserved
+  organs, coupling heat transfer with thermomechanical fracture under safe
+  warming-rate windows (honorable mention, Pasteur Labs Tesseract Hackathon
+  2026).
 
 **Data.**
 - Charlesworth et al. recordings: CC0 1.0.
