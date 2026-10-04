@@ -10,7 +10,8 @@ Category: **End-to-End System**. Apache-2.0.
 
 **Live demo (no login, no install):** https://marc-dvci.github.io/Hodgkin-s-Razor/ ·
 **Technical report:** [`docs/TECHNICAL_REPORT.pdf`](docs/TECHNICAL_REPORT.pdf) ·
-**Demo film:** [`film/hodgkins-razor.mp4`](film/hodgkins-razor.mp4)
+**Demo film:** [`film/hodgkins-razor.mp4`](film/hodgkins-razor.mp4) ·
+**中文说明:** [`README.zh.md`](README.zh.md)
 
 A microelectrode array under a neural organ-on-chip produces a rich recording
 and a thin answer: firing fell, bursts shortened, synchrony dropped. It does not
@@ -42,6 +43,8 @@ applied.
 | **Dynasore**, human iPSC networks (Doorn et al. 2024), version 2 | named mechanism (u_rel or tau_d) in at least 5 of 10 wells | 2/10: **not met** |
 | same, secondaries | detection; mechanism class | drug called in 9/10 wells and 0/10 untreated pairs; class 8/10 (p = 0.0016) |
 | **Recorded microchannel chips** (Mateus et al. 2024), version 2 | channel statistic separates diodes (AUROC >= 0.75) | 0.62 [0.28, 0.88]: not met, and underpowered (power 0.48); the twin says 20 chips per design are needed |
+| **Recorded four-compartment chip** (Lassers et al. 2023, hippocampal EC, DG, CA3, CA1), version 4 | do an axon's spikes follow the compartment it grows from? (twin: at least 0.73 of axon pools) | 0.82, 49/60: **met**; 0.79 and 0.86 after two stimulation patterns |
+| same | does compartment timing barely track the direction of axonal traffic? (twin: Spearman in [-0.16, 0.41]) | -0.30: **not met**, opposite sign; inside the interval after stimulation |
 
 The failures are reported in full in [`results/v3/RESULTS.md`](results/v3/RESULTS.md)
 and [`results/v2/RESULTS.md`](results/v2/RESULTS.md), and discussed in section 9
@@ -147,7 +150,7 @@ which readout resolves it, before the experiment is run.
 
 ## Validation
 
-Three pre-registrations, each hashed before its blind data was read.
+Four pre-registrations, each hashed before its data were read.
 
 * `PREREGISTRATION.md` (version 1) fixed the Tampere answer key. The
   pre-registered model scored at chance, and after three label-free corrections
@@ -167,7 +170,13 @@ Three pre-registrations, each hashed before its blind data was read.
   genotype. `hodgkins_razor/charlesworth.py` refuses to return a treated
   sister until that file matches its hash.
 
-Every outcome, including what failed, is in `results/v3/RESULTS.md` and
+* `PREREGISTRATION_v4.md` holds the chip twin's predictions for a recorded
+  four-compartment chip (Lassers et al. 2023), simulated by
+  `scripts/brewer_prediction.py`, then hashed and pushed before a spike was
+  counted. `hodgkins_razor/brewer.py` refuses to return a spike time until
+  that file matches its hash.
+
+Every outcome, including what failed, is in `results/v4/RESULTS.md`, `results/v3/RESULTS.md` and
 `results/v2/RESULTS.md`.
 
 ---
@@ -180,6 +189,7 @@ Every outcome, including what failed, is in `results/v3/RESULTS.md` and
 | [Charlesworth et al. 2015, sister-array recordings](https://zenodo.org/records/31085) | blind test of version 3; domain and drift (untreated sisters only) | CC0 1.0 |
 | [Doorn et al. 2024, Dynasore peak trains](https://gitlab.utwente.nl/m7706783/fb_model) | blind test; domain of the MCS twin (baselines only) | Apache-2.0 |
 | [Mateus et al. 2024, microchannel chips](https://zenodo.org/records/14525182) | blind test of the chip readout prediction | CC BY-NC-ND, read in place, not redistributed |
+| [Lassers et al. 2023, four-compartment hippocampal chips](https://zenodo.org/records/10257483) | test of the chip twin, version 4 | CC0 1.0 |
 | [Doorn et al. 2025, SBI estimator](https://gitlab.utwente.nl/m7706783/SBI_MEA_model) | prior art, scored beside the twin | Apache-2.0 |
 
 No restricted, clinical or personal data. `docs/DATA.md` has the details.
@@ -200,13 +210,15 @@ hodgkins_razor/
   report.py      the mechanism report
   design.py      the next experiment, when two mechanisms tie
   chip.py        two-compartment chip twin and its four readouts
-  tampere.py doorn.py mateus.py charlesworth.py   readers for the four datasets
+  tampere.py doorn.py mateus.py charlesworth.py brewer.py   readers for the five datasets
+  examples_key.py  the known target of each bundled example
 scripts/
   fit_domain.py make_bank.py train.py sim_eval.py guard_sim_check.py
   calibrate_drift.py pharmacology_check.py gaba_check.py chip_study.py chip_power.py
   lassus_study.py design_study.py null_controls_v2.py
   freeze_v2.py evaluate_v2.py mateus_check.py prior_art_doorn.py
   freeze_v3.py evaluate_v3.py evaluate_v3_lowmem.py
+  brewer_prediction.py freeze_v4.py evaluate_v4.py render_v4.py base_rate.py
   render_v2.py render_v3.py figures_v2.py render_report_v3.py make_examples.py
   export_evidence.py export_static.py make_notebook.py verify.py run_all.py
   control_referenced.py   post hoc: each mechanism read against untreated controls
@@ -228,9 +240,10 @@ for the record; they describe the version 1 model at the tag `v1`.
 | | |
 |---|---|
 | [`docs/TECHNICAL_REPORT.md`](docs/TECHNICAL_REPORT.md) | the full report (PDF in `docs/`) |
+| [`results/v4/RESULTS.md`](results/v4/RESULTS.md) | the four-compartment chip test (version 4), its predictions and both outcomes |
 | [`results/v3/RESULTS.md`](results/v3/RESULTS.md) | every version 3 outcome, the stop rule, the chip and design studies |
 | [`results/v2/RESULTS.md`](results/v2/RESULTS.md) | every version 2 outcome |
-| [`PREREGISTRATION_v3.md`](PREREGISTRATION_v3.md), [`PREREGISTRATION_v2.md`](PREREGISTRATION_v2.md) | the blind tests, fixed before scoring |
+| [`PREREGISTRATION_v4.md`](PREREGISTRATION_v4.md), [`PREREGISTRATION_v3.md`](PREREGISTRATION_v3.md), [`PREREGISTRATION_v2.md`](PREREGISTRATION_v2.md) | the tests, fixed before scoring |
 | [`docs/DATA.md`](docs/DATA.md) | sources, licences, compliance |
 | [`docs/REPRODUCTION.md`](docs/REPRODUCTION.md) | how to rebuild everything |
 | [`docs/SELF_AUDIT.md`](docs/SELF_AUDIT.md) | scored against the published criteria, with the open items |

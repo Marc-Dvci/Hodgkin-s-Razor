@@ -15,9 +15,13 @@ async function loadExamples() {
   for (const e of d.examples) {
     const o = document.createElement("option");
     o.value = e.id;
-    o.textContent = `${e.label}`;
+    const known = e.target ? ` · target: ${e.target}` : "";
+    const got = e.outcome ? ` · twin: ${e.outcome}` : "";
+    o.textContent = `${e.label}${known}${got}`;
     sel.appendChild(o);
   }
+  const def = d.examples.find((e) => e.default);
+  if (def) sel.value = def.id;
   if (!d.examples.length) status("No bundled examples found. Run scripts/make_examples.py.", true);
 }
 

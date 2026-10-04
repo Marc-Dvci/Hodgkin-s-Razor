@@ -137,6 +137,17 @@ def main() -> None:
         ["scripts/design_study.py", "--twin", "models/twin_v2_grid16", "--bank", "data/bank_v2"],
         ROOT / "results" / "design_study_grid16.json", f)
 
+    # Version 4: the chip twin on a recorded four-compartment chip.
+    run("four-compartment chip, the twin's prediction", ["scripts/brewer_prediction.py"],
+        ROOT / "results" / "v4" / "brewer_prediction.json", f)
+    if not (ROOT / "PREREGISTRATION_v4.md").exists():
+        print("\nThe v4 prediction is written. Freeze it before any spike is counted:\n"
+              "    python scripts/freeze_v4.py\nthen run this script again.")
+        return
+    run("four-compartment chip, scored", ["scripts/evaluate_v4.py"],
+        ROOT / "results" / "v4" / "results.json", f)
+    run("render results, version 4", ["scripts/render_v4.py"], None, True)
+
     run("render results, version 3", ["scripts/render_v3.py"], None, True)
     run("figures, version 3", ["scripts/figures_v3.py"], None, True)
     run("render report", ["scripts/render_report_v3.py"], None, True)

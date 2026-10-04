@@ -212,6 +212,26 @@ def fig_guard(r: dict) -> None:
     ax.set_xticks(x, labels); ax.set_ylim(0, 1); ax.set_ylabel("fraction the guard fired on")
     ax.set_title("The guard"); ax.legend(loc="upper left")
     save(fig, "guard.png")
+    fig_guard_system(g, "grid12", "MCS 24-well plate", "guard_mcs24.png")
+
+
+def fig_guard_system(g: dict, view: str, name: str, out: str) -> None:
+    """The guard on one recording system, as the film narrates it."""
+    cases = ["bank_holdout", "variant_kinetics", "shuffled_real"]
+    labels = ["held-out\nsimulations\n(must pass)", "unmodelled\nkinetics\n(must fire)",
+              "structure\ndestroyed\n(must fire)"]
+    fig, ax = plt.subplots(figsize=(5.6, 3.2))
+    x = np.arange(len(cases))
+    vals = [g[view].get(c, {}).get("fire_rate", np.nan) for c in cases]
+    bars(ax, x, vals, S3, view, width=.5)
+    for xi, v in zip(x, vals):
+        ax.text(xi, v + .02, f"{v:.2f}", ha="center", fontsize=8, color=INK)
+    ax.plot([-.45, .45], [.1, .1], color=S2, lw=2)
+    ax.plot([.55, 2.45], [.8, .8], color=S2, lw=2)
+    ax.text(2.45, .7, "pre-registered bar", color=INK2, fontsize=7.5, ha="right")
+    ax.set_xticks(x, labels); ax.set_ylim(0, 1.08); ax.set_ylabel("fraction the guard fired on")
+    ax.set_title(f"The guard, {name}")
+    save(fig, out)
 
 
 def fig_chip(chip: dict | None, r: dict) -> None:

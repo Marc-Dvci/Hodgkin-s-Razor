@@ -8,6 +8,7 @@
 | Doorn et al. 2024, Dynasore peak trains | blind test of version 2; the untreated baselines set the domain of the MCS twin | Apache-2.0 | gitlab.utwente.nl/m7706783/fb_model (commit a88e15d) |
 | Mateus et al. 2024, microchannel chip recordings | blind test of the chip readout prediction | CC BY-NC-ND (dataset README) | zenodo.org/records/14525182 |
 | Charlesworth et al. 2015, sister-array recordings | blind test of version 3 (chronic APV); the untreated first sisters set the domain of the MCS 60-electrode twin, and untreated sister pairs set the drift | CC0 1.0 (public domain) | zenodo.org/records/31085 |
+| Lassers et al. 2023, four-compartment hippocampal chips | test of the chip twin, version 4 | CC0 1.0 (public domain) | zenodo.org/records/10257483 (Dryad 10.5061/dryad.7h44j1013) |
 | Lassus et al. 2018, cortico-striatal chips | published directions of the GluN2B result only (no data) | cited | Sci Rep 8:17461 |
 | Doorn et al. 2025, SBI repository | prior art: their trained estimator and feature code, scored beside the twin | Apache-2.0 | gitlab.utwente.nl/m7706783/SBI_MEA_model (commit d7f3615) |
 
@@ -97,6 +98,21 @@ are excluded from scoring.
 **Licence.** CC0 1.0 on the Zenodo record: no restriction. The data are
 downloaded by `scripts/fetch_external.py` and not redistributed in the
 repository.
+
+## Lassers et al. 2023, four-compartment hippocampal chips
+
+Lassers S., Vakilna Y.S., Tang W., Brewer G.J. *The flow of axonal information
+among hippocampal subregions: 2. Patterned stimulation sharpens routing of
+information transmission.* Dryad, doi:10.5061/dryad.7h44j1013; Zenodo record
+10257483. Licence CC0 1.0. Rat hippocampal EC, DG, CA3 and CA1 cultured in four
+compartments of one PDMS device on an MCS 120-electrode array; 19 electrodes
+per compartment and electrode pairs across five tunnels per boundary; 300 s at
+25 kHz; nine unstimulated cultures, six of them recorded again after each of
+two high-frequency stimulation patterns. Only the processed spike tables are
+downloaded (`*SortedAxons.mat`, `*WellSpikes.mat` and the spike-dynamics
+tables, 130 MB); `hodgkins_razor/brewer.py` reads them with `mat-io` and
+returns no spike time until `PREREGISTRATION_v4.md` matches its hash. Animal
+cultures from a published study; no personal data.
 
 ## Lassus et al. 2018, cortico-striatal chips
 

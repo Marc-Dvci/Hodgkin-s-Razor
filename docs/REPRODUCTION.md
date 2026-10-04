@@ -32,7 +32,7 @@ A static site that needs no Python at all is produced by
 ```bash
 pip install -r requirements.txt -r requirements-gpu.txt
 python scripts/fetch_tampere.py      # Tampere recordings, CC BY 4.0, checksummed
-python scripts/fetch_external.py     # Doorn, Mateus and Charlesworth et al., checksummed
+python scripts/fetch_external.py     # Doorn, Mateus, Charlesworth and Lassers et al., checksummed
 python scripts/run_all.py
 ```
 
@@ -57,6 +57,8 @@ Stages measured on one RTX 4070 12 GB, 32 GB RAM, 12-thread CPU:
 | v3 evaluation, sections C and D (guard, simulations) | same file | 1 h 17 min |
 | v3 evaluation, section B (unpaired twin, prior art) | same file | 26 min |
 | Doorn et al. estimator on 362 sister pairs, CPU | `results/prior_art_doorn_charlesworth.json` | about 40 minutes |
+| v4 prediction, 3,077 simulated boundaries of 300 s | `results/v4/brewer_prediction.json` | about 5 minutes |
+| v4 scoring, three conditions (first run converts the MAT tables) | `results/v4/results.json` | a few minutes |
 
 Run the evaluation through `scripts/evaluate_v3_lowmem.py`. It calls the frozen
 `scripts/evaluate_v3.py` with one sister pair in memory at a time. The frozen

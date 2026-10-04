@@ -52,7 +52,8 @@ def allowed_numbers() -> str:
     text = ""
     for p in (ROOT / "results" / "v3" / "RESULTS.md", ROOT / "results" / "LASSUS_RESULT.md",
               ROOT / "results" / "v2" / "RESULTS.md", ROOT / "results" / "chip_study.json",
-              ROOT / "results" / "v2" / "results.json", HERE / "allowed_numbers.txt"):
+              ROOT / "results" / "v2" / "results.json", ROOT / "results" / "v4" / "RESULTS.md",
+              HERE / "allowed_numbers.txt"):
         if p.exists():
             text += p.read_text(encoding="utf-8")
     return text

@@ -206,9 +206,33 @@ if l2.exists():
               f"p {h[k]['wilcoxon_p_lower']:.2g}")
 """),
     md("""
-## 6. Where to go next
+## 6. The chip twin on a recorded four-compartment chip (version 4)
 
-* `results/v3/RESULTS.md` and `results/v2/RESULTS.md`: every pre-registered number, including what failed.
+Lassers et al. (2023) grew hippocampal EC, DG, CA3 and CA1 in four compartments
+of one device, joined by axon tunnels, with electrodes under each compartment
+and electrode pairs that give each axon's direction. The twin's two predictions
+were simulated (`scripts/brewer_prediction.py`), hashed in
+`PREREGISTRATION_v4.md` and pushed before a spike of the dataset was counted.
+This cell re-checks the hash and prints both outcomes, including the one that
+failed.
+"""),
+    code("""
+import hashlib
+md4 = (ROOT / 'PREREGISTRATION_v4.md').read_bytes()
+print('pre-registration v4 hash matches:',
+      hashlib.sha256(md4).hexdigest() == (ROOT / 'PREREGISTRATION_v4.sha256').read_text().split()[0])
+r4 = json.loads((ROOT / 'results' / 'v4' / 'results.json').read_text())
+for name, v in r4['verdicts'].items():
+    print(f"{name:20s} observed {v['observed']:+.2f}  bar {v['bar']:45s} {'MET' if v['met'] else 'NOT MET'}")
+for c in ('hfs5', 'hfs40'):
+    s = r4['secondary'][c]
+    print(f"after {c}: home share {s['home']['share_positive']:.2f}, "
+          f"timing vs traffic {s['asym_vs_traffic_ff']['spearman']:+.2f}")
+"""),
+    md("""
+## 7. Where to go next
+
+* `results/v4/RESULTS.md`, `results/v3/RESULTS.md` and `results/v2/RESULTS.md`: every pre-registered number, including what failed.
 * `docs/TECHNICAL_REPORT.md`: the full report.
 * `python demo.py --serve`: the web application.
 * `python scripts/run_all.py`: the whole pipeline on a CUDA device.

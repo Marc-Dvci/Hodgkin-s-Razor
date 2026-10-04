@@ -2,7 +2,7 @@
 
 Written before submission, against the rubric in the challenge brief. The
 scores are my own. Every gap still open is listed at the end. Every number is
-taken from `results/v3/RESULTS.md` or `results/v2/RESULTS.md`.
+taken from `results/v4/RESULTS.md`, `results/v3/RESULTS.md` or `results/v2/RESULTS.md`.
 
 ## Problem importance and potential impact (30 percent)
 
@@ -59,7 +59,7 @@ simplification.
 ## Results and validation (20 percent)
 
 **What is done.**
-- Three pre-registrations, each hashed before its blind data was read.
+- Four pre-registrations, each hashed before its data were read.
 - A prior-art estimator run unchanged on every test.
 - An unpaired ablation.
 - Untreated null groups inside every primary.
@@ -70,7 +70,12 @@ simplification.
   art and 0.66 unpaired, on the same preparations.
 - The canalization secondary: the reading fades with maturation, p = 3e-5.
 - Version 2: detection 9/10 against 0/10 on untreated pairs, and mechanism
-  class 8/10 (p = 0.0016).
+  class 8/10 (p = 0.0016), counted over every well; the guard put 7 of the 10
+  outside the model.
+- Version 4, a recorded four-compartment chip: the twin's prediction that an
+  axon's spikes follow the compartment it grows from held (49 of 60 axon
+  pools, 0.82 against a bar of 0.73). Its prediction that compartment timing
+  barely tracks axonal traffic did not: -0.30, below its interval.
 
 **Against it.**
 - Naming the exact mechanism failed on both blind tests: 2/29 top-1 in
