@@ -118,10 +118,6 @@ What is new in method, beyond the table:
   before training, forbids freezing a test the twin fails on its own
   simulations.
 
-Other entries to this challenge that work on neural MEA data describe
-recordings (quality control, feature fingerprints, forecasts). None infers a
-mechanism with a model that can be re-simulated.
-
 ## 4. Data
 
 | Dataset | What it is | Role | Licence |

@@ -18,6 +18,9 @@ import shutil
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from hodgkins_razor import examples_key  # noqa: E402
+
 STATIC = ROOT / "app" / "static"
 EXAMPLES = ROOT / "data" / "examples"
 
@@ -43,7 +46,9 @@ def main() -> None:
         items.append({"id": p.stem, "label": d.get("label", p.stem),
                       "compound": d.get("compound", ""),
                       "species": d.get("species", ""),
-                      "duration": d.get("duration", 60.0), "cached": True})
+                      "duration": d.get("duration", 60.0), "cached": True,
+                      "default": p.stem == examples_key.DEFAULT,
+                      **examples_key.describe(d.get("compound", ""), d["analysis"])})
         n_cached += 1
     if not items:
         raise SystemExit("no cached analyses; run "

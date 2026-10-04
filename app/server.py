@@ -22,7 +22,7 @@ from fastapi.staticfiles import StaticFiles
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[1]))
 
-from hodgkins_razor import design, features as F, nde, ppc, report
+from hodgkins_razor import design, examples_key, features as F, nde, ppc, report
 from hodgkins_razor import simulator as S
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -159,7 +159,9 @@ def examples() -> JSONResponse:
                       "compound": d.get("compound", ""),
                       "species": d.get("species", ""),
                       "duration": d.get("duration", 60.0),
-                      "cached": "analysis" in d})
+                      "cached": "analysis" in d,
+                      "default": p.stem == examples_key.DEFAULT,
+                      **examples_key.describe(d.get("compound", ""), d.get("analysis"))})
     return JSONResponse({"examples": items, "gpu": STATE["sim"] is not None})
 
 

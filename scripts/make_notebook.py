@@ -112,12 +112,13 @@ for w in sorted(r['A_doorn']['wells'], key=lambda w: w['well']):
     md("""
 ## 3. One pair, end to end
 
-Pick any bundled pair. The same function computes the statistics of a recording
+A rat culture before and after TTX, a sodium-channel blocker (any bundled pair
+works; change `name`). The same function computes the statistics of a recording
 and of a simulation; the recording system (electrode layout, detection dead
 time) decides which twin reads it.
 """),
     code("""
-name = 'human_dynasore' if (ROOT / 'data/examples/human_dynasore.json').exists() else 'rat_gabazine'
+name = 'rat_ttx'
 d = json.loads((ROOT / 'data' / 'examples' / f'{name}.json').read_text())
 n_elec = int(d.get('n_elec', 16)); view = 'grid12' if n_elec == 12 else 'grid16'
 base = np.array(d['baseline']).reshape(-1, 2); treat = np.array(d['treated']).reshape(-1, 2)
@@ -132,7 +133,14 @@ twin = nde.Twin.load(ROOT / 'models' / f'twin_v2_{view}', device='cpu')
 post = twin.posterior(x_base, x_treat, n_samples=4000)
 typ = ppc.Typicality.for_twin(twin)
 t = typ.of_pair(twin, x_base, x_treat)
-guard = {'typicality': t, 'typicality_threshold': typ.threshold, 'inside_model': t <= typ.threshold}
+# The predictive check re-simulates the twin, which needs a CUDA device. On a
+# CPU its verdict is read from the analysis cached by the GPU run of this pair.
+cached = d['analysis']['report']['guard']
+guard = {'typicality': t, 'typicality_threshold': typ.threshold,
+         'discrepancy': cached['discrepancy'], 'threshold': cached['threshold'],
+         'inside_model': bool(t <= typ.threshold and cached['discrepancy'] <= cached['threshold'])}
+print(f"typicality {t:.2f} (threshold {typ.threshold:.2f}); predictive check, cached from the GPU run: "
+      f"discrepancy {cached['discrepancy']:.1f} (threshold {cached['threshold']:.1f})")
 body = report.build(post, guard, x_base, x_treat, meta={'duration_s': dur, 'recording_system': view})
 print(body['sentence'])
 print()
@@ -140,13 +148,18 @@ print(report.to_markdown(body).split('## Mechanism class')[0])
 """),
     md("""
 The predictive check, the second guard test, re-simulates the twin and needs a
-CUDA device; `python demo.py --live` runs it. Typicality needs no simulation.
+CUDA device; `python demo.py --live` runs it live. Typicality needs no simulation.
+If either test fires, no mechanism is named.
 
 ## 4. Every bundled pair
 
-One 60 s window of each pair, read by the version 2 twins. A single window is
-noisy: the rat vehicle window below is flagged, while the vehicle wells scored
-on all their windows are not (0 of 11, `results/v2/RESULTS.md`).
+One 60 s window of each pair, read by the version 2 twins. These are
+development recordings: their answers were known while the twin was built. The
+last column is the guard's verdict from the cached GPU run; a pair outside the
+model gets no mechanism in the product, whatever its top-ranked parameter. A
+single window is noisy: the rat vehicle window below is flagged, while the
+vehicle wells scored on all their windows are not (0 of 11,
+`results/v2/RESULTS.md`).
 """),
     code("""
 KEY = {'CNQX': {'g_ampa'}, 'D-AP5': {'g_nmda'}, 'GABA': {'g_gaba', 'g_tonic_inh'},
@@ -161,7 +174,8 @@ for p in sorted((ROOT / 'data' / 'examples').glob('*.json')):
     want = KEY.get(e['compound'])
     called = top['key'] if top['p_active'] >= 0.5 else '-'
     mark = ('ok' if called == '-' else 'flag') if want is None else ('ok' if top['key'] in want else '.')
-    print(f"{e['label']:52s} top {top['key']:12s} p={top['p_active']:.2f}  {mark}")
+    g = 'inside' if e['analysis']['report']['inside_model'] else 'OUTSIDE: nothing named'
+    print(f"{e['label']:52s} top {top['key']:12s} p={top['p_active']:.2f}  {mark:4s} guard {g}")
 """),
     md("""
 ## 5. The chip twin
