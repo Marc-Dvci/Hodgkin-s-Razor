@@ -22,6 +22,7 @@ ROOT = HERE.parent
 CAP = "../results/capture/"
 V3 = "../results/v3/figures/"
 V2 = "../results/v2/figures/"
+V4 = "../results/v4/figures/"
 SITE = "../site/index.html"
 
 
@@ -43,12 +44,12 @@ def beats() -> list[dict]:
          "say": "A microelectrode array under a neural organ-on-chip records every burst of a "
                 "living network. Then the analysis ends in a description: firing fell, bursts "
                 "shortened.",
-         "zh": "神经器官芯片下的微电极阵列记录下活体网络的每一次爆发。但分析最终只停留在描述：放电减少，爆发变短。"},
+         "zh": "神经器官芯片底部的微电极阵列，能记录培养神经网络的每一次爆发放电。可分析到最后，往往只剩下描述：放电减少了，爆发变短了。"},
         {"scene": {"type": "image", "kicker": "The problem", "title": "What did the compound do?",
                    "src": CAP + "13_ttx_raster.png", "dark": True},
          "say": "It does not say what the compound did. Blocking AMPA receptors, opening chloride "
                 "channels or shutting sodium channels can all silence a network the same way.",
-         "zh": "它无法说明化合物做了什么。阻断 AMPA 受体、打开氯离子通道或关闭钠通道，都可能以同样的方式让网络沉寂。"},
+         "zh": "但它说不清化合物究竟做了什么。阻断 AMPA 受体、开放氯离子通道、关闭钠通道，都可能让网络以同样的方式沉寂下来。"},
         {"scene": {"type": "steps", "kicker": "The system", "title": "From a recording to a mechanism",
                    "items": ["Two recordings: baseline and treated",
                              "The array's own electrodes and dead time, applied to every simulation",
@@ -57,7 +58,7 @@ def beats() -> list[dict]:
                              "A guard that refuses when the twin cannot reproduce the data"]},
          "say": "Hodgkin's Razor fits a biophysical network, simulated on a GPU, to the recording "
                 "itself. It is trained only on simulations, and has never seen a compound label.",
-         "zh": "Hodgkin's Razor 把在 GPU 上模拟的生物物理神经网络直接拟合到记录本身。它只用模拟数据训练，从未见过任何化合物标签。"},
+         "zh": "Hodgkin's Razor 将一个在 GPU 上模拟的生物物理网络直接拟合到记录数据上。它只用模拟数据训练，从未见过任何化合物标签。"},
         {"scene": {"type": "live", "kicker": "The running application · rat cortical culture, after TTX",
                    "src": SITE + "#analyse"},
          "actions": [{"cue": 0, "delay": 200, "do": "select", "sel": "#example", "value": "rat_ttx"},
@@ -67,13 +68,13 @@ def beats() -> list[dict]:
          "say": "For ten mechanisms it returns the probability that each one moved, the size of the "
                 "shift, and an interval. Here, a rat culture after TTX: sodium channels, down, "
                 "probability 0.65.",
-         "zh": "对十种机制，它给出每种机制发生变化的概率、变化幅度和区间。这里是施加 TTX 后的大鼠培养物：钠通道下降，概率 0.65。"},
+         "zh": "针对十种机制，它分别给出发生改变的概率、改变幅度及其区间。例如这份加入 TTX 后的大鼠培养：钠通道下调，概率 0.65。"},
         {"scene": {"type": "live", "continue": True,
                    "kicker": "Not a lookup · measured, against the twin re-simulated"},
          "actions": [{"cue": 0, "delay": 0, "do": "scroll", "sel": "#rasterpanel"}],
          "say": "Before it names anything, it re-simulates the network at the parameters it inferred, "
                 "and checks that the twin reproduces what was measured.",
-         "zh": "在给出任何结论之前，它会在推断出的参数下重新模拟网络，检查孪生模型能否再现测量结果。"},
+         "zh": "在给出任何结论之前，它会用推断出的参数重新模拟网络，检验数字孪生能否复现实测数据。"},
         {"scene": {"type": "live", "continue": True,
                    "kicker": "The refusal · human culture, outside the model"},
          "actions": [{"cue": 0, "delay": 0, "do": "scroll", "sel": "body", "top": True},
@@ -82,27 +83,26 @@ def beats() -> list[dict]:
                      {"cue": 1, "delay": 1000, "do": "point", "sel": "#verdict"}],
          "say": "When it cannot, it says so. This human culture is outside the model, and no "
                 "mechanism is named.",
-         "zh": "如果不能再现，它会明确说出来。这个人源培养物超出了模型范围，因此不给出任何机制。"},
+         "zh": "如果复现不了，它会直接说明。这份人源培养超出了模型的适用范围，因此不指认任何机制。"},
         {"scene": {"type": "image", "kicker": "The guard, tested", "title": "Cases it must refuse, cases it must pass",
-                   "src": V2 + "guard.png"},
+                   "src": V2 + "guard_mcs24.png"},
          "say": "The refusal is tested. On one recording system it fired on 0.95 of simulated cultures "
                 "with receptor kinetics it cannot represent, on every shuffled recording, and on only "
-                "0.02 of held-out simulations. On the other two systems it is weaker, and the report "
-                "says so.",
-         "zh": "拒绝机制经过了检验。在一种记录系统上，它对 0.95 的含有无法表示的受体动力学的模拟培养物、对所有被打乱的记录都会触发，而对留出的模拟数据只有 0.02 触发。在另外两种系统上它较弱，报告中如实说明。"},
+                "0.02 of held-out simulations. The report gives its rates on every system.",
+         "zh": "拒绝机制本身也经过检验。在一种记录系统上，对含有模型无法表示的受体动力学的模拟培养，拒绝率为 0.95；打乱后的记录全部被拒绝；而正常的留出模拟数据，误拒率仅为 0.02。各系统的具体数据见技术报告。"},
         {"scene": {"type": "quote", "kicker": "The rule behind every result",
                    "text": "A method's chance level is its own hit rate when nothing was applied.",
                    "source": "Every test is scored against untreated recordings read the same way."},
          "say": "Every result is scored against untreated recordings, read in exactly the same way. "
                 "A method's chance level is its own hit rate when nothing was applied.",
-         "zh": "每一项结果都与以完全相同方式读取的未处理记录对照评分。一种方法的机会水平，就是在未施药时它自身的命中率。"},
+         "zh": "每一项结果都以同样方式读取的未处理记录作为对照来评分。一种方法的随机基线，就是什么都没施加时它自己的命中率。"},
         {"scene": {"type": "numbers", "kicker": "What the rule caught", "title": "A comparator on a blind test",
                    "items": [{"value": "8", "of": "/10", "cap": "treated wells, named the accepted mechanism"},
                              {"value": "6", "of": "/10", "cap": "untreated pairs, named the same mechanisms"}],
                    "pills": [["no", "a preference, not a detection"]]},
          "say": "That rule caught a comparator. It scored 8 of 10 on a blind test, and named the same "
                 "mechanisms on 6 of 10 untreated pairs. A preference, not a detection.",
-         "zh": "这条规则识破了一个对照方法。它在盲测中得到 10 中 8，但在 10 对未处理样本中有 6 对给出同样的机制。这是一种偏好，而不是检测。"},
+         "zh": "正是这条规则揪出了一个对照方法：它在盲测中 10 个对了 8 个，但在 10 对未处理样本中，也有 6 对给出了同样的机制。这是偏好，不是检测。"},
         {"scene": {"type": "title", "kicker": "Pre-registered blind test",
                    "title": "Chronic NMDA blockade on sister cultures",
                    "lead": "Charlesworth et al. 2015 · one sister of each preparation kept on APV for days",
@@ -110,7 +110,7 @@ def beats() -> list[dict]:
          "say": "The blind test. Charlesworth and colleagues kept one sister culture of each "
                 "preparation on an NMDA blocker for days. The pre-registration was hashed before a "
                 "single treated recording was read.",
-         "zh": "盲测。Charlesworth 等人让每份制备中的一个姊妹培养物持续数天处于 NMDA 阻断剂中。在读取任何一个处理后的记录之前，预注册就已经生成哈希并锁定。"},
+         "zh": "接下来是盲测。Charlesworth 等人在每批培养中，让其中一份姊妹培养持续数天接触 NMDA 受体阻断剂。在读取任何一条给药记录之前，预注册文件就已生成哈希值并锁定。"},
         {"scene": {"type": "live", "kicker": "Result · the blind test, in the application",
                    "src": SITE + "#blind"},
          "actions": [{"cue": 0, "delay": 600, "do": "point", "sel": "#v3kpis .kpi"},
@@ -121,20 +121,20 @@ def beats() -> list[dict]:
                 "of the same genotypes. AUROC 0.86, against a pre-registered bar of 0.70. "
                 "Remove the pairing, and it falls to 0.66. The published estimator it builds on "
                 "scores 0.49 on the same cultures.",
-         "zh": "孪生模型的 NMDA 读数把 29 份处理过的制备与 23 份同基因型的未处理姊妹培养物区分开：AUROC 0.86，预设门槛 0.70。去掉配对后降到 0.66。它所基于的已发表估计器在同一批培养物上只得 0.49。"},
+         "zh": "数字孪生的 NMDA 读数，能把 29 份给药样本与 23 份同基因型的未处理姊妹样本区分开：AUROC 0.86，预注册阈值为 0.70。去掉配对设计，降至 0.66；它所依据的已发表估计方法，在同一批培养上只有 0.49。"},
         {"scene": {"type": "live", "continue": True, "kicker": "Result · ten mechanisms, no drug label"},
          "actions": [{"cue": 0, "delay": 0, "do": "click", "sel": "#v3method button[data-m=twin]"},
                      {"cue": 1, "delay": 200, "do": "click", "sel": "#v3profile g.hit:nth-of-type(2)"},
                      {"cue": 1, "delay": 2600, "do": "click", "sel": "#v3profile g.hit:nth-of-type(1)"}],
          "say": "It was never told which drug was applied. Of all ten mechanisms it reads, "
                 "NMDA is the one that separates treated from untreated best.",
-         "zh": "它从未被告知施加了哪种药物。在它读取的全部十种机制中，NMDA 是区分处理组与未处理组最好的一个。"},
+         "zh": "它事先并不知道用的是什么药。在它读取的全部十种机制中，恰恰是 NMDA 最能区分给药组与未处理组。"},
         {"scene": {"type": "live", "continue": True,
                    "kicker": "Result · the reading fades as the cultures compensate"},
          "actions": [{"cue": 0, "delay": 0, "do": "scroll", "sel": "#v3canal", "offset": 60}],
          "say": "The cultures compensate as they mature, as the authors reported. The twin's reading "
                 "fades with them.",
-         "zh": "正如原作者所报告的，培养物在成熟过程中发生代偿。孪生模型的读数也随之减弱。"},
+         "zh": "正如原作者所报道，培养在成熟过程中会逐渐代偿；数字孪生的读数也随之减弱。"},
         {"scene": {"type": "live", "continue": True, "kicker": "What failed, reported with the same weight"},
          "actions": [{"cue": 0, "delay": 0, "do": "scroll", "sel": "#v3fail", "offset": 160},
                      {"cue": 2, "delay": 0, "do": "scroll", "sel": "#dyn", "offset": 60},
@@ -142,22 +142,21 @@ def beats() -> list[dict]:
                      {"cue": 2, "delay": 4200, "do": "point", "sel": "#dynkpis .kpi:nth-child(1)"}],
          "say": "What failed is reported with the same weight. Only 2 of 29 treated cultures had "
                 "NMDA as the single top mechanism. On an earlier Dynasore test, the exact mechanism was "
-                "right in 2 of 10 wells, though the drug was detected in 9 of 10, and in none of the "
-                "untreated pairs.",
-         "zh": "失败的结果同样如实报告。只有 29 份处理过的培养物中的 2 份把 NMDA 列为首位机制。在此前的 Dynasore 测试中，精确机制只在 10 个孔中对了 2 个，但药物效应在 10 个孔中检出 9 个，在未处理样本中一个也没有误报。"},
+                "right in 2 of 10 wells.",
+         "zh": "失败的结果同样如实呈现：29 份给药样本中，只有 2 份把 NMDA 排在首位。在更早的 Dynasore 测试中，精确机制在 10 个孔中只对了 2 个。"},
         {"scene": {"type": "live", "kicker": "The chip twin · chip planner, in the application",
                    "src": SITE + "#chips"},
          "actions": [{"cue": 1, "delay": 0, "do": "point", "sel": "#heat tbody tr:nth-child(3) td:nth-child(3)"}],
          "say": "The same simulator runs a two-compartment chip with one-way microchannels, the "
                 "geometry of the sponsor's own devices. It says, before the experiment, which readout "
                 "resolves which property.",
-         "zh": "同一个模拟器还能运行带单向微通道的双腔芯片，这正是赞助方自己器件的结构。它在实验之前就能指出，哪种读数可以分辨哪种性质。"},
+         "zh": "同一个模拟器还能运行带单向微通道的双腔室芯片，这正是本赛事支持单位所用器件的结构。它能在实验之前指出，哪种读出方式可以分辨芯片的哪项特性。"},
         {"scene": {"type": "live", "continue": True, "kicker": "The chip twin · how many chips a claim needs"},
          "actions": [{"cue": 0, "delay": 0, "do": "scroll", "sel": "#chipslider", "offset": 90},
                      {"cue": 0, "delay": 900, "do": "slide", "sel": "#chipslider", "from": 2, "to": 6}],
          "say": "The one public test of chip directionality used about 8 chips per design. The twin "
                 "says it needed 20.",
-         "zh": "唯一公开的芯片方向性测试每种设计只用了约 8 块芯片。孪生模型指出需要 20 块。"},
+         "zh": "唯一公开的芯片方向性测试，每种设计只用了约 8 块芯片；数字孪生指出，需要 20 块才够。"},
         {"scene": {"type": "title", "kicker": "The sponsor laboratory's cortico-striatal chip",
                    "title": "One failed prediction, one revision, both committed before running",
                    "pills": [["ok", "striato-striatal synchrony lower"], ["ok", "cortico-striatal synchrony lower"],
@@ -166,7 +165,14 @@ def beats() -> list[dict]:
                 "failed. The revision imposed only the paper's own finding, that an isolated striatum "
                 "is silent. Both synchrony effects then appeared, in the published direction. Event "
                 "frequency did not.",
-         "zh": "对于赞助方实验室的皮层-纹状体结果，第一次提交的预测失败了。修订版只加入了论文本身的发现：孤立的纹状体是沉默的。随后两种同步性效应都按已发表的方向出现，但事件频率没有。"},
+         "zh": "针对支持单位实验室的皮层-纹状体芯片结果，首次提交的预测失败了。修订版只加入了论文自身的一项发现：孤立的纹状体是静息的。随后，两项同步性效应都按论文报道的方向出现，但钙事件频率没有。"},
+        {"scene": {"type": "image", "kicker": "A recorded four-compartment chip · pre-registered",
+                   "title": "One prediction held, one did not",
+                   "src": V4 + "brewer_chip_wide.png"},
+         "say": "On a recorded four-compartment hippocampal chip, two predictions were hashed before "
+                "a spike was counted. Axons follow the compartment they grow from: 49 of 60, as "
+                "predicted. The second, on compartment timing, did not hold, and is reported in full.",
+         "zh": "在一块实测的四腔室海马芯片上，两项预测在统计任何放电之前就已哈希锁定。其一：轴突放电跟随其起源腔室，60 组中 49 组符合，与预测一致。其二：关于腔室放电时序的预测未能成立，结果完整公开。"},
         {"scene": {"type": "quote", "kicker": "Why it matters",
                    "text": "From experimental description toward predictive simulation.",
                    "source": "The supporting organisation's stated aim for neural organ-on-chip data"},
@@ -174,17 +180,17 @@ def beats() -> list[dict]:
                 "with the untreated comparison that says how far to trust it. And before the "
                 "experiment, the twin says which electrodes to use and how many chips to run. That "
                 "is the step from describing an experiment to predicting one.",
-         "zh": "对于神经器官芯片实验室来说，一次记录变成了一个机制假设，并附带说明可信程度的未处理对照。在实验之前，孪生模型还会指出该用哪些电极、需要多少块芯片。这就是从描述实验走向预测实验的一步。"},
+         "zh": "对神经器官芯片实验室而言，一次记录由此变成一个机制假设，并附带说明可信程度的未处理对照。在实验之前，数字孪生还能告诉你该用哪些电极、需要多少块芯片。这就是从描述实验迈向预测实验的一步。"},
         {"scene": {"type": "terminal", "kicker": "Run it", "title": "Public data, one desktop GPU, the demo on a CPU",
                    "text": demo_output()},
          "say": "Everything runs from public data on one desktop GPU. The demo runs on a CPU, and one "
                 "script checks every hash, every frozen model, and every written number.",
-         "zh": "一切都基于公开数据，在一块桌面 GPU 上运行。演示可在 CPU 上运行，一个脚本会核对每一个哈希、每一个冻结的模型和每一个写出的数字。"},
+         "zh": "全部流程只用公开数据，一块桌面级 GPU 即可运行。演示在 CPU 上就能跑，一个脚本会逐一核对每个哈希值、每个冻结模型和文中写出的每个数字。"},
         {"scene": {"type": "title", "kicker": "Hodgkin's Razor",
-                   "title": "From describing an experiment, to predicting it, and knowing when not to.",
+                   "title": "From describing an experiment, to predicting it.",
                    "lead": "github.com/Marc-Dvci/Hodgkin-s-Razor"},
-         "say": "From describing an experiment, to predicting it. And knowing when not to.",
-         "zh": "从描述实验，到预测实验，并且知道何时不该预测。", "hold_ms": 1500},
+         "say": "From describing an experiment, to predicting it.",
+         "zh": "从描述实验，到预测实验。", "hold_ms": 1500},
     ]
 
 

@@ -27,9 +27,9 @@ def conditions(r: dict) -> list[tuple[str, dict]]:
     return [("nostim", r["primary"])] + [(c, r["secondary"][c]) for c in ("hfs5", "hfs40")]
 
 
-def figure(r: dict, pred: dict) -> None:
+def figure(r: dict, pred: dict, size=(9.6, 3.7), name: str = "brewer_chip.png") -> None:
     rows = conditions(r)
-    fig, (a1, a2) = plt.subplots(1, 2, figsize=(9.6, 3.7))
+    fig, (a1, a2) = plt.subplots(1, 2, figsize=size)
     y = np.arange(len(rows))[::-1]
     v = r["verdicts"]
     t1 = "P1. Axons follow their home compartment: " + ("met" if v["P1_home_share"]["met"] else "not met")
@@ -66,9 +66,9 @@ def figure(r: dict, pred: dict) -> None:
     out = V4 / "figures"
     out.mkdir(parents=True, exist_ok=True)
     fig.tight_layout()
-    fig.savefig(out / "brewer_chip.png", bbox_inches="tight", facecolor=SURFACE)
+    fig.savefig(out / name, bbox_inches="tight", facecolor=SURFACE)
     plt.close(fig)
-    print("wrote", out / "brewer_chip.png")
+    print("wrote", out / name)
 
 
 def f(x: float, d: int = 2) -> str:
@@ -146,6 +146,7 @@ def main() -> None:
     r = json.loads((V4 / "results.json").read_text())
     pred = json.loads((V4 / "brewer_prediction.json").read_text())
     figure(r, pred)
+    figure(r, pred, size=(13.0, 3.3), name="brewer_chip_wide.png")   # the film
     (V4 / "RESULTS.md").write_text(results_md(r, pred), encoding="utf-8")
     print("wrote", V4 / "RESULTS.md")
 

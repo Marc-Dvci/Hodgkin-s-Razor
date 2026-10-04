@@ -2,7 +2,7 @@
 
 ## Demo video
 
-<VIDEO_URL_YOUTUBE> · <VIDEO_URL_BILIBILI> (<FILM_LENGTH>, narrated in English, English and Chinese subtitles)
+<VIDEO_URL_YOUTUBE> · <VIDEO_URL_BILIBILI> (4:32, narrated in English, English and Chinese subtitles)
 
 ## Code repository
 
