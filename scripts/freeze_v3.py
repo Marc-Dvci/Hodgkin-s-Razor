@@ -2,7 +2,7 @@
 
     python scripts/freeze_v3.py
 
-Fills docs/PREREGISTRATION_v3.draft.md with a digest of every model directory
+Fills scripts/templates/PREREGISTRATION_v3.draft.md with a digest of every model directory
 and of the files that define the scored set, the chosen drift, and the
 simulation evidence the bars were set against. Writes PREREGISTRATION_v3.md and
 its SHA-256, and stops if either already exists: a pre-registration is written
@@ -248,7 +248,7 @@ def main() -> None:
         "genotype-matched null preparations, an observed AUROC of 0.70 carries a "
         "95 percent interval of roughly 0.56 to 0.84, so the bar is testable with "
         "this sample."]
-    draft = (ROOT / "docs" / "PREREGISTRATION_v3.draft.md").read_text(encoding="utf-8")
+    draft = (ROOT / "scripts" / "templates" / "PREREGISTRATION_v3.draft.md").read_text(encoding="utf-8")
     text = (draft.replace("{DATE}", datetime.date.today().strftime("%d %B %Y"))
             .replace("{DRIFT}", f"{drift['chosen']:.2f}")
             .replace("{SIMULATION}", "\n".join(lines))

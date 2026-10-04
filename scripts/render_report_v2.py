@@ -81,7 +81,7 @@ def main() -> None:
     }
     for k in ("SUMMARY_RESULTS", "SUMMARY_CHIP", "CHIP_DESIGN", "LIMITATIONS", "IMPACT"):
         fill[k] = narrative.get(k.lower(), "")
-    text = (ROOT / "docs" / "TECHNICAL_REPORT.template.md").read_text(encoding="utf-8")
+    text = (ROOT / "scripts" / "templates" / "TECHNICAL_REPORT.template.md").read_text(encoding="utf-8")
     for k, v in fill.items():
         text = text.replace("{{" + k + "}}", str(v).strip())
     left = re.findall(r"\{\{[A-Z_0-9]+\}\}", text)

@@ -17,6 +17,3 @@ The recorded set was scored four times in version 1:
 
 That is why version 2 treats the Tampere plates as a development set and was
 tested blind on other data (`PREREGISTRATION_v2.md`, `results/v2/`).
-
-`narration/` holds the audio of a version 1 film script that was never cut; its
-claims describe an earlier model and are superseded.

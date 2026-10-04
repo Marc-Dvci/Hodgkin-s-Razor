@@ -13,18 +13,12 @@ data/bank_*/
 data/chip_bank*.npz
 data/screen_domain.npz
 
-# Generated locally for the film, not part of the deliverable.
+# Generated locally, not part of the deliverable.
 results/capture/
 results/film/
 
 # Superseded before the v3 freeze (unpaired baseline trained on the first bank only).
 models/twin_v3_unpaired_mcs60q_bank1/
 
-# Film intermediates (rebuilt by film/narrate.py and film/record.py).
-film/speech/
-film/narration.wav
-film/stills/
-film/preview.mp4
-
-# Local film build logs.
+# Local build logs.
 results/film_*.log

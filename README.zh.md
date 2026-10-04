@@ -6,7 +6,6 @@ AI4S Open Innovation：AI for Life Science，第五届琶洲算法大赛。参�
 
 **在线演示（无需登录、无需安装）：** https://marc-dvci.github.io/Hodgkin-s-Razor/ ·
 **技术报告：** [`docs/TECHNICAL_REPORT.pdf`](docs/TECHNICAL_REPORT.pdf)（英文） ·
-**演示视频：** [`film/hodgkins-razor.mp4`](film/hodgkins-razor.mp4)（英文配音，中英双语字幕） ·
 [English README](README.md)
 
 ## 要解决的问题

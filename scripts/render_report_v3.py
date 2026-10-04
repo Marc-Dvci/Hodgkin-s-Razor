@@ -493,7 +493,7 @@ def main() -> None:
         "APPENDIX": appendix(r2, ph),
         "N_TESTS": str(n_tests),
     }
-    text = (ROOT / "docs" / "TECHNICAL_REPORT.v3.template.md").read_text(encoding="utf-8")
+    text = (ROOT / "scripts" / "templates" / "TECHNICAL_REPORT.v3.template.md").read_text(encoding="utf-8")
     for k, v in fill.items():
         text = text.replace("{{" + k + "}}", str(v).strip())
     left = re.findall(r"\{\{[A-Z_0-9]+\}\}", text)

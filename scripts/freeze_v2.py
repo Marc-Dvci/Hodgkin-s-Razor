@@ -2,7 +2,7 @@
 
     python scripts/freeze_v2.py
 
-Fills the draft in docs/PREREGISTRATION_v2.draft.md with a digest of every
+Fills the draft in scripts/templates/PREREGISTRATION_v2.draft.md with a digest of every
 model directory, the operating points, the answer keys and the chip twin's
 simulated prediction, writes PREREGISTRATION_v2.md and its SHA-256, and stops
 if either already exists: a pre-registration is written once.
@@ -77,7 +77,7 @@ def main() -> None:
                 "chamber_asymmetry": 0.75 if call(pred["compartment_asymmetry_auroc"]) == "separates" else 0.70}},
         "guard": {"must_pass_max": 0.10, "must_fire_min": 0.80},
     }
-    draft = (ROOT / "docs" / "PREREGISTRATION_v2.draft.md").read_text(encoding="utf-8")
+    draft = (ROOT / "scripts" / "templates" / "PREREGISTRATION_v2.draft.md").read_text(encoding="utf-8")
     text = (draft.replace("{DATE}", datetime.date.today().strftime("%d %B %Y"))
             .replace("{SPEC}", json.dumps(spec, indent=1)))
     md.write_text(text, encoding="utf-8")

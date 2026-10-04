@@ -10,7 +10,6 @@ Category: **End-to-End System**. Apache-2.0.
 
 **Live demo (no login, no install):** https://marc-dvci.github.io/Hodgkin-s-Razor/ ·
 **Technical report:** [`docs/TECHNICAL_REPORT.pdf`](docs/TECHNICAL_REPORT.pdf) ·
-**Demo film:** [`film/hodgkins-razor.mp4`](film/hodgkins-razor.mp4) ·
 **中文说明:** [`README.zh.md`](README.zh.md)
 
 A microelectrode array under a neural organ-on-chip produces a rich recording
@@ -224,9 +223,8 @@ scripts/
   control_referenced.py   post hoc: each mechanism read against untreated controls
 app/        FastAPI service and the single-page interface
 site/       the same page as a static site
-film/       the demo film, rendered from the running page and the results
 tests/      pytest suite
-docs/       technical report, data, reproduction, self-audit
+docs/       technical report, data, reproduction, committed predictions
 ```
 
 The version 1 scripts (`evaluate.py`, `figures.py`, `render_results.py`,
@@ -246,6 +244,5 @@ for the record; they describe the version 1 model at the tag `v1`.
 | [`PREREGISTRATION_v4.md`](PREREGISTRATION_v4.md), [`PREREGISTRATION_v3.md`](PREREGISTRATION_v3.md), [`PREREGISTRATION_v2.md`](PREREGISTRATION_v2.md) | the tests, fixed before scoring |
 | [`docs/DATA.md`](docs/DATA.md) | sources, licences, compliance |
 | [`docs/REPRODUCTION.md`](docs/REPRODUCTION.md) | how to rebuild everything |
-| [`docs/SELF_AUDIT.md`](docs/SELF_AUDIT.md) | scored against the published criteria, with the open items |
 
 Author: Marc Donovici. Built with public data and open-source software only.

@@ -2,7 +2,7 @@
 
     python scripts/freeze_v4.py
 
-Fills docs/PREREGISTRATION_v4.draft.md with the predictions in
+Fills scripts/templates/PREREGISTRATION_v4.draft.md with the predictions in
 results/v4/brewer_prediction.json, the digest of that file and of every data
 file, and the inclusion rules. Writes PREREGISTRATION_v4.md and its SHA-256,
 and stops if either already exists: a pre-registration is written once. Reads
@@ -67,7 +67,7 @@ def main() -> None:
             "PI_HOME": fmt(home["pi90"]),
             "HOME_PCT": f"{round(100 * pred['home']['share_positive'])}%",
             "SPEC": json.dumps(spec, indent=1)}
-    text = (ROOT / "docs" / "PREREGISTRATION_v4.draft.md").read_text(encoding="utf-8")
+    text = (ROOT / "scripts" / "templates" / "PREREGISTRATION_v4.draft.md").read_text(encoding="utf-8")
     for k, v in fill.items():
         text = text.replace("{{" + k + "}}", v)
     if "{{" in text:
