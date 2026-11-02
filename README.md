@@ -5,7 +5,7 @@
 
 **A mechanistic digital twin for neural organ-on-chip recordings: from a baseline and a treated recording, the probability that each of ten molecular mechanisms moved, read against untreated cultures, or a refusal.**
 
-AI4S Open Innovation: AI for Life Science, 5th Pazhou Algorithm Competition.
+AI4S Open Innovation: AI for Life Science, 5th Pazhou Algorithm Competition: **3rd place (Third Prize)**.
 Category: **End-to-End System**. Apache-2.0.
 
 **Live demo (no login, no install):** https://marc-dvci.github.io/Hodgkin-s-Razor/ ·

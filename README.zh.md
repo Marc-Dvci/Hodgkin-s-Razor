@@ -2,7 +2,7 @@
 
 **面向神经器官芯片记录的机制型数字孪生：输入给药前后两段记录，输出十种分子机制各自发生改变的概率，并与未处理培养对照比较；无法判断时，明确拒绝给出结论。**
 
-AI4S Open Innovation：AI for Life Science，第五届琶洲算法大赛。参赛类别：**端到端系统（End-to-End System）**。许可证：Apache-2.0。
+AI4S Open Innovation：AI for Life Science，第五届琶洲算法大赛，**三等奖**。参赛类别：**端到端系统（End-to-End System）**。许可证：Apache-2.0。
 
 **在线演示（无需登录、无需安装）：** https://marc-dvci.github.io/Hodgkin-s-Razor/ ·
 **技术报告：** [`docs/TECHNICAL_REPORT.pdf`](docs/TECHNICAL_REPORT.pdf)（英文） ·
